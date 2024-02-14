@@ -48,7 +48,7 @@ export function PRBoardListPage() {
 
     const [by, order] = sort.split(" ");
     try {
-      const res = await fetch(`${promotionUrl}?page=${curPage || page}&limit=4&sortBy=${by}&sortOrder=${order}&category=${category}`);
+      const res = await fetch(`${promotionUrl}?page=${curPage || page}&limit=20&sortBy=${by}&sortOrder=${order}&category=${category}`);
       const data = await res.json();
 
       if (res.ok) {
