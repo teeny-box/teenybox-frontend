@@ -48,7 +48,7 @@ export function PRBoardListPage() {
 
     const [by, order] = sort.split(" ");
     try {
-      const res = await fetch(`${promotionUrl}?page=${curPage || page}&limit=20&sortBy=${by}&sortOrder=${order}&category=${category}`);
+      const res = await fetch(`${promotionUrl}?page=${curPage || page}&limit=4&sortBy=${by}&sortOrder=${order}&category=${category}`);
       const data = await res.json();
 
       if (res.ok) {
@@ -206,7 +206,7 @@ export function PRBoardListPage() {
           </Button>
         </div>
       </div>
-      {state === "loading" ? (
+      {state === "loading" && !boardList.length ? (
         <div className={`state box`}>
           <CircularProgress color="secondary" />
         </div>
@@ -217,6 +217,11 @@ export function PRBoardListPage() {
       ) : boardList.length ? (
         <>
           <PRBoardList newList={boardList} />
+          {state === "loading" && (
+            <div className={`state`}>
+              <CircularProgress color="secondary" />
+            </div>
+          )}
           <UpButton />
           <div className="scroll-ref" ref={scrollRef}></div>
         </>
