@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import "./PlayList.scss";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
 import PlayListHeader from "../../components/play-list/PlayListHeader";
@@ -20,6 +20,8 @@ import Empty from "../../components/common/state/Empty";
 export function PlayList() {
   const { prevPlayListQuery, setPrevPlayListQuery } = useContext(AppContext);
   const queryParams = new URLSearchParams(prevPlayListQuery);
+
+  const playListContainerRef = useRef(null);
 
   // 로딩중 여부
   const [isLoading, setIsLoading] = useState(true);
@@ -186,7 +188,7 @@ export function PlayList() {
   };
 
   return (
-    <div className="play-list-container">
+    <div className="play-list-container" ref={playListContainerRef}>
       {error ? (
         <AlertCustom
           title="tennybox.com 내용:"
@@ -285,6 +287,7 @@ export function PlayList() {
                   playsCount={playTotalCnt}
                   setCurPage={setCurPage}
                   curPage={curPage}
+                  playListContainerRef={playListContainerRef}
                 />
               ) : null}
             </>

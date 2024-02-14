@@ -7,9 +7,11 @@ export default function PaginationBox({
   playsCount,
   setCurPage,
   curPage,
+  playListContainerRef,
 }) {
   const handlePageNumberChange = (e, number) => {
     setCurPage(number);
+    playListContainerRef.current.scrollIntoView({ behavior: "auto" });
   };
 
   return (
