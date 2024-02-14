@@ -9,7 +9,6 @@ import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 
 export function FreeBoardEditForm({ setInput, handleCancle, post }) {
-  console.log(post);
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);

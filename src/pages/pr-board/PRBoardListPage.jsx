@@ -163,7 +163,7 @@ export function PRBoardListPage() {
                         <ThumbUpOutlined sx={{ fontSize: 20 }} />
                         <span>{numberFormat(bannerList[bannerIndex]?.likes || 0)}</span>
                         <SmsOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(bannerList[bannerIndex]?.comments || 0)}</span>
+                        <span>{numberFormat(bannerList[bannerIndex]?.commentsCount || 0)}</span>
                       </div>
                     </div>
                     <Link to={`/promotion/${bannerList[bannerIndex].promotion_number}`}>

@@ -24,7 +24,6 @@ const SearchModal = ({ onCloseModal }) => {
 
   const sendUrl = (query) => {
     let encodedQuery = "";
-    console.log(query.slice(1));
 
     if (query.charAt(0) === "#") {
       encodedQuery = encodeURIComponent(query.slice(1));
