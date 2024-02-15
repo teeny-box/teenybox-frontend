@@ -41,7 +41,7 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
       imageUrlsToDelete: toDeleteImg,
     };
 
-    fetch("https://dailytopia2.shop/api/users", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
       {alert && (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={open}
+          open={true}
           onClick={
             alert.severity === "success"
               ? () => navigate("/signup-in")

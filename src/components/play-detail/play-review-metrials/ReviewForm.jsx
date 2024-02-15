@@ -51,7 +51,7 @@ export default function ReviewForm({
 
     try {
       const presignRes = await fetch(
-        "https://dailytopia2.shop/api/presigned-urls",
+        `${process.env.REACT_APP_BASE_URL}/api/presigned-urls`,
         {
           method: "POST",
           credentials: "include",
@@ -105,7 +105,10 @@ export default function ReviewForm({
       content: `리뷰 ${purpose}을 취소하시겠습니까? ${purpose}한 글 내용은 저장되지 않습니다.`,
       open: true,
       onclose: () => setAlert(null),
-      onclick: () => setIsReviewFormOpened(false),
+      onclick: () => {
+        setIsReviewFormOpened(false);
+        setAlert(null);
+      },
       severity: "warning",
       checkBtn: "확인",
       closeBtn: "취소",
@@ -156,7 +159,7 @@ export default function ReviewForm({
 
   // 리뷰 '작성' 시의 fetch
   const postReview = (body) => {
-    fetch(`https://dailytopia2.shop/api/reviews/${showId}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${showId}`, {
       credentials: "include",
       method: "POST",
       headers: {
@@ -178,6 +181,7 @@ export default function ReviewForm({
               getUserReview();
             },
             onclick: () => {
+              setAlert(null);
               setIsReviewFormOpened(false);
               getPlayDetailInfo();
               getReviews();
@@ -194,10 +198,11 @@ export default function ReviewForm({
             content: "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?",
             open: true,
             onclose: () => setAlert(null),
-            onclick: () =>
+            onclick: () => {
               navigate("/signup-in", {
                 state: { from: `${location.pathname}${location.search}` },
-              }),
+              });
+            },
             severity: "info",
             checkBtn: "확인",
             closeBtn: "취소",
@@ -234,7 +239,7 @@ export default function ReviewForm({
 
   // 리뷰 '수정' 시의 fetch
   const patchReview = (body) => {
-    fetch(`https://dailytopia2.shop/api/reviews/${review_id}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${review_id}`, {
       credentials: "include",
       method: "PATCH",
       headers: {
@@ -256,6 +261,7 @@ export default function ReviewForm({
               getUserReview();
             },
             onclick: () => {
+              setAlert(null);
               setIsReviewFormOpened(false);
               getPlayDetailInfo();
               getReviews();
@@ -319,7 +325,7 @@ export default function ReviewForm({
           `리뷰 ${purpose}을 취소하시겠습니까? ${purpose}한 글 내용은 저장되지 않습니다.` ? (
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={open}
+            open={true}
             onClick={() => setAlert(null)}
           >
             <AlertCustom
@@ -435,6 +441,7 @@ export default function ReviewForm({
                       right: "36px",
                       padding: 0,
                     }}
+                    onClick={() => handleDeletePhoto(idx)}
                   >
                     <HighlightOffIcon
                       color="ourGray"
@@ -442,7 +449,6 @@ export default function ReviewForm({
                         width: "27px",
                         height: "27px",
                       }}
-                      onClick={() => handleDeletePhoto(idx)}
                     />
                   </IconButton>
                 </div>

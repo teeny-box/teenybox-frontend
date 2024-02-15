@@ -52,7 +52,7 @@ export default function PlayDetailTop({
   useEffect(() => {
     if (isLoggedIn) {
       // 찜 여부 확인
-      fetch(`https://dailytopia2.shop/api/users/bookmarks/${showId}`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`, {
         credentials: "include",
       })
         .then((res) => {
@@ -157,10 +157,13 @@ export default function PlayDetailTop({
     if (isLoggedIn) {
       // 찜이 되어 있는 경우 찜 취소
       if (isDibbed) {
-        fetch(`https://dailytopia2.shop/api/users/bookmarks/${showId}`, {
-          method: "DELETE",
-          credentials: "include",
-        })
+        fetch(
+          `${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        )
           .then((res) => {
             if (res.ok) {
               setIsDibbed(false);
@@ -188,10 +191,13 @@ export default function PlayDetailTop({
           });
       } else {
         // 찜이 되어 있지 않은 경우 찜 추가
-        fetch(`https://dailytopia2.shop/api/users/bookmarks/${showId}`, {
-          method: "POST",
-          credentials: "include",
-        })
+        fetch(
+          `${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        )
           .then((res) => {
             if (res.ok) {
               setIsDibbed(true);

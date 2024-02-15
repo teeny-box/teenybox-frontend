@@ -30,7 +30,7 @@ export default function ProfileImgContainer({
 
     try {
       const presignRes = await fetch(
-        "https://dailytopia2.shop/api/presigned-urls",
+        `${process.env.REACT_APP_BASE_URL}/api/presigned-urls`,
         {
           method: "POST",
           credentials: "include",
