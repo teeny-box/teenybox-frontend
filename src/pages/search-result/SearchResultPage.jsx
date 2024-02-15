@@ -14,6 +14,7 @@ import CommunitySearchResult from "../../components/search/community-search-resu
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import { useNavigate, useSearchParams } from "react-router-dom/dist";
 import ScrollToTop from "../../hooks/useScrollToTop";
+import { showUrl } from "../../apis/apiURLs";
 
 export default function SearchResultPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,7 +47,7 @@ export default function SearchResultPage() {
     } else {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/shows?title=${searchKeyword}&order=${sortStandard}&page=${playCurPage}&limit=10`
+          `${showUrl}?title=${searchKeyword}&order=${sortStandard}&page=${playCurPage}&limit=10`
         );
         const data = await res.json();
 

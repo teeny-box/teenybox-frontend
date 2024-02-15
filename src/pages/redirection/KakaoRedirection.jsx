@@ -3,6 +3,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { fromPageContext } from "../user/SignUp_In";
 import { AppContext } from "../../App";
+import { userUrl } from "../../apis/apiURLs";
 
 export function KakaoRedirection({ popup, setPopup, setAlert }) {
   const pageFrom = useContext(fromPageContext);
@@ -10,7 +11,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
   const navigate = useNavigate();
 
   const getLoggedInUserInfo = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+    fetch(`${userUrl}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -97,7 +98,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/users/login/kakao`, {
+        fetch(`${userUrl}/login/kakao`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

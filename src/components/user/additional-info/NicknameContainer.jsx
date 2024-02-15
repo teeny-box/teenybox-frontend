@@ -3,6 +3,7 @@ import "./NicknameContainer.scss";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
+import { nicknameUrl } from "../../../apis/apiURLs";
 
 export default function NicknameContainer({
   nicknameInfo,
@@ -35,7 +36,7 @@ export default function NicknameContainer({
     }
 
     // 중복 확인 로직
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/users/nickname`, {
+    fetch(`${nicknameUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
