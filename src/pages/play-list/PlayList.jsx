@@ -15,6 +15,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { AppContext } from "../../App";
 import dayjs from "dayjs";
 import Empty from "../../components/common/state/Empty";
+import { showUrl } from "../../apis/apiURLs";
 
 // 홍보, 커뮤니티, 마이페이지, 검색 페이지, 로그인 페이지, 홈 페이지 접속 시 setPrevPlayListQuery(null)로 설정하기
 export function PlayList() {
@@ -130,7 +131,7 @@ export function PlayList() {
       setReqQuery(reqQuery);
     }
 
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/shows${reqQuery}`)
+    fetch(`${showUrl}${reqQuery}`)
       .then((res) => {
         if (res.ok) {
           return res.json();

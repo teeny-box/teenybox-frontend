@@ -8,6 +8,7 @@ import PaginationBox from "./play-review-metrials/PaginationBox";
 import { AlertCustom } from "../common/alert/Alerts";
 import CircularProgress from "@mui/material/CircularProgress";
 import dayjs from "dayjs";
+import { reviewUrl } from "../../apis/apiURLs";
 
 export default function PlayReview({
   showId,
@@ -40,7 +41,7 @@ export default function PlayReview({
   // 리뷰 가져오기
   const getReviews = () => {
     fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/reviews?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`
+      `${reviewUrl}?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -61,9 +62,7 @@ export default function PlayReview({
   // 현재 로그인한 유저가 작성한 리뷰 가져오기
   const getUserReview = () => {
     if (userId) {
-      fetch(
-        `${process.env.REACT_APP_BASE_URL}/api/reviews?showId=${showId}&userId=${userId}`
-      )
+      fetch(`${reviewUrl}?showId=${showId}&userId=${userId}`)
         .then((res) => res.json())
         .then((data) => {
           let userReviewData = null;

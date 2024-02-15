@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PlayReviewContentBox from "./PlayReviewContentBox";
 import { AlertCustom } from "../../common/alert/Alerts";
 import Backdrop from "@mui/material/Backdrop";
+import { reviewUrl } from "../../../apis/apiURLs";
 
 export default function PlayReviewListBox({
   reviewInfo,
@@ -55,7 +56,7 @@ export default function PlayReviewListBox({
   };
 
   const deleteReview = (review_id) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${review_id}`, {
+    fetch(`${reviewUrl}/${review_id}`, {
       method: "DELETE",
       credentials: "include",
     })

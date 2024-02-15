@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import { AlertCustom } from "../../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
+import { userUrl } from "../../../apis/apiURLs";
 
 export default function SubmitBtnsArea({ additionalUserInfo }) {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
       imageUrlsToDelete: toDeleteImg,
     };
 
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+    fetch(`${userUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
