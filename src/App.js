@@ -21,7 +21,7 @@ function App() {
 
   const getUserData = async () => {
     try {
-      const res = await fetch(`https://dailytopia2.shop/api/users`, {
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
         credentials: "include",
       });
 
@@ -31,9 +31,12 @@ function App() {
       } else if (res.status === 401 || res.status === 403) {
         // 다시 한 번 시도
         try {
-          const secondRes = await fetch(`https://dailytopia2.shop/api/users`, {
-            credentials: "include",
-          });
+          const secondRes = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/api/users`,
+            {
+              credentials: "include",
+            }
+          );
 
           if (secondRes.ok) {
             const secondData = await secondRes.json();

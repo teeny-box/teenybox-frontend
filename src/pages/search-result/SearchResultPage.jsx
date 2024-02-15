@@ -46,7 +46,7 @@ export default function SearchResultPage() {
     } else {
       try {
         const res = await fetch(
-          `https://dailytopia2.shop/api/shows?title=${searchKeyword}&order=${sortStandard}&page=${playCurPage}&limit=10`
+          `${process.env.REACT_APP_BASE_URL}/api/shows?title=${searchKeyword}&order=${sortStandard}&page=${playCurPage}&limit=10`
         );
         const data = await res.json();
 

@@ -46,6 +46,7 @@ export default function PlayReviewListBox({
       onclick: () => {
         setAlert(null);
         deleteReview(review_id);
+        setIsReviewFormOpened(false);
       },
       severity: "warning",
       checkBtn: "확인",
@@ -54,7 +55,7 @@ export default function PlayReviewListBox({
   };
 
   const deleteReview = (review_id) => {
-    fetch(`https://dailytopia2.shop/api/reviews/${review_id}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${review_id}`, {
       method: "DELETE",
       credentials: "include",
     })
@@ -127,7 +128,7 @@ export default function PlayReviewListBox({
       {alert && (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={open}
+          open={true}
           onClick={() => setAlert(null)}
         >
           <AlertCustom

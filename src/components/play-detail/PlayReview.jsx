@@ -40,7 +40,7 @@ export default function PlayReview({
   // 리뷰 가져오기
   const getReviews = () => {
     fetch(
-      `https://dailytopia2.shop/api/reviews?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`
+      `${process.env.REACT_APP_BASE_URL}/api/reviews?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -62,7 +62,7 @@ export default function PlayReview({
   const getUserReview = () => {
     if (userId) {
       fetch(
-        `https://dailytopia2.shop/api/reviews?showId=${showId}&userId=${userId}`
+        `${process.env.REACT_APP_BASE_URL}/api/reviews?showId=${showId}&userId=${userId}`
       )
         .then((res) => res.json())
         .then((data) => {

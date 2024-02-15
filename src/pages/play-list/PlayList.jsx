@@ -130,7 +130,7 @@ export function PlayList() {
       setReqQuery(reqQuery);
     }
 
-    fetch(`https://dailytopia2.shop/api/shows${reqQuery}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/shows${reqQuery}`)
       .then((res) => {
         if (res.ok) {
           return res.json();

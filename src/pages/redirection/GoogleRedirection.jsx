@@ -9,7 +9,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
   const navigate = useNavigate();
 
   const getLoggedInUserInfo = () => {
-    fetch(`https://dailytopia2.shop/api/users`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
       credentials: "include",
     })
       .then((res) => {
@@ -96,7 +96,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       if (authorizationCode) {
         popup?.close();
         // 가져온 code 로 다른 정보를 가져오는 API 호출
-        fetch(`https://dailytopia2.shop/api/users/login/google`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/users/login/google`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

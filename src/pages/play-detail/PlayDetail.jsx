@@ -31,7 +31,7 @@ export function PlayDetail() {
 
   // 현재 연극 하나 데이터 받아오기
   const getPlayDetailInfo = () => {
-    fetch(`https://dailytopia2.shop/api/shows/${playId}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/shows/${playId}`)
       .then((res) => res.json())
       .then((data) => {
         setPlayInfo(data.show);
