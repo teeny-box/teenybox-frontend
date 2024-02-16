@@ -61,7 +61,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       return;
     }
 
-    if (code) {
+    if (code && popup.location.href.includes("google-login")) {
       window.opener.postMessage({ code }, window.location.origin);
     }
   }, []);
@@ -73,10 +73,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     }
 
     const googleOauthCodeListener = (e) => {
-      if (
-        e.origin !== window.location.origin ||
-        popup.location.href.includes("google-login")
-      ) {
+      if (e.origin !== window.location.origin) {
         return;
       }
 
