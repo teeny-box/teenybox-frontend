@@ -80,6 +80,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
       const { error } = e.data;
       if (error) {
         popup?.close();
+        setPopup(null);
         setAlert({
           title: "정보 제공 동의 필수",
           content: "정보 제공 동의는 필수입니다.",
@@ -93,7 +94,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
 
       const { code, state } = e.data;
 
-      if ((code, state)) {
+      if (code && state) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
@@ -148,6 +149,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
               checkBtn: "확인",
             });
           });
+        // popup 닫은 뒤 setPopul(null) 설정 세트
         popup?.close();
         setPopup(null);
       }

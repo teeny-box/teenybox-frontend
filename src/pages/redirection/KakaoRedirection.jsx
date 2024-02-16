@@ -80,6 +80,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
       const { error } = e.data;
       if (error) {
         popup?.close();
+        setPopup(null);
         setAlert({
           title: "정보 제공 동의 필수",
           content: "정보 제공 동의는 필수입니다.",
