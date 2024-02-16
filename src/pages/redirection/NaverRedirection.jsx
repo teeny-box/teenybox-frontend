@@ -61,7 +61,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     }
     const code = searchParams.get("code");
     const state = searchParams.get("state");
-    if (code && state && popup.location.href.includes("naver-login")) {
+    if (code && state) {
       window.opener.postMessage({ code, state }, window.location.origin);
     }
   }, []);

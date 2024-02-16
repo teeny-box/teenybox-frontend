@@ -61,7 +61,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
       window.opener.postMessage({ error }, window.location.origin);
       return;
     }
-    if (code && popup.location.href.includes("kakao-login")) {
+    if (code) {
       window.opener.postMessage({ code }, window.location.origin);
     }
   }, []);

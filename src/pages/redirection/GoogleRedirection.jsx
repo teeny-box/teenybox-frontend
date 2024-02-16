@@ -61,7 +61,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       return;
     }
 
-    if (code && popup.location.href.includes("google-login")) {
+    if (code) {
       window.opener.postMessage({ code }, window.location.origin);
     }
   }, []);
