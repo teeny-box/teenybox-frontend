@@ -88,7 +88,11 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
           onclick: () => setAlert(null),
           checkBtn: "확인",
         });
-        return;
+        return () => {
+          window.removeEventListener("message", naverOauthCodeListener);
+          popup?.close();
+          setPopup(null);
+        };
       }
 
       const { code } = e.data;
