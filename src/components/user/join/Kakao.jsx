@@ -5,8 +5,7 @@ import Loading from "../../common/state/Loading";
 import "./AllLoginBtn.scss";
 import kakaoLogo from "../../../assets/img/user/kakao-logo.png";
 
-export default function Kakao() {
-  const [popup, setPopup] = useState();
+export default function Kakao({ popup, setPopup }) {
   const [alert, setAlert] = useState(null);
 
   const KAKAO_REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;

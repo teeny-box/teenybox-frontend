@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleRedirection } from "../../../pages/redirection/GoogleRedirection";
 import { AlertCustom } from "../../../components/common/alert/Alerts";
 import Loading from "../../common/state/Loading";
 import "./AllLoginBtn.scss";
 import googleLogo from "../../../assets/img/user/google-logo.png";
 
-export default function Google() {
-  const [popup, setPopup] = useState();
+export default function Google({ popup, setPopup }) {
   const [alert, setAlert] = useState(null);
 
   const GOOGLE_REDIRECT_URL = process.env.REACT_APP_GOOGLE_REDIRECT_URL;
