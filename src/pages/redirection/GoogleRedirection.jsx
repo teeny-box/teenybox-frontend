@@ -155,7 +155,10 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       }
     };
     window.addEventListener("message", googleOauthCodeListener, false);
-    return () => window.removeEventListener("message", googleOauthCodeListener);
+    return () => {
+      window.removeEventListener("message", googleOauthCodeListener);
+      setPopup(null);
+    };
   }, [popup]);
 
   return <></>;

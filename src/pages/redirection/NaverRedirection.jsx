@@ -156,7 +156,10 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     };
 
     window.addEventListener("message", naverOauthCodeListener, false);
-    return () => window.removeEventListener("message", naverOauthCodeListener);
+    return () => {
+      window.removeEventListener("message", naverOauthCodeListener);
+      setPopup(null);
+    };
   }, [popup]);
 
   return <></>;
