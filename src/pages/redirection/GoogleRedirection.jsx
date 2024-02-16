@@ -95,7 +95,7 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       const { code } = e.data;
       const authorizationCode = code;
 
-      if (authorizationCode) {
+      if (authorizationCode && popup.location.href.includes("google-login")) {
         popup?.close();
         // 가져온 code 로 다른 정보를 가져오는 API 호출
         fetch(`${userUrl}/login/google`, {
@@ -157,7 +157,6 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     window.addEventListener("message", googleOauthCodeListener, false);
     return () => {
       window.removeEventListener("message", googleOauthCodeListener);
-      setPopup(null);
     };
   }, [popup]);
 

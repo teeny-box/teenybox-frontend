@@ -94,7 +94,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
 
       const { code, state } = e.data;
 
-      if (code && state) {
+      if (code && state && popup.location.href.includes("naver-login")) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
@@ -158,7 +158,6 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     window.addEventListener("message", naverOauthCodeListener, false);
     return () => {
       window.removeEventListener("message", naverOauthCodeListener);
-      setPopup(null);
     };
   }, [popup]);
 

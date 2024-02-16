@@ -95,7 +95,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
       const { code } = e.data;
       const authorizationCode = code;
 
-      if (authorizationCode) {
+      if (authorizationCode && popup.location.href.includes("kakao-login")) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
@@ -158,7 +158,6 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     window.addEventListener("message", kakaoOauthCodeListener, false);
     return () => {
       window.removeEventListener("message", kakaoOauthCodeListener);
-      setPopup(null);
     };
   }, [popup]);
 
