@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NaverRedirection } from "../../../pages/redirection/NaverRedirection";
 import { AlertCustom } from "../../../components/common/alert/Alerts";
 import Loading from "../../common/state/Loading";

@@ -155,11 +155,6 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       }
     };
     window.addEventListener("message", googleOauthCodeListener, false);
-    return () => {
-      window.removeEventListener("message", googleOauthCodeListener);
-      popup?.close();
-      setPopup(null);
-    };
   }, [popup]);
 
   return <></>;
