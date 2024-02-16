@@ -73,7 +73,10 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     }
 
     const kakaoOauthCodeListener = (e) => {
-      if (e.origin !== window.location.origin) {
+      if (
+        e.origin !== window.location.origin ||
+        popup.location.href.includes("kakao-login")
+      ) {
         return;
       }
 

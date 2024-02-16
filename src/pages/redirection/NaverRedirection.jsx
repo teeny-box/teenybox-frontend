@@ -73,7 +73,10 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     }
 
     const naverOauthCodeListener = (e) => {
-      if (e.origin !== window.location.origin) {
+      if (
+        e.origin !== window.location.origin ||
+        popup.location.href.includes("naver-login")
+      ) {
         return;
       }
 

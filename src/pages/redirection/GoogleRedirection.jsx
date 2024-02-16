@@ -73,7 +73,10 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     }
 
     const googleOauthCodeListener = (e) => {
-      if (e.origin !== window.location.origin) {
+      if (
+        e.origin !== window.location.origin ||
+        popup.location.href.includes("google-login")
+      ) {
         return;
       }
 
