@@ -88,16 +88,12 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
           onclick: () => setAlert(null),
           checkBtn: "확인",
         });
-        return () => {
-          window.removeEventListener("message", naverOauthCodeListener);
-          popup?.close();
-          setPopup(null);
-        };
+        return;
       }
 
       const { code, state } = e.data;
 
-      if (code && state) {
+      if ((code, state)) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출

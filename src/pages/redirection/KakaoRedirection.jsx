@@ -88,11 +88,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
           onclick: () => setAlert(null),
           checkBtn: "확인",
         });
-        return () => {
-          window.removeEventListener("message", naverOauthCodeListener);
-          popup?.close();
-          setPopup(null);
-        };
+        return;
       }
 
       const { code } = e.data;
