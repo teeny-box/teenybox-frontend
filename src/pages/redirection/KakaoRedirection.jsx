@@ -156,6 +156,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     };
 
     window.addEventListener("message", kakaoOauthCodeListener, false);
+    return () => window.removeEventListener("message", kakaoOauthCodeListener);
   }, [popup]);
 
   return <></>;
