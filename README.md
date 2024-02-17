@@ -30,6 +30,12 @@
 
 ## ⚙ 기술 스택
 
+### Front-end
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=MUI&logoColor=white"> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=white"> <img src="https://img.shields.io/badge/Sass-#CC6699?style=for-the-badge&logo=Sass&logoColor=pink">
+
+### Back-end
+
+
 <br/>
 
 ## ✔️ 주요 기능
