@@ -62,7 +62,10 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     }
 
     if (code) {
-      window.opener.postMessage({ code }, window.location.origin);
+      window.opener.postMessage(
+        { code, isGoogle: currentUrl.includes("google-login") },
+        window.location.origin
+      );
     }
   }, []);
 
@@ -92,10 +95,10 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { code } = e.data;
+      const { code, isGoogle } = e.data;
       const authorizationCode = code;
 
-      if (authorizationCode && popup.location.href.includes("google-login")) {
+      if (authorizationCode && isGoogle) {
         popup?.close();
         // 가져온 code 로 다른 정보를 가져오는 API 호출
         fetch(`${userUrl}/login/google`, {
