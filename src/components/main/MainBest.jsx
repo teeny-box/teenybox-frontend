@@ -33,6 +33,7 @@ function MainBest() {
         paddingRight: "10px",
         transform: `translateX(-${sliderIndex * 1200}px)`,
       };
+
   useEffect(() => {
     if (sliderIndex === 4) {
       setTimeout(() => {
@@ -62,6 +63,7 @@ function MainBest() {
     fetch(`${showUrl}/rank`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         const rankedShows = data.shows
         // 연극을 rank에 따라 정렬
         rankedShows.sort((a, b) => a.rank - b.rank);
