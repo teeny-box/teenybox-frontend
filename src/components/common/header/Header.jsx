@@ -9,6 +9,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useLocation } from "react-router-dom";
 import { AppContext } from "../../../App";
+import { userUrl } from "../../../apis/apiURLs";
 
 const Header = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -33,7 +34,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        `https://dailytopia2.shop/api/users/logout`,
+        `${userUrl}/logout`,
         {
           method: "POST",
           credentials: "include",

@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { promotionUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "게시글 번호", width: 213 },
@@ -27,10 +28,9 @@ const AdminPR = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/promotions?limit=1000`)
+    fetch(`${promotionUrl}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.promotions) && data.promotions.length > 0) {
           const promotionsWithIds = data.promotions.map((promotion) => ({
             ...promotion,
@@ -55,7 +55,7 @@ const AdminPR = () => {
       .map((promotion) => promotion.promotion_number);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/promotions/bulk`, {
+    fetch(`${promotionUrl}/bulk`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -64,9 +64,7 @@ const AdminPR = () => {
       body: JSON.stringify({ promotionNumbers: selectedPromotionIds }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedPromotionIds);
+      .then(() => {
         fetchData(); // 삭제 후 데이터 다시 불러오기
         setOpenAlert2(true);
       })

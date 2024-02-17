@@ -53,7 +53,7 @@ export function SignUp_In() {
       <section className="signupInContainer inner">
         <h1 className="signup-title">SIGN UP / LOGIN </h1>
         <p className="signup-description">
-          소셜 로그인 및 이메일 계정으로 가입이 가능합니다.
+          소셜 계정으로 간편하게 가입/로그인 가능합니다.
         </p>
 
         <div className="social-buttons">
