@@ -36,7 +36,6 @@ const AdminUser = () => {
             ...user,
           }));
           setUsers(usersWithIds);
-          console.log(data);
         } else {
           console.error("No user data found");
         }
@@ -64,9 +63,7 @@ const AdminUser = () => {
       body: JSON.stringify({ userIds: selectedUserIds }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedUserIds);
+      .then(() => {
         fetchData();
         setOpenAlert2(true);
       })

@@ -30,7 +30,6 @@ const AdminFree = () => {
     fetch(`https://dailytopia2.shop/api/posts?limit=1000`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.posts) && data.posts.length > 0) {
           const postsWithIds = data.posts.map((post) => ({
             ...post,
@@ -64,9 +63,7 @@ const AdminFree = () => {
       body: JSON.stringify({ postNumbers: selectedPostNumbers }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedPostNumbers);
+      .then(() => {
         setOpenAlert2(true);
         fetchData(); // 삭제 후 데이터 다시 불러오기
       })

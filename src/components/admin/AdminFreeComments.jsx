@@ -30,7 +30,6 @@ const AdminFreeComments = () => {
     fetch(`https://dailytopia2.shop/api/comments/admins/posts`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.comments) && data.comments.length > 0) {
           const commentsWithIds = data.comments.map((comment, index) => ({
             ...comment,
@@ -64,9 +63,7 @@ const AdminFreeComments = () => {
       body: JSON.stringify({ commentIds: selectedComments }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedComments);
+      .then(() => {
         fetchData(); // 삭제 후 데이터 다시 불러오기
         setOpenAlert2(true);
       })

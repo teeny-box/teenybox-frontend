@@ -3,11 +3,9 @@ import "./Main.scss";
 import MainBanner from "../../components/main/MainBanner";
 import MainBest from "../../components/main/MainBest";
 import MainPreferredRegion from "../../components/main/MainPreferredRegion";
-import MainRating from "../../components/main/MainRating";
 import MainChild from "../../components/main/MainChild";
 import MainPublicity from "../../components/main/MainPublicity";
 import MainReview from "../../components/main/MainReview";
-import MainTheater from "../../components/main/MainTheater";
 import { UpButton } from "../../components/common/button/UpButton";
 
 //Main

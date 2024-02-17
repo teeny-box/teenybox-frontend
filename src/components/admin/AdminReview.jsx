@@ -34,13 +34,11 @@ const AdminReview = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (Array.isArray(data.data) && data.data.length > 0) {
           const reviewsWithIds = data.data.map((review) => ({
             ...review,
           }));
           setReviews(reviewsWithIds);
-          console.log(reviewsWithIds);
         } else {
           console.error("Data is not an array or empty");
         }
@@ -68,9 +66,7 @@ const AdminReview = () => {
       body: JSON.stringify({ reviewIds: selectedReviewIds }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedReviewIds);
+      .then(() => {
         fetchData(); // 탈퇴 처리 후에 데이터 다시 불러오기
         setOpenAlert2(true);
       })

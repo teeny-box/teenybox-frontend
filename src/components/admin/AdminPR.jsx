@@ -30,7 +30,6 @@ const AdminPR = () => {
     fetch(`https://dailytopia2.shop/api/promotions?limit=1000`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.promotions) && data.promotions.length > 0) {
           const promotionsWithIds = data.promotions.map((promotion) => ({
             ...promotion,
@@ -64,9 +63,7 @@ const AdminPR = () => {
       body: JSON.stringify({ promotionNumbers: selectedPromotionIds }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedPromotionIds);
+      .then(() => {
         fetchData(); // 삭제 후 데이터 다시 불러오기
         setOpenAlert2(true);
       })
