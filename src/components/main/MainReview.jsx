@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./MainReview.scss";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
+import { reviewUrl } from "../../apis/apiURLs";
 
 const MainReview = () => {
   const [reviews, setReviews] = useState([]);
@@ -13,7 +14,7 @@ const MainReview = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch("https://dailytopia2.shop/api/reviews");
+      const response = await fetch(`${reviewUrl}`);
       if (!response.ok) {
         throw new Error("Failed to fetch reviews");
       }

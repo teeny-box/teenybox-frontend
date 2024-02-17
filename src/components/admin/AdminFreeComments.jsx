@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { commentUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "댓글 번호", width: 213 },
@@ -27,7 +28,7 @@ const AdminFreeComments = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/comments/admins/posts`)
+    fetch(`${commentUrl}/admins/posts`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.comments) && data.comments.length > 0) {
@@ -54,7 +55,7 @@ const AdminFreeComments = () => {
       .map((comment) => comment._id);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/comments/admins/comments`, {
+    fetch(`${commentUrl}/admins/comments`, {
       method: "DELETE",
       credentials: "include",
       headers: {

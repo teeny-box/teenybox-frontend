@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { postUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "게시글 번호", width: 213 },
@@ -27,7 +28,7 @@ const AdminFree = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/posts?limit=1000`)
+    fetch(`${postUrl}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.posts) && data.posts.length > 0) {
@@ -54,7 +55,7 @@ const AdminFree = () => {
       .map((post) => post.post_number);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/posts/bulk`, {
+    fetch(`${postUrl}/bulk`, {
       method: "DELETE",
       credentials: "include",
       headers: {

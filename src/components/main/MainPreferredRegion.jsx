@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainPreferredRegion.scss";
 import { AppContext } from "../../App";
+import { showUrl } from "../../apis/apiURLs";
 
 function MainPreferredRegion() {
   const { userData } = useContext(AppContext);
@@ -40,7 +41,7 @@ function MainPreferredRegion() {
           queryString = encodedRegions.map(region => `region=${region}`).join("&");
         }
 
-        const response = await fetch(`https://dailytopia2.shop/api/shows?${queryString}`);
+        const response = await fetch(`${showUrl}?${queryString}`);
         if (!response.ok) {
           throw new Error('데이터를 가져오는데 문제가 발생했습니다.');
         }

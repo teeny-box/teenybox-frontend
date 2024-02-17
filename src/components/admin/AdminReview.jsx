@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { reviewUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "후기 번호", width: 128 },
@@ -29,7 +30,7 @@ const AdminReview = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/reviews`, {
+    fetch(`${reviewUrl}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -57,7 +58,7 @@ const AdminReview = () => {
       .map((review) => review._id);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/reviews`, {
+    fetch(`${reviewUrl}`, {
       method: "DELETE",
       credentials: "include",
       headers: {

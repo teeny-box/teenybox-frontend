@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
+import { userUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "회원 번호", width: 128 },
@@ -26,7 +27,7 @@ const AdminUser = () => {
   const [users, setUsers] = useState([]);
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/users/admin/users`, {
+    fetch(`${userUrl}/admin/users`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -54,7 +55,7 @@ const AdminUser = () => {
       .map((user) => user._id);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/users/admin/users`, {
+    fetch(`${userUrl}/admin/users`, {
       method: "DELETE",
       credentials: "include",
       headers: {
