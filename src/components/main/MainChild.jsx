@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./MainChild.scss";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { showUrl } from "../../apis/apiURLs";
 
 function MainChild() {
   const [sliderIndex, setSliderIndex] = useState(1);
@@ -60,7 +61,7 @@ function MainChild() {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // 오늘 날짜만 고려 (시간은 무시)
 
-    fetch("https://dailytopia2.shop/api/shows/children")
+    fetch(`${showUrl}/children`)
       .then((res) => res.json())
       .then((data) => {
         let sortedShows = data.shows;

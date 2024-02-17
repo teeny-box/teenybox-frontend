@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { postUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "게시글 번호", width: 213 },
@@ -27,10 +28,9 @@ const AdminFree = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/posts?limit=1000`)
+    fetch(`${postUrl}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.posts) && data.posts.length > 0) {
           const postsWithIds = data.posts.map((post) => ({
             ...post,
@@ -55,7 +55,7 @@ const AdminFree = () => {
       .map((post) => post.post_number);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/posts/bulk`, {
+    fetch(`${postUrl}/bulk`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -64,9 +64,7 @@ const AdminFree = () => {
       body: JSON.stringify({ postNumbers: selectedPostNumbers }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedPostNumbers);
+      .then(() => {
         setOpenAlert2(true);
         fetchData(); // 삭제 후 데이터 다시 불러오기
       })

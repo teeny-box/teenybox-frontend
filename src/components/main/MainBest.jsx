@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./MainBest.scss";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { showUrl } from "../../apis/apiURLs";
 
 function MainBest() {
   const [sliderIndex, setSliderIndex] = useState(1);
@@ -58,7 +59,7 @@ function MainBest() {
   };
 
   useEffect(() => {
-    fetch("https://dailytopia2.shop/api/shows/rank")
+    fetch(`${showUrl}/rank`)
       .then((res) => res.json())
       .then((data) => {
         const rankedShows = data.shows

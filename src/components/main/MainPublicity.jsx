@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainPublicity.scss";
+import { promotionUrl } from "../../apis/apiURLs";
 
 function MainPublicity() {
   const [promotions, setPromotions] = useState([]);
@@ -11,7 +12,7 @@ function MainPublicity() {
       try {
         // 소규모 연극 조회순 top 10
         const res_views = await fetch(
-          "https://dailytopia2.shop/api/promotions?limit=10&sortBy=views&sortOrder=desc&category=연극"
+          `${promotionUrl}?limit=10&sortBy=views&sortOrder=desc&category=연극`
         );
         const data_views = await res_views.json();
         if (!res_views.ok) {
@@ -21,7 +22,7 @@ function MainPublicity() {
 
         // 소규모 연극 추천순 top 10
         const res_likes = await fetch(
-          "https://dailytopia2.shop/api/promotions?limit=10&sortBy=likes&sortOrder=desc&category=연극"
+          `${promotionUrl}?limit=10&sortBy=likes&sortOrder=desc&category=연극`
         );
         const data_likes = await res_likes.json();
         if (!res_likes.ok) {
