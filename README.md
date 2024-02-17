@@ -1,12 +1,14 @@
 # 🎬 Teeny Box : 연극 정보 공유 서비스
 
-![teeny-box readme 로고](readme-logo.png)
+<br/>
+<img src="readme-logo.png" width=400 alt="readme 로고"/>
+<br/>
 
 다양한 연극 정보를 둘러보고 싶다면❓<br/>
 소규모 연극을 홍보하고 싶다면❓<br/>
 연극을 좋아하는 사람들과 소통하고 싶다면❓<br/>
 
-### Teeny Box를 방문하세요!!
+### Teeny Box를 방문하세요!
 
 <br/>
 
