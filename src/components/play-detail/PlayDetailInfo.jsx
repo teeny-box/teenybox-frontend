@@ -25,12 +25,6 @@ export default function PlayInfo({
           <p>{state}</p>
         </div>
       )}
-      {description && (
-        <div className="summary">
-          <h3>줄거리</h3>
-          <p>{description}</p>
-        </div>
-      )}
       {cast[0] && (
         <div className="summary">
           <h3>출연진</h3>
