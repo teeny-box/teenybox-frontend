@@ -62,7 +62,10 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
       return;
     }
     if (code) {
-      window.opener.postMessage({ code }, window.location.origin);
+      window.opener.postMessage(
+        { code, isKakao: currentUrl.includes("kakao-login") },
+        window.location.origin
+      );
     }
   }, []);
 
@@ -92,10 +95,10 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { code } = e.data;
+      const { code, isKakao } = e.data;
       const authorizationCode = code;
 
-      if (authorizationCode && popup.location.href.includes("kakao-login")) {
+      if (authorizationCode && isKakao) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
