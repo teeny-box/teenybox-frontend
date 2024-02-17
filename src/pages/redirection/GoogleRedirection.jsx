@@ -57,7 +57,10 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     const code = searchParams.get("code");
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage({ error }, window.location.origin);
+      window.opener.postMessage(
+        { error, errorIsGoogle: currentUrl.includes("google-login") },
+        window.location.origin
+      );
       return;
     }
 
@@ -80,8 +83,8 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { error } = e.data;
-      if (error) {
+      const { error, errorIsGoogle } = e.data;
+      if (error && errorIsGoogle) {
         popup?.close();
         setPopup(null);
         setAlert({

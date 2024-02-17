@@ -56,7 +56,10 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     const searchParams = new URL(currentUrl).searchParams;
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage({ error }, window.location.origin);
+      window.opener.postMessage(
+        { error, errorIsNaver: currentUrl.includes("naver-login") },
+        window.location.origin
+      );
       return;
     }
     const code = searchParams.get("code");
@@ -80,8 +83,8 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { error } = e.data;
-      if (error) {
+      const { error, errorIsNaver } = e.data;
+      if (error && errorIsNaver) {
         popup?.close();
         setPopup(null);
         setAlert({

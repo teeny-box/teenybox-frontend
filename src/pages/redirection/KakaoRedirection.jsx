@@ -58,7 +58,10 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     const code = searchParams.get("code");
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage({ error }, window.location.origin);
+      window.opener.postMessage(
+        { error, errorIsKakao: currentUrl.includes("kakao-login") },
+        window.location.origin
+      );
       return;
     }
     if (code) {
@@ -80,8 +83,8 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { error } = e.data;
-      if (error) {
+      const { error, errorIsKakao } = e.data;
+      if (error && errorIsKakao) {
         popup?.close();
         setPopup(null);
         setAlert({
