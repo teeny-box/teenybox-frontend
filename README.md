@@ -1,6 +1,5 @@
 # 🎬 Teeny Box : 연극 정보 공유 서비스
 
-<br/>
 <img src="readme-logo.png" width=400 alt="readme 로고"/>
 <br/>
 
@@ -38,6 +37,58 @@
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"> <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
 <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white">
 <img src="https://img.shields.io/badge/mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white"> <br/> <img src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white"> <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white"> <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"> <img src="https://img.shields.io/badge/pm2-2B037A?style=for-the-badge&logo=pm2&logoColor=white">
+
+### Back-end
+
+<br/>
+
+## 🗂️ 폴더 구조
+
+```
+📦
+├─ .github
+│  └─ workflows
+├─ .gitignore
+├─ README.md
+├─ bin
+├─ package-lock.json
+├─ package.json
+├─ public     # 공통적으로 사용하는 리소스 (사진 등)
+└─ src
+   ├─ App.js
+   ├─ App.scss
+   ├─ AppRoutes.jsx     # 애플리케이션 라우팅 설정
+   ├─ apis     # api url 모음
+   ├─ assets     # 특정 컴포넌트에서 쓰이는 리소스 (사진 등)
+   ├─ components     # 페이지 컴포넌트에 쓰이는 컴포넌트
+   │  ├─ admin
+   │  ├─ board-free
+   │  ├─ board-pr
+   │  ├─ board
+   │  ├─ common
+   │  ├─ main
+   │  ├─ mypage
+   │  ├─ play-detail
+   ├─ hooks     # 커스텀 훅
+   ├─ index.css
+   ├─ index.js
+   ├─ pages     # 페이지 컴포넌트
+   │  ├─ admin
+   │  ├─ common
+   │  ├─ errorPage
+   │  ├─ free-board
+   │  ├─ index.jsx
+   │  ├─ main
+   │  ├─ mypage
+   │  ├─ play-detail
+   │  ├─ play-list
+   │  ├─ pr-board
+   │  ├─ redirection
+   │  ├─ search-result
+   │  ├─ user
+   │  └─ util
+   └─ utils     # 공통적으로 사용될 수 있는 기능(js 파일)
+```
 
 <br/>
 
