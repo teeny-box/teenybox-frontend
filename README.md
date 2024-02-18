@@ -1,6 +1,5 @@
 # 🎬 Teeny Box : 연극 정보 공유 서비스
 
-<br/>
 <img src="readme-logo.png" width=400 alt="readme 로고"/>
 <br/>
 
@@ -31,10 +30,60 @@
 ## ⚙ 기술 스택
 
 ### Front-end
+
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=MUI&logoColor=white"> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=white"> <img src="https://img.shields.io/badge/Sass-#CC6699?style=for-the-badge&logo=Sass&logoColor=pink">
 
 ### Back-end
 
+<br/>
+
+## 🗂️ 폴더 구조
+
+```
+📦
+├─ .github
+│  └─ workflows
+├─ .gitignore
+├─ README.md
+├─ bin
+├─ package-lock.json
+├─ package.json
+├─ public     # 공통적으로 사용하는 리소스 (사진 등)
+└─ src
+   ├─ App.js
+   ├─ App.scss
+   ├─ AppRoutes.jsx     # 애플리케이션 라우팅 설정
+   ├─ apis     # api url 모음
+   ├─ assets     # 특정 컴포넌트에서 쓰이는 리소스 (사진 등)
+   ├─ components     # 페이지 컴포넌트에 쓰이는 컴포넌트
+   │  ├─ admin
+   │  ├─ board-free
+   │  ├─ board-pr
+   │  ├─ board
+   │  ├─ common
+   │  ├─ main
+   │  ├─ mypage
+   │  ├─ play-detail
+   ├─ hooks     # 커스텀 훅
+   ├─ index.css
+   ├─ index.js
+   ├─ pages     # 페이지 컴포넌트
+   │  ├─ admin
+   │  ├─ common
+   │  ├─ errorPage
+   │  ├─ free-board
+   │  ├─ index.jsx
+   │  ├─ main
+   │  ├─ mypage
+   │  ├─ play-detail
+   │  ├─ play-list
+   │  ├─ pr-board
+   │  ├─ redirection
+   │  ├─ search-result
+   │  ├─ user
+   │  └─ util
+   └─ utils     # 공통적으로 사용될 수 있는 기능(js 파일)
+```
 
 <br/>
 
