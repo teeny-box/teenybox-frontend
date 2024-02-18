@@ -43,9 +43,9 @@
 
 ## ✔️ 주요 기능
 
-|  |  |   |
-| --- | --- | :--- |
-| **메인페이지** | <img src="readme-main1.png" width="600" alt="readme 로고"/> <br/> 검색창을 통해 찾고자 하는 연극이나 게시물을 검색할 수 있습니다. <br/> <img src="readme-main3.png" width="600"  alt="readme 로고"/> <br/>회원분들의 실시간 리뷰나 지역별 신작을 확인할 수 있습니다. | <img src="readme-main2.png" width="600" alt="readme 로고"/> <br/> 슬라이드를 넘기며 원하는 연극을 고르고 클릭 시  연극 상세페이지로 이동 힐 수 있습니다.<img src="readme-main4.png" width="600" alt="readme 로고"/> <br/>인기 소규모 연극을 볼 수 있고, 푸터에서는 피드백을 받을 수 있는 구글 폼으로 이동이 가능합니다. |
+|    |    |   |
+| --- | --- | --- |
+| **메인페이지** | <img src="readme-main1.png" width="800" height="400" alt="readme 로고"/> <br/> 검색창을 통해 찾고자 하는 연극이나 게시물을 검색할 수 있습니다. <br/> <img src="readme-main3.png" width="800" height="400"  alt="readme 로고"/> <br/>회원분들의 실시간 리뷰나 지역별 신작을 확인할 수 있습니다. | <img src="readme-main2.png" width="800" height="400" alt="readme 로고"/> <br/> 슬라이드를 넘기며 원하는 연극을 고르고 클릭 시  연극 상세페이지로 이동 힐 수 있습니다.<img src="readme-main4.png" width="800" height="400"git  alt="readme 로고"/> <br/>인기 소규모 연극을 볼 수 있고, 푸터에서는 피드백을 받을 수 있는 구글 폼으로 이동이 가능합니다. |
 | **회원가입/로그인** | <img src="readme-login.png" width="600" alt="readme 로고"/> <br/>카카오, 네이버, 구글 등 소셜로그인을 통해 간편하게 로그인할 수 있습니다. | <img src="readme-register.png" width="600" alt="readme 로고"/> <br/> 소셜로그인 후 프로필사진, 닉네임, 선호지역 등의 간단한 추가 정보를 입력하여 복잡한 절차 없이 회원가입할 수 있습니다. |
 | **연극 리스트 페이지** | |
 | **연극 디테일 페이지** | |
