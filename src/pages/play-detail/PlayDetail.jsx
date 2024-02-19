@@ -11,6 +11,7 @@ import { AlertCustom } from "../../components/common/alert/Alerts";
 import Loading from "../../components/common/state/Loading";
 import { AppContext } from "../../App";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
+import { showUrl } from "../../apis/apiURLs";
 
 export function PlayDetail() {
   // 유저 로그인 여부 + 정보 확인
@@ -31,7 +32,7 @@ export function PlayDetail() {
 
   // 현재 연극 하나 데이터 받아오기
   const getPlayDetailInfo = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/shows/${playId}`)
+    fetch(`${showUrl}/${playId}`)
       .then((res) => res.json())
       .then((data) => {
         setPlayInfo(data.show);

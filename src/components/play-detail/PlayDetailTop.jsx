@@ -16,6 +16,7 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { AlertContext } from "../../App";
 import TimeFormat from "../common/time/TimeFormat";
+import { dibsUrl } from "../../apis/apiURLs";
 
 export default function PlayDetailTop({
   showId,
@@ -52,7 +53,7 @@ export default function PlayDetailTop({
   useEffect(() => {
     if (isLoggedIn) {
       // 찜 여부 확인
-      fetch(`${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`, {
+      fetch(`${dibsUrl}/${showId}`, {
         credentials: "include",
       })
         .then((res) => {
@@ -157,13 +158,10 @@ export default function PlayDetailTop({
     if (isLoggedIn) {
       // 찜이 되어 있는 경우 찜 취소
       if (isDibbed) {
-        fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`,
-          {
-            method: "DELETE",
-            credentials: "include",
-          }
-        )
+        fetch(`${dibsUrl}/${showId}`, {
+          method: "DELETE",
+          credentials: "include",
+        })
           .then((res) => {
             if (res.ok) {
               setIsDibbed(false);
@@ -191,13 +189,10 @@ export default function PlayDetailTop({
           });
       } else {
         // 찜이 되어 있지 않은 경우 찜 추가
-        fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/users/bookmarks/${showId}`,
-          {
-            method: "POST",
-            credentials: "include",
-          }
-        )
+        fetch(`${dibsUrl}/${showId}`, {
+          method: "POST",
+          credentials: "include",
+        })
           .then((res) => {
             if (res.ok) {
               setIsDibbed(true);

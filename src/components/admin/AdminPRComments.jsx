@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { commentUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "댓글 번호", width: 213 },
@@ -27,10 +28,9 @@ const AdminPRComments = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/comments/admins/promotions`)
+    fetch(`${commentUrl}/admins/promotions`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // 데이터 확인용 콘솔
         if (Array.isArray(data.comments) && data.comments.length > 0) {
           const commentsWithIds = data.comments.map((comment) => ({
             ...comment,
@@ -55,7 +55,7 @@ const AdminPRComments = () => {
       .map((comment) => comment._id);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/comments/admins/comments`, {
+    fetch(`${commentUrl}/admins/comments`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -64,9 +64,7 @@ const AdminPRComments = () => {
       body: JSON.stringify({ commentIds: selectedComments }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedComments);
+      .then(() => {
         fetchData(); // 삭제 후 데이터 다시 불러오기
         setOpenAlert2(true);
       })

@@ -6,6 +6,7 @@ import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { reviewUrl } from "../../apis/apiURLs";
 
 const columns = [
   { field: "_id", headerName: "후기 번호", width: 128 },
@@ -29,18 +30,16 @@ const AdminReview = () => {
   const navigate = useNavigate();
 
   const fetchData = () => {
-    fetch(`https://dailytopia2.shop/api/reviews`, {
+    fetch(`${reviewUrl}`, {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (Array.isArray(data.data) && data.data.length > 0) {
           const reviewsWithIds = data.data.map((review) => ({
             ...review,
           }));
           setReviews(reviewsWithIds);
-          console.log(reviewsWithIds);
         } else {
           console.error("Data is not an array or empty");
         }
@@ -59,7 +58,7 @@ const AdminReview = () => {
       .map((review) => review._id);
 
     // DELETE 요청 보내기
-    fetch(`https://dailytopia2.shop/api/reviews`, {
+    fetch(`${reviewUrl}`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -68,9 +67,7 @@ const AdminReview = () => {
       body: JSON.stringify({ reviewIds: selectedReviewIds }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // 성공 또는 실패 메시지 확인
-        console.log(selectedReviewIds);
+      .then(() => {
         fetchData(); // 탈퇴 처리 후에 데이터 다시 불러오기
         setOpenAlert2(true);
       })

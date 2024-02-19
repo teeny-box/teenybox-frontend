@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import "./ProfileImgContainer.scss";
 import Button from "@mui/material/Button";
 import { AlertCustom } from "../../common/alert/Alerts";
+import { presignedUrl } from "../../../apis/apiURLs";
 
 export default function ProfileImgContainer({
   selectedImg,
@@ -29,17 +30,14 @@ export default function ProfileImgContainer({
     }
 
     try {
-      const presignRes = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/api/presigned-urls`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ key: file.name }),
-        }
-      );
+      const presignRes = await fetch(`${presignedUrl}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ key: file.name }),
+      });
 
       if (presignRes.ok) {
         const data = await presignRes.json();

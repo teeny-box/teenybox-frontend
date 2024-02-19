@@ -10,6 +10,7 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import IconButton from "@mui/material/IconButton";
 import Backdrop from "@mui/material/Backdrop";
+import { reviewUrl, presignedUrl } from "../../../apis/apiURLs";
 
 export default function ReviewForm({
   purpose,
@@ -50,17 +51,14 @@ export default function ReviewForm({
     }
 
     try {
-      const presignRes = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/api/presigned-urls`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ key: file.name }),
-        }
-      );
+      const presignRes = await fetch(`${presignedUrl}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ key: file.name }),
+      });
 
       if (presignRes.ok) {
         const data = await presignRes.json();
@@ -159,7 +157,7 @@ export default function ReviewForm({
 
   // 리뷰 '작성' 시의 fetch
   const postReview = (body) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${showId}`, {
+    fetch(`${reviewUrl}/${showId}`, {
       credentials: "include",
       method: "POST",
       headers: {
@@ -239,7 +237,7 @@ export default function ReviewForm({
 
   // 리뷰 '수정' 시의 fetch
   const patchReview = (body) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/reviews/${review_id}`, {
+    fetch(`${reviewUrl}/${review_id}`, {
       credentials: "include",
       method: "PATCH",
       headers: {

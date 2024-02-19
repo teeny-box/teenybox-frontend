@@ -2,6 +2,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { fromPageContext } from "../user/SignUp_In";
 import { AppContext } from "../../App";
+import { userUrl } from "../../apis/apiURLs";
 
 export function NaverRedirection({ popup, setPopup, setAlert }) {
   const pageFrom = useContext(fromPageContext);
@@ -9,7 +10,7 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
   const navigate = useNavigate();
 
   const getLoggedInUserInfo = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+    fetch(`${userUrl}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -55,13 +56,19 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
     const searchParams = new URL(currentUrl).searchParams;
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage({ error }, window.location.origin);
+      window.opener.postMessage(
+        { error, errorIsNaver: currentUrl.includes("naver-login") },
+        window.location.origin
+      );
       return;
     }
     const code = searchParams.get("code");
     const state = searchParams.get("state");
     if (code && state) {
-      window.opener.postMessage({ code, state }, window.location.origin);
+      window.opener.postMessage(
+        { code, state, isNaver: currentUrl.includes("naver-login") },
+        window.location.origin
+      );
     }
   }, []);
 
@@ -76,9 +83,10 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { error } = e.data;
-      if (error) {
+      const { error, errorIsNaver } = e.data;
+      if (error && errorIsNaver) {
         popup?.close();
+        setPopup(null);
         setAlert({
           title: "정보 제공 동의 필수",
           content: "정보 제공 동의는 필수입니다.",
@@ -90,13 +98,13 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { code, state } = e.data;
+      const { code, state, isNaver } = e.data;
 
-      if ((code, state)) {
+      if (code && state && isNaver) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/users/login/naver`, {
+        fetch(`${userUrl}/login/naver`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -147,17 +155,15 @@ export function NaverRedirection({ popup, setPopup, setAlert }) {
               checkBtn: "확인",
             });
           });
+        // popup 닫은 뒤 setPopul(null) 설정 세트
         popup?.close();
         setPopup(null);
       }
     };
 
     window.addEventListener("message", naverOauthCodeListener, false);
-
     return () => {
       window.removeEventListener("message", naverOauthCodeListener);
-      popup?.close();
-      setPopup(null);
     };
   }, [popup]);
 

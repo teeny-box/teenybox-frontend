@@ -3,6 +3,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { fromPageContext } from "../user/SignUp_In";
 import { AppContext } from "../../App";
+import { userUrl } from "../../apis/apiURLs";
 
 export function KakaoRedirection({ popup, setPopup, setAlert }) {
   const pageFrom = useContext(fromPageContext);
@@ -10,7 +11,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
   const navigate = useNavigate();
 
   const getLoggedInUserInfo = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+    fetch(`${userUrl}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -57,11 +58,17 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     const code = searchParams.get("code");
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage({ error }, window.location.origin);
+      window.opener.postMessage(
+        { error, errorIsKakao: currentUrl.includes("kakao-login") },
+        window.location.origin
+      );
       return;
     }
     if (code) {
-      window.opener.postMessage({ code }, window.location.origin);
+      window.opener.postMessage(
+        { code, isKakao: currentUrl.includes("kakao-login") },
+        window.location.origin
+      );
     }
   }, []);
 
@@ -76,9 +83,10 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { error } = e.data;
-      if (error) {
+      const { error, errorIsKakao } = e.data;
+      if (error && errorIsKakao) {
         popup?.close();
+        setPopup(null);
         setAlert({
           title: "정보 제공 동의 필수",
           content: "정보 제공 동의는 필수입니다.",
@@ -90,14 +98,14 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         return;
       }
 
-      const { code } = e.data;
+      const { code, isKakao } = e.data;
       const authorizationCode = code;
 
-      if (authorizationCode) {
+      if (authorizationCode && isKakao) {
         popup?.close();
 
         // 가져온 code 로 다른 정보를 가져오는 API 호출
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/users/login/kakao`, {
+        fetch(`${userUrl}/login/kakao`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -154,11 +162,8 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
     };
 
     window.addEventListener("message", kakaoOauthCodeListener, false);
-
     return () => {
       window.removeEventListener("message", kakaoOauthCodeListener);
-      popup?.close();
-      setPopup(null);
     };
   }, [popup]);
 

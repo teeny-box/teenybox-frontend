@@ -5,8 +5,7 @@ import Loading from "../../common/state/Loading";
 import "./AllLoginBtn.scss";
 import naverLogo from "../../../assets/img/user/naver-logo.png";
 
-export default function Naver() {
-  const [popup, setPopup] = useState();
+export default function Naver({ popup, setPopup }) {
   const [alert, setAlert] = useState(null);
 
   const NAVER_CALLBACK_URL = process.env.REACT_APP_NAVER_CALLBACK_URL;
