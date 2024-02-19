@@ -52,11 +52,9 @@ export function PRBoardListPage() {
       const data = await res.json();
 
       if (res.ok) {
-        if (data.totalCount) {
-          method === "add" ? addBoardList(data.promotions) : setBoardList(data.promotions);
-          setPage(curPage + 1);
-          setTotalCnt(data.totalCount);
-        }
+        method === "add" ? addBoardList(data.promotions) : setBoardList(data.promotions);
+        setPage(curPage + 1);
+        setTotalCnt(data.totalCount);
         setState("hasValue");
       } else {
         setState("hasError");
