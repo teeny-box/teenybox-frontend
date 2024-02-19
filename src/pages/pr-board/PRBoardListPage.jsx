@@ -30,6 +30,7 @@ export function PRBoardListPage() {
 
   const getBannerList = async () => {
     let newList = await getBestPromotionPlay();
+    console.log(newList);
     setBannerList(newList.slice(0, 5));
   };
 
@@ -75,6 +76,7 @@ export function PRBoardListPage() {
 
   const handleClickRightArrow = () => {
     if (bannerIndex >= bannerList.length - 1) {
+      console.log(bannerIndex);
       setBannerIndex(0);
     } else {
       setBannerIndex((cur) => cur + 1);
@@ -121,58 +123,62 @@ export function PRBoardListPage() {
                     <div className="left-box">
                       <div className="sub-title">인기 소규모 연극</div>
                       <h2 className="title">
-                        <Link to={`/promotion/${bannerList[bannerIndex].promotion_number}`}>{bannerList[bannerIndex]?.play_title}</Link>
+                        <Link to={`/promotion/${post.promotion_number}`}>{post.play_title}</Link>
                       </h2>
                       <div className="ellipsis">
-                        <Link to={`/promotion/${bannerList[bannerIndex].promotion_number}`}>{bannerList[bannerIndex]?.title}</Link>
+                        <Link to={`/promotion/${post.promotion_number}`}>{post.title}</Link>
                       </div>
 
                       <div className="content">
-                        {bannerList[bannerIndex].start_date && bannerList[bannerIndex].end_date && (
+                        {post.start_date && post.end_date && (
                           <div className="date">
                             <span className="lable">공연기간</span>
-                            {bannerList[bannerIndex].start_date && <TimeFormat time={bannerList[bannerIndex].start_date} />}
+                            {post.start_date && <TimeFormat time={post.start_date} />}
                             {" ~ "}
-                            {bannerList[bannerIndex].end_date && <TimeFormat time={bannerList[bannerIndex].end_date} />}
+                            {post.end_date && <TimeFormat time={post.end_date} />}
                           </div>
                         )}
-                        {bannerList[bannerIndex].location && (
+                        {post.location && (
                           <div>
                             <span className="lable">장소</span>
-                            {bannerList[bannerIndex].location}
+                            {post.location}
                           </div>
                         )}
-                        {bannerList[bannerIndex].host && (
+                        {post.host && (
                           <div>
                             <span className="lable">주최</span>
-                            {bannerList[bannerIndex].host}
+                            {post.host}
                           </div>
                         )}
-                        {!bannerList[bannerIndex].runtime || (
+                        {!post.runtime || (
                           <div>
                             <span className="lable">런타임</span>
-                            {bannerList[bannerIndex].runtime} 분
+                            {post.runtime} 분
                           </div>
                         )}
                       </div>
                       <div className="footer">
                         <VisibilityOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(bannerList[bannerIndex]?.views || 0)}</span>
+                        <span>{numberFormat(post.views || 0)}</span>
                         <ThumbUpOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(bannerList[bannerIndex]?.likes || 0)}</span>
+                        <span>{numberFormat(post.likes || 0)}</span>
                         <SmsOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(bannerList[bannerIndex]?.commentsCount || 0)}</span>
+                        <span>{numberFormat(post.commentsCount || 0)}</span>
                       </div>
                     </div>
-                    <Link to={`/promotion/${bannerList[bannerIndex].promotion_number}`}>
-                      <img className="poster" src={bannerList[bannerIndex]?.image_url[0] || "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"} />
+                    <Link to={`/promotion/${post.promotion_number}`}>
+                      <img className="poster" src={post.image_url[0] || "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"} />
                     </Link>
                   </div>
                 </div>
               ))
             )}
-            <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
-            <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
+            {bannerList.length > 1 && (
+              <>
+                <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
+                <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
+              </>
+            )}
           </div>
         </div>
       ) : (

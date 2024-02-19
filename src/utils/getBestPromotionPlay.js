@@ -16,7 +16,6 @@ export default async function getBestPromotionPlay() {
     if (res_likes.ok) {
       newList = [...newList, ...data_likes.promotions];
     }
-    console.log(newList);
 
     newList = newList.reduce(function (newArr, current) {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
@@ -24,7 +23,6 @@ export default async function getBestPromotionPlay() {
       }
       return newArr;
     }, []);
-    console.log(newList);
 
     // 조회수, 추천 둘 다 없으면 제거
     newList = newList.filter((promotion) => promotion.likes + promotion.views > 0);
