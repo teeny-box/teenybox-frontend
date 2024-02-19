@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BoardSecondHeader } from "../../components/board";
 import { FreeBoardForm } from "../../components/board-free/FreeBoardForm";
 import "./FreeBoardFormPage.scss";
 import { useNavigate } from "react-router-dom";
