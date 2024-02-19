@@ -17,7 +17,7 @@ export default function Naver({ popup, setPopup }) {
     const height = 400; // 팝업의 세로 길이 : 500
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
-    const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${NAVER_CLIENT_ID}&response_type=code&redirect_uri=${NAVER_CALLBACK_URL}&state=${NAVER_CLIENT_SECRET}`;
+    const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${NAVER_CLIENT_ID}&response_type=code&redirect_uri=${NAVER_CALLBACK_URL}&state=asdgasdgasgd`;
     const popup = window.open(
       url,
       "로그인 중...",
