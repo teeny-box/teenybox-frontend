@@ -82,9 +82,6 @@
         display: flex;
         flex-wrap: wrap;
         max-height: 22px;
-        @media (max-width: 992px) {
-          max-height: 26px;
-        }
         overflow: hidden;
         margin-bottom: 6px;
 
@@ -98,9 +95,6 @@
 
           display: flex;
           flex-wrap: wrap;
-          @media (max-width: 992px) {
-            max-height: 26px;
-          }
           overflow: hidden;
 
           a {
@@ -109,20 +103,6 @@
             color: #62676c;
             height: min-content;
           }
-        }
-      }
-      .tag {
-        box-sizing: border-box;
-        background-color: #f3f4f6;
-        margin-right: 6px;
-        padding: 2px 9px;
-        border-radius: 10px;
-        height: 22px;
-        a {
-          font-weight: 400;
-          font-size: 12px;
-          color: #62676c;
-          height: min-content;
         }
       }
 
