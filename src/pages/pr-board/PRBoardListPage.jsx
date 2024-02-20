@@ -38,7 +38,7 @@ export function PRBoardListPage() {
 
   const getFixedList = async () => {
     try {
-      const res = await fetch(`${promotionUrl}?is_fixed=고정`); // 카테고리별로 나눠서 고정할지?
+      const res = await fetch(`${promotionUrl}?is_fixed=고정&category=공지`); // 카테고리별로 나눠서 고정할지?
       const data = await res.json();
       setFixedList(data.promotions);
       console.log(data);
@@ -121,10 +121,6 @@ export function PRBoardListPage() {
     getFixedList();
   }, []);
 
-  useEffect(() => {
-    if (fixedList[0]) setBannerList([fixedList[0], ...bannerList]);
-  }, [fixedList]);
-
   return (
     <div className="pr-board-page page-margin">
       <BoardListHeader header="홍보게시판" />
@@ -140,23 +136,23 @@ export function PRBoardListPage() {
                 <div className="left-box">
                   <div className="sub-title">📢 공지사항</div>
                   <h2 className="title">
-                    <Link to={`/promotion/${fixedList[0].promotion_number}`}>{fixedList[0].title}</Link>
+                    <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].title}</Link>
                   </h2>
                   <div className="ellipsis">
-                    <Link to={`/promotion/${fixedList[0].promotion_number}`}>{fixedList[0].content}</Link>
+                    <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].content}</Link>
                   </div>
 
                   <div className="content"></div>
                   <div className="footer">
                     <VisibilityOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[0].views || 0)}</span>
+                    <span>{numberFormat(fixedList[fixedList.length - 1].views || 0)}</span>
                     <ThumbUpOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[0].likes || 0)}</span>
+                    <span>{numberFormat(fixedList[fixedList.length - 1].likes || 0)}</span>
                     <SmsOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[0].commentsCount || 0)}</span>
+                    <span>{numberFormat(fixedList[fixedList.length - 1].commentsCount || 0)}</span>
                   </div>
                 </div>
-                <Link to={`/promotion/${fixedList[0].promotion_number}`}>{/* <img className="poster" src={""} /> */}</Link>
+                <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{/* <img className="poster" src={""} /> */}</Link>
               </div>
             </div>
             {Children.toArray(

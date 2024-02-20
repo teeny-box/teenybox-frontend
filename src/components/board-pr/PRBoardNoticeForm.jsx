@@ -12,13 +12,15 @@ import empty_img from "../../assets/img/empty_img.svg";
 import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
+const logo1 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/7ba0430d_737f_46a2_92c5_ec69b7847736_minilogo.png";
+const logo2 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/b3e2f257_2063_4a8b_a9b1_cde0a95a6610_logo1.png";
+const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
+
 export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
-  // 카테고리
-  const [inputCategory, setInputCategiry] = useState("연극");
   // 글제목
   const [inputTitle, setInputTitle] = useState();
   const [errorTitle, setErrorTitle] = useState("제목을 최소 3자 이상 입력해주세요.");
@@ -29,7 +31,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
   const [tagList, setTagList] = useState([]);
   const [inputTag, setInputTag] = useState();
   // 사진
-  const [mainImageURL, setMainImageURL] = useState(""); // 0인덱스 대표이미지
+  const [mainImageURL, setMainImageURL] = useState(logo3); // 0인덱스 대표이미지
   const [errorMainImage, setErrorMainImage] = useState("");
   const [imageURL, setImageURL] = useState([]); // 0인덱스 대표이미지
   const [errorImage, setErrorImage] = useState("");
@@ -53,7 +55,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
           image_url: [mainImageURL, ...imageURL],
           start_date: dayjs(),
           end_date: dayjs(),
-          category: inputCategory,
+          category: "공지",
           play_title: "공지사항",
           runtime: 0,
           location: "",
@@ -160,6 +162,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
     const data = await uploadImage(file);
 
     if (data) {
+      console.log(data);
       setMainImageURL(data);
       setErrorMainImage("");
 
@@ -254,16 +257,6 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
             </Button>
           )}
         </h2>
-      </div>
-
-      <div className="flex-box category">
-        <div className="input flex-center">
-          <label htmlFor="">카테고리</label>
-          <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
-            <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-            <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
-          </RadioGroup>
-        </div>
       </div>
 
       <div className="flex-box fixed">

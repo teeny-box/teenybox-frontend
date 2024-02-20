@@ -17,8 +17,6 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
-  // 카테고리
-  const [inputCategory, setInputCategiry] = useState(post?.category);
   // 글제목
   const [inputTitle, setInputTitle] = useState(post?.title);
   const [errorTitle, setErrorTitle] = useState("");
@@ -53,7 +51,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
           image_url: [mainImageURL, ...imageURL],
           start_date: dayjs(),
           end_date: dayjs(),
-          category: inputCategory,
+          category: "공지",
           play_title: "공지사항",
           runtime: 0,
           location: "",
@@ -254,16 +252,6 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
             </Button>
           )}
         </h2>
-      </div>
-
-      <div className="flex-box category">
-        <div className="input">
-          <label htmlFor="">카테고리</label>
-          <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
-            <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-            <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
-          </RadioGroup>
-        </div>
       </div>
 
       <div className="flex-box fixed">
