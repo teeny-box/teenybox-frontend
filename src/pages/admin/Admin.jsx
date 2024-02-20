@@ -15,7 +15,7 @@ export default function Admin() {
   const [selectedComponent, setSelectedComponent] = useState("AdminUser");
 
   useEffect(() => {
-    if (userData && userData.user && userData.user.role !== "admin") {
+    if (!userData || !userData.user || userData.user.role !== "admin") {
       navigate("/forbidden");
     }
   }, [userData]);
