@@ -48,7 +48,6 @@
 
     .post-card-content {
       height: 100%;
-      background-color: #fff;
       padding: 16px 16px 3px;
       flex-flow: column;
 
@@ -137,6 +136,18 @@
         margin-left: 2px;
         line-height: 14px;
       }
+    }
+  }
+
+  .fixed-notice {
+    img {
+      background-color: #fcf9f5;
+    }
+
+    .notice {
+      margin: 0 0 8px 0;
+      color: #eb0b0be8;
+      font-size: 12px;
     }
   }
 

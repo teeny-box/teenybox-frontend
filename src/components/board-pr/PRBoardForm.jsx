@@ -15,7 +15,7 @@ import empty_img from "../../assets/img/empty_img.svg";
 import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
-export function PRBoardForm({ setInput, handleComplete, handleCancle }) {
+export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -50,6 +50,9 @@ export function PRBoardForm({ setInput, handleComplete, handleCancle }) {
   const [imageURL, setImageURL] = useState([]); // 0인덱스 대표이미지
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
+
+  // 고정(관리자)
+  const [fixed, setFixed] = useState("일반");
 
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
@@ -298,7 +301,14 @@ export function PRBoardForm({ setInput, handleComplete, handleCancle }) {
   return (
     <div className="post-form-box">
       <div className="form-header">
-        <h2 className="title">홍보 게시글 작성하기</h2>
+        <h2 className="title">
+          홍보 게시글 작성하기
+          {userRole === "admin" && (
+            <Button onClick={() => setIsNotice(true)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
+              (일반)
+            </Button>
+          )}
+        </h2>
       </div>
 
       <div className="add-info">

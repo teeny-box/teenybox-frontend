@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
-import { BoardSecondHeader } from "../../components/board";
 import "./PRBoardFormPage.scss";
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import { useNavigate, useParams } from "react-router-dom";
 import { PRBoardEditForm } from "../../components/board-pr/PRBoardEdit";
 import { promotionUrl } from "../../apis/apiURLs";
-import { AppContext } from "../../App";
+import { AlertContext } from "../../App";
 import { Backdrop } from "@mui/material";
+import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
+import { PRBoardNoticeEditForm } from "../../components/board-pr/PRBoardNoticeEdit";
 
 export function PRBoardEdit() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const [post, setPost] = useState();
+  const [isNotice, setIsNotice] = useState(false);
   const params = useParams();
-  const { userData } = useContext(AppContext);
   const nav = useNavigate();
+  const user = useGetUser();
+  const { setOpenLoginAlertBack } = useContext(AlertContext);
 
   const handleCancle = (e) => {
     if (input) setOpen(true);
@@ -25,31 +28,47 @@ export function PRBoardEdit() {
     try {
       const res = await fetch(`${promotionUrl}/${params.postId}`);
       const data = await res.json();
+      console.log(data);
 
-      if (!res.ok) {
-        console.error(data);
-        nav("/not-found");
-        return;
-      }
-      if (data.user_id.nickname !== userData.user.nickname) {
-        nav("/forbidden");
-        return;
-      }
+      // if (!res.ok) {
+      //   console.error(data);
+      //   nav("/not-found");
+      //   return;
+      // }
+      // if (data.user_id.nickname !== userData.user.nickname) {
+      //   nav("/forbidden");
+      //   return;
+      // }
       setPost(data);
     } catch (err) {
-      nav("/not-found");
+      // nav("/not-found");
+      console.log(err);
     }
   };
 
   useEffect(() => {
-    if (userData?.user?.nickname) {
+    if (user && !user.isLoggedIn) {
+      setOpenLoginAlertBack(true);
+    } else {
       getPost();
     }
-  }, [userData]);
+
+    if (user?.user.role === "admin") {
+      setIsNotice(true);
+    }
+    console.log(user);
+  }, [user]);
 
   return (
     <div className="pr-board-form-page page-margin">
-      <div className="body">{post && <PRBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} />}</div>
+      <div className="body">
+        {post &&
+          (isNotice ? (
+            <PRBoardNoticeEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user.role} />
+          ) : (
+            <PRBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user.role} />
+          ))}
+      </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
