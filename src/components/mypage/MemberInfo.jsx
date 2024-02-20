@@ -113,6 +113,7 @@ function MemberInfo({ user, setUserData }) {
           nickname: inputNickname.trim(),
         }),
       });
+      console.log(inputNickname.trim(), res);
 
       if (res.ok) {
         setIsUnique(true);
@@ -227,7 +228,7 @@ function MemberInfo({ user, setUserData }) {
                   onClick={handleCheckNickname}
                   variant="outlined"
                   color="orange"
-                  disabled={isUnique || errorNickname || user?.nickname === inputNickname}
+                  disabled={isUnique || errorNickname || user?.nickname === inputNickname.trim()}
                   sx={{ margin: "3px 0 0 8px" }}
                 >
                   중복 확인

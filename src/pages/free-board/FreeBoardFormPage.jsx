@@ -28,7 +28,7 @@ export function FreeBoardFormPage() {
   return (
     <div className="free-board-form-page page-margin">
       <div className="body">
-        <FreeBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.user.role} />
+        <FreeBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.user?.role} />
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
