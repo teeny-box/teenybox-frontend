@@ -1,4 +1,4 @@
-import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
 import React, { Children, useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -6,35 +6,19 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import "./PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
-import { presignedUrl, promotionUrl, uploadImgUrl } from "../../apis/apiURLs";
+import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import dayjs from "dayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import empty_img from "../../assets/img/empty_img.svg";
 import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
-export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
+export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
   // 카테고리
   const [inputCategory, setInputCategiry] = useState(post?.category);
-  // 연극명
-  const [inputPlayTitle, setInputPlayTitle] = useState(post?.play_title);
-  const [errorPlayTitle, setErrorPlayTitle] = useState("");
-  // 장소
-  const [inputLocation, setInputLocation] = useState(post?.location);
-  // 주최
-  const [inputHost, setInputHost] = useState(post?.host);
-  // 러닝타임
-  const [inputRuntime, setInputRuntime] = useState(post?.runtime);
-  // 기간
-  const [inputStartDate, setInputStartDate] = useState(dayjs(post.start_date));
-  const [inputEndDate, setInputEndDate] = useState(dayjs(post.end_date));
-  const [errorDate, setErrorDate] = useState("");
   // 글제목
   const [inputTitle, setInputTitle] = useState(post?.title);
   const [errorTitle, setErrorTitle] = useState("");
@@ -50,6 +34,8 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   const [imageURL, setImageURL] = useState(post?.image_url.slice(1));
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
+  // 고정(관리자)
+  const [fixed, setFixed] = useState(post.is_fixed === "고정");
 
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
@@ -65,13 +51,14 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           content: inputContent,
           tags: tagList,
           image_url: [mainImageURL, ...imageURL],
-          start_date: inputStartDate || undefined,
-          end_date: inputEndDate || undefined,
+          start_date: dayjs(),
+          end_date: dayjs(),
           category: inputCategory,
-          play_title: inputPlayTitle,
-          runtime: Number(inputRuntime) || 0,
-          location: inputLocation || "",
-          host: inputHost || "",
+          play_title: "공지사항",
+          runtime: 0,
+          location: "",
+          host: "",
+          is_fixed: fixed ? "고정" : "일반",
         }),
       });
       const data = await res.json();
@@ -92,11 +79,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       setErrorMainImage("사진을 선택해주세요.");
     }
 
-    if (errorPlayTitle) {
-      document.querySelector("#play-title").focus();
-    } else if (errorDate) {
-      document.querySelector("#date").focus();
-    } else if (errorTitle) {
+    if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
       document.querySelector("#content").focus();
@@ -118,20 +101,6 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     }
   };
 
-  const handleChangePlayTitle = (e) => {
-    if (e.target.value.trim().length > 30) return;
-    setInputPlayTitle(e.target.value.trimStart());
-    if (!e.target.value) {
-      setErrorPlayTitle("연극명을 입력해주세요.");
-    } else {
-      setErrorPlayTitle("");
-    }
-  };
-
-  const handleErrorDate = (error) => {
-    setErrorDate("날짜를 선택해주세요.");
-  };
-
   const handleChangeTitle = (e) => {
     if (e.target.value.trim().length > 40) return;
     setInputTitle(e.target.value.trimStart());
@@ -148,18 +117,6 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       setErrorContent("내용을 최소 3자 이상 입력해주세요.");
     } else {
       setErrorContent("");
-    }
-  };
-
-  const handleChangeLocation = (e) => {
-    if (e.target.value.trim().length <= 40) {
-      setInputLocation(e.target.value.trimStart());
-    }
-  };
-
-  const handleChangeHost = (e) => {
-    if (e.target.value.trim().length <= 20) {
-      setInputHost(e.target.value.trimStart());
     }
   };
 
@@ -282,134 +239,37 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   };
 
   useEffect(() => {
-    if (inputStartDate && inputEndDate) {
-      setErrorDate("");
-    } else {
-      setErrorDate("날짜를 선택해주세요.");
-    }
-  }, [inputStartDate, inputEndDate]);
-
-  useEffect(() => {
-    if (inputTitle || inputContent || imageURL || inputTag || tagList || inputPlayTitle || inputLocation || inputHost || inputRuntime || inputStartDate || inputEndDate)
-      setInput(true);
+    if (inputTitle || inputContent || imageURL || tagList) setInput(true);
     else setInput(false);
-  }, [inputTitle, inputContent, imageURL, inputTag, inputPlayTitle, inputLocation, inputHost, inputRuntime, inputStartDate, inputEndDate]);
+  }, [inputTitle, inputContent, imageURL, tagList]);
 
   return (
     <div className="post-form-box">
       <div className="form-header">
         <h2 className="title">
-          홍보 게시글 수정하기{" "}
+          홍보 게시글 수정하기
           {userRole === "admin" && (
-            <Button onClick={() => setIsNotice(true)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
-              (일반)
+            <Button onClick={() => setIsNotice(false)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
+              (공지사항)
             </Button>
           )}
         </h2>
       </div>
 
-      <div className="add-info">
-        <div className="flex-box category">
-          <div className="input">
-            <label htmlFor="">카테고리</label>
-            <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
-              <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-              <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
-            </RadioGroup>
-          </div>
+      <div className="flex-box category">
+        <div className="input">
+          <label htmlFor="">카테고리</label>
+          <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
+            <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
+            <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
+          </RadioGroup>
         </div>
+      </div>
 
-        <div className="flex-box title">
-          <div className="input">
-            <label htmlFor="play-title">
-              {inputCategory === "연극" ? "연극명" : "행사명"}
-              <span className="star">*</span>
-            </label>
-            <input
-              type="text"
-              id="play-title"
-              name="play-title"
-              value={inputPlayTitle}
-              onChange={handleChangePlayTitle}
-              maxLength={30}
-              placeholder={`${inputCategory === "연극" ? "연극명" : "행사명"}을 작성해 주세요.`}
-              required
-            />
-          </div>
-          {handleErrorPlaceholder(errorPlayTitle)}
-        </div>
-
-        <div className="flex-box">
-          <div className="input">
-            <label htmlFor="location">장소</label>
-            <input type="text" id="location" name="location" value={inputLocation} onChange={handleChangeLocation} maxLength={40} placeholder="장소를 작성해 주세요." />
-          </div>
-        </div>
-
-        <div className="flex-box">
-          <div className="input">
-            <label htmlFor="host">주최</label>
-            <input type="text" id="host" name="host" value={inputHost} onChange={handleChangeHost} maxLength={20} placeholder="주최자 또는 기관을 작성해 주세요." />
-          </div>
-        </div>
-
-        {inputCategory === "연극" && (
-          <div className="flex-box running-time">
-            <div className="input">
-              <label htmlFor="running-time" className="lable">
-                러닝타임
-              </label>
-              <input
-                type="number"
-                id="running-time"
-                name="running-time"
-                value={inputRuntime}
-                min="0"
-                max="300"
-                onChange={(e) => setInputRuntime(e.target.value)}
-                maxLength={30}
-                placeholder="100"
-              />
-              <span>분</span>
-            </div>
-          </div>
-        )}
-
-        <div className="flex-box date">
-          <div className="input">
-            <label htmlFor="date">
-              기간<span className="star">*</span>
-            </label>
-            <input id="date" className="hidden" />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DesktopDatePicker"]}>
-                <DatePicker
-                  label="시작"
-                  format="YYYY-MM-DD"
-                  value={inputStartDate}
-                  minDate={dayjs().subtract(1, "month").startOf("day")}
-                  maxDate={dayjs().add(1, "year").endOf("day")}
-                  onChange={(value) => setInputStartDate(value)}
-                  slotProps={{ textField: { size: "small" } }}
-                  onError={handleErrorDate}
-                  size="small"
-                />
-                <span className="line">-</span>
-                <DatePicker
-                  label="종료"
-                  format="YYYY-MM-DD"
-                  value={inputEndDate}
-                  minDate={dayjs().isAfter(inputStartDate) ? dayjs() : inputStartDate}
-                  maxDate={dayjs().add(1, "year").endOf("day")}
-                  onChange={(value) => setInputEndDate(value)}
-                  slotProps={{ textField: { size: "small" } }}
-                  onError={handleErrorDate}
-                  size="small"
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
-          {handleErrorPlaceholder(errorDate)}
+      <div className="flex-box fixed">
+        <div className="input flex-center">
+          <label htmlFor="">고정</label>
+          <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
         </div>
       </div>
 

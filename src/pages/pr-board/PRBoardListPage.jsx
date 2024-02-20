@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom/dist";
 import getBestPromotionPlay from "../../utils/getBestPromotionPlay";
 import TimeFormat from "../../components/common/time/TimeFormat";
 import numberFormat from "../../utils/numberFormat";
+import minilogo from "../../assets/img/minilogo.png";
 
 export function PRBoardListPage() {
   const [boardList, setBoardList] = useState([]);
@@ -25,13 +26,25 @@ export function PRBoardListPage() {
   const [bannerList, setBannerList] = useState([]);
   const [bannerIndex, setBannerIndex] = useState(0);
 
+  const [fixedList, setFixedList] = useState([]);
+
   const [scrollRef, inView] = useInView();
   const nav = useNavigate();
 
   const getBannerList = async () => {
     let newList = await getBestPromotionPlay();
-    console.log(newList);
     setBannerList(newList.slice(0, 5));
+  };
+
+  const getFixedList = async () => {
+    try {
+      const res = await fetch(`${promotionUrl}?is_fixed=고정`); // 카테고리별로 나눠서 고정할지?
+      const data = await res.json();
+      setFixedList(data.promotions);
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const addBoardList = (newList) => {
@@ -68,21 +81,19 @@ export function PRBoardListPage() {
 
   const handleClickLeftArrow = () => {
     if (bannerIndex <= 0) {
-      setBannerIndex(bannerList.length - 1);
+      setBannerIndex(bannerList.length);
     } else {
       setBannerIndex((cur) => cur - 1);
     }
   };
 
   const handleClickRightArrow = () => {
-    if (bannerIndex >= bannerList.length - 1) {
+    if (bannerIndex >= bannerList.length) {
       console.log(bannerIndex);
       setBannerIndex(0);
     } else {
       setBannerIndex((cur) => cur + 1);
     }
-    const div = document.querySelector(".best-box .contents-container");
-    div.style.animation = "fadein 3s";
   };
 
   const handleClickDivision = (e) => {
@@ -107,18 +118,50 @@ export function PRBoardListPage() {
 
   useEffect(() => {
     getBannerList();
+    getFixedList();
   }, []);
+
+  useEffect(() => {
+    if (fixedList[0]) setBannerList([fixedList[0], ...bannerList]);
+  }, [fixedList]);
 
   return (
     <div className="pr-board-page page-margin">
       <BoardListHeader header="홍보게시판" />
       {bannerList.length ? (
         <div className="best-box ">
-          <img className="bg-img" src={bannerList[bannerIndex]?.image_url[0] || "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"} />
+          <img
+            className={"bg-img" + (bannerIndex ? "" : " small")}
+            src={bannerIndex ? bannerList[bannerIndex - 1]?.image_url[0] : "https://i.pinimg.com/564x/6e/b0/9f/6eb09f7b1a6467f17847f99ae732791b.jpg"} // "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"}
+          />
           <div className="bg-mask">
+            <div className={`absolute ${bannerIndex === 0 && "visible"}`}>
+              <div className={"contents-container"}>
+                <div className="left-box">
+                  <div className="sub-title">📢 공지사항</div>
+                  <h2 className="title">
+                    <Link to={`/promotion/${fixedList[0].promotion_number}`}>{fixedList[0].title}</Link>
+                  </h2>
+                  <div className="ellipsis">
+                    <Link to={`/promotion/${fixedList[0].promotion_number}`}>{fixedList[0].content}</Link>
+                  </div>
+
+                  <div className="content"></div>
+                  <div className="footer">
+                    <VisibilityOutlined sx={{ fontSize: 20 }} />
+                    <span>{numberFormat(fixedList[0].views || 0)}</span>
+                    <ThumbUpOutlined sx={{ fontSize: 20 }} />
+                    <span>{numberFormat(fixedList[0].likes || 0)}</span>
+                    <SmsOutlined sx={{ fontSize: 20 }} />
+                    <span>{numberFormat(fixedList[0].commentsCount || 0)}</span>
+                  </div>
+                </div>
+                <Link to={`/promotion/${fixedList[0].promotion_number}`}>{/* <img className="poster" src={""} /> */}</Link>
+              </div>
+            </div>
             {Children.toArray(
               bannerList.map((post, idx) => (
-                <div className={`absolute ${bannerIndex === idx && "visible"}`}>
+                <div className={`absolute ${bannerIndex === idx + 1 && "visible"}`}>
                   <div className={"contents-container"}>
                     <div className="left-box">
                       <div className="sub-title">인기 소규모 연극</div>
@@ -220,7 +263,7 @@ export function PRBoardListPage() {
         </div>
       ) : boardList.length ? (
         <>
-          <PRBoardList newList={boardList} />
+          <PRBoardList newList={boardList} fixedList={fixedList} />
           {state === "loading" && (
             <div className={`state`}>
               <CircularProgress color="secondary" />

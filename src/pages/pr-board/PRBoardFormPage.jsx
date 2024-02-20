@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 import { AlertContext } from "../../App";
 import { Backdrop } from "@mui/material";
+import { PRBoardNoticeForm } from "../../components/board-pr/PRBoardNoticeForm";
 
 export function PRBoardFormPage() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
+  const [isNotice, setIsNotice] = useState(false);
   const nav = useNavigate();
   const user = useGetUser();
   const { setOpenLoginAlertBack } = useContext(AlertContext);
@@ -20,15 +22,23 @@ export function PRBoardFormPage() {
   };
 
   useEffect(() => {
-    if (!user?.isLoggedIn) {
+    if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
     }
-  }, []);
+    if (user?.user.role === "admin") {
+      setIsNotice(true);
+    }
+    console.log(user);
+  }, [user]);
 
   return (
     <div className="pr-board-form-page page-margin">
       <div className="body">
-        <PRBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} />
+        {isNotice ? (
+          <PRBoardNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user.role} />
+        ) : (
+          <PRBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user.role} />
+        )}
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
