@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import "./AdminPR.scss";
+import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
@@ -8,6 +8,7 @@ import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { promotionUrl } from "../../apis/apiURLs";
 
+// DataGrid table의 column구성
 const columns = [
   { field: "_id", headerName: "게시글 번호", width: 213 },
   { field: "play_title", headerName: "게시글 제목", width: 213 },
@@ -21,12 +22,16 @@ const columns = [
 ];
 
 const AdminPR = () => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openAlert2, setOpenAlert2] = useState(false);
+  // table에서 선택된 홍보글 관리
   const [promotions, setPromotions] = useState([]);
-
+  // 삭제 확인 alert
+  const [openAlert, setOpenAlert] = useState(false);
+  // 삭제 완료 alert
+  const [openAlert2, setOpenAlert2] = useState(false);
+  // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
+  // fetch API 홍보 글 조회
   const fetchData = () => {
     fetch(`${promotionUrl}`)
       .then((res) => res.json())
@@ -44,6 +49,7 @@ const AdminPR = () => {
       .catch((err) => console.error(err));
   };
 
+  // 페이지가 로드될 때 홍보 글 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
@@ -92,6 +98,7 @@ const AdminPR = () => {
         </div>
         <div style={{ height: "631px", width: "800px" }}>
           <DataGrid
+            // 해당 상세페이지로 이동
             onRowClick={(params) => {
               const promotionNumber = params.row.promotion_number;
               navigate(`/promotion/${promotionNumber}`);

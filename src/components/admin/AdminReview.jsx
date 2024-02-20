@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import "./AdminReview.scss";
+import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
@@ -8,6 +8,7 @@ import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { reviewUrl } from "../../apis/apiURLs";
 
+// DataGrid table의 column구성
 const columns = [
   { field: "_id", headerName: "후기 번호", width: 128 },
   { field: "show_title", headerName: "해당 공연 제목", width: 128 },
@@ -23,12 +24,16 @@ const columns = [
 ];
 
 const AdminReview = () => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openAlert2, setOpenAlert2] = useState(false);
+  // table에서 선택된 review 관리
   const [reviews, setReviews] = useState([]);
-
+  // 삭제 확인 alert
+  const [openAlert, setOpenAlert] = useState(false);
+  // 삭제 완료 alert
+  const [openAlert2, setOpenAlert2] = useState(false);
+  // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
+  // fetch API 리뷰 조회
   const fetchData = () => {
     fetch(`${reviewUrl}`, {
       credentials: "include",
@@ -36,10 +41,7 @@ const AdminReview = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.data) && data.data.length > 0) {
-          const reviewsWithIds = data.data.map((review) => ({
-            ...review,
-          }));
-          setReviews(reviewsWithIds);
+          setReviews(data.data);
         } else {
           console.error("Data is not an array or empty");
         }
@@ -47,6 +49,7 @@ const AdminReview = () => {
       .catch((err) => console.error(err));
   };
 
+  // 페이지가 로드될 때 리뷰 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
@@ -68,7 +71,7 @@ const AdminReview = () => {
     })
       .then((res) => res.json())
       .then(() => {
-        fetchData(); // 탈퇴 처리 후에 데이터 다시 불러오기
+        fetchData(); // 선택한 리뷰 DELETE 후 리뷰정보 최신화
         setOpenAlert2(true);
       })
       .catch((err) => console.error(err));
@@ -95,6 +98,7 @@ const AdminReview = () => {
         </div>
         <div style={{ height: "631px", width: "800px" }}>
           <DataGrid
+            // 해당 상세페이지로 이동
             onRowClick={(params) => {
               const showNumber = params.row.show_id;
               navigate(`/Play/${showNumber}`);

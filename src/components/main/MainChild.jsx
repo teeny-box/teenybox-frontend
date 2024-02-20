@@ -9,11 +9,31 @@ function MainChild() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
+
   const navigate = useNavigate();
 
+  // 해당연극 상세페이지로 이동
   const handleShowClick = (showId) => {
     navigate(`/play/${showId}`);
   };
+
+  // 스타일 결정: isAnimating 상태에 따라 다른 스타일을 적용
+  const wrapperStyles = isAnimating
+    ? {
+        display: "flex",
+        gap: "20px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        transform: `translateX(-${sliderIndex * 1200}px)`,
+        transition: "transform 0.4s ease",
+      }
+    : {
+        display: "flex",
+        gap: "20px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        transform: `translateX(-${sliderIndex * 1200}px)`,
+      };
 
   useEffect(() => {
     if (sliderIndex === 4) {
@@ -38,24 +58,6 @@ function MainChild() {
     setIsAnimating(true);
     setSliderIndex((prevIndex) => prevIndex + 1);
   };
-
-  // 스타일 결정: isAnimating 상태에 따라 다른 스타일을 적용
-  const wrapperStyles = isAnimating
-    ? {
-        display: "flex",
-        gap: "20px",
-        paddingLeft: "10px",
-        paddingRight: "10px",
-        transform: `translateX(-${sliderIndex * 1200}px)`,
-        transition: "transform 0.4s ease",
-      }
-    : {
-        display: "flex",
-        gap: "20px",
-        paddingLeft: "10px",
-        paddingRight: "10px",
-        transform: `translateX(-${sliderIndex * 1200}px)`,
-      };
 
   useEffect(() => {
     const today = new Date();
