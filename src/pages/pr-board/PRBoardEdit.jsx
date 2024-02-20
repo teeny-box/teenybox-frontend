@@ -30,19 +30,19 @@ export function PRBoardEdit() {
       const data = await res.json();
       console.log(data);
 
-      // if (!res.ok) {
-      //   console.error(data);
-      //   nav("/not-found");
-      //   return;
-      // }
-      // if (data.user_id.nickname !== userData.user.nickname) {
-      //   nav("/forbidden");
-      //   return;
-      // }
+      if (!res.ok) {
+        console.error(data);
+        nav("/not-found");
+        return;
+      }
+      if (data.user_id.nickname !== user.user.nickname) {
+        nav("/forbidden");
+        return;
+      }
       setPost(data);
     } catch (err) {
-      // nav("/not-found");
-      console.log(err);
+      nav("/not-found");
+      console.error(err);
     }
   };
 
@@ -51,11 +51,11 @@ export function PRBoardEdit() {
       setOpenLoginAlertBack(true);
     } else {
       getPost();
+      if (user.user?.role === "admin") {
+        setIsNotice(true);
+      }
     }
 
-    if (user?.user.role === "admin") {
-      setIsNotice(true);
-    }
     console.log(user);
   }, [user]);
 
@@ -64,9 +64,9 @@ export function PRBoardEdit() {
       <div className="body">
         {post &&
           (isNotice ? (
-            <PRBoardNoticeEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user.role} />
+            <PRBoardNoticeEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user?.role} />
           ) : (
-            <PRBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user.role} />
+            <PRBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user?.role} />
           ))}
       </div>
 

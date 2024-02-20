@@ -46,15 +46,17 @@ export default function PRBoardList({ newList, fixedList }) {
             <img src={post.image_url[0] || empty_img} onError={(e) => (e.target.src = empty_img)} alt="" />
           </Link>
           <div className="post-card-content">
+            {post.category === "공지" && <h5 className="notice">📢 공지사항</h5>}{" "}
             <div className={`title ${post.tags?.length ? "" : "tl-2"}`}>
               <Link to={`${post.promotion_number}`}>{post.title}</Link>
             </div>
-
-            <div className="date">
-              {post.start_date && <TimeFormat time={post.start_date} />}
-              {" ~ "}
-              {post.end_date && <TimeFormat time={post.end_date} />}
-            </div>
+            {post.category === "공지" || (
+              <div className="date">
+                {post.start_date && <TimeFormat time={post.start_date} />}
+                {" ~ "}
+                {post.end_date && <TimeFormat time={post.end_date} />}
+              </div>
+            )}
             {post.tags && post.tags.length !== 0 && (
               <div className="tags">
                 {post.tags.map((tag, idx) => (

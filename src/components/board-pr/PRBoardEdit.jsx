@@ -72,6 +72,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           runtime: Number(inputRuntime) || 0,
           location: inputLocation || "",
           host: inputHost || "",
+          is_fixed: "일반",
         }),
       });
       const data = await res.json();

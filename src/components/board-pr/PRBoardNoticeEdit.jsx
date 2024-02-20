@@ -17,21 +17,19 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
-  // 카테고리
-  const [inputCategory, setInputCategiry] = useState(post?.category);
   // 글제목
-  const [inputTitle, setInputTitle] = useState(post?.title);
+  const [inputTitle, setInputTitle] = useState(post.title);
   const [errorTitle, setErrorTitle] = useState("");
   // 내용
-  const [inputContent, setInputContent] = useState(post?.content);
+  const [inputContent, setInputContent] = useState(post.content);
   const [errorContent, setErrorContent] = useState("");
   // 태그
-  const [tagList, setTagList] = useState(post?.tags);
+  const [tagList, setTagList] = useState(post.tags);
   const [inputTag, setInputTag] = useState("");
   // 사진
-  const [mainImageURL, setMainImageURL] = useState(post?.image_url[0]); // 0인덱스 대표이미지
+  const [mainImageURL, setMainImageURL] = useState(post.image_url[0]); // 0인덱스 대표이미지
   const [errorMainImage, setErrorMainImage] = useState("");
-  const [imageURL, setImageURL] = useState(post?.image_url.slice(1));
+  const [imageURL, setImageURL] = useState(post.image_url.slice(1));
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
   // 고정(관리자)
@@ -53,7 +51,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
           image_url: [mainImageURL, ...imageURL],
           start_date: dayjs(),
           end_date: dayjs(),
-          category: inputCategory,
+          category: "공지",
           play_title: "공지사항",
           runtime: 0,
           location: "",
@@ -254,16 +252,6 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
             </Button>
           )}
         </h2>
-      </div>
-
-      <div className="flex-box category">
-        <div className="input">
-          <label htmlFor="">카테고리</label>
-          <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
-            <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-            <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
-          </RadioGroup>
-        </div>
       </div>
 
       <div className="flex-box fixed">

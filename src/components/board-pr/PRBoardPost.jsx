@@ -13,7 +13,7 @@ export default function PRBoardPost({ data, totalCommentCount }) {
   return (
     <div className="pr-board-post">
       <PostTop user={data.user_id || { nickname: "user" }} type={"promotion"} post={data} totalCommentCount={totalCommentCount} />
-      {data.is_fixed === "일반" && (
+      {data.category === "공지" || (
         <div className="top-container">
           <img className="main-img" src={data.image_url[0] || empty_image} onError={(e) => (e.target.src = empty_image)} alt="홍보 포스터" onClick={() => setOpenMainImg(true)} />
           <div className="flex-column">
@@ -58,7 +58,7 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       <h2 className="title">{data.title}</h2>
       <div className="content">
         {data.content?.split("\n").map((text) => (
-          <p>{text || " "}</p>
+          <p>{text || <br />}</p>
         ))}
       </div>
       {data.tags && data.tags.length !== 0 && (

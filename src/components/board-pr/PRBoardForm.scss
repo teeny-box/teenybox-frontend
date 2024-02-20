@@ -120,6 +120,14 @@
     &.flex-center {
       display: flex;
       align-items: center;
+
+      .MuiFormControlLabel-root {
+        display: flex;
+        align-items: center;
+        .MuiTypography-root {
+          font-size: 14px;
+        }
+      }
     }
 
     input[type="text"] {

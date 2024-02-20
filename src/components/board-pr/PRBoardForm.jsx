@@ -75,6 +75,7 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
           runtime: Number(inputRuntime) || 0,
           location: inputLocation || "",
           host: inputHost || "",
+          is_fixed: "일반",
         }),
       });
       const data = await res.json();

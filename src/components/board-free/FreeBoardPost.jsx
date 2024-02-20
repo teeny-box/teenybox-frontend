@@ -10,7 +10,7 @@ export default function FreeBoardPost({ data, totalCommentCount }) {
       <h2 className="title">{data.title}</h2>
       <div className="content">
         {data.content?.split("\n").map((text, idx) => (
-          <p key={idx + text}>{text || " "}</p>
+          <p key={idx + text}>{text || <br />}</p>
         ))}
       </div>
       {data.tags && data.tags.length !== 0 && (
