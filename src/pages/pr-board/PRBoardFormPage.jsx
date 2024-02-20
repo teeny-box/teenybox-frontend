@@ -24,10 +24,11 @@ export function PRBoardFormPage() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
+      if (user.user?.role === "admin") {
+        setIsNotice(true);
+      }
     }
-    if (user?.user.role === "admin") {
-      setIsNotice(true);
-    }
+
     console.log(user);
   }, [user]);
 
@@ -35,9 +36,9 @@ export function PRBoardFormPage() {
     <div className="pr-board-form-page page-margin">
       <div className="body">
         {isNotice ? (
-          <PRBoardNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user.role} />
+          <PRBoardNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
         ) : (
-          <PRBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user.role} />
+          <PRBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
         )}
       </div>
 

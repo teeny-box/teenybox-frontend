@@ -129,10 +129,12 @@ export function PRBoardDetailPage() {
   }, [post]);
 
   useEffect(() => {
-    getPromotion();
-    setTotalCount(0);
-    setPage(1);
-    setComments([]);
+    if (Number(params.postId) !== Number(post.promotion_number)) {
+      getPromotion();
+      setTotalCount(0);
+      setPage(1);
+      setComments([]);
+    }
   }, [params]);
 
   return (
