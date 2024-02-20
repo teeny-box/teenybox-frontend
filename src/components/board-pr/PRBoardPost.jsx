@@ -58,7 +58,7 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       <h2 className="title">{data.title}</h2>
       <div className="content">
         {data.content?.split("\n").map((text) => (
-          <p>{text || " "}</p>
+          <p>{text || <br />}</p>
         ))}
       </div>
       {data.tags && data.tags.length !== 0 && (

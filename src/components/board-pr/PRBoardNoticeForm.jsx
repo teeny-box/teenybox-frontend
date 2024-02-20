@@ -1,15 +1,12 @@
-import { Backdrop, Button, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import React, { Children, useContext, useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
 import "./PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import dayjs from "dayjs";
 import empty_img from "../../assets/img/empty_img.svg";
-import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
 const logo1 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/7ba0430d_737f_46a2_92c5_ec69b7847736_minilogo.png";
@@ -96,7 +93,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
     if (submit && error) {
       return (
         <div className="error">
-          <ErrorOutlineIcon fontSize="inherit" />
+          <ErrorOutline fontSize="inherit" />
           {error}
         </div>
       );
@@ -304,7 +301,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
               <div id={idx} key={tag + idx} className="tag-box flex">
                 <span># {tag} </span>
                 <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
-                  <CloseIcon fontSize="inherit" />
+                  <Close fontSize="inherit" />
                 </IconButton>
               </div>
             ))}
@@ -317,7 +314,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
           <label htmlFor="main-image">
             대표이미지<span className="star">*</span>
           </label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="main-image">
               파일 찾기
             </label>
@@ -327,7 +324,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
         </div>
         {errorMainImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorMainImage}
           </div>
         )}
@@ -344,7 +341,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
       <div className="input image">
         <div>
           <label htmlFor="image">추가이미지</label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="image">
               파일 찾기
             </label>
@@ -353,7 +350,7 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
         </div>
         {errorImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorImage}
           </div>
         )}

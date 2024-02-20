@@ -9,9 +9,9 @@ import ServerError from "../../components/common/state/ServerError";
 import Empty from "../../components/common/state/Empty";
 import { Loop, SwapVert } from "@mui/icons-material";
 import { BoardRightContainer } from "../../components/board/BoardRightContainer";
-import { set } from "date-fns";
 
 export function FreeBoardListPage() {
+  const [fixedList, setFixedList] = useState([]);
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
@@ -25,6 +25,17 @@ export function FreeBoardListPage() {
     setToggle(true);
     setTimeout(() => setToggle(false), 500);
     getPage();
+  };
+
+  const getFixedList = async () => {
+    try {
+      const res = await fetch(`${postUrl}?isFixed=고정`); // 카테고리별로 나눠서 고정할지?
+      const data = await res.json();
+      setFixedList(data.posts);
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const getPage = async () => {
@@ -62,6 +73,7 @@ export function FreeBoardListPage() {
   }, [page]);
 
   useEffect(() => {
+    getFixedList();
     setPage(Number(searchParams.get("page")) || 1);
   }, [searchParams]);
 
@@ -103,6 +115,7 @@ export function FreeBoardListPage() {
             </div>
           ) : boardList.length ? (
             <>
+              {page === 1 && <FreeBoardList boardList={fixedList} isFixed={true} />}
               <FreeBoardList boardList={boardList} />
               <div className="pagination">
                 <Pagination page={page} onChange={handleChange} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />

@@ -18,18 +18,18 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [openComplete, setOpenComplete] = useState(false);
 
   // 글제목
-  const [inputTitle, setInputTitle] = useState(post?.title);
+  const [inputTitle, setInputTitle] = useState(post.title);
   const [errorTitle, setErrorTitle] = useState("");
   // 내용
-  const [inputContent, setInputContent] = useState(post?.content);
+  const [inputContent, setInputContent] = useState(post.content);
   const [errorContent, setErrorContent] = useState("");
   // 태그
-  const [tagList, setTagList] = useState(post?.tags);
+  const [tagList, setTagList] = useState(post.tags);
   const [inputTag, setInputTag] = useState("");
   // 사진
-  const [mainImageURL, setMainImageURL] = useState(post?.image_url[0]); // 0인덱스 대표이미지
+  const [mainImageURL, setMainImageURL] = useState(post.image_url[0]); // 0인덱스 대표이미지
   const [errorMainImage, setErrorMainImage] = useState("");
-  const [imageURL, setImageURL] = useState(post?.image_url.slice(1));
+  const [imageURL, setImageURL] = useState(post.image_url.slice(1));
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
   // 고정(관리자)

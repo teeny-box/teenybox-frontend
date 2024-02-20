@@ -1,4 +1,4 @@
-import { Backdrop, Button, IconButton } from "@mui/material";
+import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 
-export function FreeBoardForm({ setInput, handleCancle }) {
+export function FreeBoardForm({ setInput, handleCancle, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -19,6 +19,8 @@ export function FreeBoardForm({ setInput, handleCancle }) {
   const [errorContent, setErrorContent] = useState("내용을 최소 3자 이상 입력해주세요.");
   const [tagList, setTagList] = useState([]);
   const [inputTag, setInputTag] = useState();
+  // 고정(관리자)
+  const [fixed, setFixed] = useState(false);
 
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
@@ -33,6 +35,7 @@ export function FreeBoardForm({ setInput, handleCancle }) {
           title: inputTitle,
           content: inputContent,
           tags: tagList,
+          is_fixed: fixed ? "고정" : "일반",
         }),
       });
       const data = await res.json();
@@ -107,11 +110,26 @@ export function FreeBoardForm({ setInput, handleCancle }) {
     else setInput(false);
   }, [inputTitle, inputContent, tagList]);
 
+  useEffect(() => {
+    if (userRole === "admin") {
+      setFixed(true);
+    }
+  }, [userRole]);
+
   return (
     <div className="post-form-box">
       <div className="form-header">
         <div className="title">게시글 작성하기</div>
       </div>
+
+      {userRole === "admin" && (
+        <div className="flex-box fixed">
+          <div className="input flex-center">
+            <label htmlFor="">고정</label>
+            <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+          </div>
+        </div>
+      )}
 
       <div className="flex-box title">
         <div className="input">
