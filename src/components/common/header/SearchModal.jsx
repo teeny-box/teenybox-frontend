@@ -27,7 +27,7 @@ const SearchModal = ({ onCloseModal }) => {
 
     if (query.charAt(0) === "#") {
       encodedQuery = encodeURIComponent(query.slice(1));
-      window.location.href = `/search?query=${encodedQuery}&category=홍보게시글&type=tag`;
+      window.location.href = `/search?query=${encodedQuery}&category=홍보게시판&type=tag`;
     } else {
       encodedQuery = encodeURIComponent(query);
       window.location.href = `/search?query=${encodedQuery}`;
