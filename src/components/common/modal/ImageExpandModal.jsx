@@ -26,9 +26,6 @@ export default function ImageExpandModal({ imgSrc, setClickedPhoto }) {
     transform: "translate(-50%, -50%)",
     maxWidth: "100%",
     maxHeight: "100%",
-    width: "500px",
-    height: "450px",
-    objectFit: "cover",
   };
 
   const closeIconStyle = {
