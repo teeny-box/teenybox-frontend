@@ -105,7 +105,7 @@ export function PRBoardListPage() {
   useEffect(() => {
     if (inView) {
       // 총 개수 받아서 page 넘어가면 api 호출 X
-      if (totalCnt && boardList.length >= totalCnt) return;
+      if (boardList.length >= totalCnt) return;
       getPage(page, "add");
     }
   }, [inView]);
@@ -136,7 +136,7 @@ export function PRBoardListPage() {
                   <h2 className="title">
                     <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].title}</Link>
                   </h2>
-                  <div className="ellipsis">
+                  <div className="ellipsis notice">
                     <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].content}</Link>
                   </div>
 
@@ -210,7 +210,7 @@ export function PRBoardListPage() {
                 </div>
               ))
             )}
-            {bannerList.length > 1 && (
+            {bannerList.length > 0 && (
               <>
                 <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
                 <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
