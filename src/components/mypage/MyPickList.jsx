@@ -175,7 +175,9 @@ function MyPickList({ user, setUserData }) {
                   </div>
                 </>
               ) : (
-                <Empty />
+                <div className="empty-box">
+                  <Empty />
+                </div>
               )}
             </>
           )}

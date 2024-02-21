@@ -14,7 +14,7 @@ import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../App";
 
-const regex = /[0-9]|[\[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/;
+const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9 `]/;
 
 function MemberInfo({ user, setUserData }) {
   const [inputNickname, setInputNickname] = useState(user?.nickname);
