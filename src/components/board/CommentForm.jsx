@@ -12,6 +12,7 @@ export function CommentForm({ createComment }) {
   const handleClick = (e) => {
     if (!userData.user?._id) {
       setOpenLoginAlert(true);
+      return;
     }
     if (!inputComment) {
       document.querySelector("#comment").focus();

@@ -11,13 +11,13 @@ function MainPreferredRegion() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  // userData가 있고 interested_area가 존재할 때 해당 지역으로 선택
-  if (userData && userData.user && userData.user.interested_area) {
-    setSelectedRegion(userData.user.interested_area);
-  } else {
-    setSelectedRegion("서울"); // 로그인을 안했을 시 "서울" 설정
-  }
-}, [userData]);
+    // userData가 있고 interested_area가 존재할 때 해당 지역으로 선택
+    if (userData && userData.user && userData.user.interested_area) {
+      setSelectedRegion(userData.user.interested_area);
+    } else {
+      setSelectedRegion("서울"); // 로그인을 안했을 시 "서울" 설정
+    }
+  }, [userData]);
 
   const handleShowClick = (showId) => {
     navigate(`/play/${showId}`);
@@ -32,32 +32,40 @@ function MainPreferredRegion() {
     const fetchData = async () => {
       try {
         const today = new Date();
-        
+
         let queryString;
         if (selectedRegion === "경기/인천") {
           queryString = `region=${encodeURIComponent(selectedRegion)}`;
         } else {
-          let encodedRegions = selectedRegion.split("/").map(region => encodeURIComponent(region)); // 지역 값을 배열로 변환하고 URL 인코딩합니다.
-          queryString = encodedRegions.map(region => `region=${region}`).join("&");
+          let encodedRegions = selectedRegion
+            .split("/")
+            .map((region) => encodeURIComponent(region)); // 지역 값을 배열로 변환하고 URL 인코딩합니다.
+          queryString = encodedRegions
+            .map((region) => `region=${region}`)
+            .join("&");
         }
 
         const response = await fetch(`${showUrl}?${queryString}`);
         if (!response.ok) {
-          throw new Error('데이터를 가져오는데 문제가 발생했습니다.');
+          throw new Error("데이터를 가져오는데 문제가 발생했습니다.");
         }
         const data = await response.json();
         if (data.shows) {
           // 시작일 기준으로 가장 가까운 공연부터 정렬
-          const sortedShows = data.shows.sort((a, b) => Math.abs(new Date(a.start_date) - today) - Math.abs(new Date(b.start_date) - today));
+          const sortedShows = data.shows.sort(
+            (a, b) =>
+              Math.abs(new Date(a.start_date) - today) -
+              Math.abs(new Date(b.start_date) - today)
+          );
           setShows(sortedShows.slice(0, 5));
         } else {
-          console.error('API에서 shows 데이터를 찾을 수 없습니다.');
+          console.error("API에서 shows 데이터를 찾을 수 없습니다.");
         }
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     fetchData();
   }, [selectedRegion]);
 
@@ -108,7 +116,9 @@ function MainPreferredRegion() {
               <div className="main-region-play-img-box">
                 <img src={show.poster} alt={show.title} />
               </div>
-              <p className="main-region-play-title">{formatTitle(show.title)}</p>
+              <p className="main-region-play-title">
+                {formatTitle(show.title)}
+              </p>
               <p className="main-region-play-period">{`${new Date(
                 show.start_date
               ).toLocaleDateString()} Open`}</p>

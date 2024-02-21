@@ -9,9 +9,10 @@ function MainBest() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
+
   const navigate = useNavigate();
 
-  // 메인페이지에서 연극을 클릭하면 해당연극 상세페이지로 이동
+  // 해당연극 상세페이지로 이동
   const handleShowClick = (showId) => {
     navigate(`/play/${showId}`);
   };
@@ -63,14 +64,13 @@ function MainBest() {
     fetch(`${showUrl}/rank`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        const rankedShows = data.shows
+        const rankedShows = data.shows;
         // 연극을 rank에 따라 정렬
         rankedShows.sort((a, b) => a.rank - b.rank);
 
         // 상위 18개 항목 선택
         const top18Shows = rankedShows.slice(0, 18);
-        
+
         // 각 연극에 인덱스 기반 순위 부여
         top18Shows.forEach((show, index) => {
           show.newRank = index + 1;
@@ -89,7 +89,7 @@ function MainBest() {
   }, []);
 
   const formatTitle = (title) => {
-    return title.length > 13? title.slice(0, 13) : title;
+    return title.length > 13 ? title.slice(0, 13) : title;
   };
 
   return (

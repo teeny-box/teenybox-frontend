@@ -107,4 +107,29 @@
       }
     }
   }
+
+  .content-box.fixed {
+    background-color: #fcf9f5;
+    padding: 16px 10px;
+
+    .notice {
+      margin: auto 0;
+      color: #eb0b0be8;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+
+      span {
+        display: inline-block;
+        margin: auto 6px;
+        color: #d9d9d9;
+        font-size: 11px;
+      }
+    }
+
+    .tags .tag {
+      // background-color: #f8efda;
+      background-color: #f1f1f1;
+    }
+  }
 }

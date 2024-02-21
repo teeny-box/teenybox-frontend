@@ -76,9 +76,11 @@
 
       left: 0;
       opacity: 0;
+      display: none;
 
       &.visible {
         animation: fadein 1s forwards;
+        display: initial;
       }
     }
 
@@ -87,6 +89,11 @@
       height: 100%;
       object-fit: cover;
       position: absolute;
+
+      &.small {
+        width: 80%;
+        left: 20%;
+      }
     }
 
     .bg-mask {

@@ -14,7 +14,7 @@ import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../App";
 
-const regex = /[0-9]|[\[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/;
+const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9 `]/;
 
 function MemberInfo({ user, setUserData }) {
   const [inputNickname, setInputNickname] = useState(user?.nickname);
@@ -90,7 +90,7 @@ function MemberInfo({ user, setUserData }) {
   };
 
   const handleChangeNickname = (e) => {
-    const input = e.target.value.trimStart();
+    const input = e.target.value.trim();
     setInputNickname(input);
     setIsUnique(false);
 
@@ -227,7 +227,7 @@ function MemberInfo({ user, setUserData }) {
                   onClick={handleCheckNickname}
                   variant="outlined"
                   color="orange"
-                  disabled={isUnique || errorNickname || user?.nickname === inputNickname}
+                  disabled={isUnique || errorNickname || user?.nickname === inputNickname.trim()}
                   sx={{ margin: "3px 0 0 8px" }}
                 >
                   중복 확인

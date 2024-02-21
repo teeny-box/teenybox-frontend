@@ -34,6 +34,10 @@
     }
   }
 
+  .MuiButtonBase-root.MuiCheckbox-root {
+    padding: 0 9px;
+  }
+
   .category {
     .MuiFormGroup-root {
       flex-direction: row;
@@ -105,9 +109,26 @@
     flex-direction: column;
   }
 
+  .fixed .MuiFormControlLabel-label {
+    color: #898989;
+  }
+
   .input {
     justify-content: flex-start;
     position: relative;
+
+    &.flex-center {
+      display: flex;
+      align-items: center;
+
+      .MuiFormControlLabel-root {
+        display: flex;
+        align-items: center;
+        .MuiTypography-root {
+          font-size: 14px;
+        }
+      }
+    }
 
     input[type="text"] {
       width: 60%;

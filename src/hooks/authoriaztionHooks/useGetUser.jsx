@@ -1,12 +1,13 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../App";
+import { userUrl } from "../../apis/apiURLs";
 
 export default function useGetUser() {
   const { userData, setUserData } = useContext(AppContext);
 
   const getUserData = async () => {
     try {
-      const res = await fetch(`https://dailytopia2.shop/api/users`, {
+      const res = await fetch(userUrl, {
         credentials: "include",
       });
 
@@ -16,7 +17,7 @@ export default function useGetUser() {
       } else if (res.status === 401 || res.status === 403) {
         // 다시 한 번 시도
         try {
-          const secondRes = await fetch(`https://dailytopia2.shop/api/users`, {
+          const secondRes = await fetch(userUrl, {
             credentials: "include",
           });
 

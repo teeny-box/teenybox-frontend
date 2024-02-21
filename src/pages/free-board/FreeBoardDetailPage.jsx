@@ -21,7 +21,7 @@ export function FreeBoardDetailPage() {
   const nav = useNavigate();
   const params = useParams();
   const { userData, setUserData } = useContext(AppContext);
-  const { setOpenLoginAlertBack, setOpenFetchErrorAlert } = useContext(AlertContext);
+  const { setOpenLoginAlert, setOpenFetchErrorAlert } = useContext(AlertContext);
 
   const getPost = async () => {
     setState("loading");
@@ -77,25 +77,27 @@ export function FreeBoardDetailPage() {
         }),
       });
       const data = await res.json();
-      const newComment = { ...data, user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id } };
 
       if (res.ok) {
+        const newComment = { ...data, user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id } };
         setComments([newComment, ...comments]);
         setTotalCount(totalCount + 1);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
           const data = await loginRes.json();
+          createComment(inputText);
           setUserData({ isLoggedIn: true, user: data.user });
         } else {
           setUserData({ isLoggedIn: false });
-          setOpenLoginAlertBack(true);
+          setOpenLoginAlert(true);
         }
       } else {
         console.error(data);
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      console.error(e);
     }
   };
 
@@ -129,10 +131,12 @@ export function FreeBoardDetailPage() {
   }, [post]);
 
   useEffect(() => {
-    getPost();
-    setTotalCount(0);
-    setPage(1);
-    setComments([]);
+    if (Number(params.postId) !== Number(post.post_number)) {
+      getPost();
+      setTotalCount(0);
+      setPage(1);
+      setComments([]);
+    }
   }, [params]);
 
   return (

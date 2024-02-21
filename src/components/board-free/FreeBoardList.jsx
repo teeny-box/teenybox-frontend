@@ -7,11 +7,11 @@ import default_user_img from "../../assets/img/default_user_img.svg";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
 
-export default function FreeBoardList({ boardList }) {
+export default function FreeBoardList({ boardList, isFixed }) {
   return (
     <div className="free-board-list-box">
       {boardList.map((post) => (
-        <div className="content-box" key={post._id} id={post.post_number}>
+        <div className={"content-box" + (isFixed ? " fixed" : "")} key={post._id} id={post.post_number}>
           <div className="flex-box top">
             <div className="user">
               <img className="user-img" src={(post.user?.state === "가입" && post.user?.profile_url) || default_user_img} onError={(e) => (e.target.src = default_user_img)} />
@@ -29,6 +29,11 @@ export default function FreeBoardList({ boardList }) {
           <div className="flex-box bottom">
             {post.tags?.length ? (
               <div className="tags">
+                {isFixed && (
+                  <h5 className="notice">
+                    📢 공지사항 <span>|</span>
+                  </h5>
+                )}
                 {post.tags.map((tag, idx) => (
                   <div className="tag" key={idx}>
                     <Link to={`/search?query=${tag}&category=커뮤니티&type=tag`}># {tag}</Link>

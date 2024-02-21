@@ -12,17 +12,18 @@ export default function Naver({ popup, setPopup }) {
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
   const NAVER_CLIENT_SECRET = process.env.REACT_APP_NAVER_CLIENT_SECRET;
 
+  function generateState() {
+    return Math.random().toString(36).substr(2, 10);
+  }
+
   const naverLoginHandler = () => {
     const width = 500;
     const height = 400; // 팝업의 세로 길이 : 500
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
-    const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${NAVER_CLIENT_ID}&response_type=code&redirect_uri=${NAVER_CALLBACK_URL}&state=${NAVER_CLIENT_SECRET}`;
-    const popup = window.open(
-      url,
-      "로그인 중...",
-      `width=${width},height=${height},left=${left},top=${top}`
-    );
+    const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${NAVER_CLIENT_ID}&response_type=code&redirect_uri=${NAVER_CALLBACK_URL}&state=${generateState()}`;
+
+    const popup = window.open(url, "로그인 중...", `width=${width},height=${height},left=${left},top=${top}`);
     setPopup(popup);
   };
 
@@ -30,12 +31,7 @@ export default function Naver({ popup, setPopup }) {
     <>
       {alert && (
         <>
-          {alert.title === "정보 제공 동의 필수" ? null : alert.title ===
-            "로그인 성공" ? (
-            <Loading isLogin={true} />
-          ) : (
-            <Loading />
-          )}
+          {alert.title === "정보 제공 동의 필수" ? null : alert.title === "로그인 성공" ? <Loading isLogin={true} /> : <Loading />}
           <AlertCustom
             open={true}
             title={alert.title}
@@ -55,11 +51,7 @@ export default function Naver({ popup, setPopup }) {
         <div className="logo-description">
           <span>네이버 계정으로 로그인</span>
         </div>
-        <NaverRedirection
-          popup={popup}
-          setPopup={setPopup}
-          setAlert={setAlert}
-        />
+        <NaverRedirection popup={popup} setPopup={setPopup} setAlert={setAlert} />
       </button>
     </>
   );

@@ -1,78 +1,63 @@
-import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import React, { Children, useContext, useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
 import "./PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
-import { presignedUrl, promotionUrl, uploadImgUrl } from "../../apis/apiURLs";
+import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import dayjs from "dayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import empty_img from "../../assets/img/empty_img.svg";
-import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
-export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
+const logo1 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/7ba0430d_737f_46a2_92c5_ec69b7847736_minilogo.png";
+const logo2 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/b3e2f257_2063_4a8b_a9b1_cde0a95a6610_logo1.png";
+const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
+
+export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
-  // 카테고리
-  const [inputCategory, setInputCategiry] = useState(post?.category);
-  // 연극명
-  const [inputPlayTitle, setInputPlayTitle] = useState(post?.play_title);
-  const [errorPlayTitle, setErrorPlayTitle] = useState("");
-  // 장소
-  const [inputLocation, setInputLocation] = useState(post?.location);
-  // 주최
-  const [inputHost, setInputHost] = useState(post?.host);
-  // 러닝타임
-  const [inputRuntime, setInputRuntime] = useState(post?.runtime);
-  // 기간
-  const [inputStartDate, setInputStartDate] = useState(dayjs(post.start_date));
-  const [inputEndDate, setInputEndDate] = useState(dayjs(post.end_date));
-  const [errorDate, setErrorDate] = useState("");
   // 글제목
-  const [inputTitle, setInputTitle] = useState(post?.title);
-  const [errorTitle, setErrorTitle] = useState("");
+  const [inputTitle, setInputTitle] = useState();
+  const [errorTitle, setErrorTitle] = useState("제목을 최소 3자 이상 입력해주세요.");
   // 내용
-  const [inputContent, setInputContent] = useState(post?.content);
-  const [errorContent, setErrorContent] = useState("");
+  const [inputContent, setInputContent] = useState();
+  const [errorContent, setErrorContent] = useState("내용을 최소 3자 이상 입력해주세요.");
   // 태그
-  const [tagList, setTagList] = useState(post?.tags);
-  const [inputTag, setInputTag] = useState("");
+  const [tagList, setTagList] = useState([]);
+  const [inputTag, setInputTag] = useState();
   // 사진
-  const [mainImageURL, setMainImageURL] = useState(post?.image_url[0]); // 0인덱스 대표이미지
+  const [mainImageURL, setMainImageURL] = useState(logo3); // 0인덱스 대표이미지
   const [errorMainImage, setErrorMainImage] = useState("");
-  const [imageURL, setImageURL] = useState(post?.image_url.slice(1));
+  const [imageURL, setImageURL] = useState([]); // 0인덱스 대표이미지
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
+  // 고정(관리자)
+  const [fixed, setFixed] = useState(true);
 
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
   const handleSubmit = async (e) => {
     try {
-      const res = await fetch(`${promotionUrl}/${post.promotion_number}`, {
-        method: "PUT",
-        credentials: "include",
+      const res = await fetch(`${promotionUrl}`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           title: inputTitle,
           content: inputContent,
           tags: tagList,
           image_url: [mainImageURL, ...imageURL],
-          start_date: inputStartDate || undefined,
-          end_date: inputEndDate || undefined,
-          category: inputCategory,
-          play_title: inputPlayTitle,
-          runtime: Number(inputRuntime) || 0,
-          location: inputLocation || "",
-          host: inputHost || "",
-          is_fixed: "일반",
+          start_date: dayjs(),
+          end_date: dayjs(),
+          category: "공지",
+          play_title: "공지사항",
+          runtime: 0,
+          location: "",
+          host: "",
+          is_fixed: fixed ? "고정" : "일반",
         }),
       });
       const data = await res.json();
@@ -93,11 +78,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       setErrorMainImage("사진을 선택해주세요.");
     }
 
-    if (errorPlayTitle) {
-      document.querySelector("#play-title").focus();
-    } else if (errorDate) {
-      document.querySelector("#date").focus();
-    } else if (errorTitle) {
+    if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
       document.querySelector("#content").focus();
@@ -112,25 +93,11 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     if (submit && error) {
       return (
         <div className="error">
-          <ErrorOutlineIcon fontSize="inherit" />
+          <ErrorOutline fontSize="inherit" />
           {error}
         </div>
       );
     }
-  };
-
-  const handleChangePlayTitle = (e) => {
-    if (e.target.value.trim().length > 30) return;
-    setInputPlayTitle(e.target.value.trimStart());
-    if (!e.target.value) {
-      setErrorPlayTitle("연극명을 입력해주세요.");
-    } else {
-      setErrorPlayTitle("");
-    }
-  };
-
-  const handleErrorDate = (error) => {
-    setErrorDate("날짜를 선택해주세요.");
   };
 
   const handleChangeTitle = (e) => {
@@ -149,18 +116,6 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       setErrorContent("내용을 최소 3자 이상 입력해주세요.");
     } else {
       setErrorContent("");
-    }
-  };
-
-  const handleChangeLocation = (e) => {
-    if (e.target.value.trim().length <= 40) {
-      setInputLocation(e.target.value.trimStart());
-    }
-  };
-
-  const handleChangeHost = (e) => {
-    if (e.target.value.trim().length <= 20) {
-      setInputHost(e.target.value.trimStart());
     }
   };
 
@@ -283,134 +238,27 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   };
 
   useEffect(() => {
-    if (inputStartDate && inputEndDate) {
-      setErrorDate("");
-    } else {
-      setErrorDate("날짜를 선택해주세요.");
-    }
-  }, [inputStartDate, inputEndDate]);
-
-  useEffect(() => {
-    if (inputTitle || inputContent || imageURL || inputTag || tagList || inputPlayTitle || inputLocation || inputHost || inputRuntime || inputStartDate || inputEndDate)
-      setInput(true);
+    if (inputTitle || inputContent || imageURL || tagList) setInput(true);
     else setInput(false);
-  }, [inputTitle, inputContent, imageURL, inputTag, inputPlayTitle, inputLocation, inputHost, inputRuntime, inputStartDate, inputEndDate]);
+  }, [inputTitle, inputContent, imageURL, tagList]);
 
   return (
     <div className="post-form-box">
       <div className="form-header">
         <h2 className="title">
-          홍보 게시글 수정하기{" "}
+          홍보 게시글 작성하기
           {userRole === "admin" && (
-            <Button onClick={() => setIsNotice(true)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
-              (일반)
+            <Button onClick={() => setIsNotice(false)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
+              (공지사항)
             </Button>
           )}
         </h2>
       </div>
 
-      <div className="add-info">
-        <div className="flex-box category">
-          <div className="input">
-            <label htmlFor="">카테고리</label>
-            <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
-              <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-              <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
-            </RadioGroup>
-          </div>
-        </div>
-
-        <div className="flex-box title">
-          <div className="input">
-            <label htmlFor="play-title">
-              {inputCategory === "연극" ? "연극명" : "행사명"}
-              <span className="star">*</span>
-            </label>
-            <input
-              type="text"
-              id="play-title"
-              name="play-title"
-              value={inputPlayTitle}
-              onChange={handleChangePlayTitle}
-              maxLength={30}
-              placeholder={`${inputCategory === "연극" ? "연극명" : "행사명"}을 작성해 주세요.`}
-              required
-            />
-          </div>
-          {handleErrorPlaceholder(errorPlayTitle)}
-        </div>
-
-        <div className="flex-box">
-          <div className="input">
-            <label htmlFor="location">장소</label>
-            <input type="text" id="location" name="location" value={inputLocation} onChange={handleChangeLocation} maxLength={40} placeholder="장소를 작성해 주세요." />
-          </div>
-        </div>
-
-        <div className="flex-box">
-          <div className="input">
-            <label htmlFor="host">주최</label>
-            <input type="text" id="host" name="host" value={inputHost} onChange={handleChangeHost} maxLength={20} placeholder="주최자 또는 기관을 작성해 주세요." />
-          </div>
-        </div>
-
-        {inputCategory === "연극" && (
-          <div className="flex-box running-time">
-            <div className="input">
-              <label htmlFor="running-time" className="lable">
-                러닝타임
-              </label>
-              <input
-                type="number"
-                id="running-time"
-                name="running-time"
-                value={inputRuntime}
-                min="0"
-                max="300"
-                onChange={(e) => setInputRuntime(e.target.value)}
-                maxLength={30}
-                placeholder="100"
-              />
-              <span>분</span>
-            </div>
-          </div>
-        )}
-
-        <div className="flex-box date">
-          <div className="input">
-            <label htmlFor="date">
-              기간<span className="star">*</span>
-            </label>
-            <input id="date" className="hidden" />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DesktopDatePicker"]}>
-                <DatePicker
-                  label="시작"
-                  format="YYYY-MM-DD"
-                  value={inputStartDate}
-                  minDate={dayjs().subtract(1, "month").startOf("day")}
-                  maxDate={dayjs().add(1, "year").endOf("day")}
-                  onChange={(value) => setInputStartDate(value)}
-                  slotProps={{ textField: { size: "small" } }}
-                  onError={handleErrorDate}
-                  size="small"
-                />
-                <span className="line">-</span>
-                <DatePicker
-                  label="종료"
-                  format="YYYY-MM-DD"
-                  value={inputEndDate}
-                  minDate={dayjs().isAfter(inputStartDate) ? dayjs() : inputStartDate}
-                  maxDate={dayjs().add(1, "year").endOf("day")}
-                  onChange={(value) => setInputEndDate(value)}
-                  slotProps={{ textField: { size: "small" } }}
-                  onError={handleErrorDate}
-                  size="small"
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
-          {handleErrorPlaceholder(errorDate)}
+      <div className="flex-box fixed">
+        <div className="input flex-center">
+          <label htmlFor="">고정</label>
+          <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
         </div>
       </div>
 
@@ -449,10 +297,10 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         {tagList && (
           <div className="tag-list flex">
             {tagList.map((tag, idx) => (
-              <div id={idx} className="tag-box flex">
+              <div id={idx} key={tag + idx} className="tag-box flex">
                 <span># {tag} </span>
                 <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
-                  <CloseIcon fontSize="inherit" />
+                  <Close fontSize="inherit" />
                 </IconButton>
               </div>
             ))}
@@ -465,7 +313,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           <label htmlFor="main-image">
             대표이미지<span className="star">*</span>
           </label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="main-image">
               파일 찾기
             </label>
@@ -475,7 +323,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         </div>
         {errorMainImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorMainImage}
           </div>
         )}
@@ -492,7 +340,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       <div className="input image">
         <div>
           <label htmlFor="image">추가이미지</label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="image">
               파일 찾기
             </label>
@@ -501,7 +349,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         </div>
         {errorImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorImage}
           </div>
         )}
@@ -530,7 +378,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
             취소
           </Button>
           <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
-            수정
+            등록
           </Button>
         </div>
       </div>
@@ -540,11 +388,11 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           open={openSubmit}
           onclose={() => setOpenSubmit(false)}
           title={"teenybox.com 내용:"}
-          content={"게시글을 수정하시겠습니까?"}
+          content={"게시글을 작성하시겠습니까?"}
           onclick={() => {
             handleSubmit();
           }}
-          checkBtn={"확인"}
+          checkBtn={"등록"}
           closeBtn={"취소"}
           checkBtnColor={"#42BB48"}
         />
@@ -559,7 +407,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
             nav("/promotion");
           }}
           title={"teenybox.com 내용:"}
-          content={"글 수정이 완료되었습니다!"}
+          content={"글 등록이 완료되었습니다!"}
           btnCloseHidden={true}
           time={1000}
         />
