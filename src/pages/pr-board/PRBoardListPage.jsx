@@ -105,7 +105,7 @@ export function PRBoardListPage() {
   useEffect(() => {
     if (inView) {
       // 총 개수 받아서 page 넘어가면 api 호출 X
-      if (totalCnt && boardList.length >= totalCnt) return;
+      if (boardList.length >= totalCnt) return;
       getPage(page, "add");
     }
   }, [inView]);
