@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Footer.scss";
 import { Link } from "react-router-dom";
-import LinkIcon from "@mui/icons-material/Link";
 import Tooltip from "@mui/material/Tooltip";
 import { AlertCustom } from "../alert/Alerts";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
