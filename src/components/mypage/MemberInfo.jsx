@@ -113,7 +113,6 @@ function MemberInfo({ user, setUserData }) {
           nickname: inputNickname.trim(),
         }),
       });
-      console.log(inputNickname.trim(), res);
 
       if (res.ok) {
         setIsUnique(true);

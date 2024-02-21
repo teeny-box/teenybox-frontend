@@ -49,7 +49,6 @@ export function FreeBoardEdit() {
     } else {
       getPost();
     }
-    console.log(user);
   }, [user]);
 
   return (
