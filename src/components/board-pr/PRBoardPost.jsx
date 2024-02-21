@@ -70,7 +70,7 @@ export default function PRBoardPost({ data, totalCommentCount }) {
           ))}
         </div>
       )}
-      {data.image_url.length && (
+      {data.image_url[0] && (
         <div className="images">
           {data.image_url.map((url) => (
             <img src={url} key={url} onError={(e) => (e.target.src = empty_img)} />

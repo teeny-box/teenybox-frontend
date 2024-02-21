@@ -41,7 +41,6 @@ export function PRBoardListPage() {
       const res = await fetch(`${promotionUrl}?is_fixed=고정&category=공지`); // 카테고리별로 나눠서 고정할지?
       const data = await res.json();
       setFixedList(data.promotions);
-      console.log(data);
     } catch (e) {
       console.error(e);
     }
@@ -89,7 +88,6 @@ export function PRBoardListPage() {
 
   const handleClickRightArrow = () => {
     if (bannerIndex >= bannerList.length) {
-      console.log(bannerIndex);
       setBannerIndex(0);
     } else {
       setBannerIndex((cur) => cur + 1);
@@ -124,7 +122,7 @@ export function PRBoardListPage() {
   return (
     <div className="pr-board-page page-margin">
       <BoardListHeader header="홍보게시판" />
-      {bannerList.length ? (
+      {bannerList.length + fixedList.length ? (
         <div className="best-box ">
           <img
             className={"bg-img" + (bannerIndex ? "" : " small")}
@@ -257,7 +255,7 @@ export function PRBoardListPage() {
         <div className={`state box`}>
           <ServerError onClickBtn={() => getPage()} />
         </div>
-      ) : boardList.length ? (
+      ) : boardList.length + fixedList.length ? (
         <>
           <PRBoardList newList={boardList} fixedList={fixedList} />
           {state === "loading" && (
