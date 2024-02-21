@@ -133,8 +133,6 @@ export function PlayList() {
       setReqQuery(reqQuery);
     }
 
-    console.log(`${showUrl}${reqQuery}`);
-
     fetch(`${showUrl}${reqQuery}`)
       .then((res) => {
         if (res.ok) {
