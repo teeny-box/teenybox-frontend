@@ -24,9 +24,9 @@ export function PRBoardFormPage() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
-      if (user.user?.role === "admin") {
-        setIsNotice(true);
-      }
+    }
+    if (user?.user?.role === "admin") {
+      setIsNotice(true);
     }
   }, [user]);
 

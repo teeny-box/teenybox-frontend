@@ -32,7 +32,7 @@ export function FreeBoardEdit() {
         nav("/not-found");
         return;
       }
-      if (data.user_id.nickname !== user.user.nickname) {
+      if (data.user_id.nickname !== user.user?.nickname) {
         nav("/forbidden");
         return;
       }
@@ -46,7 +46,7 @@ export function FreeBoardEdit() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
-    } else {
+    } else if (user) {
       getPost();
     }
   }, [user]);

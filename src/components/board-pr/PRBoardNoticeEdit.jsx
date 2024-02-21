@@ -27,11 +27,8 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [tagList, setTagList] = useState(post.tags);
   const [inputTag, setInputTag] = useState("");
   // 사진
-  const [mainImageURL, setMainImageURL] = useState(post.image_url[0]); // 0인덱스 대표이미지
-  const [errorMainImage, setErrorMainImage] = useState("");
-  const [imageURL, setImageURL] = useState(post.image_url.slice(1));
+  const [imageURL, setImageURL] = useState(post.image_url[0] ? post.image_url : []);
   const [errorImage, setErrorImage] = useState("");
-  const [warningMainImage, setWarningMainImage] = useState("");
   // 고정(관리자)
   const [fixed, setFixed] = useState(post.is_fixed === "고정");
 
@@ -48,7 +45,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
           title: inputTitle,
           content: inputContent,
           tags: tagList,
-          image_url: [mainImageURL, ...imageURL],
+          image_url: imageURL.length ? imageURL : [""],
           start_date: dayjs(),
           end_date: dayjs(),
           category: "공지",
@@ -73,16 +70,11 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
 
   const handleClickSubmitButton = (e) => {
     setSubmit(true);
-    if (!mainImageURL) {
-      setErrorMainImage("사진을 선택해주세요.");
-    }
 
     if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
       document.querySelector("#content").focus();
-    } else if (!mainImageURL) {
-      document.querySelector("#imageBtn").focus();
     } else {
       setOpenSubmit(true);
     }
@@ -146,40 +138,6 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
       console.error(e);
       setOpenFetchErrorAlert(true);
     }
-  };
-
-  const handleChangeMainImage = async (e) => {
-    if (!e.target.files.length) return;
-    const file = e.target.files[0];
-
-    if (file.size > 1024 * 1024 * 5) {
-      return setErrorMainImage("사진은 최대 5MB까지 업로드 가능합니다.");
-    }
-    const data = await uploadImage(file);
-
-    if (data) {
-      setMainImageURL(data);
-      setErrorMainImage("");
-
-      let image = new Image();
-      image.src = data;
-      image.onload = function () {
-        if (image.width > image.height) {
-          setWarningMainImage("red");
-        } else {
-          setWarningMainImage("");
-        }
-      };
-    } else {
-      setErrorMainImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
-    }
-    e.target.value = null;
-  };
-
-  const handleRemoveMainImage = async (e) => {
-    setMainImageURL();
-    setErrorMainImage("");
-    setWarningMainImage("");
   };
 
   const handleChangeImage = async (e) => {
@@ -309,36 +267,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
 
       <div className="input image">
         <div>
-          <label htmlFor="main-image">
-            대표이미지<span className="star">*</span>
-          </label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
-            <label className="pointer" htmlFor="main-image">
-              파일 찾기
-            </label>
-          </Button>
-          <span className={"placeholder " + warningMainImage}>(세로 이미지 권장)</span>
-          <input type="file" id="main-image" name="main-image" accept="image/*" onChange={handleChangeMainImage} required />
-        </div>
-        {errorMainImage && (
-          <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
-            {errorMainImage}
-          </div>
-        )}
-        {mainImageURL && (
-          <div className="main image">
-            <img src={mainImageURL} onError={(e) => (e.target.src = empty_img)} />
-            <IconButton className="icon" onClick={handleRemoveMainImage}>
-              <Close />
-            </IconButton>
-          </div>
-        )}
-      </div>
-
-      <div className="input image">
-        <div>
-          <label htmlFor="image">추가이미지</label>
+          <label htmlFor="image">이미지</label>
           <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
             <label className="pointer" htmlFor="image">
               파일 찾기

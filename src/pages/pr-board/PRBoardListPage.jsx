@@ -122,7 +122,7 @@ export function PRBoardListPage() {
   return (
     <div className="pr-board-page page-margin">
       <BoardListHeader header="홍보게시판" />
-      {bannerList.length ? (
+      {bannerList.length + fixedList.length ? (
         <div className="best-box ">
           <img
             className={"bg-img" + (bannerIndex ? "" : " small")}
@@ -255,7 +255,7 @@ export function PRBoardListPage() {
         <div className={`state box`}>
           <ServerError onClickBtn={() => getPage()} />
         </div>
-      ) : boardList.length ? (
+      ) : boardList.length + fixedList.length ? (
         <>
           <PRBoardList newList={boardList} fixedList={fixedList} />
           {state === "loading" && (

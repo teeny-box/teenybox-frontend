@@ -134,6 +134,7 @@ export default function ProfileImgContainer({
               setToDeleteImg((pre) => [...pre, selectedImg]);
             getPresignedUrl(e.target.files[0]);
           }}
+          accept=".png, .jpg, .jpeg"
         />
         <div className="profile-img" onClick={() => handleProfileImgClick()}>
           {selectedImg === profileUrl ? (

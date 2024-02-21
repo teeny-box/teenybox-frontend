@@ -34,7 +34,7 @@ export function PRBoardEdit() {
         nav("/not-found");
         return;
       }
-      if (data.user_id.nickname !== user.user.nickname) {
+      if (data.user_id.nickname !== user.user?.nickname) {
         nav("/forbidden");
         return;
       }
@@ -48,13 +48,16 @@ export function PRBoardEdit() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
-    } else {
+    } else if (user) {
       getPost();
-      if (user.user?.role === "admin") {
-        setIsNotice(true);
-      }
     }
   }, [user]);
+
+  useEffect(() => {
+    if (post?.category === "공지") {
+      setIsNotice(true);
+    }
+  }, [post]);
 
   return (
     <div className="pr-board-form-page page-margin">
