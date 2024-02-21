@@ -136,7 +136,7 @@ export function PRBoardListPage() {
                   <h2 className="title">
                     <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].title}</Link>
                   </h2>
-                  <div className="ellipsis">
+                  <div className="ellipsis notice">
                     <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].content}</Link>
                   </div>
 

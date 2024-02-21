@@ -169,6 +169,13 @@
           margin-bottom: 6px;
         }
 
+        .notice {
+          a {
+            white-space: pre-wrap;
+          }
+          @include ellipsis(7, 20px);
+        }
+
         .footer {
           font-size: 30px;
           color: #7c7c7c;
