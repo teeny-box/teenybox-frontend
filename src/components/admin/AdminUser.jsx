@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import "./AdminUser.scss";
+import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { userUrl } from "../../apis/apiURLs";
 
+// DataGrid table의 column구성
 const columns = [
   { field: "_id", headerName: "회원 번호", width: 128 },
   { field: "nickname", headerName: "닉네임", width: 128 },
@@ -22,10 +23,14 @@ const columns = [
 ];
 
 const AdminUser = () => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openAlert2, setOpenAlert2] = useState(false);
+  // table에서 선택된 user
   const [users, setUsers] = useState([]);
+  // 삭제 확인 alert
+  const [openAlert, setOpenAlert] = useState(false);
+  // 삭제 완료 alert
+  const [openAlert2, setOpenAlert2] = useState(false);
 
+  // fetch API 유저 조회
   const fetchData = () => {
     fetch(`${userUrl}/admin/users`, {
       credentials: "include",
@@ -33,10 +38,7 @@ const AdminUser = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data && data.users) {
-          const usersWithIds = data.users.map((user) => ({
-            ...user,
-          }));
-          setUsers(usersWithIds);
+          setUsers(data.users);
         } else {
           console.error("No user data found");
         }
@@ -44,6 +46,7 @@ const AdminUser = () => {
       .catch((err) => console.error(err));
   };
 
+  // 페이지가 로드될 때 유저 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
@@ -65,7 +68,7 @@ const AdminUser = () => {
     })
       .then((res) => res.json())
       .then(() => {
-        fetchData();
+        fetchData(); // 선택한 회원 DELETE 후 유저정보 최신화
         setOpenAlert2(true);
       })
       .catch((err) => console.error(err));
