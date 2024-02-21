@@ -90,7 +90,7 @@ function MemberInfo({ user, setUserData }) {
   };
 
   const handleChangeNickname = (e) => {
-    const input = e.target.value.trimStart();
+    const input = e.target.value.trim();
     setInputNickname(input);
     setIsUnique(false);
 
