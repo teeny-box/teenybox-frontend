@@ -83,6 +83,8 @@ export function PlayList() {
   useEffect(() => {
     if (!prevPlayListQuery) {
       setConditions({ 가격별: [0, 100000], 상태별: ["공연중"] });
+      setSortStandard("recent");
+      setCurPage(1);
     }
   }, [selectedRegion]);
 
@@ -131,6 +133,8 @@ export function PlayList() {
       setReqQuery(reqQuery);
     }
 
+    console.log(`${showUrl}${reqQuery}`);
+
     fetch(`${showUrl}${reqQuery}`)
       .then((res) => {
         if (res.ok) {
@@ -165,6 +169,7 @@ export function PlayList() {
         상태별: ["공연중"],
         날짜별: null,
       });
+      setCurPage(1);
     }
   }, [selectedRegion]);
 
@@ -186,6 +191,13 @@ export function PlayList() {
   // 지역을 누를 경우 (캘린더가 보기가 아닐 경우) selectedRegion state를 변경
   const changeSelectedRegion = (e, region) => {
     setSelectedRegion(region);
+    setSortStandard("recent");
+    setCurPage(1);
+    setConditions({
+      가격별: [0, 100000],
+      상태별: ["공연중"],
+      날짜별: null,
+    });
   };
 
   return (
