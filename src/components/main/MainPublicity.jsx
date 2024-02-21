@@ -59,13 +59,13 @@ function MainPublicity() {
     fetchData();
   }, []);
 
-  // 날짜 형식을 조정하는 함수
+  // 날짜 형식을 조정
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
   };
 
-  // 타이틀을 최대 14글자로 제한하는 함수
+  // 타이틀을 최대 14글자로 제한
   const limitTitleLength = (title, maxLength) => {
     if (title.length > maxLength) {
       return title.slice(0, maxLength) + "...";
@@ -73,13 +73,13 @@ function MainPublicity() {
     return title;
   };
 
-  // publicity-product 클릭 시 라우팅 처리하는 함수
+  // publicity-product 클릭 시 라우팅 처리
   const handleProductClick = (promotionNumber) => {
     const route = `/promotion/${promotionNumber}`;
     navigate(route);
   };
 
-  // newList가 5개 이하인 경우에만 MainPublicity 컴포넌트를 숨깁니다.
+  // newList가 5개 이하인 경우에만 MainPublicity 컴포넌트를 숨깁니다
   if (promotions.length <= 5) {
     return null;
   }

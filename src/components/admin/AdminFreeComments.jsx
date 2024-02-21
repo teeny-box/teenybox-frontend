@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import "./AdminFreeComments.scss";
+import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
@@ -21,12 +21,16 @@ const columns = [
 ];
 
 const AdminFreeComments = () => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openAlert2, setOpenAlert2] = useState(false);
+  // table에서 선택된 커뮤니티 댓글 관리
   const [comments, setComments] = useState([]);
-
+  // 삭제 확인 alert
+  const [openAlert, setOpenAlert] = useState(false);
+  // 삭제 완료 alert
+  const [openAlert2, setOpenAlert2] = useState(false);
+  // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
+  // fetch API 커뮤니티 댓글 조회
   const fetchData = () => {
     fetch(`${commentUrl}/admins/posts`)
       .then((res) => res.json())
@@ -44,6 +48,7 @@ const AdminFreeComments = () => {
       .catch((err) => console.error(err));
   };
 
+  // 페이지가 로드될 때 댓글 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
@@ -92,6 +97,7 @@ const AdminFreeComments = () => {
         </div>
         <div style={{ height: "631px", width: "800px" }}>
           <DataGrid
+            // 해당 상세페이지로 이동
             onRowClick={(params) => {
               const postNumber = params.row.post.post_number;
               navigate(`/community/${postNumber}`);

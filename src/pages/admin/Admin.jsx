@@ -10,12 +10,13 @@ import { AppContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
+  const [selectedComponent, setSelectedComponent] = useState("AdminUser");
   const { userData } = useContext(AppContext);
   const navigate = useNavigate();
-  const [selectedComponent, setSelectedComponent] = useState("AdminUser");
 
+  // contextApi로 전역 관리하는 유저 정보를 확인하여 비 로그인이거나 일반회원일 경우 접근을 막고 forbidden페이지로 리다이렉션 
   useEffect(() => {
-    if (userData && userData.user && userData.user.role !== "admin") {
+    if (!userData || !userData.user || userData.user.role !== "admin") {
       navigate("/forbidden");
     }
   }, [userData]);
@@ -24,6 +25,7 @@ export default function Admin() {
     return selectedComponent === componentName ? "selected" : "";
   };
 
+  // nav 에서 선택된 탭에 따라 다른 컴포넌트 랜더링
   const renderComponent = () => {
     if (userData && userData.user) {
       switch (selectedComponent) {
