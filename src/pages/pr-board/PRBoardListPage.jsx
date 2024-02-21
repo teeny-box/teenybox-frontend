@@ -41,7 +41,6 @@ export function PRBoardListPage() {
       const res = await fetch(`${promotionUrl}?is_fixed=고정&category=공지`); // 카테고리별로 나눠서 고정할지?
       const data = await res.json();
       setFixedList(data.promotions);
-      console.log(data);
     } catch (e) {
       console.error(e);
     }
@@ -118,7 +117,6 @@ export function PRBoardListPage() {
   useEffect(() => {
     getBannerList();
     getFixedList();
-    console.log(fixedList[fixedList.length - 1]);
   }, []);
 
   return (
@@ -257,7 +255,7 @@ export function PRBoardListPage() {
         <div className={`state box`}>
           <ServerError onClickBtn={() => getPage()} />
         </div>
-      ) : boardList.length ? (
+      ) : boardList.length + fixedList.length ? (
         <>
           <PRBoardList newList={boardList} fixedList={fixedList} />
           {state === "loading" && (
