@@ -34,7 +34,7 @@ export function PRBoardEdit() {
         nav("/not-found");
         return;
       }
-      if (data.user_id.nickname !== user.user.nickname) {
+      if (data.user_id.nickname !== user.user?.nickname) {
         nav("/forbidden");
         return;
       }
@@ -48,7 +48,7 @@ export function PRBoardEdit() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
-    } else {
+    } else if (user) {
       getPost();
     }
   }, [user]);

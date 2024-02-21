@@ -27,7 +27,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [tagList, setTagList] = useState(post.tags);
   const [inputTag, setInputTag] = useState("");
   // 사진
-  const [imageURL, setImageURL] = useState(post.image_url);
+  const [imageURL, setImageURL] = useState(post.image_url[0] ? post.image_url : []);
   const [errorImage, setErrorImage] = useState("");
   // 고정(관리자)
   const [fixed, setFixed] = useState(post.is_fixed === "고정");
