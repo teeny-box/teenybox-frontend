@@ -210,7 +210,7 @@ export function PRBoardListPage() {
                 </div>
               ))
             )}
-            {bannerList.length > 1 && (
+            {bannerList.length > 0 && (
               <>
                 <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
                 <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
