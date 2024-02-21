@@ -159,7 +159,6 @@ export function PRBoardNoticeForm({ setInput, handleCancle, setIsNotice, userRol
     const data = await uploadImage(file);
 
     if (data) {
-      console.log(data);
       setMainImageURL(data);
       setErrorMainImage("");
 

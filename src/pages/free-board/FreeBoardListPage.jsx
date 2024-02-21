@@ -32,7 +32,6 @@ export function FreeBoardListPage() {
       const res = await fetch(`${postUrl}?isFixed=고정`); // 카테고리별로 나눠서 고정할지?
       const data = await res.json();
       setFixedList(data.posts);
-      console.log(data);
     } catch (e) {
       console.error(e);
     }

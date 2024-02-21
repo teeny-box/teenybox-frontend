@@ -28,8 +28,6 @@ export function PRBoardFormPage() {
         setIsNotice(true);
       }
     }
-
-    console.log(user);
   }, [user]);
 
   return (
