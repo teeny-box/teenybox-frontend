@@ -50,11 +50,14 @@ export function PRBoardEdit() {
       setOpenLoginAlertBack(true);
     } else {
       getPost();
-      if (user.user?.role === "admin") {
-        setIsNotice(true);
-      }
     }
   }, [user]);
+
+  useEffect(() => {
+    if (post?.category === "공지") {
+      setIsNotice(true);
+    }
+  }, [post]);
 
   return (
     <div className="pr-board-form-page page-margin">

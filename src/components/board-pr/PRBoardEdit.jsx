@@ -21,7 +21,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   const [openComplete, setOpenComplete] = useState(false);
 
   // 카테고리
-  const [inputCategory, setInputCategiry] = useState(post?.category);
+  const [inputCategory, setInputCategiry] = useState(post?.category === "공지" ? "연극" : post?.category);
   // 연극명
   const [inputPlayTitle, setInputPlayTitle] = useState(post?.play_title);
   const [errorPlayTitle, setErrorPlayTitle] = useState("");
