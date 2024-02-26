@@ -10,14 +10,14 @@ import { postUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
 const columns = [
-  { field: "_id", headerName: "게시글 번호", width: 213 },
-  { field: "title", headerName: "게시글 제목", width: 213 },
-  { field: "nickname", headerName: "작성자", width: 213 },
+  { field: "title", headerName: "게시글 제목", width: 200 },
+  { field: "nickname", headerName: "작성자", width: 200 },
+  { field: "post_number", headerName: "글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 200,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
   },
 ];
 

@@ -10,16 +10,15 @@ import { reviewUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
 const columns = [
-  { field: "_id", headerName: "후기 번호", width: 128 },
-  { field: "show_title", headerName: "해당 공연 제목", width: 128 },
-  { field: "title", headerName: "후기 제목", width: 128 },
-  { field: "rate", headerName: "평점", width: 128 },
-  { field: "user_nickname", headerName: "작성자", width: 128 },
+  { field: "show_title", headerName: "해당 공연 제목", width: 146 },
+  { field: "title", headerName: "후기 제목", width: 146 },
+  { field: "rate", headerName: "평점", width: 146 },
+  { field: "user_nickname", headerName: "작성자", width: 146 },
   {
     field: "created_at",
     headerName: "작성 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 146,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
   },
 ];
 
