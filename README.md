@@ -16,7 +16,7 @@
 <b>[https://teeny-box.com](https://teeny-box.com)</b>
 
 ![메인 페이지 gif](images/readme-mainpage.png)
-(메인 페이지 gif 넣기?)
+
 
 <br/>
 
