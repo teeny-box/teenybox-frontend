@@ -1,0 +1,9 @@
+# node_modules 폴더와 그 내부의 모든 파일
+node_modules/*
+
+# 환경 설정 파일
+.env
+
+# 기타
+public/*
+*.log
