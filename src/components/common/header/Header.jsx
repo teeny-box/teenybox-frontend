@@ -33,13 +33,10 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        `${userUrl}/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${userUrl}/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
       if (response.ok) {
         // 사용자 정보 삭제 후 페이지 새로고침
         setUserData(null);
