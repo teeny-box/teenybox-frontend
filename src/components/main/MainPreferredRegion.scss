@@ -1,5 +1,5 @@
 .region-list-container {
-  width: 1204px;
+  width: 1110px;
 }
 .region-list-box {
   display: flex;
@@ -28,13 +28,15 @@
   background-color: #ffb400;
   font-weight: 700;
   color: black;
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
 }
 .main-region-play-container {
   display: flex;
   align-items: flex-end;
   height: 368px;
-  width: 1204px;
+  width: 1110px;
   overflow: hidden;
 }
 .main-region-container {
@@ -42,8 +44,8 @@
   gap: 20px;
 }
 .main-region-play-img-box {
-  height: 304px;
-  width: 224px;
+  height: 268px;
+  width: 202px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.3);
