@@ -21,18 +21,18 @@ function MainChild() {
   const wrapperStyles = isAnimating
     ? {
         display: "flex",
-        gap: "20px",
-        paddingLeft: "10px",
-        paddingRight: "10px",
-        transform: `translateX(-${sliderIndex * 1200}px)`,
+        gap: "15px",
+        paddingLeft: "7.5px",
+        paddingRight: "7.5px",
+        transform: `translateX(-${sliderIndex * 1110}px)`,
         transition: "transform 0.4s ease",
       }
     : {
         display: "flex",
-        gap: "20px",
-        paddingLeft: "10px",
-        paddingRight: "10px",
-        transform: `translateX(-${sliderIndex * 1200}px)`,
+        gap: "15px",
+        paddingLeft: "7.5px",
+        paddingRight: "7.5px",
+        transform: `translateX(-${sliderIndex * 1110}px)`,
       };
 
   useEffect(() => {
@@ -81,64 +81,34 @@ function MainChild() {
       .catch((err) => console.error(err));
   }, []);
 
-  const formatTitle = (title) => {
-    return title.length > 13 ? title.slice(0, 13) : title;
-  };
+  const formatTitle = (title) => (title.length > 13 ? title.slice(0, 13) : title);
 
   return (
     <div className="main-layout-container">
       <div className="main-title-box">
         <p className="main-title">아이와 같이 즐기는 문화생활</p>
         <div className="slide-info-box">
-          <p
-            className={`slide-info1 ${
-              sliderIndex === 4 || sliderIndex === 1 ? "active" : ""
-            }`}
-          >
-            ㅡ
-          </p>
-          <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>
-            ㅡ
-          </p>
-          <p
-            className={`slide-info3 ${
-              sliderIndex === 3 || sliderIndex === 0 ? "active" : ""
-            }`}
-          >
-            ㅡ
-          </p>
+          <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
+          <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>
+          <p className={`slide-info3 ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>ㅡ</p>
         </div>
       </div>
       <div className="main-slide-container">
-        <ArrowBackIosIcon
-          onClick={handleLeftClick}
-          className="slide-left-icon"
-          style={{ fontSize: 32 }}
-        />
+        <ArrowBackIosIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
         <div className="main-play-container">
           <div style={wrapperStyles}>
             {shows.map((show, index) => (
-              <div
-                key={index}
-                className="main-play-box"
-                onClick={() => handleShowClick(show.showId)}
-              >
+              <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
                 <div className="main-play-img-box">
                   <img src={show.poster} alt={show.title} />
                 </div>
                 <p className="main-play-title">{formatTitle(show.title)}</p>
-                <p className="main-child-play-period">
-                  {formatTitle(show.age)}
-                </p>
+                <p className="main-child-play-period">{formatTitle(show.age)}</p>
               </div>
             ))}
           </div>
         </div>
-        <ArrowForwardIosIcon
-          onClick={handleRightClick}
-          className="slide-right-icon"
-          style={{ fontSize: 32 }}
-        />
+        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
       </div>
     </div>
   );
