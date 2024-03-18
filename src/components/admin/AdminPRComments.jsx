@@ -10,14 +10,14 @@ import { commentUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
 const columns = [
-  { field: "_id", headerName: "댓글 번호", width: 213 },
-  { field: "content", headerName: "내용", width: 213 },
-  { field: "nickname", headerName: "작성자", width: 213 },
+  { field: "content", headerName: "내용", width: 200 },
+  { field: "nickname", headerName: "작성자", width: 200 },
+  { field: "promotion_number", headerName: "해당 글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 200,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
   },
 ];
 
@@ -40,6 +40,7 @@ const AdminPRComments = () => {
           const commentsWithIds = data.comments.map((comment) => ({
             ...comment,
             nickname: comment.user.nickname,
+            promotion_number: comment.promotion.promotion_number
           }));
           setComments(commentsWithIds);
         } else {

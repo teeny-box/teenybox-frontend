@@ -6,6 +6,8 @@ import minilogo from "../../assets/img/minilogo.png";
 import TimeFormat from "../common/time/TimeFormat";
 import numberFormat from "../../utils/numberFormat";
 
+const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
+
 export default function PRBoardList({ newList, fixedList }) {
   return (
     <div className="pr-board-list-box">
@@ -43,7 +45,11 @@ export default function PRBoardList({ newList, fixedList }) {
       {newList.map((post) => (
         <div className={`post-card`} key={post._id} id={post._id}>
           <Link to={`${post.promotion_number}`}>
-            <img src={post.image_url[0] || empty_img} onError={(e) => (e.target.src = empty_img)} alt="" />
+            {post.category === "공지" ? (
+              <img src={logo3} onError={(e) => (e.target.src = empty_img)} alt="" />
+            ) : (
+              <img src={post.image_url[0] || empty_img} onError={(e) => (e.target.src = empty_img)} alt="" />
+            )}
           </Link>
           <div className="post-card-content">
             {post.category === "공지" && <h5 className="notice">📢 공지사항</h5>}{" "}

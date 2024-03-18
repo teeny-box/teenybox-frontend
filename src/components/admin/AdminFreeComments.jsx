@@ -9,14 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { commentUrl } from "../../apis/apiURLs";
 
 const columns = [
-  { field: "_id", headerName: "댓글 번호", width: 213 },
-  { field: "content", headerName: "내용", width: 213 },
-  { field: "nickname", headerName: "작성자", width: 213 },
+  { field: "content", headerName: "내용", width: 200 },
+  { field: "nickname", headerName: "작성자", width: 200 },
+  { field: "post_number", headerName: "해당 글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 200,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
   },
 ];
 
@@ -36,9 +36,10 @@ const AdminFreeComments = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.comments) && data.comments.length > 0) {
-          const commentsWithIds = data.comments.map((comment, index) => ({
+          const commentsWithIds = data.comments.map((comment) => ({
             ...comment,
             nickname: comment.user.nickname,
+            post_number: comment.post.post_number,
           }));
           setComments(commentsWithIds);
         } else {

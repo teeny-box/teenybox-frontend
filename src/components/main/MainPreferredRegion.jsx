@@ -37,12 +37,8 @@ function MainPreferredRegion() {
         if (selectedRegion === "경기/인천") {
           queryString = `region=${encodeURIComponent(selectedRegion)}`;
         } else {
-          let encodedRegions = selectedRegion
-            .split("/")
-            .map((region) => encodeURIComponent(region)); // 지역 값을 배열로 변환하고 URL 인코딩합니다.
-          queryString = encodedRegions
-            .map((region) => `region=${region}`)
-            .join("&");
+          const encodedRegions = selectedRegion.split("/").map((region) => encodeURIComponent(region)); // 지역 값을 배열로 변환하고 URL 인코딩합니다.
+          queryString = encodedRegions.map((region) => `region=${region}`).join("&");
         }
 
         const response = await fetch(`${showUrl}?${queryString}`);
@@ -52,11 +48,7 @@ function MainPreferredRegion() {
         const data = await response.json();
         if (data.shows) {
           // 시작일 기준으로 가장 가까운 공연부터 정렬
-          const sortedShows = data.shows.sort(
-            (a, b) =>
-              Math.abs(new Date(a.start_date) - today) -
-              Math.abs(new Date(b.start_date) - today)
-          );
+          const sortedShows = data.shows.sort((a, b) => Math.abs(new Date(a.start_date) - today) - Math.abs(new Date(b.start_date) - today));
           setShows(sortedShows.slice(0, 5));
         } else {
           console.error("API에서 shows 데이터를 찾을 수 없습니다.");
@@ -69,20 +61,9 @@ function MainPreferredRegion() {
     fetchData();
   }, [selectedRegion]);
 
-  const formatTitle = (title) => {
-    return title.length > 11 ? title.slice(0, 11) : title;
-  };
+  const formatTitle = (title) => (title.length > 11 ? title.slice(0, 11) : title);
 
-  const regionArray = [
-    "서울",
-    "경기/인천",
-    "강원",
-    "대전/충청",
-    "광주/전라",
-    "대구/경상",
-    "부산/울산",
-    "제주",
-  ];
+  const regionArray = ["서울", "경기/인천", "강원", "대전/충청", "광주/전라", "대구/경상", "부산/울산", "제주"];
 
   return (
     <div className="main-layout-container">
@@ -93,12 +74,7 @@ function MainPreferredRegion() {
         <ul className="region-list-box">
           {regionArray.map((region) => (
             <li key={region}>
-              <div
-                className={`region-list ${
-                  selectedRegion === region ? "selected" : ""
-                }`}
-                onClick={() => handleRegionClick(region)}
-              >
+              <div className={`region-list ${selectedRegion === region ? "selected" : ""}`} onClick={() => handleRegionClick(region)}>
                 {region}
               </div>
             </li>
@@ -108,20 +84,12 @@ function MainPreferredRegion() {
       <div className="main-region-play-container">
         <div className="main-region-container">
           {shows.map((show, index) => (
-            <div
-              key={index}
-              className="main-play-box"
-              onClick={() => handleShowClick(show.showId)}
-            >
+            <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
               <div className="main-region-play-img-box">
                 <img src={show.poster} alt={show.title} />
               </div>
-              <p className="main-region-play-title">
-                {formatTitle(show.title)}
-              </p>
-              <p className="main-region-play-period">{`${new Date(
-                show.start_date
-              ).toLocaleDateString()} Open`}</p>
+              <p className="main-region-play-title">{formatTitle(show.title)}</p>
+              <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
             </div>
           ))}
         </div>

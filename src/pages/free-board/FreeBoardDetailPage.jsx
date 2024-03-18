@@ -97,7 +97,7 @@ export function FreeBoardDetailPage() {
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
-      console.log(e);
+      console.error(e);
     }
   };
 

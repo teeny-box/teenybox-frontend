@@ -2,19 +2,19 @@
   display: flex;
   gap: 50px;
   color: white;
-  width: 1200px;
+  width: 1110px;
   height: 100%;
   margin-top: 28px;
 }
 .publicity-box1 {
-  width: 460px;
+  width: 410px;
   height: 100%;
 }
 .publicity-box2 {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 320px;
+  width: 300px;
   height: 100%;
 }
 .publicity-box3 {
@@ -22,7 +22,7 @@
   flex-direction: column;
   gap: 40px;
   padding-top: 140px;
-  width: 320px;
+  width: 300px;
   height: 100%;
 }
 .publicity-product1 {
@@ -38,7 +38,7 @@
 
 .publicity-product1 img {
   width: 100%;
-  height: 612px;
+  height: 545px;
   object-fit: cover; /* 이미지 비율 유지 */
   max-height: 100%; /* 최대 높이 설정 */
   transition: transform 0.2s ease-in-out;
@@ -58,21 +58,21 @@
 .publicity-product img {
   width: 100%;
   object-fit: cover;
-  height: 424px;
+  height: 399px;
   transition: transform 0.2s ease-in-out;
   &:hover {
     transform: scale(1.05);
   }
 }
 .main-publicity1-img-box {
-  width: 460px;
+  width: 410px;
   border-radius: 22px;
   overflow: hidden;
   margin-bottom: 8px;
   box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
 }
 .main-publicity-img-box {
-  width: 320px;
+  width: 300px;
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 4px;

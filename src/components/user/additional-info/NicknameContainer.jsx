@@ -26,11 +26,11 @@ export default function NicknameContainer({
     }
 
     // 특수 문자나 숫자가 닉네임에 포함되어 있는지를 확인
-    const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9`]/;
+    const regex = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9`]/;
     if (regex.test(nickname)) {
       setAlert({
         severity: "error",
-        message: "닉네임에 특수 문자나 숫자는 사용이 불가합니다.",
+        message: "닉네임에 특수 문자나 숫자, 공백은 사용이 불가합니다.",
       });
       return;
     }
@@ -80,7 +80,7 @@ export default function NicknameContainer({
           onChange={(e) =>
             setNicknameInfo((pre) => ({
               ...pre,
-              nickname: e.target.value.trimStart(),
+              nickname: e.target.value.trim(),
             }))
           }
           disabled={alert && alert.severity === "success"}

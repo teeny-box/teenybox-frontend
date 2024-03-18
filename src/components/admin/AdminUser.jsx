@@ -9,16 +9,15 @@ import { userUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
 const columns = [
-  { field: "_id", headerName: "회원 번호", width: 128 },
-  { field: "nickname", headerName: "닉네임", width: 128 },
-  { field: "social_provider", headerName: "가입 경로", width: 128 },
-  { field: "role", headerName: "회원 등급", width: 128 },
-  { field: "state", headerName: "회원 상태", width: 128 },
+  { field: "nickname", headerName: "닉네임", width: 146 },
+  { field: "social_provider", headerName: "가입 경로", width: 146 },
+  { field: "role", headerName: "회원 등급", width: 146 },
+  { field: "state", headerName: "회원 상태", width: 146 },
   {
     field: "createdAt",
     headerName: "가입 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 146,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
   },
 ];
 

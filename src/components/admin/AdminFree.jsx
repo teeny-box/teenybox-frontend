@@ -10,14 +10,14 @@ import { postUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
 const columns = [
-  { field: "_id", headerName: "게시글 번호", width: 213 },
-  { field: "title", headerName: "게시글 제목", width: 213 },
-  { field: "nickname", headerName: "작성자", width: 213 },
+  { field: "title", headerName: "게시글 제목", width: 200 },
+  { field: "nickname", headerName: "작성자", width: 200 },
+  { field: "post_number", headerName: "글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
-    width: 100,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} />,
+    width: 200,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -56,9 +56,7 @@ const AdminFree = () => {
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedPostNumbers = posts
-      .filter((post) => post.selected)
-      .map((post) => post.post_number);
+    const selectedPostNumbers = posts.filter((post) => post.selected).map((post) => post.post_number);
 
     // DELETE 요청 보내기
     fetch(`${postUrl}/bulk`, {
@@ -120,10 +118,7 @@ const AdminFree = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}

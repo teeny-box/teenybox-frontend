@@ -24,12 +24,10 @@ export function PRBoardFormPage() {
   useEffect(() => {
     if (user && !user.isLoggedIn) {
       setOpenLoginAlertBack(true);
-      if (user.user?.role === "admin") {
-        setIsNotice(true);
-      }
     }
-
-    console.log(user);
+    if (user?.user?.role === "admin") {
+      setIsNotice(true);
+    }
   }, [user]);
 
   return (
