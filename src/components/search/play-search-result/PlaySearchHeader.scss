@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; // 추가: 요소들이 감싸질 수 있도록 함
 
   span {
     font-weight: bold;
@@ -15,5 +16,15 @@
     font-family: "Nanum Gothic", sans-serif;
     text-align: center;
     border: 1px solid rgba(188, 188, 188, 0.7);
+  }
+
+  // 미디어 쿼리 추가
+  @media (max-width: 600px) { // 여기서는 600px을 예로 들었지만, 실제 디자인에 맞게 조절해주세요.
+    flex-direction: column;
+    align-items: flex-start; // 요소들이 컬럼 방향으로 정렬될 때 시작점에서 정렬되도록 함
+
+    span {
+      margin-bottom: 10px; // 타이틀과 select 박스 사이의 간격 조정
+    }
   }
 }
