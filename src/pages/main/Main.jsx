@@ -9,7 +9,7 @@ import MainReview from "../../components/main/MainReview";
 import { UpButton } from "../../components/common/button/UpButton";
 
 //Main
-const Main = () => {
+export function Main() {
   return (
     <div className="main-container">
       <div
@@ -38,6 +38,4 @@ const Main = () => {
       <UpButton />
     </div>
   );
-};
-
-export default Main;
+}

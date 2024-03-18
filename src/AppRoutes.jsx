@@ -1,20 +1,14 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
-import ScrollToTop from "./hooks/useScrollToTop";
-import CommonLayout from "./pages/common/CommonLayout";
 import { PRBoardListPage, PRBoardDetailPage, PRBoardFormPage, FreeBoardEdit, PRBoardEdit } from "./pages";
 import { FreeBoardDetailPage, FreeBoardFormPage, FreeBoardListPage } from "./pages";
 import { PlayList, PlayDetail } from "./pages";
 import { SignUp_In, InputAdditionalInfo } from "./pages";
-import MyPage from "./pages/mypage/MyPage";
-import Main from "./pages/main/Main";
-import Admin from "./pages/admin/Admin";
-import SearchResult from "./pages/search-result/SearchResultPage";
+import { MyPage, Main, Admin, SearchResultPage, CommonLayout, PrivacyPolicy } from "./pages";
 import { KakaoRedirection, GoogleRedirection, NaverRedirection } from "./pages";
 import { ForbiddenPage, NotFoundPage, NotFoundRedirect } from "./pages";
-import PrivacyPolicy from "./pages/util/PrivacyPolicy";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useScrollToTop from "./hooks/useScrollToTop";
 
 let currentPath = "";
@@ -77,7 +71,7 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
                 <Route path="/play" element={<PlayList />} />
                 <Route path="/play/:playId" element={<PlayDetail />} />
 
-                <Route path="/search" element={<SearchResult />} />
+                <Route path="/search" element={<SearchResultPage />} />
                 <Route path="/*" element={<NotFoundRedirect />} />
               </Routes>
             </CommonLayout>
