@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import "./Header.scss";
-import SearchModal from "./SearchModal";
-import { AlertCustom } from "../alert/Alerts";
+import { Link, useLocation } from "react-router-dom";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link, useLocation } from "react-router-dom";
+import SearchModal from "./SearchModal";
+import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
 import { userUrl } from "../../../apis/apiURLs";
+import "./Header.scss";
 
 const Header = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -55,7 +55,7 @@ const Header = () => {
   };
 
   const onShowModal = () => {
-    setSearchModalOpen(true); //검색 모달 열기
+    setSearchModalOpen(true); // 검색 모달 열기
   };
 
   const onCloseModal = () => {
@@ -78,30 +78,16 @@ const Header = () => {
         <div className="header-box">
           <div className="vertical-box1">
             <Link to="/">
-              <img
-                className="logo"
-                src={process.env.PUBLIC_URL + "/logo.png"}
-                alt="logo-image"
-                component={Link}
-                to="/Main"
-              ></img>
+              <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" component={Link} to="/Main" />
             </Link>
             {userData && userData.isLoggedIn ? (
               <div className="header-icon-box">
-                <Link
-                  to="/mypages"
-                  style={{ textDecoration: "none" }}
-                  className="header-login-btn-box"
-                >
+                <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
                   <AccountCircleIcon className="header-icon" />
                   <p className="header-icon-text">마이페이지</p>
                 </Link>
                 {userData.user.role === "admin" && (
-                  <Link
-                    to="/admin"
-                    style={{ textDecoration: "none" }}
-                    className="header-login-btn-box"
-                  >
+                  <Link to="/admin" style={{ textDecoration: "none" }} className="header-login-btn-box">
                     <AdminPanelSettingsOutlinedIcon className="header-icon" />
                     <p className="header-icon-text">관리자페이지</p>
                   </Link>
@@ -112,11 +98,7 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <Link
-                to="/signup-in"
-                style={{ textDecoration: "none" }}
-                className="header-login-btn-box"
-              >
+              <Link to="/signup-in" style={{ textDecoration: "none" }} className="header-login-btn-box">
                 <LockOutlinedIcon className="header-icon" />
                 <p className="header-icon-text">로그인</p>
               </Link>
@@ -126,32 +108,17 @@ const Header = () => {
             <div className="header-tab-box">
               <div className="header-tab-box">
                 <div className="header-tab">
-                  <Link
-                    to="/play"
-                    className={`header-tab-text1 ${
-                      activeTab === "play" && "active"
-                    }`}
-                  >
+                  <Link to="/play" className={`header-tab-text1 ${activeTab === "play" && "active"}`}>
                     연극
                   </Link>
                 </div>
                 <div className="header-tab">
-                  <Link
-                    to="/promotion"
-                    className={`header-tab-text1 ${
-                      activeTab === "promotion" && "active"
-                    }`}
-                  >
+                  <Link to="/promotion" className={`header-tab-text1 ${activeTab === "promotion" && "active"}`}>
                     홍보
                   </Link>
                 </div>
                 <div className="header-tab">
-                  <Link
-                    to="/community"
-                    className={`header-tab-text2 ${
-                      activeTab === "community" && "active"
-                    }`}
-                  >
+                  <Link to="/community" className={`header-tab-text2 ${activeTab === "community" && "active"}`}>
                     커뮤니티
                   </Link>
                 </div>
@@ -159,10 +126,7 @@ const Header = () => {
             </div>
             <div className="search-container">
               <div className="header-search-btn" onClick={onShowModal}></div>
-              <SearchRoundedIcon
-                className="search-icon"
-                onClick={onShowModal}
-              />
+              <SearchRoundedIcon className="search-icon" onClick={onShowModal} />
             </div>
           </div>
         </div>

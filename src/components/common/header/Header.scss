@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   justify-content: center;
-  background-color: #282828;
+  background-color: #202020;
   height: 180px;
 }
 .header-container::before {
@@ -51,7 +51,7 @@
   justify-content: space-between;
   align-items: center;
   height: 120px;
-  background-color: #282828;
+  background-color: #202020;
   color: white;
   font-size: 50px;
 }
@@ -66,7 +66,7 @@
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  background-color: #282828;
+  background-color: #202020;
 }
 .header-tab-box {
   display: flex;
@@ -106,7 +106,7 @@
 }
 .header-search-btn {
   padding-left: 20px;
-  background-color: #282828;
+  background-color: #202020;
   border-left: 1px solid rgba(187, 187, 187, 0.5);
   border-right: 1px solid rgba(187, 187, 187, 0.5);
   width: 260px;
@@ -115,7 +115,7 @@
   transition: transform 0.4s ease-in-out;
 }
 .header-search-btn:hover {
-  background-color: #222222;
+  background-color: #1c1c1c;
 }
 .search-container {
   position: relative;

@@ -1,73 +1,24 @@
-.banner-img-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
+.swiper {
   width: 1110px;
   height: 100%;
 }
-@keyframes tiltHover {
-  0%, 100% {
-    transform: rotate(-13deg);
-  }
-  40% {
-    transform: rotate(-3deg);
-  }
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.banner-img {
-  rotate: 2deg;
-  width: 212px;
-  padding-top: 4px;
-  user-select: none;
-  transform: rotate(-13deg);
-  &:hover {
-    cursor:grabbing;
-    animation: tiltHover 1s ease;
-  }
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-@keyframes letterSpacingAnimation {
-  0%, 100% {
-    letter-spacing: 1px;
-  }
-  50% {
-    letter-spacing: 3px;
-  }
-}
-@keyframes gapAnimation {
-  0%, 100% {
-    gap: 1px;
-  }
-  50% {
-    gap: 3px;
-  }
-}
-@keyframes scaleAnimation {
-  0%, 100% {
-    transform: scale(0.95);
-  }
-  50% {
-    transform: scale(1); /* 10% 더 커짐 */
-  }
-}
-.banner-text-box {
-  display: flex;
-  flex-direction: column;
-  animation: letterSpacingAnimation 4s ease infinite, gapAnimation 4s ease infinite, scaleAnimation 4s ease infinite;
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: #282828;
-  width: 520px;
-  text-align: center;
-  user-select: none;
-  p {
-    margin: 4px 0;
-  }
-}
-.banner-point-text {
-  margin-left: 4px;
-  font-size: 44px;
-  font-weight: 800;
-  color: #006eff;
+.swiper-pagination-bullet {
+  background: #FFB400 !important;
 }
