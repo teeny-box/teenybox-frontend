@@ -1,4 +1,4 @@
-    const root = "/api";
+    const root = "https://dailytopia2.shop/api";
 
 export const postUrl = `${root}/posts`;
 export const promotionUrl = `${root}/promotions`;

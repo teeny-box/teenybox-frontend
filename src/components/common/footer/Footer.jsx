@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./Footer.scss";
 import { Link } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
-import { AlertCustom } from "../alert/Alerts";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import { AlertCustom } from "../alert/Alerts";
 
 const Footer = () => {
   // 알람
@@ -32,16 +32,7 @@ const Footer = () => {
 
   return (
     <div className="footer-layout">
-      {alert && (
-        <AlertCustom
-          title={alert.title}
-          content={alert.content}
-          open={alert.open}
-          onclose={alert.onclose}
-          severity={alert.severity}
-          time={1000}
-        />
-      )}
+      {alert && <AlertCustom title={alert.title} content={alert.content} open={alert.open} onclose={alert.onclose} severity={alert.severity} time={1000} />}
       <div className="footer-nav">
         <div className="footer-nav-tab1">
           <Link to="/privacy-policy">
@@ -72,33 +63,20 @@ const Footer = () => {
             </a>
             를 통해 의견을 보내주시면 감사하겠습니다.
           </p>
-          <p className="footer-inner">
-            주소: (04799) 서울특별시 성동구 아차산로17길 48 성수낙낙 2층
-          </p>
+          <p className="footer-inner">주소: (04799) 서울특별시 성동구 아차산로17길 48 성수낙낙 2층</p>
           <p className="footer-inner">
             <span className="footer-span1">대표: 이민섭</span>
             <span className="footer-span2">E-mail: teenybox2023@gmail.com</span>
           </p>
-          <p className="footer-copyright">
-            COPYRIGHT © KOREA PERFORMING ARTS BOX OFFICE INFORMATION SYSTEM
-          </p>
+          <p className="footer-copyright">COPYRIGHT © KOREA PERFORMING ARTS BOX OFFICE INFORMATION SYSTEM</p>
         </div>
         <div className="footer-logo-box">
           <Link to="/">
-            <img
-              className="footer-logo"
-              src={process.env.PUBLIC_URL + "/logo2.png"}
-              alt="logo-image"
-              component={Link}
-              to="/Main"
-            ></img>
+            <img className="footer-logo" src={`process.env.PUBLIC_URL/logo2.png`} alt="logo-image" component={Link} to="/Main"></img>
           </Link>
           <div className="footer-share">
             <Tooltip title="URL 복사" arrow>
-              <ShareOutlinedIcon
-                onClick={() => handleLinkShareBtnClick(window.location.href)}
-                style={{ cursor: "pointer", width: "24px", height: "24px" }}
-              />
+              <ShareOutlinedIcon onClick={() => handleLinkShareBtnClick(window.location.href)} style={{ cursor: "pointer", width: "24px", height: "24px" }} />
             </Tooltip>
           </div>
         </div>

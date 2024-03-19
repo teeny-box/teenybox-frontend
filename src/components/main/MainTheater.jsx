@@ -39,12 +39,7 @@ function MainTheater() {
       .catch((err) => console.error(err));
   }, [selectedTheater]);
 
-  const theaterArray = [
-    "국립극장",
-    "아르코예술극장",
-    "대학로예술극장",
-    "명동예술극장",
-  ];
+  const theaterArray = ["국립극장", "아르코예술극장", "대학로예술극장", "명동예술극장"];
 
   const getTheaterInfo = (theaterName) => {
     switch (theaterName) {
@@ -93,12 +88,7 @@ function MainTheater() {
           <ul className="theater-list-box">
             {theaterArray.map((theater) => (
               <li key={theater}>
-                <div
-                  className={`theater-list ${
-                    selectedTheater === theater ? "selected" : ""
-                  }`}
-                  onClick={() => handleTheaterClick(theater)}
-                >
+                <div className={`theater-list ${selectedTheater === theater ? "selected" : ""}`} onClick={() => handleTheaterClick(theater)}>
                   {theater}
                 </div>
               </li>
@@ -108,11 +98,7 @@ function MainTheater() {
       </div>
       <div className="main-theater-body">
         <div className="theater-info">
-          <img
-            className="theater-img"
-            src={theaterInfo.image}
-            alt="theater-image"
-          />
+          <img className="theater-img" src={theaterInfo.image} alt="theater-image" />
           <div>
             <p>{theaterInfo.text1}</p>
             <p>{theaterInfo.text2}</p>
@@ -123,24 +109,15 @@ function MainTheater() {
         <div className="theater-play">
           {shows.map((show, index) => (
             <div key={index} className="theater-play-list">
-              <div
-                className="theater-play-img-box"
-                onClick={() => handleShowClick(show.showId)}
-              >
+              <div className="theater-play-img-box" onClick={() => handleShowClick(show.showId)}>
                 <img src={show.poster} alt={show.title} />
               </div>
               <div onClick={() => handleShowClick(show.showId)}>
-                <p className="theater-play-list-title">
-                  {formatTitle(show.title)}
-                </p>
+                <p className="theater-play-list-title">{formatTitle(show.title)}</p>
                 <p className="theater-play-list-info">
                   {show.location}
                   <br />
-                  {`${new Date(
-                    show.start_date
-                  ).toLocaleDateString()} ~ ${new Date(
-                    show.end_date
-                  ).toLocaleDateString()}`}
+                  {`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}
                 </p>
               </div>
             </div>

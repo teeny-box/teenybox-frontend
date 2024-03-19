@@ -1,51 +1,52 @@
 //Main
 .main-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .banner-container {
-    display: flex;
-    justify-content: center;
-    height: 320px;
-    background-repeat: repeat;
-    background-size: contain;
+  display: flex;
+  justify-content: center;
+  height: 320px;
+  background-repeat: repeat;
+  background-size: contain;
+  background-color: black;
 }
 .best-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 600px;
-    background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 560px;
+  background-color: #282828;
 }
 .preferred-region-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 660px;
-    padding-bottom: 20px;
-    background-color: #202020;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 660px;
+  padding-bottom: 20px;
+  background-color: #202020;
 }
 .publicity-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding: 100px 0 160px 0;
-    background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 108px 0 160px 0;
+  background-color: #282828;
 }
 .review-container {
-    display: flex;
-    justify-content: center;
-    height: 540px;
-    background: linear-gradient(to bottom, #282828 80%, #202020 20%);
+  display: flex;
+  justify-content: center;
+  height: 540px;
+  background: linear-gradient(to bottom, #282828 80%, #202020 20%);
 }
-.child-container {  
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 600px;
-    background-color: #202020;
+.child-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 560px;
+  background-color: #202020;
 }

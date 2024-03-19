@@ -25,7 +25,7 @@
     "sass": "^1.69.5",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.0",
-    "swiper": "^11.0.3",
+    "swiper": "^11.0.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

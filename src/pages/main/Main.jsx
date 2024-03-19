@@ -12,12 +12,7 @@ import { UpButton } from "../../components/common/button/UpButton";
 export function Main() {
   return (
     <div className="main-container">
-      <div
-        className="banner-container"
-        style={{
-          backgroundImage: `url('/block.jpeg'`,
-        }}
-      >
+      <div className="banner-container">
         <MainBanner />
       </div>
       <div className="best-container">
