@@ -1,6 +1,6 @@
 import "./PrivacyPolicy.scss";
 
-export default function PrivacyPolicy() {
+export function PrivacyPolicy() {
   return (
     <div className="privacy-policy">
       <article id="c2ebb5fa-d14d-460f-bd9e-9da363f54734" className="page sans">

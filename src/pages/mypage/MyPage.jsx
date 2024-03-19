@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { userUrl } from "../../apis/apiURLs";
 
-export default function MyPage() {
+export function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedComponent, setSelectedComponent] = useState(searchParams.get("tab") || "MemberInfo");
   const { userData, setUserData } = useContext(AppContext);

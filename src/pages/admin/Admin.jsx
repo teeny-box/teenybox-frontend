@@ -9,12 +9,12 @@ import AdminFreeComments from "../../components/admin/AdminFreeComments";
 import { AppContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
-export default function Admin() {
+export function Admin() {
   const [selectedComponent, setSelectedComponent] = useState("AdminUser");
   const { userData } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // contextApi로 전역 관리하는 유저 정보를 확인하여 비 로그인이거나 일반회원일 경우 접근을 막고 forbidden페이지로 리다이렉션 
+  // contextApi로 전역 관리하는 유저 정보를 확인하여 비 로그인이거나 일반회원일 경우 접근을 막고 forbidden페이지로 리다이렉션
   useEffect(() => {
     if (!userData || !userData.user || userData.user.role !== "admin") {
       navigate("/forbidden");
@@ -57,49 +57,31 @@ export default function Admin() {
           <div className="admin-nav-body">
             <div className="admin-nav-box">
               <h3>회원 관리</h3>
-              <p
-                className={isSelected("AdminUser")}
-                onClick={() => setSelectedComponent("AdminUser")}
-              >
+              <p className={isSelected("AdminUser")} onClick={() => setSelectedComponent("AdminUser")}>
                 회원 정보
               </p>
             </div>
             <div className="admin-nav-box">
               <h3>공연 후기 관리</h3>
-              <p
-                className={isSelected("AdminReview")}
-                onClick={() => setSelectedComponent("AdminReview")}
-              >
+              <p className={isSelected("AdminReview")} onClick={() => setSelectedComponent("AdminReview")}>
                 공연 후기
               </p>
             </div>
             <div className="admin-nav-box">
               <h3>홍보 게시판 관리</h3>
-              <p
-                className={isSelected("AdminPR")}
-                onClick={() => setSelectedComponent("AdminPR")}
-              >
+              <p className={isSelected("AdminPR")} onClick={() => setSelectedComponent("AdminPR")}>
                 홍보 게시글
               </p>
-              <p
-                className={isSelected("AdminPRComments")}
-                onClick={() => setSelectedComponent("AdminPRComments")}
-              >
+              <p className={isSelected("AdminPRComments")} onClick={() => setSelectedComponent("AdminPRComments")}>
                 댓글
               </p>
             </div>
             <div className="admin-nav-box">
               <h3>커뮤니티 관리</h3>
-              <p
-                className={isSelected("AdminFree")}
-                onClick={() => setSelectedComponent("AdminFree")}
-              >
+              <p className={isSelected("AdminFree")} onClick={() => setSelectedComponent("AdminFree")}>
                 커뮤니티 게시글
               </p>
-              <p
-                className={isSelected("AdminFreeComments")}
-                onClick={() => setSelectedComponent("AdminFreeComments")}
-              >
+              <p className={isSelected("AdminFreeComments")} onClick={() => setSelectedComponent("AdminFreeComments")}>
                 댓글
               </p>
             </div>
