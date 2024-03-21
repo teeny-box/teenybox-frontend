@@ -2,13 +2,7 @@ import "./PaginationBox.scss";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-export default function PaginationBox({
-  innerWidth,
-  playsCount,
-  setCurPage,
-  curPage,
-  playListContainerRef,
-}) {
+export default function PaginationBox({ innerWidth, playsCount, setCurPage, curPage, playListContainerRef }) {
   const handlePageNumberChange = (e, number) => {
     setCurPage(number);
     playListContainerRef.current.scrollIntoView({ behavior: "auto" });

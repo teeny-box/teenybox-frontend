@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { CircularProgress, Pagination } from "@mui/material";
+import { useSearchParams } from "react-router-dom/dist";
 import PromotionSearchContentBox from "./PromotionSearchContentBox";
 import "./PromotionSearchResult.scss";
 import { promotionUrl } from "../../../apis/apiURLs";
-import { CircularProgress, Pagination } from "@mui/material";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
-import { useSearchParams } from "react-router-dom/dist";
 import ServerError from "../../common/state/ServerError";
 
 const TYPES = ["play_title", "title", "tag"];

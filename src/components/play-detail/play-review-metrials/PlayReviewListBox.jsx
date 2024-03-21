@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import Backdrop from "@mui/material/Backdrop";
 import "./PlayReviewListBox.scss";
 import "../../common/themes/theme";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
@@ -9,54 +10,19 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PlayReviewContentBox from "./PlayReviewContentBox";
 import { AlertCustom } from "../../common/alert/Alerts";
-import Backdrop from "@mui/material/Backdrop";
 import { reviewUrl } from "../../../apis/apiURLs";
 
-export default function PlayReviewListBox({
-  reviewInfo,
-  setIsReviewFormOpened,
-  review_id,
-  scrollRef,
-  getReviews,
-  getUserReview,
-  getPlayDetailInfo,
-}) {
-  const {
-    isAuthorLogined,
-    author,
-    date,
-    title,
-    isContentExsist,
-    isPhotoExsist,
-    rating,
-    photo,
-    content,
-  } = reviewInfo;
+export default function PlayReviewListBox({ reviewInfo, setIsReviewFormOpened, review_id, scrollRef, getReviews, getUserReview, getPlayDetailInfo }) {
+  const { isAuthorLogined, author, date, title, isContentExsist, isPhotoExsist, rating, photo, content } = reviewInfo;
 
   const navigate = useNavigate();
+  const location = useLocation(); // useLocation 사용을 위해 추가
 
   const [expended, setExpended] = useState(false);
   const [alert, setAlert] = useState(null);
 
-  const handleDeleteBtnClick = () => {
-    setAlert({
-      title: `tennybox.com 내용:`,
-      content: `리뷰를 정말 삭제하시겠습니까?`,
-      open: true,
-      onclose: () => setAlert(null),
-      onclick: () => {
-        setAlert(null);
-        deleteReview(review_id);
-        setIsReviewFormOpened(false);
-      },
-      severity: "warning",
-      checkBtn: "확인",
-      closeBtn: "취소",
-    });
-  };
-
-  const deleteReview = (review_id) => {
-    fetch(`${reviewUrl}/${review_id}`, {
+  const deleteReview = (id) => {
+    fetch(`${reviewUrl}/${id}`, {
       method: "DELETE",
       credentials: "include",
     })
@@ -113,25 +79,38 @@ export default function PlayReviewListBox({
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setAlert({
           title: `tennybox.com 내용:`,
           content: `리뷰 삭제에 실패하였습니다.`,
           open: true,
           onclose: () => setAlert(null),
-          severity: "error",
+          severity: "",
         });
       });
+  };
+
+  const handleDeleteBtnClick = () => {
+    setAlert({
+      title: `tennybox.com 내용:`,
+      content: `리뷰를 정말 삭제하시겠습니까?`,
+      open: true,
+      onclose: () => setAlert(null),
+      onclick: () => {
+        setAlert(null);
+        deleteReview(review_id);
+        setIsReviewFormOpened(false);
+      },
+      severity: "warning",
+      checkBtn: "확인",
+      closeBtn: "취소",
+    });
   };
 
   return (
     <>
       {alert && (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-          onClick={() => setAlert(null)}
-        >
+        <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true} onClick={() => setAlert(null)}>
           <AlertCustom
             title={alert.title}
             content={alert.content}
@@ -187,20 +166,14 @@ export default function PlayReviewListBox({
           <Rating name="read-only" value={rating} precision={0.5} readOnly />
         </div>
         <div className="play-review-remove">
-          {isAuthorLogined ? (
-            <DeleteIcon
-              className="play-review-delete-icon"
-              color="ourGray"
-              onClick={() => handleDeleteBtnClick()}
-            />
-          ) : null}
+          {isAuthorLogined ? <DeleteIcon className="play-review-delete-icon" color="ourGray" onClick={() => handleDeleteBtnClick()} /> : null}
         </div>
       </div>
       {(isContentExsist || isPhotoExsist) && expended ? (
         <PlayReviewContentBox
           reviewContentInfo={{
             photoSrc: photo,
-            content: content,
+            content,
             isAuthorLogined,
           }}
           setIsReviewFormOpened={setIsReviewFormOpened}

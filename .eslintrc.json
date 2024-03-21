@@ -9,9 +9,11 @@
     "sourceType": "module"
   },
   "rules": {
+    "camelcase": "off", // 카멜케이스 적용x
     "no-console": "off",
     "no-underscore-dangle": "off",
     "import/no-unresolved": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "no-nested-ternary": "off" // 중첩삼항연산 허용
   }
 }

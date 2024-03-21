@@ -8,7 +8,12 @@ export default function PromotionSearchContentBox({ content }) {
     <div className="promotion-search-content-box">
       <div className="promotion-img-container">
         <Link to={`/promotion/${content.promotion_number}`} style={{ margin: 0 }}>
-          <img src={content.image_url[0]} onError={(e) => (e.target.src = empty_img)} />
+          <img
+            src={content.image_url[0]}
+            onError={(e) => {
+              e.target.src = empty_img;
+            }}
+          />
         </Link>
       </div>
       <div className="promotion-info">

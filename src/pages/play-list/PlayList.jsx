@@ -30,20 +30,12 @@ export function PlayList() {
   const [plays, setPlays] = useState([]);
   // 선택된 지역
   const [selectedRegion, setSelectedRegion] = useState(
-    !queryParams.has("region")
-      ? ["전체"]
-      : queryParams.getAll("region").includes("대전")
-      ? ["대전", "충청", "세종"]
-      : queryParams.getAll("region")
+    !queryParams.has("region") ? ["전체"] : queryParams.getAll("region").includes("대전") ? ["대전", "충청", "세종"] : queryParams.getAll("region"),
   );
   // 선택된 정렬 기준 (최신순, 낮은 가격순, 종료 임박순, 인기순)
-  const [sortStandard, setSortStandard] = useState(
-    queryParams.get("order") ? queryParams.get("order") : "recent"
-  );
+  const [sortStandard, setSortStandard] = useState(queryParams.get("order") ? queryParams.get("order") : "recent");
   // 현재 페이지
-  const [curPage, setCurPage] = useState(
-    queryParams.get("page") ? Number(queryParams.get("page")) : 1
-  );
+  const [curPage, setCurPage] = useState(queryParams.get("page") ? Number(queryParams.get("page")) : 1);
   // 가져와지는 총 연극 개수
   const [playTotalCnt, setPlayTotalCnt] = useState(0);
   // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
@@ -71,10 +63,10 @@ export function PlayList() {
       queryParams.get("lowPrice") && queryParams.get("highPrice")
         ? [+queryParams.get("lowPrice"), +queryParams.get("highPrice")]
         : !+queryParams.get("lowPrice") && +queryParams.get("highPrice")
-        ? [0, +queryParams.get("highPrice")]
-        : !+queryParams.get("highPrice") && +queryParams.get("lowPrice")
-        ? [+queryParams.get("lowPrice"), 100000]
-        : [0, 100000],
+          ? [0, +queryParams.get("highPrice")]
+          : !+queryParams.get("highPrice") && +queryParams.get("lowPrice")
+            ? [+queryParams.get("lowPrice"), 100000]
+            : [0, 100000],
     상태별: queryParams.has("state") ? queryParams.getAll("state") : ["공연중"],
     날짜별: queryParams.get("date") ? queryParams.get("date") : null,
   });
@@ -100,33 +92,21 @@ export function PlayList() {
         selectedRegion[0] === "전체"
           ? ""
           : selectedRegion.length === 1
-          ? `region=${selectedRegion}&`
-          : selectedRegion
-              .map((region) => `region=${region}&`)
-              .reduce((acc, cur) => acc + cur);
+            ? `region=${selectedRegion}&`
+            : selectedRegion.map((region) => `region=${region}&`).reduce((acc, cur) => acc + cur);
 
       const stateQuery =
         conditions["상태별"][0] === "전체"
           ? ""
           : conditions["상태별"].length === 1
-          ? `state=${conditions["상태별"][0]}&`
-          : conditions["상태별"]
-              .map((state) => `state=${state}&`)
-              .reduce((acc, cur) => acc + cur);
+            ? `state=${conditions["상태별"][0]}&`
+            : conditions["상태별"].map((state) => `state=${state}&`).reduce((acc, cur) => acc + cur);
 
-      const lowPriceQuery =
-        conditions["가격별"][0] === 0
-          ? ""
-          : `lowPrice=${conditions["가격별"][0]}&`;
+      const lowPriceQuery = conditions["가격별"][0] === 0 ? "" : `lowPrice=${conditions["가격별"][0]}&`;
 
-      const highPriceQuery =
-        conditions["가격별"][1] === 100000
-          ? ""
-          : `highPrice=${conditions["가격별"][1]}&`;
+      const highPriceQuery = conditions["가격별"][1] === 100000 ? "" : `highPrice=${conditions["가격별"][1]}&`;
 
-      const dateQuery = conditions["날짜별"]
-        ? `&date=${conditions["날짜별"]}&`
-        : "";
+      const dateQuery = conditions["날짜별"] ? `&date=${conditions["날짜별"]}&` : "";
 
       reqQuery = `?${regionQuery}${stateQuery}${lowPriceQuery}${highPriceQuery}order=${sortStandard}${dateQuery}&page=${curPage}&limit=24`;
 
@@ -200,22 +180,11 @@ export function PlayList() {
 
   return (
     <div className="play-list-container" ref={playListContainerRef}>
-      {error ? (
-        <AlertCustom
-          title="tennybox.com 내용:"
-          content={error}
-          open={isAlertOpen}
-          onclose={() => setIsAlertOpen(false)}
-          severity={"error"}
-        />
-      ) : null}
+      {error ? <AlertCustom title="tennybox.com 내용:" content={error} open={isAlertOpen} onclose={() => setIsAlertOpen(false)} severity={"error"} /> : null}
       {isLoading && <Loading />}
       {!isLoading && (
         <>
-          <RegionSelectBar
-            changeSelectedRegion={changeSelectedRegion}
-            selectedRegion={selectedRegion}
-          />
+          <RegionSelectBar changeSelectedRegion={changeSelectedRegion} selectedRegion={selectedRegion} />
           <ConditionSearch
             sortStandard={sortStandard}
             conditionTexts={conditionTexts}
@@ -228,37 +197,20 @@ export function PlayList() {
             {conditions["상태별"][0] === "전체" ? (
               <Chip icon={<MovieIcon />} label="공연 상태 전체" />
             ) : (
-              conditions["상태별"].map((state, idx) => (
-                <Chip icon={<MovieIcon />} label={state} key={idx} />
-              ))
+              conditions["상태별"].map((state, idx) => <Chip icon={<MovieIcon />} label={state} key={idx} />)
             )}
-            {conditions["날짜별"] ? (
-              <Chip icon={<CalendarMonthIcon />} label={conditions["날짜별"]} />
-            ) : null}
-            {conditions["가격별"][0] === 0 &&
-            conditions["가격별"][1] === 100000 ? (
+            {conditions["날짜별"] ? <Chip icon={<CalendarMonthIcon />} label={conditions["날짜별"]} /> : null}
+            {conditions["가격별"][0] === 0 && conditions["가격별"][1] === 100000 ? (
               <Chip icon={<LocalAtmIcon />} label="가격 전체" />
             ) : conditions["가격별"][1] === 100000 ? (
-              <Chip
-                icon={<LocalAtmIcon />}
-                label={`${conditions["가격별"][0]}원 ~ 100000원 이상`}
-              />
+              <Chip icon={<LocalAtmIcon />} label={`${conditions["가격별"][0]}원 ~ 100000원 이상`} />
             ) : (
-              <Chip
-                icon={<LocalAtmIcon />}
-                label={conditions["가격별"]
-                  .map((price) => price + "원")
-                  .join(" ~ ")}
-              />
+              <Chip icon={<LocalAtmIcon />} label={conditions["가격별"].map((price) => price + "원").join(" ~ ")} />
             )}
           </Stack>
           {!playTotalCnt || error === "연극 목록 가져오기에 실패하였습니다." ? (
             <>
-              <PlayListHeader
-                count={playTotalCnt}
-                setSortStandard={setSortStandard}
-                sortStandard={sortStandard}
-              />
+              <PlayListHeader count={playTotalCnt} setSortStandard={setSortStandard} sortStandard={sortStandard} />
               <div className="play-no-exsist">
                 <Empty />
               </div>
@@ -266,11 +218,7 @@ export function PlayList() {
           ) : null}
           {playTotalCnt > 0 ? (
             <>
-              <PlayListHeader
-                count={playTotalCnt}
-                setSortStandard={setSortStandard}
-                sortStandard={sortStandard}
-              />
+              <PlayListHeader count={playTotalCnt} setSortStandard={setSortStandard} sortStandard={sortStandard} />
               <div className="play-list-main">
                 {plays.map((play) => (
                   <PlayBox
@@ -280,10 +228,7 @@ export function PlayList() {
                       imgSrc: play.poster,
                       title: play.title,
                       place: play.location,
-                      period:
-                        dayjs(play.start_date).format("YYYY-MM-DD") +
-                        " ~ " +
-                        dayjs(play.end_date).format("YYYY-MM-DD"),
+                      period: dayjs(play.start_date).format("YYYY-MM-DD") + " ~ " + dayjs(play.end_date).format("YYYY-MM-DD"),
                       price: play.price,
                       state: play.state,
                     }}
