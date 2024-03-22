@@ -6,7 +6,10 @@
   "extends": ["airbnb-base", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "camelcase": "off", // 카멜케이스 적용x
