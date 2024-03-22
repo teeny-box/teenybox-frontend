@@ -1,12 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { Backdrop, Button } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import "./Comment.scss";
 import { AlertContext, AppContext } from "../../App";
-import { Backdrop, Button } from "@mui/material";
 import { commentUrl } from "../../apis/apiURLs";
 import { AlertCustom } from "../common/alert/Alerts";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import default_user_img from "../../assets/img/default_user_img.svg";
-import { useNavigate } from "react-router-dom";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
 
 export function Comment({ commentData, deleteComment }) {
@@ -53,7 +53,7 @@ export function Comment({ commentData, deleteComment }) {
   useEffect(() => {
     if (!isEditing) {
       const textBox = document.querySelector(`#comment${comment._id} .text`);
-      if (parseInt(textBox.clientHeight) > 262) {
+      if (parseInt(textBox.clientHeight, 10) > 262) {
         setDisable(false);
       }
     }
@@ -63,7 +63,13 @@ export function Comment({ commentData, deleteComment }) {
     <>
       <div className="comment-box" id={`comment${comment._id}`}>
         <div className="top">
-          <img className="user-profile-img" src={comment.user.profile_url || default_user_img} onError={(e) => (e.target.src = default_user_img)} />
+          <img
+            className="user-profile-img"
+            src={comment.user.profile_url || default_user_img}
+            onError={(e) => {
+              e.target.src = default_user_img;
+            }}
+          />
           <div className="flex-box">
             <div className="user-id">{comment.user.nickname || DELETE_USER_NICKNAME}</div>
             <div className="time">

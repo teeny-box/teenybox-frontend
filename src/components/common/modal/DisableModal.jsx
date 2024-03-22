@@ -1,6 +1,4 @@
-import Modal from "@mui/material/Modal";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
+import { Modal, Backdrop, Box } from "@mui/material";
 
 export default function DisableModal() {
   const style = {
@@ -17,11 +15,7 @@ export default function DisableModal() {
   };
 
   return (
-    <Modal
-      open={true}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ sx: { backgroundColor: "transparent" } }}
-    >
+    <Modal open={true} BackdropComponent={Backdrop} BackdropProps={{ sx: { backgroundColor: "transparent" } }}>
       <Box sx={{ style }}></Box>
     </Modal>
   );

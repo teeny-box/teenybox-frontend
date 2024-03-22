@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AlertContext } from "../../../App";
 import { Backdrop } from "@mui/material";
+import { AlertContext } from "../../../App";
 import { AlertCustom } from "./Alerts";
 
 export default function FetchErrorAlert() {

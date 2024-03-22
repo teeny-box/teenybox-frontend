@@ -1,18 +1,15 @@
 import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
 import React, { Children, useContext, useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
-import "./PRBoardForm.scss";
-import { AlertCustom } from "../common/alert/Alerts";
 import { useNavigate } from "react-router-dom";
-import { presignedUrl, promotionUrl, uploadImgUrl } from "../../apis/apiURLs";
 import dayjs from "dayjs";
+import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import "./PRBoardForm.scss";
+import { AlertCustom } from "../common/alert/Alerts";
+import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import empty_img from "../../assets/img/empty_img.svg";
-import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
 export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
@@ -54,7 +51,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       const res = await fetch(`${promotionUrl}/${post.promotion_number}`, {
         method: "PUT",
@@ -87,7 +84,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     }
   };
 
-  const handleClickSubmitButton = (e) => {
+  const handleClickSubmitButton = () => {
     setSubmit(true);
     if (!mainImageURL) {
       setErrorMainImage("사진을 선택해주세요.");
@@ -112,11 +109,12 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     if (submit && error) {
       return (
         <div className="error">
-          <ErrorOutlineIcon fontSize="inherit" />
+          <ErrorOutline fontSize="inherit" />
           {error}
         </div>
       );
     }
+    return <></>;
   };
 
   const handleChangePlayTitle = (e) => {
@@ -129,7 +127,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     }
   };
 
-  const handleErrorDate = (error) => {
+  const handleErrorDate = () => {
     setErrorDate("날짜를 선택해주세요.");
   };
 
@@ -191,6 +189,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     } catch (e) {
       console.error(e);
       setOpenFetchErrorAlert(true);
+      return false;
     }
   };
 
@@ -199,7 +198,8 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     const file = e.target.files[0];
 
     if (file.size > 1024 * 1024 * 5) {
-      return setErrorMainImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      setErrorMainImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      return;
     }
     const data = await uploadImage(file);
 
@@ -207,9 +207,9 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       setMainImageURL(data);
       setErrorMainImage("");
 
-      let image = new Image();
+      const image = new Image();
       image.src = data;
-      image.onload = function () {
+      image.onload = () => {
         if (image.width > image.height) {
           setWarningMainImage("red");
         } else {
@@ -222,7 +222,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
     e.target.value = null;
   };
 
-  const handleRemoveMainImage = async (e) => {
+  const handleRemoveMainImage = async () => {
     setMainImageURL();
     setErrorMainImage("");
     setWarningMainImage("");
@@ -231,23 +231,23 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   const handleChangeImage = async (e) => {
     if (!e.target.files.length) return;
 
-    let newImg = [];
+    const newImg = [];
     let error = "";
 
-    let newImage = Array.from(e.target.files);
-    for (let file of newImage) {
+    const newImage = Array.from(e.target.files);
+    newImage.forEach(async (file) => {
       if (file.size > 1024 * 1024 * 5) {
         error = "사진은 최대 5MB까지 업로드 가능합니다.";
-        continue;
-      }
-      const data = await uploadImage(file);
-
-      if (data) {
-        newImg.push(data);
       } else {
-        error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
+        const data = await uploadImage(file);
+
+        if (data) {
+          newImg.push(data);
+        } else {
+          error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
+        }
       }
-    }
+    });
 
     setImageURL([...imageURL, ...newImg]);
     setErrorImage(error);
@@ -277,7 +277,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
 
   const handleRemoveTag = (e) => {
     const tagId = e.target.closest(".tag-box").id;
-    let newList = [...tagList];
+    const newList = [...tagList];
     newList.splice(tagId, 1);
     setTagList(newList);
   };
@@ -291,7 +291,19 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
   }, [inputStartDate, inputEndDate]);
 
   useEffect(() => {
-    if (inputTitle || inputContent || imageURL || inputTag || tagList || inputPlayTitle || inputLocation || inputHost || inputRuntime || inputStartDate || inputEndDate)
+    if (
+      inputTitle ||
+      inputContent ||
+      imageURL ||
+      inputTag ||
+      tagList ||
+      inputPlayTitle ||
+      inputLocation ||
+      inputHost ||
+      inputRuntime ||
+      inputStartDate ||
+      inputEndDate
+    )
       setInput(true);
     else setInput(false);
   }, [inputTitle, inputContent, imageURL, inputTag, inputPlayTitle, inputLocation, inputHost, inputRuntime, inputStartDate, inputEndDate]);
@@ -343,14 +355,30 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         <div className="flex-box">
           <div className="input">
             <label htmlFor="location">장소</label>
-            <input type="text" id="location" name="location" value={inputLocation} onChange={handleChangeLocation} maxLength={40} placeholder="장소를 작성해 주세요." />
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={inputLocation}
+              onChange={handleChangeLocation}
+              maxLength={40}
+              placeholder="장소를 작성해 주세요."
+            />
           </div>
         </div>
 
         <div className="flex-box">
           <div className="input">
             <label htmlFor="host">주최</label>
-            <input type="text" id="host" name="host" value={inputHost} onChange={handleChangeHost} maxLength={20} placeholder="주최자 또는 기관을 작성해 주세요." />
+            <input
+              type="text"
+              id="host"
+              name="host"
+              value={inputHost}
+              onChange={handleChangeHost}
+              maxLength={20}
+              placeholder="주최자 또는 기관을 작성해 주세요."
+            />
           </div>
         </div>
 
@@ -419,7 +447,16 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           <label htmlFor="title">
             글 제목<span className="star">*</span>
           </label>
-          <input type="text" id="title" name="title" value={inputTitle} onChange={handleChangeTitle} maxLength={40} placeholder="제목을 작성해 주세요." required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={inputTitle}
+            onChange={handleChangeTitle}
+            maxLength={40}
+            placeholder="제목을 작성해 주세요."
+            required
+          />
         </div>
         {handleErrorPlaceholder(errorTitle)}
       </div>
@@ -449,10 +486,10 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         {tagList && (
           <div className="tag-list flex">
             {tagList.map((tag, idx) => (
-              <div id={idx} className="tag-box flex">
+              <div id={idx} className="tag-box flex" key={idx + tag}>
                 <span># {tag} </span>
                 <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
-                  <CloseIcon fontSize="inherit" />
+                  <Close fontSize="inherit" />
                 </IconButton>
               </div>
             ))}
@@ -465,23 +502,28 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
           <label htmlFor="main-image">
             대표이미지<span className="star">*</span>
           </label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="main-image">
               파일 찾기
             </label>
           </Button>
-          <span className={"placeholder " + warningMainImage}>(세로 이미지 권장)</span>
+          <span className={`placeholder ${warningMainImage}`}>(세로 이미지 권장)</span>
           <input type="file" id="main-image" name="main-image" accept="image/*" onChange={handleChangeMainImage} required />
         </div>
         {errorMainImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorMainImage}
           </div>
         )}
         {mainImageURL && (
           <div className="main image">
-            <img src={mainImageURL} onError={(e) => (e.target.src = empty_img)} />
+            <img
+              src={mainImageURL}
+              onError={(e) => {
+                e.target.src = empty_img;
+              }}
+            />
             <IconButton className="icon" onClick={handleRemoveMainImage}>
               <Close />
             </IconButton>
@@ -492,7 +534,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
       <div className="input image">
         <div>
           <label htmlFor="image">추가이미지</label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="image">
               파일 찾기
             </label>
@@ -501,7 +543,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
         </div>
         {errorImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorImage}
           </div>
         )}
@@ -515,7 +557,7 @@ export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, use
                     <Close />
                   </IconButton>
                 </div>
-              ))
+              )),
             )}
           </div>
         )}

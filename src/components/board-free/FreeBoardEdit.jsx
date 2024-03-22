@@ -1,14 +1,14 @@
-import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../board-pr/PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
-import { useNavigate } from "react-router-dom";
 import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 
-export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
+export default function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -25,7 +25,7 @@ export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       const res = await fetch(`${postUrl}/${post.post_number}`, {
         method: "PUT",
@@ -47,10 +47,11 @@ export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      console.error(e);
     }
   };
 
-  const handleClickSubmitButton = (e) => {
+  const handleClickSubmitButton = () => {
     setSubmit(true);
     if (errorTitle) {
       document.querySelector("#title").focus();
@@ -70,6 +71,7 @@ export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
         </div>
       );
     }
+    return <></>;
   };
 
   const handleTitleChange = (e) => {
@@ -100,7 +102,7 @@ export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
 
   const handleRemoveTag = (e) => {
     const tagId = e.target.closest(".tag-box").id;
-    let newList = [...tagList];
+    const newList = [...tagList];
     newList.splice(tagId, 1);
     setTagList(newList);
   };
@@ -136,7 +138,16 @@ export function FreeBoardEditForm({ setInput, handleCancle, post, userRole }) {
       <div className="flex-box title">
         <div className="input">
           <label htmlFor="title">제목*</label>
-          <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성해 주세요." required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={inputTitle}
+            onChange={handleTitleChange}
+            maxLength={40}
+            placeholder="제목을 작성해 주세요."
+            required
+          />
         </div>
         {handleError(errorTitle)}
       </div>

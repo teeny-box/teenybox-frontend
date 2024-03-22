@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FreeBoardForm } from "../../components/board-free/FreeBoardForm";
-import "./FreeBoardFormPage.scss";
 import { useNavigate } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import FreeBoardForm from "../../components/board-free/FreeBoardForm";
+import "./FreeBoardFormPage.scss";
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 import { AlertContext } from "../../App";
-import { Backdrop } from "@mui/material";
 
 export function FreeBoardFormPage() {
   const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export function FreeBoardFormPage() {
   const user = useGetUser();
   const { setOpenLoginAlertBack } = useContext(AlertContext);
 
-  const handleCancle = (e) => {
+  const handleCancle = () => {
     if (input) setOpen(true);
     else nav("/community");
   };

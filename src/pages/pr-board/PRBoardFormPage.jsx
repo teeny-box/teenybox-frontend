@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { PRBoardForm } from "../../components/board-pr/PRBoardForm";
 import "./PRBoardFormPage.scss";
-import { AlertCustom } from "../../components/common/alert/Alerts";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
-import { AlertContext } from "../../App";
 import { Backdrop } from "@mui/material";
 import { PRBoardNoticeForm } from "../../components/board-pr/PRBoardNoticeForm";
+import { PRBoardForm } from "../../components/board-pr/PRBoardForm";
+import { AlertCustom } from "../../components/common/alert/Alerts";
+import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
+import { AlertContext } from "../../App";
 
 export function PRBoardFormPage() {
   const [open, setOpen] = useState(false);
@@ -16,7 +16,7 @@ export function PRBoardFormPage() {
   const user = useGetUser();
   const { setOpenLoginAlertBack } = useContext(AlertContext);
 
-  const handleCancle = (e) => {
+  const handleCancle = () => {
     if (input) setOpen(true);
     else nav("/promotion");
   };

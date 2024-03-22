@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import PRBoardPost from "../../components/board-pr/PRBoardPost";
-import { BoardSecondHeader, BoardNav, CommentForm, CommentsList } from "../../components/board";
 import "./PRBoardDetailPage.scss";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { commentUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
-import { BoardRightContainer } from "../../components/board/BoardRightContainer";
-import setStoreViewList from "../../utils/setStoreRecentViewList";
+import PRBoardPost from "../../components/board-pr/PRBoardPost";
+import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
+import { commentUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
 import { COMMENTS_LIMIT } from "../../utils/const";
@@ -27,7 +25,7 @@ export function PRBoardDetailPage() {
     setState("loading");
 
     try {
-      const postId = params.postId;
+      const { postId } = params;
       const res = await fetch(`${promotionUrl}/${postId}`);
       const data = await res.json();
 
@@ -86,8 +84,8 @@ export function PRBoardDetailPage() {
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
-          const data = await loginRes.json();
-          setUserData({ isLoggedIn: true, user: data.user });
+          const _data = await loginRes.json();
+          setUserData({ isLoggedIn: true, user: _data.user });
         } else {
           setUserData({ isLoggedIn: false });
           setOpenLoginAlertBack(true);
@@ -154,7 +152,9 @@ export function PRBoardDetailPage() {
                 {post._id && <PRBoardPost data={post} totalCommentCount={totalCount} />}
                 <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                 <CommentForm createComment={createComment} postId={post?._id} />
-                {!comments.length || <CommentsList comments={comments} totalCount={totalCount} getComments={getComments} setComments={setComments} setTotalCount={setTotalCount} />}
+                {!comments.length || (
+                  <CommentsList comments={comments} totalCount={totalCount} getComments={getComments} setComments={setComments} setTotalCount={setTotalCount} />
+                )}
                 {commentState === "loading" && (
                   <div className="progress-box">
                     <CircularProgress color="secondary" className="progress-100" />

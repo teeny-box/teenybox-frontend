@@ -1,8 +1,6 @@
 import { useState } from "react";
-import Modal from "@mui/material/Modal";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import CloseIcon from "@mui/icons-material/Close";
+import { Modal, Backdrop, Box } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 export default function ImageExpandModal({ imgSrc, setClickedPhoto }) {
   const [open, setOpen] = useState(true);
@@ -43,21 +41,14 @@ export default function ImageExpandModal({ imgSrc, setClickedPhoto }) {
   return (
     <Modal
       open={open}
-      BackdropComponent={(props) => (
-        <Backdrop {...props} onClick={() => handleClose()} />
-      )}
+      BackdropComponent={(props) => <Backdrop {...props} onClick={() => handleClose()} />}
       style={{
         backgroundColor: "rgb(0, 0, 0, 0.43)",
       }}
     >
       <Box sx={{ boxStyle }}>
         <img src={imgSrc} alt="확대된 리뷰 이미지" style={imgStyle} />
-        <CloseIcon
-          fontSize="large"
-          color="ourGray"
-          style={closeIconStyle}
-          onClick={() => handleClose()}
-        />
+        <Close fontSize="large" color="ourGray" style={closeIconStyle} onClick={() => handleClose()} />
       </Box>
     </Modal>
   );

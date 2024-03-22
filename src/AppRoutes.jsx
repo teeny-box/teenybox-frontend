@@ -1,21 +1,40 @@
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
-import { PRBoardListPage, PRBoardDetailPage, PRBoardFormPage, FreeBoardEdit, PRBoardEdit } from "./pages";
-import { FreeBoardDetailPage, FreeBoardFormPage, FreeBoardListPage } from "./pages";
-import { PlayList, PlayDetail } from "./pages";
-import { SignUp_In, InputAdditionalInfo } from "./pages";
-import { MyPage, Main, Admin, SearchResultPage, CommonLayout, PrivacyPolicy } from "./pages";
-import { KakaoRedirection, GoogleRedirection, NaverRedirection } from "./pages";
-import { ForbiddenPage, NotFoundPage, NotFoundRedirect } from "./pages";
-import { useEffect } from "react";
+import {
+  PRBoardListPage,
+  PRBoardDetailPage,
+  PRBoardFormPage,
+  FreeBoardEdit,
+  PRBoardEdit,
+  FreeBoardDetailPage,
+  FreeBoardFormPage,
+  FreeBoardListPage,
+  PlayList,
+  PlayDetail,
+  SignUp_In,
+  InputAdditionalInfo,
+  MyPage,
+  Main,
+  Admin,
+  SearchResultPage,
+  CommonLayout,
+  PrivacyPolicy,
+  KakaoRedirection,
+  GoogleRedirection,
+  NaverRedirection,
+  ForbiddenPage,
+  NotFoundPage,
+  NotFoundRedirect,
+} from "./pages";
 import useScrollToTop from "./hooks/useScrollToTop";
 
 let currentPath = "";
 let reloard = true;
 
 export default function AppRoutes({ setPrevPlayListQuery }) {
-  let location = useLocation();
+  const location = useLocation();
   useScrollToTop();
 
   useEffect(() => {

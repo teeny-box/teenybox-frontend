@@ -1,9 +1,9 @@
 import "./App.scss";
 import { useState, useEffect, createContext } from "react";
 import { Helmet } from "react-helmet";
-import { theme } from "./components/common/themes/theme";
 import { ThemeProvider } from "@mui/material";
-import { BrowserRouter, useLocation } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { theme } from "./components/common/themes/theme";
 import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
@@ -63,11 +63,7 @@ function App() {
   return (
     <div className="App">
       <Helmet>
-        <script
-          type="text/javascript"
-          defer
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`}
-        />
+        <script type="text/javascript" defer src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`} />
       </Helmet>
       <ThemeProvider theme={theme}>
         <AppContext.Provider
