@@ -1,4 +1,4 @@
-const root = "/api";
+const root = process.env.REACT_APP_BASE_URL;
 
 export const postUrl = `${root}/posts`;
 export const promotionUrl = `${root}/promotions`;
