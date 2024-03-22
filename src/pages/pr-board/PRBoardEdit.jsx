@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
 import "./PRBoardFormPage.scss";
-import { AlertCustom } from "../../components/common/alert/Alerts";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import { AlertCustom } from "../../components/common/alert/Alerts";
 import { PRBoardEditForm } from "../../components/board-pr/PRBoardEdit";
 import { promotionUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
-import { Backdrop } from "@mui/material";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 import { PRBoardNoticeEditForm } from "../../components/board-pr/PRBoardNoticeEdit";
 
@@ -19,7 +19,7 @@ export function PRBoardEdit() {
   const user = useGetUser();
   const { setOpenLoginAlertBack } = useContext(AlertContext);
 
-  const handleCancle = (e) => {
+  const handleCancle = () => {
     if (input) setOpen(true);
     else nav("/promotion");
   };
@@ -64,9 +64,21 @@ export function PRBoardEdit() {
       <div className="body">
         {post &&
           (isNotice ? (
-            <PRBoardNoticeEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+            <PRBoardNoticeEditForm
+              setInput={(boolean) => setInput(boolean)}
+              handleCancle={handleCancle}
+              post={post}
+              setIsNotice={setIsNotice}
+              userRole={user?.user?.role}
+            />
           ) : (
-            <PRBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+            <PRBoardEditForm
+              setInput={(boolean) => setInput(boolean)}
+              handleCancle={handleCancle}
+              post={post}
+              setIsNotice={setIsNotice}
+              userRole={user?.user?.role}
+            />
           ))}
       </div>
 

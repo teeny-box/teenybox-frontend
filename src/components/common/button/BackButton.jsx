@@ -1,7 +1,6 @@
 import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-// import "./UpButton.scss";
 
 export function BackButton({ state }) {
   const nav = useNavigate();

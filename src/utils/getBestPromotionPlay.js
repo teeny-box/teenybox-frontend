@@ -17,7 +17,7 @@ export default async function getBestPromotionPlay() {
       newList = [...newList, ...data_likes.promotions];
     }
 
-    newList = newList.reduce(function (newArr, current) {
+    newList = newList.reduce((newArr, current) => {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
         newArr.push(current);
       }
@@ -33,5 +33,6 @@ export default async function getBestPromotionPlay() {
     return newList;
   } catch (e) {
     console.error(e);
+    return false;
   }
 }

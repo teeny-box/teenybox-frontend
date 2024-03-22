@@ -1,14 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../board-pr/PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
-import { useNavigate } from "react-router-dom";
 import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 
-export function FreeBoardForm({ setInput, handleCancle, userRole }) {
+export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -25,7 +25,7 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       const res = await fetch(`${postUrl}`, {
         method: "POST",
@@ -47,10 +47,11 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      console.error(e);
     }
   };
 
-  const handleClickSubmitButton = (e) => {
+  const handleClickSubmitButton = () => {
     setSubmit(true);
     if (errorTitle) {
       document.querySelector("#title").focus();
@@ -70,6 +71,7 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
         </div>
       );
     }
+    return <></>;
   };
 
   const handleTitleChange = (e) => {
@@ -100,7 +102,7 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
 
   const handleRemoveTag = (e) => {
     const tagId = e.target.closest(".tag-box").id;
-    let newList = [...tagList];
+    const newList = [...tagList];
     newList.splice(tagId, 1);
     setTagList(newList);
   };
@@ -134,7 +136,16 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
       <div className="flex-box title">
         <div className="input">
           <label htmlFor="title">*제목</label>
-          <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성해 주세요." required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={inputTitle}
+            onChange={handleTitleChange}
+            maxLength={40}
+            placeholder="제목을 작성해 주세요."
+            required
+          />
         </div>
         {handleError(errorTitle)}
       </div>
@@ -162,7 +173,7 @@ export function FreeBoardForm({ setInput, handleCancle, userRole }) {
         {tagList && (
           <div className="tag-list flex">
             {tagList.map((tag, idx) => (
-              <div id={idx} className="tag-box flex">
+              <div id={idx} className="tag-box flex" key={idx + tag}>
                 <span># {tag} </span>
                 <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
                   <CloseIcon fontSize="inherit" />

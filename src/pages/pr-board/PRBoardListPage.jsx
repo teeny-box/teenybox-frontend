@@ -1,19 +1,18 @@
-import React, { Children, useEffect, useState } from "react";
-import { BoardListHeader } from "../../components/board";
 import "./PRBoardListPage.scss";
+import React, { Children, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom/dist";
+import { useInView } from "react-intersection-observer";
+import { Button, CircularProgress, FormControl, MenuItem, Select, Skeleton } from "@mui/material";
+import { ArrowBackIosRounded, ArrowForwardIosRounded, SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { BoardListHeader } from "../../components/board";
 import PRBoardList from "../../components/board-pr/PRBoardList";
 import { UpButton } from "../../components/common/button/UpButton";
-import { useInView } from "react-intersection-observer";
-import { promotionUrl } from "../../apis/apiURLs";
-import { Button, CircularProgress, FormControl, MenuItem, Select, Skeleton } from "@mui/material";
 import ServerError from "../../components/common/state/ServerError";
-import Empty from "../../components/common/state/Empty";
-import { ArrowBackIosRounded, ArrowForwardIosRounded, SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom/dist";
-import getBestPromotionPlay from "../../utils/getBestPromotionPlay";
 import TimeFormat from "../../components/common/time/TimeFormat";
+import Empty from "../../components/common/state/Empty";
+import getBestPromotionPlay from "../../utils/getBestPromotionPlay";
+import { promotionUrl } from "../../apis/apiURLs";
 import numberFormat from "../../utils/numberFormat";
-import minilogo from "../../assets/img/minilogo.png";
 
 export function PRBoardListPage() {
   const [boardList, setBoardList] = useState([]);
@@ -32,7 +31,7 @@ export function PRBoardListPage() {
   const nav = useNavigate();
 
   const getBannerList = async () => {
-    let newList = await getBestPromotionPlay();
+    const newList = await getBestPromotionPlay();
     setBannerList(newList.slice(0, 5));
   };
 
@@ -47,7 +46,7 @@ export function PRBoardListPage() {
   };
 
   const addBoardList = (newList) => {
-    const uniqueList = [...boardList, ...newList].reduce(function (newArr, current) {
+    const uniqueList = [...boardList, ...newList].reduce((newArr, current) => {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
         newArr.push(current);
       }
@@ -65,7 +64,11 @@ export function PRBoardListPage() {
       const data = await res.json();
 
       if (res.ok) {
-        method === "add" ? addBoardList(data.promotions) : setBoardList(data.promotions);
+        if (method === "add") {
+          addBoardList(data.promotions);
+        } else {
+          setBoardList(data.promotions);
+        }
         setPage(curPage + 1);
         setTotalCnt(data.totalCount);
         setState("hasValue");
@@ -125,7 +128,7 @@ export function PRBoardListPage() {
       {bannerList.length + fixedList.length ? (
         <div className="best-box ">
           <img
-            className={"bg-img" + (bannerIndex ? "" : " small")}
+            className={`bg-img${bannerIndex ? "" : " small"}`}
             src={bannerIndex ? bannerList[bannerIndex - 1]?.image_url[0] : "https://i.pinimg.com/564x/6e/b0/9f/6eb09f7b1a6467f17847f99ae732791b.jpg"} // "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"}
           />
           <div className="bg-mask">
@@ -208,7 +211,7 @@ export function PRBoardListPage() {
                     </Link>
                   </div>
                 </div>
-              ))
+              )),
             )}
             {bannerList.length > 0 && (
               <>
@@ -268,7 +271,9 @@ export function PRBoardListPage() {
         </>
       ) : (
         <div className={`state box`}>
-          <Empty children={<></>} />
+          <Empty>
+            <></>
+          </Empty>
         </div>
       )}
     </div>

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { BoardListHeader, BoardNav } from "../../components/board";
-import FreeBoardList from "../../components/board-free/FreeBoardList";
 import "./FreeBoardListPage.scss";
-import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { postUrl } from "../../apis/apiURLs";
+import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
+import { Loop } from "@mui/icons-material";
+import { BoardListHeader } from "../../components/board";
+import FreeBoardList from "../../components/board-free/FreeBoardList";
 import ServerError from "../../components/common/state/ServerError";
 import Empty from "../../components/common/state/Empty";
-import { Loop, SwapVert } from "@mui/icons-material";
 import { BoardRightContainer } from "../../components/board/BoardRightContainer";
+import { postUrl } from "../../apis/apiURLs";
 
 export function FreeBoardListPage() {
   const [fixedList, setFixedList] = useState([]);
@@ -20,12 +20,6 @@ export function FreeBoardListPage() {
   const [sort, setSort] = useState("post_number desc");
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const handleClick = () => {
-    setToggle(true);
-    setTimeout(() => setToggle(false), 500);
-    getPage();
-  };
 
   const getFixedList = async () => {
     try {
@@ -55,6 +49,12 @@ export function FreeBoardListPage() {
     } catch (err) {
       setState("hasError");
     }
+  };
+
+  const handleClick = () => {
+    setToggle(true);
+    setTimeout(() => setToggle(false), 500);
+    getPage();
   };
 
   const handleChange = (e, value) => {
@@ -122,7 +122,9 @@ export function FreeBoardListPage() {
             </>
           ) : (
             <div className="state">
-              <Empty children={<></>} />
+              <Empty>
+                <></>
+              </Empty>
             </div>
           )}
         </div>

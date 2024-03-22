@@ -1,5 +1,6 @@
 export * from "./BoardHeader";
 export * from "./BoardNav";
+export * from "./BoardRightContainer";
 export * from "./Comment";
 export * from "./CommentForm";
 export * from "./CommentsList";

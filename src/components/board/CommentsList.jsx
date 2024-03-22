@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Comment } from "./Comment";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Comment } from "./Comment";
 import "./CommentsList.scss";
 import { commentUrl } from "../../apis/apiURLs";
-import { useNavigate } from "react-router-dom";
 import { AlertContext, AppContext } from "../../App";
 
 export function CommentsList({ comments, totalCount, getComments, setComments, setTotalCount }) {
@@ -34,7 +34,7 @@ export function CommentsList({ comments, totalCount, getComments, setComments, s
   };
 
   useEffect(() => {
-    const newComments = comments.reduce(function (newArr, current) {
+    const newComments = comments.reduce((newArr, current) => {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
         newArr.push(current);
       }

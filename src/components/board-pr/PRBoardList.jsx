@@ -14,7 +14,13 @@ export default function PRBoardList({ newList, fixedList }) {
       {fixedList.map((post) => (
         <div className={`post-card fixed-notice`} key={post._id} id={post._id}>
           <Link to={`${post.promotion_number}`}>
-            <img src={minilogo} onError={(e) => (e.target.src = empty_img)} alt="" />
+            <img
+              src={minilogo}
+              onError={(e) => {
+                e.target.src = empty_img;
+              }}
+              alt=""
+            />
           </Link>
           <div className="post-card-content">
             <h5 className="notice">📢 공지사항</h5>
@@ -46,9 +52,21 @@ export default function PRBoardList({ newList, fixedList }) {
         <div className={`post-card`} key={post._id} id={post._id}>
           <Link to={`${post.promotion_number}`}>
             {post.category === "공지" ? (
-              <img src={logo3} onError={(e) => (e.target.src = empty_img)} alt="" />
+              <img
+                src={logo3}
+                onError={(e) => {
+                  e.target.src = empty_img;
+                }}
+                alt=""
+              />
             ) : (
-              <img src={post.image_url[0] || empty_img} onError={(e) => (e.target.src = empty_img)} alt="" />
+              <img
+                src={post.image_url[0] || empty_img}
+                onError={(e) => {
+                  e.target.src = empty_img;
+                }}
+                alt=""
+              />
             )}
           </Link>
           <div className="post-card-content">

@@ -1,15 +1,11 @@
-import { Backdrop, Button, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import React, { Children, useContext, useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
 import "./PRBoardForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
-import { useNavigate } from "react-router-dom";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
-import dayjs from "dayjs";
-import empty_img from "../../assets/img/empty_img.svg";
-import { Close } from "@mui/icons-material";
 import { AlertContext } from "../../App";
 
 export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
@@ -35,7 +31,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       const res = await fetch(`${promotionUrl}/${post.promotion_number}`, {
         method: "PUT",
@@ -68,7 +64,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
     }
   };
 
-  const handleClickSubmitButton = (e) => {
+  const handleClickSubmitButton = () => {
     setSubmit(true);
 
     if (errorTitle) {
@@ -84,11 +80,12 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
     if (submit && error) {
       return (
         <div className="error">
-          <ErrorOutlineIcon fontSize="inherit" />
+          <ErrorOutline fontSize="inherit" />
           {error}
         </div>
       );
     }
+    return <></>;
   };
 
   const handleChangeTitle = (e) => {
@@ -137,29 +134,30 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
     } catch (e) {
       console.error(e);
       setOpenFetchErrorAlert(true);
+      return false;
     }
   };
 
   const handleChangeImage = async (e) => {
     if (!e.target.files.length) return;
 
-    let newImg = [];
+    const newImg = [];
     let error = "";
 
-    let newImage = Array.from(e.target.files);
-    for (let file of newImage) {
+    const newImage = Array.from(e.target.files);
+    newImage.forEach(async (file) => {
       if (file.size > 1024 * 1024 * 5) {
         error = "사진은 최대 5MB까지 업로드 가능합니다.";
-        continue;
-      }
-      const data = await uploadImage(file);
-
-      if (data) {
-        newImg.push(data);
       } else {
-        error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
+        const data = await uploadImage(file);
+
+        if (data) {
+          newImg.push(data);
+        } else {
+          error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
+        }
       }
-    }
+    });
 
     setImageURL([...imageURL, ...newImg]);
     setErrorImage(error);
@@ -189,7 +187,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
 
   const handleRemoveTag = (e) => {
     const tagId = e.target.closest(".tag-box").id;
-    let newList = [...tagList];
+    const newList = [...tagList];
     newList.splice(tagId, 1);
     setTagList(newList);
   };
@@ -224,7 +222,16 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
           <label htmlFor="title">
             글 제목<span className="star">*</span>
           </label>
-          <input type="text" id="title" name="title" value={inputTitle} onChange={handleChangeTitle} maxLength={40} placeholder="제목을 작성해 주세요." required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={inputTitle}
+            onChange={handleChangeTitle}
+            maxLength={40}
+            placeholder="제목을 작성해 주세요."
+            required
+          />
         </div>
         {handleErrorPlaceholder(errorTitle)}
       </div>
@@ -254,10 +261,10 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
         {tagList && (
           <div className="tag-list flex">
             {tagList.map((tag, idx) => (
-              <div id={idx} className="tag-box flex">
+              <div id={idx} className="tag-box flex" key={idx + tag}>
                 <span># {tag} </span>
                 <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
-                  <CloseIcon fontSize="inherit" />
+                  <Close fontSize="inherit" />
                 </IconButton>
               </div>
             ))}
@@ -268,7 +275,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
       <div className="input image">
         <div>
           <label htmlFor="image">이미지</label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUploadIcon />}>
+          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
             <label className="pointer" htmlFor="image">
               파일 찾기
             </label>
@@ -277,7 +284,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
         </div>
         {errorImage && (
           <div className="error">
-            <ErrorOutlineIcon fontSize="inherit" />
+            <ErrorOutline fontSize="inherit" />
             {errorImage}
           </div>
         )}
@@ -291,7 +298,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
                     <Close />
                   </IconButton>
                 </div>
-              ))
+              )),
             )}
           </div>
         )}

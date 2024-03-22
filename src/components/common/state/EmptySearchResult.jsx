@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import "./State.scss";
-import { ErrorOutline, ManageSearchOutlined } from "@mui/icons-material";
+import { ManageSearchOutlined } from "@mui/icons-material";
 
 export default function EmptySearchResult({ onClickBtn, play, type }) {
   return (

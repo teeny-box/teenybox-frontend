@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, CircularProgress } from "@mui/material";
 import FreeBoardPost from "../../components/board-free/FreeBoardPost";
 import "./FreeBoardDetailPage.scss";
-import { BoardSecondHeader, BoardNav, CommentForm, CommentsList } from "../../components/board";
-import { useNavigate, useParams } from "react-router-dom";
+import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
 import { commentUrl, postUrl, userUrl } from "../../apis/apiURLs";
-import { Button, CircularProgress } from "@mui/material";
-import { BoardRightContainer } from "../../components/board/BoardRightContainer";
 import setStoreViewList from "../../utils/setStoreRecentViewList";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
@@ -26,7 +25,7 @@ export function FreeBoardDetailPage() {
   const getPost = async () => {
     setState("loading");
     try {
-      const postId = params.postId;
+      const { postId } = params;
       const res = await fetch(`${postUrl}/${postId}`);
       const data = await res.json();
 
@@ -79,15 +78,18 @@ export function FreeBoardDetailPage() {
       const data = await res.json();
 
       if (res.ok) {
-        const newComment = { ...data, user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id } };
+        const newComment = {
+          ...data,
+          user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id },
+        };
         setComments([newComment, ...comments]);
         setTotalCount(totalCount + 1);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
-          const data = await loginRes.json();
+          const _data = await loginRes.json();
           createComment(inputText);
-          setUserData({ isLoggedIn: true, user: data.user });
+          setUserData({ isLoggedIn: true, user: _data.user });
         } else {
           setUserData({ isLoggedIn: false });
           setOpenLoginAlert(true);
@@ -156,7 +158,9 @@ export function FreeBoardDetailPage() {
                 {post._id && <FreeBoardPost data={post} totalCommentCount={totalCount} />}
                 <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                 <CommentForm createComment={createComment} postId={post?._id} />
-                {!comments.length || <CommentsList comments={comments} setComments={setComments} totalCount={totalCount} getComments={getComments} setTotalCount={setTotalCount} />}
+                {!comments.length || (
+                  <CommentsList comments={comments} setComments={setComments} totalCount={totalCount} getComments={getComments} setTotalCount={setTotalCount} />
+                )}
                 {commentState === "loading" && (
                   <div className="progress-box">
                     <CircularProgress color="secondary" className="progress-100" />
