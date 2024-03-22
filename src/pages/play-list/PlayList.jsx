@@ -1,4 +1,10 @@
 import { useState, useEffect, useContext, useRef } from "react";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import MovieIcon from "@mui/icons-material/Movie";
+import LocalAtmIcon from "@mui/icons-material/LocalAtm";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import dayjs from "dayjs";
 import "./PlayList.scss";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
 import PlayListHeader from "../../components/play-list/PlayListHeader";
@@ -7,14 +13,8 @@ import PaginationBox from "../../components/play-list/PaginationBox";
 import RegionSelectBar from "../../components/play-list/RegionSelectBar";
 import { AlertCustom } from "../../../src/components/common/alert/Alerts";
 import Loading from "../../components/common/state/Loading";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import MovieIcon from "@mui/icons-material/Movie";
-import LocalAtmIcon from "@mui/icons-material/LocalAtm";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { AppContext } from "../../App";
-import dayjs from "dayjs";
 import Empty from "../../components/common/state/Empty";
+import { AppContext } from "../../App";
 import { showUrl } from "../../apis/apiURLs";
 
 // 홍보, 커뮤니티, 마이페이지, 검색 페이지, 로그인 페이지, 홈 페이지 접속 시 setPrevPlayListQuery(null)로 설정하기
@@ -82,11 +82,11 @@ export function PlayList() {
 
   // 연극 데이터 받아오기
   useEffect(() => {
-    let reqQuery = "";
+    let requestQuery = "";
 
     if (prevPlayListQuery) {
-      reqQuery = prevPlayListQuery;
-      setReqQuery(reqQuery);
+      requestQuery = prevPlayListQuery;
+      setReqQuery(requestQuery);
     } else {
       const regionQuery =
         selectedRegion[0] === "전체"
@@ -108,18 +108,19 @@ export function PlayList() {
 
       const dateQuery = conditions["날짜별"] ? `&date=${conditions["날짜별"]}&` : "";
 
-      reqQuery = `?${regionQuery}${stateQuery}${lowPriceQuery}${highPriceQuery}order=${sortStandard}${dateQuery}&page=${curPage}&limit=24`;
+      requestQuery = `?${regionQuery}${stateQuery}${lowPriceQuery}${highPriceQuery}order=${sortStandard}${dateQuery}&page=${curPage}&limit=24`;
 
-      setReqQuery(reqQuery);
+      setReqQuery(requestQuery);
     }
+    // 혹여 문제 생기게 된다면 파악할 것.
 
     fetch(`${showUrl}${reqQuery}`)
       .then((res) => {
         if (res.ok) {
           return res.json();
-        } else {
-          setError("연극 목록 가져오기에 실패하였습니다.");
         }
+        setError("연극 목록 가져오기에 실패하였습니다.");
+        return null;
       })
       .then((data) => {
         setIsLoading(true);
@@ -205,7 +206,7 @@ export function PlayList() {
             ) : conditions["가격별"][1] === 100000 ? (
               <Chip icon={<LocalAtmIcon />} label={`${conditions["가격별"][0]}원 ~ 100000원 이상`} />
             ) : (
-              <Chip icon={<LocalAtmIcon />} label={conditions["가격별"].map((price) => price + "원").join(" ~ ")} />
+              <Chip icon={<LocalAtmIcon />} label={conditions["가격별"].map((price) => `${price} 원`).join(" ~ ")} />
             )}
           </Stack>
           {!playTotalCnt || error === "연극 목록 가져오기에 실패하였습니다." ? (
@@ -228,7 +229,7 @@ export function PlayList() {
                       imgSrc: play.poster,
                       title: play.title,
                       place: play.location,
-                      period: dayjs(play.start_date).format("YYYY-MM-DD") + " ~ " + dayjs(play.end_date).format("YYYY-MM-DD"),
+                      period: `${dayjs(play.start_date).format("YYYY-MM-DD")} ~ ${dayjs(play.end_date).format("YYYY-MM-DD")}`,
                       price: play.price,
                       state: play.state,
                     }}

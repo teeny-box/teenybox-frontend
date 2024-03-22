@@ -14,6 +14,7 @@
     "no-underscore-dangle": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
-    "no-nested-ternary": "off" // 중첩삼항연산 허용
+    "no-nested-ternary": "off", // 중첩삼항연산 허용
+    "import/prefer-default-export": "off" // 단일 export에서 default 기본문 추가 작성x
   }
 }

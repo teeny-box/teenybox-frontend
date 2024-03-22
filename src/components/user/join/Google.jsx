@@ -17,24 +17,15 @@ export default function Google({ popup, setPopup }) {
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
     const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${GOOGLE_CLIENT_ID}&scope=openid%20profile%20email&redirect_uri=${GOOGLE_REDIRECT_URL}`;
-    const popup = window.open(
-      url,
-      "로그인 중...",
-      `width=${width},height=${height},left=${left},top=${top}`
-    );
-    setPopup(popup);
+    const loginPopup = window.open(url, "로그인 중...", `width=${width},height=${height},left=${left},top=${top}`);
+    setPopup(loginPopup);
   };
 
   return (
     <>
       {alert && (
         <>
-          {alert.title === "정보 제공 동의 필수" ? null : alert.title ===
-            "로그인 성공" ? (
-            <Loading isLogin={true} />
-          ) : (
-            <Loading />
-          )}
+          {alert.title === "정보 제공 동의 필수" ? null : alert.title === "로그인 성공" ? <Loading isLogin={true} /> : <Loading />}
           <AlertCustom
             open={true}
             title={alert.title}
@@ -54,11 +45,7 @@ export default function Google({ popup, setPopup }) {
         <div className="logo-description">
           <span>구글 계정으로 로그인</span>
         </div>
-        <GoogleRedirection
-          popup={popup}
-          setPopup={setPopup}
-          setAlert={setAlert}
-        />
+        <GoogleRedirection popup={popup} setPopup={setPopup} setAlert={setAlert} />
       </button>
     </>
   );
