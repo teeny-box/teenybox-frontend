@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./AdminFree.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
 import { postUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
@@ -47,7 +47,7 @@ const AdminFree = () => {
         }
       })
       .catch((err) => console.error(err));
-  };
+  };  
 
   // 페이지가 로드될 때 커뮤니티 정보 가져옴
   useEffect(() => {

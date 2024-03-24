@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./AdminFreeComments.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AlertCustom } from "../common/alert/Alerts";
+import TimeFormat from "../common/time/TimeFormat";
 import { commentUrl } from "../../apis/apiURLs";
 
 const columns = [
@@ -16,7 +16,7 @@ const columns = [
     field: "createdAt",
     headerName: "작성 시기",
     width: 200,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -56,9 +56,7 @@ const AdminFreeComments = () => {
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedComments = comments
-      .filter((comment) => comment.selected)
-      .map((comment) => comment._id);
+    const selectedComments = comments.filter((comment) => comment.selected).map((comment) => comment._id);
 
     // DELETE 요청 보내기
     fetch(`${commentUrl}/admins/comments`, {
@@ -87,9 +85,7 @@ const AdminFreeComments = () => {
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedComments = comments.some(
-                (comment) => comment.selected
-              );
+              const hasSelectedComments = comments.some((comment) => comment.selected);
               if (hasSelectedComments) setOpenAlert(true);
             }}
           >
@@ -122,10 +118,7 @@ const AdminFreeComments = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}

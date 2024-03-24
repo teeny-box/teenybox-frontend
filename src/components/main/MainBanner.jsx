@@ -18,7 +18,7 @@ export default function App() {
         effect={"fade"}
         centeredSlides={true}
         autoplay={{
-          delay: 5000,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -29,13 +29,13 @@ export default function App() {
         className="mySwiper"
       >
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/배너1.png`} alt="logo-image"></img>
+          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner1.png`} alt="logo-image"></img>
         </SwiperSlide>
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/배너2.png`} alt="logo-image"></img>
+          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner2.png`} alt="logo-image"></img>
         </SwiperSlide>
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/배너3.png`} alt="logo-image"></img>
+          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner3.png`} alt="logo-image"></img>
         </SwiperSlide>
       </Swiper>
     </>

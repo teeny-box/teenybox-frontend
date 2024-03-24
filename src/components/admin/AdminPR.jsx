@@ -17,7 +17,7 @@ const columns = [
     field: "createdAt",
     headerName: "작성 시기",
     width: 200,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -56,9 +56,7 @@ const AdminPR = () => {
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedPromotionIds = promotions
-      .filter((promotion) => promotion.selected)
-      .map((promotion) => promotion.promotion_number);
+    const selectedPromotionIds = promotions.filter((promotion) => promotion.selected).map((promotion) => promotion.promotion_number);
 
     // DELETE 요청 보내기
     fetch(`${promotionUrl}/bulk`, {
@@ -87,9 +85,7 @@ const AdminPR = () => {
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedPromotions = promotions.some(
-                (promotion) => promotion.selected
-              );
+              const hasSelectedPromotions = promotions.some((promotion) => promotion.selected);
               if (hasSelectedPromotions) setOpenAlert(true);
             }}
           >
@@ -122,10 +118,7 @@ const AdminPR = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}
