@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./FreeBoardFormPage.scss";
 import { useNavigate, useParams } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import "./FreeBoardFormPage.scss";
 import { AlertCustom } from "../../components/common/alert/Alerts";
-import { FreeBoardEditForm } from "../../components/board-free/FreeBoardEdit";
+import FreeBoardEditForm from "../../components/board-free/FreeBoardEdit";
 import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
-import { Backdrop } from "@mui/material";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 
 export function FreeBoardEdit() {
@@ -17,7 +17,7 @@ export function FreeBoardEdit() {
   const user = useGetUser();
   const { setOpenLoginAlertBack } = useContext(AlertContext);
 
-  const handleCancle = (e) => {
+  const handleCancle = () => {
     if (input) setOpen(true);
     else nav(-1);
   };
@@ -53,7 +53,9 @@ export function FreeBoardEdit() {
 
   return (
     <div className="free-board-form-page page-margin">
-      <div className="body">{post && <FreeBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.user?.role} />}</div>
+      <div className="body">
+        {post && <FreeBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.user?.role} />}
+      </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom

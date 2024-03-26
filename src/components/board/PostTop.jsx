@@ -1,12 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./PostTop.scss";
+import { useNavigate } from "react-router-dom";
+import { Backdrop, Button, Tooltip } from "@mui/material";
+import {
+  Close,
+  DeleteOutline,
+  EditOutlined,
+  Facebook,
+  Link,
+  ShareOutlined,
+  SmsOutlined,
+  ThumbUpAlt,
+  ThumbUpAltOutlined,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import copyUrl from "../../utils/copyUrl";
-import { Close, DeleteOutline, EditOutlined, Facebook, Link, ShareOutlined, SmsOutlined, ThumbUpAlt, ThumbUpAltOutlined, VisibilityOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import { postUrl, promotionUrl } from "../../apis/apiURLs";
 import { AlertContext, AppContext } from "../../App";
-import { Backdrop, Button, Tooltip } from "@mui/material";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
@@ -107,26 +118,27 @@ export function PostTop({ user, type, post, commentsCnt }) {
 
   // 페이스북으로 공유하기 버튼 클릭 시
   const shareFacebook = () => {
-    var sendUrl = window.location.href; // 전달할 URL
-    window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+    const sendUrl = window.location.href; // 전달할 URL
+    window.open(`http://www.facebook.com/sharer/sharer.php?u=${sendUrl}`);
   };
 
   // 트위터로 공유하기 버튼 클릭 시
   const shareTwitter = () => {
-    var sendText = `[🎫TeenyBox] ${post.title}`; // 전달할 텍스트
-    var sendUrl = window.location.href; // 전달할 URL
-    window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
+    const sendText = `[🎫TeenyBox] ${post.title}`; // 전달할 텍스트
+    const sendUrl = window.location.href; // 전달할 URL
+    window.open(`https://twitter.com/intent/tweet?text=${sendText}&url=${sendUrl}`);
   };
 
   useEffect(() => {
+    const kakao = window.Kakao;
     if (openShareBox && !isKakaoInited) {
       // 페이지에서 init이 한번만 이루어지도록 설정
-      if (!Kakao.isInitialized()) {
-        // Kakao.init이 되어 있지 않은 경우에만 초기화 진행
-        Kakao.init(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
+      if (!kakao.isInitialized()) {
+        // kakao.init이 되어 있지 않은 경우에만 초기화 진행
+        kakao.init(process.env.REACT_APP_KAKAO_SHARE_API_KEY);
       }
       // 카카오링크 버튼 생성 (두 번 버튼을 클릭해야 생성되는 것을 막기 위해 useEffect에 작성!)
-      Kakao.Link.createDefaultButton({
+      kakao.Link.createDefaultButton({
         container: "#btnKakaoShare", // 카카오공유버튼ID
         objectType: "feed",
         content: {
@@ -156,7 +168,13 @@ export function PostTop({ user, type, post, commentsCnt }) {
     <>
       {user && (
         <div className="board-post-top">
-          <img className="user-img" src={(user?.state === "가입" && user?.profile_url) || default_user_img} onError={(e) => (e.target.src = default_user_img)} />
+          <img
+            className="user-img"
+            src={(user?.state === "가입" && user?.profile_url) || default_user_img}
+            onError={(e) => {
+              e.target.src = default_user_img;
+            }}
+          />
           <div className="flex-box">
             <div className="user-id">{(user?.state === "가입" && user?.nickname) || DELETE_USER_NICKNAME}</div>
             <div className="date">
@@ -185,7 +203,13 @@ export function PostTop({ user, type, post, commentsCnt }) {
               </>
             )}
             <Tooltip title={isLiked ? "추천됨" : "추천하기"} arrow>
-              <Button onClick={handleClickLikes} variant={"outlined"} size="small" startIcon={isLiked ? <ThumbUpAlt /> : <ThumbUpAltOutlined />} disableElevation>
+              <Button
+                onClick={handleClickLikes}
+                variant={"outlined"}
+                size="small"
+                startIcon={isLiked ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
+                disableElevation
+              >
                 {numberFormat(likes)}
               </Button>
             </Tooltip>
@@ -230,7 +254,13 @@ export function PostTop({ user, type, post, commentsCnt }) {
             )}
           </div>
 
-          <AlertCustom open={openURLCopyAlert} onclose={() => setOpenURLCopyAlert(false)} title={"URL이 복사되었습니다!"} content={window.location.href} time={1000} />
+          <AlertCustom
+            open={openURLCopyAlert}
+            onclose={() => setOpenURLCopyAlert(false)}
+            title={"URL이 복사되었습니다!"}
+            content={window.location.href}
+            time={1000}
+          />
           <Backdrop open={openDeleteAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <AlertCustom
               open={openDeleteAlert}

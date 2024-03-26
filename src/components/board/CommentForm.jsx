@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "@mui/material";
 import "./CommentForm.scss";
 import { AlertContext, AppContext } from "../../App";
@@ -9,7 +9,7 @@ export function CommentForm({ createComment }) {
   const { userData } = useContext(AppContext);
   const { setOpenLoginAlert } = useContext(AlertContext);
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     if (!userData.user?._id) {
       setOpenLoginAlert(true);
       return;
@@ -24,7 +24,13 @@ export function CommentForm({ createComment }) {
   return (
     <div id="commentForm" className="comment-form-box">
       <div className="flex-box">
-        <img className="user-profile-img" src={userData?.user?.profile_url || default_user_img} onError={(e) => (e.target.src = default_user_img)} />
+        <img
+          className="user-profile-img"
+          src={userData?.user?.profile_url || default_user_img}
+          onError={(e) => {
+            e.target.src = default_user_img;
+          }}
+        />
         <textarea id="comment" value={inputComment} onChange={(e) => setInputComment(e.target.value)} placeholder="댓글을 작성하세요."></textarea>
       </div>
       <Button onClick={handleClick} color="secondary" variant="contained" size="small" className="btn">

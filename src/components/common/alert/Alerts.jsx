@@ -15,7 +15,7 @@ import React from "react";
 // closeBtnColor : 체크 버튼 색상
 // btnCloseHidden : true로 넘기면 X(버튼) 안 보임
 
-//내용 속성(선택)
+// 내용 속성(선택)
 // title : 타이틀 - 위쪽에 굵은 글씨로 나타남
 // content : 내용 - react element 형태로 넣어도 됨 ex) <small>내용</small>
 
@@ -25,7 +25,22 @@ import React from "react";
 // width : alert창 너비 - 숫자로 보내주세요!(기본 500)
 // color : 기본 색상 (primary, secondary ...) 변경 가능
 
-export function AlertCustom({ open, onclose, onclick, checkBtn, closeBtn, checkBtnColor, closeBtnColor, btnCloseHidden, title, content, time, severity, width = 500, color }) {
+export function AlertCustom({
+  open,
+  onclose,
+  onclick,
+  checkBtn,
+  closeBtn,
+  checkBtnColor,
+  closeBtnColor,
+  btnCloseHidden,
+  title,
+  content,
+  time,
+  severity,
+  width = 500,
+  color,
+}) {
   return (
     <Snackbar open={open} onClose={onclose} autoHideDuration={time || null} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
       <Alert

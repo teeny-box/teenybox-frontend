@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import "./PRBoardPost.scss";
-import { PostTop } from "../board";
-import empty_image from "../../assets/img/empty_img.svg";
-import { CalendarMonth, FormatQuote, LocationOn, MovieCreation } from "@mui/icons-material";
-import empty_img from "../../assets/img/empty_img.svg";
-import TimeFormat from "../common/time/TimeFormat";
+import React, { Children, useState } from "react";
 import { Link } from "react-router-dom";
 import { Backdrop } from "@mui/material";
+import { CalendarMonth, FormatQuote, LocationOn, MovieCreation } from "@mui/icons-material";
+import "./PRBoardPost.scss";
+import { PostTop } from "../board";
+import empty_img from "../../assets/img/empty_img.svg";
+import TimeFormat from "../common/time/TimeFormat";
 
 export default function PRBoardPost({ data, totalCommentCount }) {
   const [openMainImg, setOpenMainImg] = useState(false);
@@ -15,7 +14,15 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       <PostTop user={data.user_id || { nickname: "user" }} type={"promotion"} post={data} totalCommentCount={totalCommentCount} />
       {data.category === "공지" || (
         <div className="top-container">
-          <img className="main-img" src={data.image_url[0] || empty_image} onError={(e) => (e.target.src = empty_image)} alt="홍보 포스터" onClick={() => setOpenMainImg(true)} />
+          <img
+            className="main-img"
+            src={data.image_url[0] || empty_img}
+            onError={(e) => {
+              e.target.src = empty_img;
+            }}
+            alt="홍보 포스터"
+            onClick={() => setOpenMainImg(true)}
+          />
           <div className="flex-column">
             <div className="box">
               <div className="lable">타이틀</div>
@@ -56,11 +63,7 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       )}
 
       <h2 className="title">{data.title}</h2>
-      <div className="content">
-        {data.content?.split("\n").map((text) => (
-          <p>{text || <br />}</p>
-        ))}
-      </div>
+      <div className="content">{Children.toArray(data.content?.split("\n").map((text) => <p>{text || <br />}</p>))}</div>
       {data.tags && data.tags.length !== 0 && (
         <div className="tags">
           {data.tags.map((tag, idx) => (
@@ -73,7 +76,13 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       {data.image_url[0] && (
         <div className="images">
           {data.image_url.map((url) => (
-            <img src={url} key={url} onError={(e) => (e.target.src = empty_img)} />
+            <img
+              src={url}
+              key={url}
+              onError={(e) => {
+                e.target.src = empty_img;
+              }}
+            />
           ))}
         </div>
       )}

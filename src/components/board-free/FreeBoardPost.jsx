@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./FreeBoardPost.scss";
 import { PostTop } from "../board";
-import { Link } from "react-router-dom";
 
 export default function FreeBoardPost({ data, totalCommentCount }) {
   return (

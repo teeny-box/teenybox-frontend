@@ -1,9 +1,9 @@
 import { Children, useContext, useEffect, useState } from "react";
-import "./BoardRightContainer.scss";
-import { commentUrl, postUrl, promotionUrl } from "../../apis/apiURLs";
-import dayjs from "dayjs";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
+import "./BoardRightContainer.scss";
+import dayjs from "dayjs";
+import { commentUrl, postUrl, promotionUrl } from "../../apis/apiURLs";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import setStoreViewList from "../../utils/setStoreRecentViewList";
 import numberFormat from "../../utils/numberFormat";
@@ -14,7 +14,6 @@ export function BoardRightContainer({ post }) {
   const [popularList, setPopularList] = useState([]);
   const [latestList, setLatestList] = useState([]);
   const [latestCommentList, setLatestCommentList] = useState([]);
-  const params = useParams();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
 
   const getStoreViewList = () => {
@@ -52,7 +51,7 @@ export function BoardRightContainer({ post }) {
       newList = [...newList, ...data.posts];
     }
 
-    newList = newList.reduce(function (newArr, current) {
+    newList = newList.reduce((newArr, current) => {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
         newArr.push(current);
       }
@@ -60,7 +59,7 @@ export function BoardRightContainer({ post }) {
     }, []);
 
     // 조회수, 추천 둘 다 없으면 제거
-    newList = newList.filter((post) => post.likes + post.views > 0);
+    newList = newList.filter((_post) => _post.likes + _post.views > 0);
 
     // (조회수 + 추천수) 높은 순 정렬
     newList.sort((a, b) => b.views + b.likes - (a.views + a.likes));
@@ -84,7 +83,7 @@ export function BoardRightContainer({ post }) {
       newList = [...newList, ...data.posts];
     }
 
-    newList = newList.reduce(function (newArr, current) {
+    newList = newList.reduce((newArr, current) => {
       if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
         newArr.push(current);
       }
@@ -157,20 +156,22 @@ export function BoardRightContainer({ post }) {
         <ul>
           {viewList.length ? (
             Children.toArray(
-              viewList.map((post, idx) => (
-                <Link to={`${post.category ? `/promotion/${post.promotion_number}` : `/community/${post.post_number}`}`}>
+              viewList.map((_post) => (
+                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${post.category ? "promotion" : "community"}`}>{post.category ? `[홍보/${post.category}]` : "[커뮤니티]"}</span>
-                    <p>{post.title}</p>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
+                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
+                    </span>
+                    <p>{_post.title}</p>
                     <div className="right">
                       <VisibilityOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(post.views || 0)}</span>
+                      <span>{numberFormat(_post.views || 0)}</span>
                       <ThumbUpOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(post.likes || 0)}</span>
+                      <span>{numberFormat(_post.likes || 0)}</span>
                     </div>
                   </li>
                 </Link>
-              ))
+              )),
             )
           ) : (
             <li>아직 본 글이 없습니다. </li>
@@ -183,21 +184,23 @@ export function BoardRightContainer({ post }) {
           <h4>인기 글</h4>
           <ul>
             {Children.toArray(
-              popularList.map((post, idx) => (
-                <Link to={`${post.category ? `/promotion/${post.promotion_number}` : `/community/${post.post_number}`}`}>
+              popularList.map((_post, idx) => (
+                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
                     <span>{idx + 1}.&nbsp;</span>
-                    <span className={`category ${post.category ? "promotion" : "community"}`}>{post.category ? `[홍보/${post.category}]` : "[커뮤니티]"}</span>
-                    <p>{post.title}</p>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
+                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
+                    </span>
+                    <p>{_post.title}</p>
                     <div className="right">
                       <VisibilityOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(post.views || 0)}</span>
+                      <span>{numberFormat(_post.views || 0)}</span>
                       <ThumbUpOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(post.likes || 0)}</span>
+                      <span>{numberFormat(_post.likes || 0)}</span>
                     </div>
                   </li>
                 </Link>
-              ))
+              )),
             )}
           </ul>
         </div>
@@ -208,17 +211,19 @@ export function BoardRightContainer({ post }) {
           <h4>최신 글</h4>
           <ul>
             {Children.toArray(
-              latestList.map((post) => (
-                <Link to={`${post.category ? `/promotion/${post.promotion_number}` : `/community/${post.post_number}`}`}>
+              latestList.map((_post) => (
+                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${post.category ? "promotion" : "community"}`}>{post.category ? `[홍보/${post.category}]` : "[커뮤니티]"}</span>
-                    <p>{post.title}</p>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
+                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
+                    </span>
+                    <p>{_post.title}</p>
                     <div className="right">
-                      <LiveTimeDiff time={post.createdAt} />
+                      <LiveTimeDiff time={_post.createdAt} />
                     </div>
                   </li>
                 </Link>
-              ))
+              )),
             )}
           </ul>
         </div>
@@ -229,29 +234,29 @@ export function BoardRightContainer({ post }) {
         <ul>
           {latestCommentList.length ? (
             Children.toArray(
-              latestCommentList.map((post, idx) => (
+              latestCommentList.map((_post) => (
                 <Link
                   to={
-                    post.promotion === null
+                    _post.promotion === null
                       ? "/promotion/not-found"
-                      : post.promotion
-                      ? `/promotion/${post.promotion.promotion_number}`
-                      : post.post === null
-                      ? "/community/not-found"
-                      : `/community/${post.post.post_number}`
+                      : _post.promotion
+                        ? `/promotion/${_post.promotion.promotion_number}`
+                        : _post.post === null
+                          ? "/community/not-found"
+                          : `/community/${_post.post.post_number}`
                   }
                 >
                   <li>
-                    <span className={`category ${post.promotion === null || post.promotion ? "promotion" : "community"}`}>
-                      {post.promotion === null ? "[홍보]" : post.promotion ? `[홍보/${post.promotion.category}]` : "[커뮤니티]"}
+                    <span className={`category ${_post.promotion === null || _post.promotion ? "promotion" : "community"}`}>
+                      {_post.promotion === null ? "[홍보]" : _post.promotion ? `[홍보/${_post.promotion.category}]` : "[커뮤니티]"}
                     </span>
-                    <p>{post.content}</p>
+                    <p>{_post.content}</p>
                     <div className="right">
-                      <LiveTimeDiff time={post.createdAt} />
+                      <LiveTimeDiff time={_post.createdAt} />
                     </div>
                   </li>
                 </Link>
-              ))
+              )),
             )
           ) : (
             <li>아직 댓글이 없습니다. </li>
