@@ -11,6 +11,7 @@
       "jsx": true
     }
   },
+  "plugins": ["react"],
   "rules": {
     "camelcase": "off", // 카멜케이스 적용x
     "no-console": "off",
