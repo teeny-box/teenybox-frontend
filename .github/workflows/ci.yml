@@ -1,6 +1,6 @@
 name: build check
 
-on: 
+on:
   pull_request:
     branches: [dev]
 

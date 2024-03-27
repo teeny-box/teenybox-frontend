@@ -94,8 +94,8 @@ export default function PromotionSearchResult({ searchKeyword }) {
           </div>
         ) : (
           <>
-            {searchResult.map((content) => (
-              <PromotionSearchContentBox content={content} />
+            {searchResult.map((content, index) => (
+              <PromotionSearchContentBox key={index} content={content} />
             ))}
             <div className="search-pagination">
               <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
