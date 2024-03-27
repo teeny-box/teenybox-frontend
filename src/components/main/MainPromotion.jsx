@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./MainPublicity.scss";
+import "./MainPromotion.scss";
 import { promotionUrl } from "../../apis/apiURLs";
 
-function MainPublicity() {
+function MainPromotion() {
   const [promotions, setPromotions] = useState([]);
   const navigate = useNavigate();
 
@@ -65,13 +65,13 @@ function MainPublicity() {
     return title;
   };
 
-  // publicity-product 클릭 시 라우팅 처리
+  // promotion-product 클릭 시 라우팅 처리
   const handleProductClick = (promotionNumber) => {
     const route = `/promotion/${promotionNumber}`;
     navigate(route);
   };
 
-  // newList가 5개 이하인 경우에만 MainPublicity 컴포넌트를 숨깁니다
+  // newList가 5개 이하인 경우에만 MainPromotion 컴포넌트를 숨깁니다
   if (promotions.length <= 5) {
     return null;
   }
@@ -81,12 +81,12 @@ function MainPublicity() {
       <div className="main-title-box">
         <p className="main-title">소규모 추천 연극</p>
       </div>
-      <div className="main-publicity-container">
+      <div className="main-promotion-container">
         <div>
-          <div className="publicity-box1">
+          <div className="promotion-box1">
             {promotions.length > 0 && (
-              <div className="publicity-product1" onClick={() => handleProductClick(promotions[0].promotion_number)}>
-                <div className="main-publicity1-img-box">
+              <div className="promotion-product1" onClick={() => handleProductClick(promotions[0].promotion_number)}>
+                <div className="main-promotion1-img-box">
                   {promotions[0]?.image_url && <img src={promotions[0]?.image_url[0]} alt={promotions[0]?.play_title} />}
                 </div>
                 <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 20)}</p>
@@ -97,11 +97,11 @@ function MainPublicity() {
             )}
           </div>
         </div>
-        <div className="publicity-box2">
+        <div className="promotion-box2">
           {promotions.length > 1 &&
             promotions.slice(1, 4).map((promotion, index) => (
-              <div key={index} className="publicity-product" onClick={() => handleProductClick(promotion.promotion_number)}>
-                <div className="main-publicity-img-box">
+              <div key={index} className="promotion-product" onClick={() => handleProductClick(promotion.promotion_number)}>
+                <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
                 <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
@@ -111,10 +111,10 @@ function MainPublicity() {
               </div>
             ))}
         </div>
-        <div className="publicity-box3">
+        <div className="promotion-box3">
           {promotions.slice(4, 7).map((promotion, index) => (
-            <div key={index} className="publicity-product" onClick={() => handleProductClick(promotion.promotion_number)}>
-              <div className="main-publicity-img-box">
+            <div key={index} className="promotion-product" onClick={() => handleProductClick(promotion.promotion_number)}>
+              <div className="main-promotion-img-box">
                 {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
               </div>
               <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
@@ -129,4 +129,4 @@ function MainPublicity() {
   );
 }
 
-export default MainPublicity;
+export default MainPromotion;

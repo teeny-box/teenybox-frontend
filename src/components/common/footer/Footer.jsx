@@ -72,7 +72,7 @@ const Footer = () => {
         </div>
         <div className="footer-logo-box">
           <Link to="/">
-            <img className="footer-logo" src={`process.env.PUBLIC_URL/logo2.png`} alt="logo-image" component={Link} to="/Main"></img>
+            <img className="footer-logo" src={`${process.env.PUBLIC_URL}/logo2.png`} alt="logo-image" to="/Main"></img>
           </Link>
           <div className="footer-share">
             <Tooltip title="URL 복사" arrow>

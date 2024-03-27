@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
-import "./AdminFreeComments.scss";
+import "./AdminCommunity.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { commentUrl } from "../../apis/apiURLs";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
+import { postUrl } from "../../apis/apiURLs";
 
+// DataGrid table의 column구성
 const columns = [
-  { field: "content", headerName: "내용", width: 200 },
+  { field: "title", headerName: "게시글 제목", width: 200 },
   { field: "nickname", headerName: "작성자", width: 200 },
-  { field: "post_number", headerName: "해당 글 번호", width: 170 },
+  { field: "post_number", headerName: "글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
     width: 200,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
-const AdminFreeComments = () => {
-  // table에서 선택된 커뮤니티 댓글 관리
-  const [comments, setComments] = useState([]);
+const AdminCommunity = () => {
+  // table에서 선택된 커뮤니티 글 관리
+  const [posts, setPosts] = useState([]);
   // 삭제 확인 alert
   const [openAlert, setOpenAlert] = useState(false);
   // 삭제 완료 alert
@@ -30,18 +31,17 @@ const AdminFreeComments = () => {
   // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
-  // fetch API 커뮤니티 댓글 조회
+  // fetch API 커뮤니티 글 조회
   const fetchData = () => {
-    fetch(`${commentUrl}/admins/posts`)
+    fetch(`${postUrl}`)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data.comments) && data.comments.length > 0) {
-          const commentsWithIds = data.comments.map((comment) => ({
-            ...comment,
-            nickname: comment.user.nickname,
-            post_number: comment.post.post_number,
+        if (Array.isArray(data.posts) && data.posts.length > 0) {
+          const postsWithIds = data.posts.map((post) => ({
+            ...post,
+            nickname: post.user.nickname,
           }));
-          setComments(commentsWithIds);
+          setPosts(postsWithIds);
         } else {
           console.error("Data is not an array or empty");
         }
@@ -49,30 +49,28 @@ const AdminFreeComments = () => {
       .catch((err) => console.error(err));
   };
 
-  // 페이지가 로드될 때 댓글 정보 가져옴
+  // 페이지가 로드될 때 커뮤니티 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedComments = comments
-      .filter((comment) => comment.selected)
-      .map((comment) => comment._id);
+    const selectedPostNumbers = posts.filter((post) => post.selected).map((post) => post.post_number);
 
     // DELETE 요청 보내기
-    fetch(`${commentUrl}/admins/comments`, {
+    fetch(`${postUrl}/bulk`, {
       method: "DELETE",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ commentIds: selectedComments }),
+      body: JSON.stringify({ postNumbers: selectedPostNumbers }),
     })
       .then((res) => res.json())
       .then(() => {
-        fetchData(); // 삭제 후 데이터 다시 불러오기
         setOpenAlert2(true);
+        fetchData(); // 삭제 후 데이터 다시 불러오기
       })
       .catch((err) => console.error(err));
   };
@@ -81,16 +79,14 @@ const AdminFreeComments = () => {
     <>
       <div className="admin-board-container">
         <div className="admin-board-header">
-          <h1>커뮤니티 댓글</h1>
+          <h1>커뮤니티 게시글</h1>
           <Button
             variant="contained"
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedComments = comments.some(
-                (comment) => comment.selected
-              );
-              if (hasSelectedComments) setOpenAlert(true);
+              const hasSelectedPosts = posts.some((post) => post.selected);
+              if (hasSelectedPosts) setOpenAlert(true);
             }}
           >
             <h4>삭제</h4>
@@ -100,32 +96,29 @@ const AdminFreeComments = () => {
           <DataGrid
             // 해당 상세페이지로 이동
             onRowClick={(params) => {
-              const postNumber = params.row.post.post_number;
+              const postNumber = params.row.post_number;
               navigate(`/community/${postNumber}`);
             }}
-            rows={comments}
+            rows={posts}
             columns={columns}
+            checkboxSelection
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-            checkboxSelection
-            getRowId={(comments) => comments._id}
+            getRowId={(post) => post._id}
             onRowSelectionModelChange={(newSelection) => {
-              const updatedComments = comments.map((comment) => ({
-                ...comment,
-                selected: newSelection.includes(comment._id),
+              const updatedPosts = posts.map((post) => ({
+                ...post,
+                selected: newSelection.includes(post._id),
               }));
-              setComments(updatedComments);
+              setPosts(updatedPosts);
             }}
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}
@@ -145,11 +138,11 @@ const AdminFreeComments = () => {
         onclose={() => setOpenAlert2(false)}
         title={"완료"}
         width={500}
-        content={<p>선택하신 댓글이 정상적으로 삭제되었습니다.</p>}
+        content={<p>선택하신 게시글이 정상적으로 삭제되었습니다.</p>}
         time={1000}
       />
     </>
   );
 };
 
-export default AdminFreeComments;
+export default AdminCommunity;

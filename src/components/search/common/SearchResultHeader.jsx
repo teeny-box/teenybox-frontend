@@ -6,7 +6,7 @@ export default function SearchResultHeader({ searchKeyword }) {
   return (
     <div className="search-result-header">
       <SearchIcon color="secondary" />
-      <span>'{searchKeyword}' 검색 결과</span>
+      <span>&apos;{searchKeyword}&apos; 검색 결과</span>
     </div>
   );
 }

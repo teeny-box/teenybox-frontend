@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./AdminPR.scss";
+import "./AdminPromotion.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
 import { promotionUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
@@ -17,11 +17,11 @@ const columns = [
     field: "createdAt",
     headerName: "작성 시기",
     width: 200,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
-const AdminPR = () => {
+const AdminPromotion = () => {
   // table에서 선택된 홍보글 관리
   const [promotions, setPromotions] = useState([]);
   // 삭제 확인 alert
@@ -56,9 +56,7 @@ const AdminPR = () => {
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedPromotionIds = promotions
-      .filter((promotion) => promotion.selected)
-      .map((promotion) => promotion.promotion_number);
+    const selectedPromotionIds = promotions.filter((promotion) => promotion.selected).map((promotion) => promotion.promotion_number);
 
     // DELETE 요청 보내기
     fetch(`${promotionUrl}/bulk`, {
@@ -87,9 +85,7 @@ const AdminPR = () => {
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedPromotions = promotions.some(
-                (promotion) => promotion.selected
-              );
+              const hasSelectedPromotions = promotions.some((promotion) => promotion.selected);
               if (hasSelectedPromotions) setOpenAlert(true);
             }}
           >
@@ -111,7 +107,7 @@ const AdminPR = () => {
                 paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-            getRowId={(promotions) => promotions._id}
+            getRowId={(promotion) => promotion._id}
             onRowSelectionModelChange={(newSelection) => {
               const updatedPromotions = promotions.map((promotion) => ({
                 ...promotion,
@@ -122,10 +118,7 @@ const AdminPR = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}
@@ -152,4 +145,4 @@ const AdminPR = () => {
   );
 };
 
-export default AdminPR;
+export default AdminPromotion;

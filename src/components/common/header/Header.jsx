@@ -78,7 +78,7 @@ const Header = () => {
         <div className="header-box">
           <div className="vertical-box1">
             <Link to="/">
-              <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" component={Link} to="/Main" />
+              <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
             </Link>
             {userData && userData.isLoggedIn ? (
               <div className="header-icon-box">

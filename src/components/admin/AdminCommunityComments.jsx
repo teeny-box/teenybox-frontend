@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
-import "./AdminPRComments.scss";
+import "./AdminCommunityComments.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AlertCustom } from "../common/alert/Alerts";
+import TimeFormat from "../common/time/TimeFormat";
 import { commentUrl } from "../../apis/apiURLs";
 
-// DataGrid table의 column구성
 const columns = [
   { field: "content", headerName: "내용", width: 200 },
   { field: "nickname", headerName: "작성자", width: 200 },
-  { field: "promotion_number", headerName: "해당 글 번호", width: 170 },
+  { field: "post_number", headerName: "해당 글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
     width: 200,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
-const AdminPRComments = () => {
-  // table에서 선택된 홍보 댓글 관리
+const AdminCommunityComments = () => {
+  // table에서 선택된 커뮤니티 댓글 관리
   const [comments, setComments] = useState([]);
   // 삭제 확인 alert
   const [openAlert, setOpenAlert] = useState(false);
@@ -31,16 +30,16 @@ const AdminPRComments = () => {
   // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
-  // fetch API 홍보 댓글 조회
+  // fetch API 커뮤니티 댓글 조회
   const fetchData = () => {
-    fetch(`${commentUrl}/admins/promotions`)
+    fetch(`${commentUrl}/admins/posts`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.comments) && data.comments.length > 0) {
           const commentsWithIds = data.comments.map((comment) => ({
             ...comment,
             nickname: comment.user.nickname,
-            promotion_number: comment.promotion.promotion_number
+            post_number: comment.post.post_number,
           }));
           setComments(commentsWithIds);
         } else {
@@ -57,9 +56,7 @@ const AdminPRComments = () => {
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedComments = comments
-      .filter((comment) => comment.selected)
-      .map((comment) => comment._id);
+    const selectedComments = comments.filter((comment) => comment.selected).map((comment) => comment._id);
 
     // DELETE 요청 보내기
     fetch(`${commentUrl}/admins/comments`, {
@@ -82,15 +79,13 @@ const AdminPRComments = () => {
     <>
       <div className="admin-board-container">
         <div className="admin-board-header">
-          <h1>홍보 게시판 댓글</h1>
+          <h1>커뮤니티 댓글</h1>
           <Button
             variant="contained"
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedComments = comments.some(
-                (comment) => comment.selected
-              );
+              const hasSelectedComments = comments.some((comment) => comment.selected);
               if (hasSelectedComments) setOpenAlert(true);
             }}
           >
@@ -101,8 +96,8 @@ const AdminPRComments = () => {
           <DataGrid
             // 해당 상세페이지로 이동
             onRowClick={(params) => {
-              const promotionNumber = params.row.promotion.promotion_number;
-              navigate(`/promotion/${promotionNumber}`);
+              const postNumber = params.row.post.post_number;
+              navigate(`/community/${postNumber}`);
             }}
             rows={comments}
             columns={columns}
@@ -112,7 +107,7 @@ const AdminPRComments = () => {
               },
             }}
             checkboxSelection
-            getRowId={(comments) => comments._id}
+            getRowId={(comment) => comment._id}
             onRowSelectionModelChange={(newSelection) => {
               const updatedComments = comments.map((comment) => ({
                 ...comment,
@@ -123,10 +118,7 @@ const AdminPRComments = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}
@@ -137,7 +129,7 @@ const AdminPRComments = () => {
           checkBtnColor={"#fa2828"}
           title={"teenybox.com 내용:"}
           width={500}
-          content={<p>선택하신 댓글을 정말로 삭제시키시겠습니까?</p>}
+          content={<p>선택하신 게시글을 정말로 삭제시키시겠습니까?</p>}
         />
       </Backdrop>
       <AlertCustom
@@ -153,4 +145,4 @@ const AdminPRComments = () => {
   );
 };
 
-export default AdminPRComments;
+export default AdminCommunityComments;
