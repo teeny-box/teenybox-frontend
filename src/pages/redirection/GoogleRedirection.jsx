@@ -25,6 +25,8 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
           onclick: () => setAlert(null),
           checkBtn: "확인",
         });
+        // 명시적으로 아무것도 반환하지 않음
+        return null;
       })
       .then((data) => {
         setUserData({ isLoggedIn: true, user: data.user });
@@ -57,7 +59,6 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
     const error = searchParams.get("error");
     if (error === "access_denied") {
       window.opener.postMessage({ error, errorIsGoogle: currentUrl.includes("google-login") }, window.location.origin);
-      return;
     }
 
     if (code) {
@@ -154,6 +155,12 @@ export function GoogleRedirection({ popup, setPopup, setAlert }) {
       }
     };
     window.addEventListener("message", googleOauthCodeListener, false);
+    /* 해당 useEffect return 클린업 조건 처리에 반환값이 없어서 eslint 오류가 생성 됨. 따라서 아래 라인은 해당 조건을 무시.
+      if (!popup) {
+      return;
+    } 
+    */
+    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener("message", googleOauthCodeListener);
     };
