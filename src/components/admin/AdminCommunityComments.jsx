@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import "./AdminPR.scss";
+import "./AdminCommunityComments.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { promotionUrl } from "../../apis/apiURLs";
+import { AlertCustom } from "../common/alert/Alerts";
+import TimeFormat from "../common/time/TimeFormat";
+import { commentUrl } from "../../apis/apiURLs";
 
-// DataGrid table의 column구성
 const columns = [
-  { field: "play_title", headerName: "게시글 제목", width: 200 },
+  { field: "content", headerName: "내용", width: 200 },
   { field: "nickname", headerName: "작성자", width: 200 },
-  { field: "promotion_number", headerName: "글 번호", width: 170 },
+  { field: "post_number", headerName: "해당 글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
@@ -21,9 +20,9 @@ const columns = [
   },
 ];
 
-const AdminPR = () => {
-  // table에서 선택된 홍보글 관리
-  const [promotions, setPromotions] = useState([]);
+const AdminCommunityComments = () => {
+  // table에서 선택된 커뮤니티 댓글 관리
+  const [comments, setComments] = useState([]);
   // 삭제 확인 alert
   const [openAlert, setOpenAlert] = useState(false);
   // 삭제 완료 alert
@@ -31,17 +30,18 @@ const AdminPR = () => {
   // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
-  // fetch API 홍보 글 조회
+  // fetch API 커뮤니티 댓글 조회
   const fetchData = () => {
-    fetch(`${promotionUrl}`)
+    fetch(`${commentUrl}/admins/posts`)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data.promotions) && data.promotions.length > 0) {
-          const promotionsWithIds = data.promotions.map((promotion) => ({
-            ...promotion,
-            nickname: promotion.user.nickname,
+        if (Array.isArray(data.comments) && data.comments.length > 0) {
+          const commentsWithIds = data.comments.map((comment) => ({
+            ...comment,
+            nickname: comment.user.nickname,
+            post_number: comment.post.post_number,
           }));
-          setPromotions(promotionsWithIds);
+          setComments(commentsWithIds);
         } else {
           console.error("Data is not an array or empty");
         }
@@ -49,23 +49,23 @@ const AdminPR = () => {
       .catch((err) => console.error(err));
   };
 
-  // 페이지가 로드될 때 홍보 글 정보 가져옴
+  // 페이지가 로드될 때 댓글 정보 가져옴
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleDelete = () => {
     // 선택된 게시글의 ID 목록
-    const selectedPromotionIds = promotions.filter((promotion) => promotion.selected).map((promotion) => promotion.promotion_number);
+    const selectedComments = comments.filter((comment) => comment.selected).map((comment) => comment._id);
 
     // DELETE 요청 보내기
-    fetch(`${promotionUrl}/bulk`, {
+    fetch(`${commentUrl}/admins/comments`, {
       method: "DELETE",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ promotionNumbers: selectedPromotionIds }),
+      body: JSON.stringify({ commentIds: selectedComments }),
     })
       .then((res) => res.json())
       .then(() => {
@@ -79,14 +79,14 @@ const AdminPR = () => {
     <>
       <div className="admin-board-container">
         <div className="admin-board-header">
-          <h1>홍보 게시글</h1>
+          <h1>커뮤니티 댓글</h1>
           <Button
             variant="contained"
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedPromotions = promotions.some((promotion) => promotion.selected);
-              if (hasSelectedPromotions) setOpenAlert(true);
+              const hasSelectedComments = comments.some((comment) => comment.selected);
+              if (hasSelectedComments) setOpenAlert(true);
             }}
           >
             <h4>삭제</h4>
@@ -96,24 +96,24 @@ const AdminPR = () => {
           <DataGrid
             // 해당 상세페이지로 이동
             onRowClick={(params) => {
-              const promotionNumber = params.row.promotion_number;
-              navigate(`/promotion/${promotionNumber}`);
+              const postNumber = params.row.post.post_number;
+              navigate(`/community/${postNumber}`);
             }}
-            rows={promotions}
+            rows={comments}
             columns={columns}
-            checkboxSelection
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-            getRowId={(promotions) => promotions._id}
+            checkboxSelection
+            getRowId={(comment) => comment._id}
             onRowSelectionModelChange={(newSelection) => {
-              const updatedPromotions = promotions.map((promotion) => ({
-                ...promotion,
-                selected: newSelection.includes(promotion._id),
+              const updatedComments = comments.map((comment) => ({
+                ...comment,
+                selected: newSelection.includes(comment._id),
               }));
-              setPromotions(updatedPromotions);
+              setComments(updatedComments);
             }}
           />
         </div>
@@ -138,11 +138,11 @@ const AdminPR = () => {
         onclose={() => setOpenAlert2(false)}
         title={"완료"}
         width={500}
-        content={<p>선택하신 게시글이 정상적으로 삭제되었습니다.</p>}
+        content={<p>선택하신 댓글이 정상적으로 삭제되었습니다.</p>}
         time={1000}
       />
     </>
   );
 };
 
-export default AdminPR;
+export default AdminCommunityComments;

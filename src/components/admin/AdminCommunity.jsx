@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./AdminFree.scss";
+import "./AdminCommunity.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import { Backdrop } from "@mui/material";
@@ -21,7 +21,7 @@ const columns = [
   },
 ];
 
-const AdminFree = () => {
+const AdminCommunity = () => {
   // table에서 선택된 커뮤니티 글 관리
   const [posts, setPosts] = useState([]);
   // 삭제 확인 alert
@@ -47,7 +47,7 @@ const AdminFree = () => {
         }
       })
       .catch((err) => console.error(err));
-  };  
+  };
 
   // 페이지가 로드될 때 커뮤니티 정보 가져옴
   useEffect(() => {
@@ -107,7 +107,7 @@ const AdminFree = () => {
                 paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-            getRowId={(posts) => posts._id}
+            getRowId={(post) => post._id}
             onRowSelectionModelChange={(newSelection) => {
               const updatedPosts = posts.map((post) => ({
                 ...post,
@@ -145,4 +145,4 @@ const AdminFree = () => {
   );
 };
 
-export default AdminFree;
+export default AdminCommunity;

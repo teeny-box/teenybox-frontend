@@ -4,11 +4,11 @@ import MainBanner from "../../components/main/MainBanner";
 import MainBest from "../../components/main/MainBest";
 import MainPreferredRegion from "../../components/main/MainPreferredRegion";
 import MainChild from "../../components/main/MainChild";
-import MainPublicity from "../../components/main/MainPublicity";
+import MainPromotion from "../../components/main/MainPromotion";
 import MainReview from "../../components/main/MainReview";
 import { UpButton } from "../../components/common/button/UpButton";
 
-//Main
+// Main
 export function Main() {
   return (
     <div className="main-container">
@@ -27,8 +27,8 @@ export function Main() {
       <div className="preferred-region-container">
         <MainPreferredRegion />
       </div>
-      <div className="publicity-container">
-        <MainPublicity />
+      <div className="promotion-container">
+        <MainPromotion />
       </div>
       <UpButton />
     </div>

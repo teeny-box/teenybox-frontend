@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./AdminUser.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
+import { Backdrop } from "@mui/material";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
-import { Backdrop } from "@mui/material";
 import { userUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
@@ -17,7 +17,7 @@ const columns = [
     field: "createdAt",
     headerName: "가입 시기",
     width: 146,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -52,9 +52,7 @@ const AdminUser = () => {
 
   const handleDelete = () => {
     // 선택된 사용자의 ID 목록
-    const selectedUserIds = users
-      .filter((user) => user.selected)
-      .map((user) => user._id);
+    const selectedUserIds = users.filter((user) => user.selected).map((user) => user._id);
 
     // DELETE 요청 보내기
     fetch(`${userUrl}/admin/users`, {
@@ -100,7 +98,7 @@ const AdminUser = () => {
               },
             }}
             checkboxSelection
-            getRowId={(users) => users._id}
+            getRowId={(user) => user._id}
             onRowSelectionModelChange={(selectionModel) => {
               const updatedUsers = users.map((user) => ({
                 ...user,
@@ -111,10 +109,7 @@ const AdminUser = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}

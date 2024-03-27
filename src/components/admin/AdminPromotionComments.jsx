@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import "./AdminFreeComments.scss";
+import "./AdminPromotionComments.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AlertCustom } from "../common/alert/Alerts";
 import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
 import { commentUrl } from "../../apis/apiURLs";
 
+// DataGrid table의 column구성
 const columns = [
   { field: "content", headerName: "내용", width: 200 },
   { field: "nickname", headerName: "작성자", width: 200 },
-  { field: "post_number", headerName: "해당 글 번호", width: 170 },
+  { field: "promotion_number", headerName: "해당 글 번호", width: 170 },
   {
     field: "createdAt",
     headerName: "작성 시기",
@@ -20,8 +21,8 @@ const columns = [
   },
 ];
 
-const AdminFreeComments = () => {
-  // table에서 선택된 커뮤니티 댓글 관리
+const AdminPromotionComments = () => {
+  // table에서 선택된 홍보 댓글 관리
   const [comments, setComments] = useState([]);
   // 삭제 확인 alert
   const [openAlert, setOpenAlert] = useState(false);
@@ -30,16 +31,16 @@ const AdminFreeComments = () => {
   // 테이블 행 클릭시 해당 상세페이지로 이동
   const navigate = useNavigate();
 
-  // fetch API 커뮤니티 댓글 조회
+  // fetch API 홍보 댓글 조회
   const fetchData = () => {
-    fetch(`${commentUrl}/admins/posts`)
+    fetch(`${commentUrl}/admins/promotions`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.comments) && data.comments.length > 0) {
           const commentsWithIds = data.comments.map((comment) => ({
             ...comment,
             nickname: comment.user.nickname,
-            post_number: comment.post.post_number,
+            promotion_number: comment.promotion.promotion_number,
           }));
           setComments(commentsWithIds);
         } else {
@@ -79,7 +80,7 @@ const AdminFreeComments = () => {
     <>
       <div className="admin-board-container">
         <div className="admin-board-header">
-          <h1>커뮤니티 댓글</h1>
+          <h1>홍보 게시판 댓글</h1>
           <Button
             variant="contained"
             color="moreDarkGray"
@@ -96,8 +97,8 @@ const AdminFreeComments = () => {
           <DataGrid
             // 해당 상세페이지로 이동
             onRowClick={(params) => {
-              const postNumber = params.row.post.post_number;
-              navigate(`/community/${postNumber}`);
+              const promotionNumber = params.row.promotion.promotion_number;
+              navigate(`/promotion/${promotionNumber}`);
             }}
             rows={comments}
             columns={columns}
@@ -107,7 +108,7 @@ const AdminFreeComments = () => {
               },
             }}
             checkboxSelection
-            getRowId={(comments) => comments._id}
+            getRowId={(comment) => comment._id}
             onRowSelectionModelChange={(newSelection) => {
               const updatedComments = comments.map((comment) => ({
                 ...comment,
@@ -129,7 +130,7 @@ const AdminFreeComments = () => {
           checkBtnColor={"#fa2828"}
           title={"teenybox.com 내용:"}
           width={500}
-          content={<p>선택하신 게시글을 정말로 삭제시키시겠습니까?</p>}
+          content={<p>선택하신 댓글을 정말로 삭제시키시겠습니까?</p>}
         />
       </Backdrop>
       <AlertCustom
@@ -145,4 +146,4 @@ const AdminFreeComments = () => {
   );
 };
 
-export default AdminFreeComments;
+export default AdminPromotionComments;

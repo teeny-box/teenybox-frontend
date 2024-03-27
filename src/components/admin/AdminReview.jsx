@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./AdminReview.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import TimeFormat from "../common/time/TimeFormat";
-import { AlertCustom } from "../common/alert/Alerts";
 import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
 import { reviewUrl } from "../../apis/apiURLs";
 
 // DataGrid table의 column구성
@@ -18,7 +18,7 @@ const columns = [
     field: "created_at",
     headerName: "작성 시기",
     width: 146,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"}/>,
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -55,9 +55,7 @@ const AdminReview = () => {
 
   const handleDelete = () => {
     // 선택된 후기의 ID 목록
-    const selectedReviewIds = reviews
-      .filter((review) => review.selected)
-      .map((review) => review._id);
+    const selectedReviewIds = reviews.filter((review) => review.selected).map((review) => review._id);
 
     // DELETE 요청 보내기
     fetch(`${reviewUrl}`, {
@@ -86,9 +84,7 @@ const AdminReview = () => {
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}
             onClick={() => {
-              const hasSelectedReviews = reviews.some(
-                (review) => review.selected
-              );
+              const hasSelectedReviews = reviews.some((review) => review.selected);
               if (hasSelectedReviews) setOpenAlert(true);
             }}
           >
@@ -110,7 +106,7 @@ const AdminReview = () => {
               },
             }}
             checkboxSelection
-            getRowId={(reviews) => reviews._id}
+            getRowId={(review) => review._id}
             onRowSelectionModelChange={(selectionModel) => {
               const updateReviews = reviews.map((review) => ({
                 ...review,
@@ -121,10 +117,7 @@ const AdminReview = () => {
           />
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}
