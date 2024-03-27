@@ -49,15 +49,15 @@ export function PlayDetail() {
   }, []);
 
   const handleDetailNavMenuClick = (e) => {
-    const queryParams = new URLSearchParams(location.search);
+    const newQueryParams = new URLSearchParams(location.search); // 수정된 부분: 변수 이름 변경
     if (e.target.innerText === "상세정보") {
-      queryParams.set("tab", "detail-info");
+      newQueryParams.set("tab", "detail-info");
     } else if (e.target.innerText === "관람후기") {
-      queryParams.set("tab", "reviews");
+      newQueryParams.set("tab", "reviews");
     } else if (e.target.innerText === "장소정보") {
-      queryParams.set("tab", "location-info");
+      newQueryParams.set("tab", "location-info");
     }
-    navigate(`?${queryParams.toString()}`);
+    navigate(`?${newQueryParams.toString()}`);
   };
 
   return (
@@ -93,10 +93,7 @@ export function PlayDetail() {
               isLoggedIn={userData.isLoggedIn}
               averageRate={playInfo.avg_rating}
             />
-            <PlayDetailNav
-              selected={detailNavMenu}
-              handleClick={handleDetailNavMenuClick}
-            />
+            <PlayDetailNav selected={detailNavMenu} handleClick={handleDetailNavMenuClick} />
             <div className="play-detail-main-box">
               {detailNavMenu === "detail-info" && (
                 <PlayDetailInfo

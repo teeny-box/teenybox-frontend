@@ -1,21 +1,14 @@
 import { useState } from "react";
 import "./SubmitBtnsArea.scss";
 import Button from "@mui/material/Button";
-import { AlertCustom } from "../../common/alert/Alerts";
-import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
+import { useNavigate } from "react-router-dom";
+import { AlertCustom } from "../../common/alert/Alerts";
 import { userUrl } from "../../../apis/apiURLs";
 
 export default function SubmitBtnsArea({ additionalUserInfo }) {
   const navigate = useNavigate();
-  const {
-    id,
-    nicknameInfo,
-    selectedImg,
-    selectedRegion,
-    socialProvider,
-    toDeleteImg,
-  } = additionalUserInfo;
+  const { id, nicknameInfo, selectedImg, selectedRegion, socialProvider, toDeleteImg } = additionalUserInfo;
 
   const [alert, setAlert] = useState(null);
 
@@ -54,15 +47,14 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
           setAlert({
             severity: "success",
             title: "회원가입 완료",
-            content:
-              "축하합니다! TEENY BOX 회원가입이 완료되었습니다. 로그인 페이지로 이동합니다☺️",
+            content: "축하합니다! TEENY BOX 회원가입이 완료되었습니다. 로그인 페이지로 이동합니다☺️",
             closeBtn: false,
             onclick: () => navigate("/signup-in"),
             onclose: () => navigate("/signup-in"),
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setAlert({
           severity: "error",
           title: "회원가입 실패",
@@ -80,16 +72,8 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={true}
-          onClick={
-            alert.severity === "success"
-              ? () => navigate("/signup-in")
-              : () => setAlert(null)
-          }
-          onClose={
-            alert.severity === "success"
-              ? () => navigate("/signup-in")
-              : () => setAlert(null)
-          }
+          onClick={alert.severity === "success" ? () => navigate("/signup-in") : () => setAlert(null)}
+          onClose={alert.severity === "success" ? () => navigate("/signup-in") : () => setAlert(null)}
         >
           <AlertCustom
             severity={alert.severity}
@@ -105,11 +89,7 @@ export default function SubmitBtnsArea({ additionalUserInfo }) {
         </Backdrop>
       )}
       <div className="submit-btns-area">
-        <Button
-          variant="contained"
-          sx={{ marginRight: "15px" }}
-          onClick={() => submitAdditionUserInfo()}
-        >
+        <Button variant="contained" sx={{ marginRight: "15px" }} onClick={() => submitAdditionUserInfo()}>
           제출
         </Button>
       </div>

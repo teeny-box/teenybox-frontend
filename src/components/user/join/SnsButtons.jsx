@@ -1,6 +1,5 @@
 // 소셜 로그인/회원가입 버튼들
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import Naver from "./Naver";
 import Kakao from "./Kakao";
 import Google from "./Google";
@@ -27,11 +26,7 @@ export default function SnsButtons() {
             <span
               style={{
                 color:
-                  localStorage.getItem("social_provider") === "naver"
-                    ? "#3eaf0e"
-                    : localStorage.getItem("social_provider") === "kakao"
-                    ? "#FFC939"
-                    : "#147bb7",
+                  localStorage.getItem("social_provider") === "naver" ? "#3eaf0e" : localStorage.getItem("social_provider") === "kakao" ? "#FFC939" : "#147bb7",
               }}
             >
               {localStorage.getItem("social_provider")}

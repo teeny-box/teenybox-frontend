@@ -1,9 +1,7 @@
 import { useContext, useState } from "react";
 import "./ConditionSearchFrame.scss";
-import ConditionCheckBox from "./ConditionCheckBox";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
-import { ConditionContext } from "../ConditionSearch";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -11,6 +9,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import koLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
+import ConditionCheckBox from "./ConditionCheckBox";
+import { ConditionContext } from "../ConditionSearch";
 
 const marks = [
   { value: 0, label: "무료" },
@@ -30,16 +30,9 @@ function valuetext(value) {
   return `${value}원`;
 }
 
-export default function ConditionSearchFrame({
-  division,
-  options,
-  innerWidth,
-}) {
+export default function ConditionSearchFrame({ division, options, innerWidth }) {
   const { conditions, setConditions } = useContext(ConditionContext);
-  const [values, setValues] = useState([
-    conditions["가격별"][0] ? conditions["가격별"][0] / 1000 : 0,
-    conditions["가격별"][1] / 1000,
-  ]);
+  const [values, setValues] = useState([conditions["가격별"][0] ? conditions["가격별"][0] / 1000 : 0, conditions["가격별"][1] / 1000]);
 
   const handleChangeSlider = (event, newValues) => {
     setValues(newValues);
@@ -83,28 +76,17 @@ export default function ConditionSearchFrame({
       {division === "날짜별" && (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs} locale={koLocale}>
-            <DemoContainer
-              components={["DatePicker"]}
-              sx={{ marginLeft: "30px", padding: "5px 0" }}
-            >
+            <DemoContainer components={["DatePicker"]} sx={{ marginLeft: "30px", padding: "5px 0" }}>
               <DatePicker
                 format="YYYY/MM/DD"
                 onChange={handleChangeDatePicker}
-                value={
-                  conditions["날짜별"] ? dayjs(conditions["날짜별"]) : null
-                }
+                value={conditions["날짜별"] ? dayjs(conditions["날짜별"]) : null}
                 className="date-picker"
               />
             </DemoContainer>
           </LocalizationProvider>
           {conditions["날짜별"] ? (
-            <Button
-              color="secondary"
-              sx={{ marginLeft: "10px" }}
-              size="large"
-              onClick={dateReset}
-              readOnly
-            >
+            <Button color="secondary" sx={{ marginLeft: "10px" }} size="large" onClick={dateReset} readOnly>
               초기화
             </Button>
           ) : (

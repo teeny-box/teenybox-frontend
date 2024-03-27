@@ -55,10 +55,7 @@ export function InputAdditionalInfo() {
               user_id={info.id}
               setToDeleteImg={setToDeleteImg}
             />
-            <PreferredRegionsArea
-              selectedRegion={selectedRegion}
-              setSelectedRegion={setSelectedRegion}
-            />
+            <PreferredRegionsArea selectedRegion={selectedRegion} setSelectedRegion={setSelectedRegion} />
             <SubmitBtnsArea
               additionalUserInfo={{
                 id: info.id,

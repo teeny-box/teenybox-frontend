@@ -4,12 +4,7 @@ import Button from "@mui/material/Button";
 import { AlertCustom } from "../../common/alert/Alerts";
 import { presignedUrl } from "../../../apis/apiURLs";
 
-export default function ProfileImgContainer({
-  selectedImg,
-  setSelectedImg,
-  profileUrl,
-  setToDeleteImg,
-}) {
+export default function ProfileImgContainer({ selectedImg, setSelectedImg, profileUrl, setToDeleteImg }) {
   const [alert, setAlert] = useState(null);
 
   const imgInput = useRef(null);
@@ -53,10 +48,7 @@ export default function ProfileImgContainer({
 
         if (uploadRes.ok) {
           setSelectedImg(public_url);
-          if (
-            alert?.title === "사진 등록 실패" ||
-            alert?.title === "제한 용량 초과"
-          ) {
+          if (alert?.title === "사진 등록 실패" || alert?.title === "제한 용량 초과") {
             setAlert(null);
           }
         } else {
@@ -96,14 +88,12 @@ export default function ProfileImgContainer({
   };
 
   const handleBasicImgClick = () => {
-    if (selectedImg !== profileUrl && selectedImg !== "/default_user_img.svg")
-      setToDeleteImg((pre) => [...pre, selectedImg]);
+    if (selectedImg !== profileUrl && selectedImg !== "/default_user_img.svg") setToDeleteImg((pre) => [...pre, selectedImg]);
     setSelectedImg("/default_user_img.svg");
   };
 
   const profileImgReset = () => {
-    if (selectedImg !== profileUrl && selectedImg !== "/default_user_img.svg")
-      setToDeleteImg((pre) => [...pre, selectedImg]);
+    if (selectedImg !== profileUrl && selectedImg !== "/default_user_img.svg") setToDeleteImg((pre) => [...pre, selectedImg]);
     setSelectedImg(profileUrl);
   };
 
@@ -127,11 +117,7 @@ export default function ProfileImgContainer({
           type="file"
           ref={imgInput}
           onChange={(e) => {
-            if (
-              selectedImg !== profileUrl &&
-              selectedImg !== "/default_user_img.svg"
-            )
-              setToDeleteImg((pre) => [...pre, selectedImg]);
+            if (selectedImg !== profileUrl && selectedImg !== "/default_user_img.svg") setToDeleteImg((pre) => [...pre, selectedImg]);
             getPresignedUrl(e.target.files[0]);
           }}
           accept=".png, .jpg, .jpeg"
@@ -145,12 +131,7 @@ export default function ProfileImgContainer({
             <img src={selectedImg} alt="사용자가 선택한 프로필 이미지" />
           )}
         </div>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => handleProfileImgClick()}
-          sx={{ marginTop: "10px" }}
-        >
+        <Button variant="contained" color="secondary" onClick={() => handleProfileImgClick()} sx={{ marginTop: "10px" }}>
           프로필 사진 변경
         </Button>
         {selectedImg !== profileUrl ? (
@@ -162,9 +143,7 @@ export default function ProfileImgContainer({
             or 기본 이미지 사용
           </Button>
         )}
-        <p style={{ color: "#808080", fontSize: "13px", fontWeight: 400 }}>
-          * 사진은 5MB 이하로만 가능합니다.
-        </p>
+        <p style={{ color: "#808080", fontSize: "13px", fontWeight: 400 }}>* 사진은 5MB 이하로만 가능합니다.</p>
       </div>
     </>
   );

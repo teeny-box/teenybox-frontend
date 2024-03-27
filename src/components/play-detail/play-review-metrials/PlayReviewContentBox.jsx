@@ -3,11 +3,7 @@ import "./PlayReviewContentBox.scss";
 import Button from "@mui/material/Button";
 import ImageExpandModal from "../../../components/common/modal/ImageExpandModal";
 
-export default function PlayReviewContentBox({
-  reviewContentInfo,
-  setIsReviewFormOpened,
-  scrollRef,
-}) {
+export default function PlayReviewContentBox({ reviewContentInfo, setIsReviewFormOpened, scrollRef }) {
   const { photoSrc, content, isAuthorLogined } = reviewContentInfo;
 
   const [clickedPhoto, setClickedPhoto] = useState(null);
@@ -26,27 +22,11 @@ export default function PlayReviewContentBox({
 
   return (
     <div className="play-review-content-container">
-      {clickedPhoto && (
-        <ImageExpandModal
-          imgSrc={clickedPhoto}
-          setClickedPhoto={setClickedPhoto}
-        />
-      )}
-      {content ? (
-        <p className="play-review-content">
-          {!content || content === "null" ? "" : content}
-        </p>
-      ) : null}
+      {clickedPhoto && <ImageExpandModal imgSrc={clickedPhoto} setClickedPhoto={setClickedPhoto} />}
+      {content ? <p className="play-review-content">{!content || content === "null" ? "" : content}</p> : null}
       <div className="review-photos">
         {photoSrc.length
-          ? photoSrc.map((src, idx) => (
-              <img
-                src={src}
-                className="play-review-photo"
-                key={idx}
-                onClick={() => handleReviewPhotoClick(src)}
-              />
-            ))
+          ? photoSrc.map((src, idx) => <img src={src} className="play-review-photo" key={idx} onClick={() => handleReviewPhotoClick(src)} />)
           : null}
       </div>
       <div className="play-review-modify-btn">

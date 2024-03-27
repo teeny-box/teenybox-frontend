@@ -5,16 +5,12 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { nicknameUrl } from "../../../apis/apiURLs";
 
-export default function NicknameContainer({
-  nicknameInfo,
-  setNicknameInfo,
-  user_id,
-}) {
+export default function NicknameContainer({ nicknameInfo, setNicknameInfo, user_id }) {
   const [alert, setAlert] = useState(null);
 
   // 닉네임 중복 확인
   const duplicationCheck = () => {
-    const nickname = nicknameInfo.nickname;
+    const nickname = { nicknameInfo };
 
     // 닉네임 길이부터 확인
     if (nickname.length === 0) {
@@ -26,7 +22,7 @@ export default function NicknameContainer({
     }
 
     // 특수 문자나 숫자가 닉네임에 포함되어 있는지를 확인
-    const regex = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9`]/;
+    const regex = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?0-9`]/; // 불필요한 이스케이프 문자 제거
     if (regex.test(nickname)) {
       setAlert({
         severity: "error",
@@ -62,10 +58,8 @@ export default function NicknameContainer({
         setAlert({
           severity: "error",
           message: "닉네임 중복 확인 중 에러가 발생했습니다.",
-        })
+        }),
       );
-
-    return;
   };
 
   return (
@@ -97,22 +91,14 @@ export default function NicknameContainer({
             재설정
           </Button>
         ) : (
-          <Button
-            variant="outlined"
-            color="orange"
-            onClick={() => duplicationCheck()}
-          >
+          <Button variant="outlined" color="orange" onClick={() => duplicationCheck()}>
             중복 확인
           </Button>
         )}
       </div>
       <p>* 특수문자/숫자 제외 영문 or 한글로 1 ~ 10자리 입력</p>
       {alert && (
-        <Alert
-          severity={alert.severity}
-          sx={{ padding: 0, border: "none" }}
-          variant="outlined"
-        >
+        <Alert severity={alert.severity} sx={{ padding: 0, border: "none" }} variant="outlined">
           {alert.message}
         </Alert>
       )}

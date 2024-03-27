@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import dayjs from "dayjs";
+import CircularProgress from "@mui/material/CircularProgress";
 import "./PlayReview.scss";
 import AverageRatingBox from "./play-review-metrials/AverageRatingBox";
 import ReviewForm from "./play-review-metrials/ReviewForm";
@@ -6,19 +8,9 @@ import PlayReviewHeader from "./play-review-metrials/PlayReviewHeader";
 import PlayReviewListBox from "./play-review-metrials/PlayReviewListBox";
 import PaginationBox from "./play-review-metrials/PaginationBox";
 import { AlertCustom } from "../common/alert/Alerts";
-import CircularProgress from "@mui/material/CircularProgress";
-import dayjs from "dayjs";
 import { reviewUrl } from "../../apis/apiURLs";
 
-export default function PlayReview({
-  showId,
-  isLoggedIn,
-  author,
-  averageRate,
-  state,
-  userId,
-  getPlayDetailInfo,
-}) {
+export default function PlayReview({ showId, isLoggedIn, author, averageRate, state, userId, getPlayDetailInfo }) {
   const scrollRef = useRef(null);
 
   // 로딩중 여부
@@ -40,15 +32,14 @@ export default function PlayReview({
 
   // 리뷰 가져오기
   const getReviews = () => {
-    fetch(
-      `${reviewUrl}?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`
-    )
+    fetch(`${reviewUrl}?showId=${showId}&order=${sortStandard}&page=${curPage}&limit=10`)
       .then((res) => res.json())
       .then((data) => {
         setReviews(data.data);
         setTotalCount(data.total);
       })
       .catch((err) => {
+        console.error(err); // 에러 콘솔에 출력
         setAlert({
           title: "오류",
           content: "리뷰 데이터를 받아오는 데 실패했습니다.",
@@ -100,15 +91,7 @@ export default function PlayReview({
 
   return (
     <>
-      {alert && (
-        <AlertCustom
-          title={alert.title}
-          content={alert.content}
-          severity={alert.severity}
-          open={alert.open}
-          onclose={alert.onclose}
-        />
-      )}
+      {alert && <AlertCustom title={alert.title} content={alert.content} severity={alert.severity} open={alert.open} onclose={alert.onclose} />}
       <div className="play-review-container">
         {!isLoading && userReview && reviews && (
           <>
@@ -138,26 +121,18 @@ export default function PlayReview({
               />
             ) : null}
 
-            <PlayReviewHeader
-              count={totalCount}
-              sortStandard={sortStandard}
-              setSortStandard={setSortStandard}
-              setCurPage={setCurPage}
-            />
+            <PlayReviewHeader count={totalCount} sortStandard={sortStandard} setSortStandard={setSortStandard} setCurPage={setCurPage} />
 
             {reviews.length ? (
               <div className="play-review-list">
                 {reviews.map((review) => (
                   <PlayReviewListBox
                     reviewInfo={{
-                      isAuthorLogined: userId == review.user_id,
-                      author: review.user_nickname
-                        ? review.user_nickname
-                        : "작성자",
+                      isAuthorLogined: userId === review.user_id,
+                      author: review.user_nickname ? review.user_nickname : "작성자",
                       date: dayjs(review.created_at).format("YYYY-MM-DD"),
                       title: review.title,
-                      isContentExsist:
-                        review.content !== "null" && review.content,
+                      isContentExsist: review.content !== "null" && review.content,
                       isPhotoExsist: Boolean(review.image_urls.length),
                       rating: review.rate,
                       photo: review.image_urls,
@@ -172,16 +147,10 @@ export default function PlayReview({
                     key={review._id}
                   />
                 ))}
-                <PaginationBox
-                  curPage={curPage}
-                  setCurPage={setCurPage}
-                  totalCount={totalCount}
-                />
+                <PaginationBox curPage={curPage} setCurPage={setCurPage} totalCount={totalCount} />
               </div>
             ) : (
-              <div className="play-review-not-exsist">
-                리뷰가 존재하지 않습니다.
-              </div>
+              <div className="play-review-not-exsist">리뷰가 존재하지 않습니다.</div>
             )}
           </>
         )}

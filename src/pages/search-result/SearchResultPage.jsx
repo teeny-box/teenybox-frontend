@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom/dist";
 // <'OOO' 검색 결과> 띄우기 위한 컴포넌트 (공통)
 import SearchResultHeader from "../../components/search/common/SearchResultHeader";
 // 총 검색 결과 개수 띄우기 위한 컴포넌트 (공통)
-import SearchResultCount from "../../components/search/common/SearchResultCount";
+// import SearchResultCount from "../../components/search/common/SearchResultCount"; // 사용되지 않음 일단 주석처리.
 // 연극/홍보게시물/자유게시물 선택 탭 띄우기 위한 컴포넌트 (공통)
 import SearchResultTab from "../../components/search/common/SearchResultTab";
 // 연극 검색 결과 띄우기 위한 컴포넌트 (여기서부터는 개별로)
@@ -12,14 +13,12 @@ import Loading from "../../components/common/state/Loading";
 import PromotionSearchResult from "../../components/search/promotion-search-result/PromotionSearchResult";
 import CommunitySearchResult from "../../components/search/community-search-result/CommunitySearchResult";
 import { AlertCustom } from "../../components/common/alert/Alerts";
-import { useNavigate, useSearchParams } from "react-router-dom/dist";
-import ScrollToTop from "../../hooks/useScrollToTop";
 import { showUrl } from "../../apis/apiURLs";
 
 export function SearchResultPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   // 검색어
-  const [searchKeyword, setSearchKeyword] = useState(searchParams.get("query"));
+  const [searchKeyword] = useState(searchParams.get("query"));
 
   // 로딩중 여부
   const [isLoading, setIsLoading] = useState(true);

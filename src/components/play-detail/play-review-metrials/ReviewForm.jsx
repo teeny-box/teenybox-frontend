@@ -1,15 +1,15 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./ReviewForm.scss";
-import { AlertCustom } from "../../common/alert/Alerts";
+import Backdrop from "@mui/material/Backdrop";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import ReviewErrorBox from "./ReviewErrorBox";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import IconButton from "@mui/material/IconButton";
-import Backdrop from "@mui/material/Backdrop";
+import { AlertCustom } from "../../common/alert/Alerts";
+import ReviewErrorBox from "./ReviewErrorBox";
 import { reviewUrl, presignedUrl } from "../../../apis/apiURLs";
 
 export default function ReviewForm({
@@ -27,14 +27,11 @@ export default function ReviewForm({
   getPlayDetailInfo,
 }) {
   const navigate = useNavigate();
+  const location = useLocation(); // location 사용 방법 수정
   const [title, setTitle] = useState(review_title || "");
-  const [content, setContent] = useState(
-    review_content === "null" ? "" : review_content ? review_content : ""
-  );
+  const [content, setContent] = useState(review_content !== "null" ? review_content : "");
   const [ratingValue, setRatingValue] = useState(review_rate || 0);
-  const [photo, setPhoto] = useState(
-    review_image_urls?.length ? review_image_urls : []
-  );
+  const [photo, setPhoto] = useState(review_image_urls?.length ? review_image_urls : []);
   const [deletedPhoto, setDeletedPhoto] = useState([]);
   // fixed된 알림을 띄우기 위한 상태
   const [alert, setAlert] = useState(null);
@@ -74,11 +71,7 @@ export default function ReviewForm({
 
         if (uploadRes.ok) {
           setPhoto((prev) => [...prev, public_url]);
-          if (
-            reviewErrorText ===
-              "사진 등록에 실패하였습니다. 다시 시도해 주세요." ||
-            reviewErrorText === "사진은 장당 5MB 이하로만 등록이 가능합니다."
-          ) {
+          if (reviewErrorText === "사진 등록에 실패하였습니다. 다시 시도해 주세요." || reviewErrorText === "사진은 장당 5MB 이하로만 등록이 가능합니다.") {
             setReviewErrorText(null);
           }
           document.getElementById("fileInput").value = "";
@@ -125,38 +118,16 @@ export default function ReviewForm({
   };
 
   const handleImageSelect = (image) => {
+    if (!image) return; // 수정된 부분: 불필요한 return 제거
     if (photo.length === 3) {
       setReviewErrorText("사진은 최대 3장만 업로드 가능합니다.");
-    } else if (!image) {
-      return;
-    } else {
-      getPresignedUrl(image);
+      return; // 조건 재조정
     }
-  };
-
-  // 리뷰 작성 or 수정 완료 후 제출 시
-  const handleCompelteBtnClick = () => {
-    if (!title || !ratingValue || !content) {
-      // setReviewValidation(false);
-      setReviewErrorText(
-        "제목, 별점, 내용은 필수 입력값입니다. 입력 후 다시 제출해 주세요."
-      );
-      return;
-    }
-    const body = {
-      title,
-      content,
-      rate: ratingValue,
-      imageUrls: photo,
-      imageUrlsToDelete: deletedPhoto,
-    };
-
-    if (purpose === "작성") postReview(body);
-    else if (purpose === "수정") patchReview(body);
+    getPresignedUrl(image);
   };
 
   // 리뷰 '작성' 시의 fetch
-  const postReview = (body) => {
+  const postReview = async (body) => {
     fetch(`${reviewUrl}/${showId}`, {
       credentials: "include",
       method: "POST",
@@ -208,8 +179,7 @@ export default function ReviewForm({
         } else if (res.status === 413) {
           setAlert({
             title: "tennybox.com 내용:",
-            content:
-              "파일 크기가 제한을 초과하였습니다. 파일 용량을 확인해 주세요.",
+            content: "파일 크기가 제한을 초과하였습니다. 파일 용량을 확인해 주세요.",
             open: true,
             onclose: () => setAlert(null),
             severity: "error",
@@ -224,7 +194,7 @@ export default function ReviewForm({
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setAlert({
           title: "tennybox.com 내용:",
           content: "리뷰 업로드에 실패하였습니다.",
@@ -236,7 +206,7 @@ export default function ReviewForm({
   };
 
   // 리뷰 '수정' 시의 fetch
-  const patchReview = (body) => {
+  const patchReview = async (body) => {
     fetch(`${reviewUrl}/${review_id}`, {
       credentials: "include",
       method: "PATCH",
@@ -287,8 +257,7 @@ export default function ReviewForm({
         } else if (res.status === 413) {
           setAlert({
             title: "tennybox.com 내용:",
-            content:
-              "파일 크기가 제한을 초과하였습니다. 파일 용량을 확인해 주세요.",
+            content: "파일 크기가 제한을 초과하였습니다. 파일 용량을 확인해 주세요.",
             open: true,
             onclose: () => setAlert(null),
             severity: "error",
@@ -303,7 +272,7 @@ export default function ReviewForm({
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setAlert({
           title: "tennybox.com 내용:",
           content: "리뷰 업로드에 실패하였습니다.",
@@ -314,18 +283,31 @@ export default function ReviewForm({
       });
   };
 
+  // 리뷰 작성 or 수정 완료 후 제출 시
+  const handleCompelteBtnClick = () => {
+    if (!title || !ratingValue || !content) {
+      // setReviewValidation(false);
+      setReviewErrorText("제목, 별점, 내용은 필수 입력값입니다. 입력 후 다시 제출해 주세요.");
+      return;
+    }
+    const body = {
+      title,
+      content,
+      rate: ratingValue,
+      imageUrls: photo,
+      imageUrlsToDelete: deletedPhoto,
+    };
+
+    if (purpose === "작성") postReview(body);
+    else if (purpose === "수정") patchReview(body);
+  };
+
   return (
     <>
       {alert &&
-        (alert.content ===
-          "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?" ||
-        alert.content ===
-          `리뷰 ${purpose}을 취소하시겠습니까? ${purpose}한 글 내용은 저장되지 않습니다.` ? (
-          <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}
-            onClick={() => setAlert(null)}
-          >
+        (alert.content === "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?" ||
+        alert.content === `리뷰 ${purpose}을 취소하시겠습니까? ${purpose}한 글 내용은 저장되지 않습니다.` ? (
+          <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true} onClick={() => setAlert(null)}>
             <AlertCustom
               title={alert.title}
               content={alert.content}
@@ -424,14 +406,7 @@ export default function ReviewForm({
           {photo.length
             ? photo.map((item, idx) => (
                 <div key={idx}>
-                  <img
-                    src={
-                      typeof item === "string"
-                        ? item
-                        : URL.createObjectURL(item)
-                    }
-                    alt="리뷰 첨부 이미지"
-                  />
+                  <img src={typeof item === "string" ? item : URL.createObjectURL(item)} alt="리뷰 첨부 이미지" />
                   <IconButton
                     sx={{
                       position: "relative",
@@ -459,19 +434,10 @@ export default function ReviewForm({
         </div>
         {reviewErrorText && <ReviewErrorBox errorText={reviewErrorText} />}
         <div className="play-review-btn">
-          <Button
-            variant="contained"
-            className="play-review-btn"
-            onClick={() => handleCompelteBtnClick()}
-          >
+          <Button variant="contained" className="play-review-btn" onClick={() => handleCompelteBtnClick()}>
             {purpose} 완료
           </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            className="play-review-btn"
-            onClick={() => handleCancelBtnClick()}
-          >
+          <Button variant="outlined" color="error" className="play-review-btn" onClick={() => handleCancelBtnClick()}>
             {purpose} 취소
           </Button>
         </div>

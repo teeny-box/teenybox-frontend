@@ -2,12 +2,7 @@ import React from "react";
 import "./PlayReviewHeader.scss";
 import { FormControl, MenuItem, Select } from "@mui/material";
 
-export default function PlayReviewHeader({
-  count,
-  sortStandard,
-  setSortStandard,
-  setCurPage,
-}) {
+export default function PlayReviewHeader({ count, sortStandard, setSortStandard, setCurPage }) {
   return (
     <>
       <div className="play-review-header-container">

@@ -17,16 +17,15 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
       .then((res) => {
         if (res.ok) {
           return res.json();
-        } else {
-          setAlert({
-            title: "오류",
-            content: "사용자 정보를 가져오는 중 오류가 발생하였습니다.",
-            severity: "error",
-            onclose: () => setAlert(null),
-            onclick: () => setAlert(null),
-            checkBtn: "확인",
-          });
         }
+        setAlert({
+          title: "오류",
+          content: "사용자 정보를 가져오는 중 오류가 발생하였습니다.",
+          severity: "error",
+          onclose: () => setAlert(null),
+          onclick: () => setAlert(null),
+          checkBtn: "확인",
+        });
       })
       .then((data) => {
         setUserData({ isLoggedIn: true, user: data.user });
@@ -54,21 +53,15 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
 
   useEffect(() => {
     const currentUrl = window.location.href;
-    const searchParams = new URL(currentUrl).searchParams;
+    const { searchParams } = new URL(currentUrl);
     const code = searchParams.get("code");
     const error = searchParams.get("error");
     if (error === "access_denied") {
-      window.opener.postMessage(
-        { error, errorIsKakao: currentUrl.includes("kakao-login") },
-        window.location.origin
-      );
+      window.opener.postMessage({ error, errorIsKakao: currentUrl.includes("kakao-login") }, window.location.origin);
       return;
     }
     if (code) {
-      window.opener.postMessage(
-        { code, isKakao: currentUrl.includes("kakao-login") },
-        window.location.origin
-      );
+      window.opener.postMessage({ code, isKakao: currentUrl.includes("kakao-login") }, window.location.origin);
     }
   }, []);
 
@@ -134,9 +127,9 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
                   setAlert(null);
                   navigate("/additional-user-info", {
                     state: {
-                      id: data[`kakaoUserData`]["id"],
-                      existingNickname: data[`kakaoUserData`]["nickname"],
-                      profileUrl: data[`kakaoUserData`]["profileUrl"],
+                      id: data.kakaoUserData.id,
+                      existingNickname: data.kakaoUserData.nickname,
+                      profileUrl: data.kakaoUserData.profileUrl,
                       socialProvider: "kakao",
                       isFromSignUpPage: true,
                     },
@@ -145,8 +138,8 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
               });
             }
           })
-          .catch((error) => {
-            console.error("네트워크 오류", error);
+          .catch((err) => {
+            console.error("네트워크 오류", err);
             setAlert({
               title: "오류 발생",
               content: "회원가입/로그인 중 오류가 발생하였습니다.",

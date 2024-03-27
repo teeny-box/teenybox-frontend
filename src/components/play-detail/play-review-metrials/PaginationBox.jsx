@@ -8,12 +8,7 @@ export default function PaginationBox({ curPage, setCurPage, totalCount }) {
 
   return (
     <div className="pagination-box-container">
-      <Pagination
-        count={Math.ceil(totalCount / 10)}
-        page={curPage}
-        color="secondary"
-        onChange={handlePageNumberChange}
-      />
+      <Pagination count={Math.ceil(totalCount / 10)} page={curPage} color="secondary" onChange={handlePageNumberChange} />
     </div>
   );
 }
