@@ -1,9 +1,8 @@
 // 마이페이지 화면
 import React, { useContext, useEffect, useState } from "react";
 import "./MyPage.scss";
-import { useNavigate } from "react-router";
 import { CircularProgress } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Navigate } from "react-router-dom";
 import MemberInfo from "../../components/mypage/MemberInfo";
 import MemberDeletion from "../../components/mypage/MemberDeletion";
 import MyPickList from "../../components/mypage/MyPickList";
@@ -19,7 +18,6 @@ export function MyPage() {
   const [selectedComponent, setSelectedComponent] = useState(searchParams.get("tab") || "MemberInfo");
   const { userData, setUserData } = useContext(AppContext);
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
-  const nav = useNavigate();
 
   const isSelected = (componentName) => (selectedComponent === componentName ? "selected" : "");
 
@@ -52,7 +50,7 @@ export function MyPage() {
         setUserData({ isLoggedIn: true, user: data.user });
       } else {
         setUserData({ isLoggedIn: false });
-        nav(`/signup-in`);
+        <Navigate to="/signup-in" />;
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
