@@ -1,6 +1,9 @@
 // 마이페이지 화면
 import React, { useContext, useEffect, useState } from "react";
 import "./MyPage.scss";
+import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import MemberInfo from "../../components/mypage/MemberInfo";
 import MemberDeletion from "../../components/mypage/MemberDeletion";
 import MyPickList from "../../components/mypage/MyPickList";
@@ -8,10 +11,7 @@ import MyPlayReview from "../../components/mypage/MyPlayReview";
 import MyPRBoard from "../../components/mypage/MyPRBoard";
 import MyFreeBoard from "../../components/mypage/MyFreeBoard";
 import MyComments from "../../components/mypage/MyComments";
-import { useNavigate } from "react-router";
 import { AlertContext, AppContext } from "../../App";
-import { CircularProgress } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
 import { userUrl } from "../../apis/apiURLs";
 
 export function MyPage() {
@@ -21,9 +21,7 @@ export function MyPage() {
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const isSelected = (componentName) => {
-    return selectedComponent === componentName ? "selected" : "";
-  };
+  const isSelected = (componentName) => (selectedComponent === componentName ? "selected" : "");
 
   const renderComponent = () => {
     switch (selectedComponent) {
@@ -54,7 +52,7 @@ export function MyPage() {
         setUserData({ isLoggedIn: true, user: data.user });
       } else {
         setUserData({ isLoggedIn: false });
-        return nav(`/signup-in`);
+        nav(`/signup-in`);
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);

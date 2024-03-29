@@ -3,14 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import "./MyComments.scss";
 import Button from "@mui/material/Button";
-import { commentUrl, userUrl } from "../../apis/apiURLs";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { commentUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
-import { Link, useNavigate } from "react-router-dom";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
-import { COMMENTS_LIMIT } from "../../utils/const";
 import { AlertContext } from "../../App";
 
 const columns = [
@@ -35,7 +34,7 @@ const columns = [
   { field: "createdAt", headerName: "작성 시기", width: 150, renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} /> },
 ];
 
-function MyComments({ user, setUserData }) {
+function MyComments({ setUserData }) {
   const [comments, setComments] = useState([]);
   const [state, setState] = useState("loading");
   const [checkedList, setCheckedList] = useState([]);
@@ -51,9 +50,12 @@ function MyComments({ user, setUserData }) {
 
       if (res.ok) {
         setComments(
-          data.comments.map((comment) => {
-            return { ...comment, id: comment._id, category: comment.promotion ? "홍보게시판" : "커뮤니티", title: comment.promotion?.title || comment.post?.title };
-          })
+          data.comments.map((comment) => ({
+            ...comment,
+            id: comment._id,
+            category: comment.promotion ? "홍보게시판" : "커뮤니티",
+            title: comment.promotion?.title || comment.post?.title,
+          })),
         );
         setState("hasValue");
       } else {
@@ -77,9 +79,9 @@ function MyComments({ user, setUserData }) {
       });
 
       if (res.ok) {
-        let newComments = [...comments];
-        checkedList.map((id) => {
-          let index = newComments.findIndex((comment) => comment.id === id);
+        const newComments = [...comments];
+        checkedList.forEach((id) => {
+          const index = newComments.findIndex((comment) => comment.id === id);
           newComments.splice(index, 1);
         });
 
@@ -92,7 +94,7 @@ function MyComments({ user, setUserData }) {
           handleDelete();
         } else {
           setUserData({ isLoggedIn: false });
-          return nav(`/signup-in`);
+          nav(`/signup-in`);
         }
       } else {
         const data = await res.json();
