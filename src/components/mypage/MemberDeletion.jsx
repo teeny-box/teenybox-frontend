@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 import { AlertCustom } from "../common/alert/Alerts";
 import { userUrl } from "../../apis/apiURLs";
 
-function MemberDeletion({ user, setUserData }) {
+function MemberDeletion({ setUserData }) {
   const [openAlert, setOpenAlert] = useState(false);
+  const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [checked, setChecked] = useState(false);
   const nav = useNavigate();
 
@@ -31,8 +32,10 @@ function MemberDeletion({ user, setUserData }) {
       } else {
         console.error(data);
       }
+      return null;
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      return null;
     }
   };
 
@@ -80,6 +83,20 @@ function MemberDeletion({ user, setUserData }) {
               <br /> 정말 탈퇴하시겠습니까?
             </p>
           }
+        />
+      </Backdrop>
+      <Backdrop open={openFetchErrorAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AlertCustom
+          severity="error"
+          open={openFetchErrorAlert}
+          onclose={() => setOpenFetchErrorAlert(false)}
+          onclick={() => handleDelete()}
+          checkBtn={"확인"}
+          closeBtn={"취소"}
+          checkBtnColor={"#fa2828"}
+          title={"teenybox.com 내용:"}
+          width={500}
+          content={<p>탈퇴 절차 진행 중 문제가 발생했습니다.</p>}
         />
       </Backdrop>
     </>

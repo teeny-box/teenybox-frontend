@@ -2,25 +2,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./MyPickList.scss";
 import Button from "@mui/material/Button";
-import { userUrl } from "../../apis/apiURLs";
 import { Checkbox, CircularProgress, Pagination, Tooltip, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertContext } from "../../App";
 
-function MyPickList({ user, setUserData }) {
+function MyPickList({ setUserData }) {
   const [bookmarks, setBookmarks] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
-  const [state, setState] = useState("loading");
+  const [renderState, setRenderState] = useState("loading");
   const nav = useNavigate();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
 
   const getBookmarks = async () => {
-    setState("loading");
+    setRenderState("loading");
     try {
       const res = await fetch(`${userUrl}/bookmarks?page=${page}&limit=6`, { credentials: "include" });
       const data = await res.json();
@@ -28,13 +28,13 @@ function MyPickList({ user, setUserData }) {
       if (res.ok) {
         setBookmarks(data.bookmarks.validShows);
         setTotalCount(data.bookmarks.totalCount);
-        setState("hasValue");
+        setRenderState("hasValue");
       } else {
-        setState("hasError");
+        setRenderState("hasError");
         console.error(data);
       }
     } catch (err) {
-      setState("hasError");
+      setRenderState("hasError");
     }
   };
 
@@ -50,7 +50,7 @@ function MyPickList({ user, setUserData }) {
     }
   };
 
-  const handleClickDeleteBtn = async (e) => {
+  const handleClickDeleteBtn = async () => {
     try {
       const res = await fetch(`${userUrl}/bookmarks`, {
         method: "DELETE",
@@ -75,7 +75,7 @@ function MyPickList({ user, setUserData }) {
           handleClickDeleteBtn();
         } else {
           setUserData({ isLoggedIn: false });
-          return nav(`/signup-in`);
+          nav(`/signup-in`);
         }
       } else {
         const data = await res.json();
@@ -87,7 +87,7 @@ function MyPickList({ user, setUserData }) {
   };
 
   const renderComponent = (mainComponent) => {
-    switch (state) {
+    switch (renderState) {
       case "loading":
         return (
           <div className="content-container loading">
@@ -118,7 +118,13 @@ function MyPickList({ user, setUserData }) {
         <div className="header">
           <h1>찜한 연극 LIST</h1>
           {!bookmarks.length || (
-            <Button disabled={!checkedList.length} onClick={handleClickDeleteBtn} variant="contained" color="orange" sx={{ width: "70px", height: "36px", color: "white" }}>
+            <Button
+              disabled={!checkedList.length}
+              onClick={handleClickDeleteBtn}
+              variant="contained"
+              color="orange"
+              sx={{ width: "70px", height: "36px", color: "white" }}
+            >
               삭제
             </Button>
           )}
@@ -149,7 +155,11 @@ function MyPickList({ user, setUserData }) {
                           </p>
                           <div className="reservation-btn">
                             {(state || "") !== "공연완료" ? (
-                              <a href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`} target="_blank" rel="noopener noreferrer">
+                              <a
+                                href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 <Button variant="contained" color="secondary" size="small">
                                   <Typography fontFamily="Nanum Gothic, sans-serif">예매하러 가기</Typography>
                                 </Button>
@@ -179,7 +189,7 @@ function MyPickList({ user, setUserData }) {
                   <Empty />
                 </div>
               )}
-            </>
+            </>,
           )}
         </div>
       </div>
