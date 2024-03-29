@@ -1,7 +1,9 @@
 import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
-import React, { Children, useContext, useEffect, useState } from "react";
+import React, { Children, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import Editor from "@toast-ui/editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -48,10 +50,12 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
   const [errorImage, setErrorImage] = useState("");
   const [warningMainImage, setWarningMainImage] = useState("");
 
+  const editorRef = useRef();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
   const handleSubmit = async () => {
+    console.log(editorRef.current?.getInstance().getHTML());
     try {
       const res = await fetch(`${promotionUrl}`, {
         method: "POST",
@@ -228,30 +232,46 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
     setWarningMainImage("");
   };
 
-  const handleChangeImage = async (e) => {
-    if (!e.target.files.length) return;
+  // const handleChangeImage = async (e) => {
+  //   if (!e.target.files.length) return;
 
-    const newImg = [];
-    let error = "";
+  //   const newImg = [];
+  //   let error = "";
 
-    const newImage = Array.from(e.target.files);
-    newImage.forEach(async (file) => {
-      if (file.size > 1024 * 1024 * 5) {
-        error = "사진은 최대 5MB까지 업로드 가능합니다.";
-      } else {
-        const data = await uploadImage(file);
+  //   const newImage = Array.from(e.target.files);
+  //   newImage.forEach(async (file) => {
+  //     if (file.size > 1024 * 1024 * 5) {
+  //       error = "사진은 최대 5MB까지 업로드 가능합니다.";
+  //     } else {
+  //       const data = await uploadImage(file);
 
-        if (data) {
-          newImg.push(data);
-        } else {
-          error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
-        }
-      }
-    });
+  //       if (data) {
+  //         newImg.push(data);
+  //       } else {
+  //         error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
+  //       }
+  //     }
+  //   });
 
-    setImageURL([...imageURL, ...newImg]);
-    setErrorImage(error);
-    e.target.value = null;
+  //   setImageURL([...imageURL, ...newImg]);
+  //   setErrorImage(error);
+  //   e.target.value = null;
+  // };
+
+  const handleChangeImage = async (file, callback) => {
+    if (file.size > 1024 * 1024 * 5) {
+      setErrorMainImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      return;
+    }
+    const imageUrl = await uploadImage(file);
+
+    if (imageUrl) {
+      // setMainImageURL(data);
+      setErrorImage("");
+      callback(imageUrl);
+    } else {
+      setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
+    }
   };
 
   // 선택한 이미지 하나씩 삭제하는 기능
@@ -307,6 +327,34 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
       setInput(true);
     else setInput(false);
   }, [inputTitle, inputContent, imageURL, inputTag, inputPlayTitle, inputLocation, inputHost, inputRuntime, inputStartDate, inputEndDate]);
+
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     // 기존 훅 제거
+  //     editorRef.current.getInstance().removeHook("addImageBlobHook");
+  //     // 새로운 훅 추가
+  //     editorRef.current.getInstance().addHook("addImageBlobHook", (blob, callback) => {
+  //       (async () => {
+  //         const formData = new FormData();
+  //         formData.append("image", blob);
+
+  //         await axios.post(`{저장할 서버 api}`, formData, {
+  //           header: { "content-type": "multipart/formdata" },
+  //           withCredentials: true,
+  //         });
+
+  //         const imageUrl = `저장된 서버 주소${blob.name}`;
+
+  //         // setImages([...images, imageUrl]);
+  //         callback(imageUrl, "image");
+  //       })();
+
+  //       return false;
+  //     });
+  //   }
+
+  //   return () => {};
+  // }, [editorRef]);
 
   return (
     <div className="post-form-box">
@@ -465,7 +513,16 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
         <label htmlFor="content">
           내용<span className="star">*</span>
         </label>
-        <textarea id="content" name="content" value={inputContent} onChange={handleChangeContent} placeholder="내용을 작성해 주세요." required></textarea>
+        {/* <textarea id="content" name="content" value={inputContent} onChange={handleChangeContent} placeholder="내용을 작성해 주세요." required></textarea> */}
+        <Editor
+          initialValue="hello react editor world!"
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="wysiwyg"
+          useCommandShortcut={true}
+          hooks={{ addImageBlobHook: handleChangeImage }}
+          onChange={handleChangeContent}
+        />
         {handleErrorPlaceholder(errorContent)}
       </div>
 
