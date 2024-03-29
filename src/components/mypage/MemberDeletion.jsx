@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./MemberDeletion.scss";
 import Button from "@mui/material/Button";
+import { Backdrop, Checkbox, FormControlLabel } from "@mui/material";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { AlertCustom } from "../common/alert/Alerts";
 import { userUrl } from "../../apis/apiURLs";
-import { useNavigate } from "react-router";
-import { Backdrop, Checkbox, FormControlLabel } from "@mui/material";
-import { Link } from "react-router-dom";
 
 function MemberDeletion({ user, setUserData }) {
   const [openAlert, setOpenAlert] = useState(false);
