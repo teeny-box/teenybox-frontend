@@ -3,45 +3,29 @@ import { AppContext } from "../../App";
 import { userUrl } from "../../apis/apiURLs";
 
 export default function useGetUser() {
-  const { userData, setUserData } = useContext(AppContext);
+  const { setUserData } = useContext(AppContext);
 
-  const getUserData = async () => {
+  const fetchUserData = async (attempt = 0) => {
     try {
-      const res = await fetch(userUrl, {
-        credentials: "include",
-      });
-
+      const res = await fetch(userUrl, { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
-        setUserData({ isLoggedIn: true, user: data.user });
-      } else if (res.status === 401 || res.status === 403) {
-        // 다시 한 번 시도
-        try {
-          const secondRes = await fetch(userUrl, {
-            credentials: "include",
-          });
-
-          if (secondRes.ok) {
-            const secondData = await secondRes.json();
-            setUserData({ isLoggedIn: true, user: secondData.user });
-          } else {
-            // 두 번째 시도에서도 오류가 발생하면 isLoggedIn을 false로 설정
-            setUserData({ isLoggedIn: false });
-          }
-        } catch (secondErr) {
-          console.error(secondErr);
-          // 두 번째 시도 자체가 실패하면 isLoggedIn을 false로 설정
-          setUserData({ isLoggedIn: false });
-        }
+        setUserData({ user: data.user });
+      } else if (attempt < 1) {
+        // 최대 한 번 더 시도
+        fetchUserData(attempt + 1);
+      } else {
+        throw new Error("Unauthorized");
       }
     } catch (err) {
       console.error(err);
+      setUserData({ user: null }); // 사용자 데이터가 없음을 나타냅니다.
     }
   };
 
   useEffect(() => {
-    getUserData();
+    fetchUserData();
   }, []);
 
-  return userData;
+  // 사용자 데이터 반환 로직은 제거됨. 상태는 전역 컨텍스트(AppContext)를 통해 관리됩니다.
 }
