@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useState, useEffect, createContext } from "react";
+import { useState, createContext } from "react";
 import { Helmet } from "react-helmet";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
@@ -8,9 +8,12 @@ import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
 import FetchErrorAlert from "./components/common/alert/FetchErrorAlert";
-import { userUrl } from "./apis/apiURLs";
+import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
 
-export const AppContext = createContext();
+export const AppContext = createContext({
+  userData: null, // 기본 사용자 데이터 : userGetUser() 훅에서는 userData를 직접참조하지 않고 AppContext에 담긴 값을 업데이트 해주고 있기 때문.
+  setUserData: () => {}, // 기본 함수
+});
 export const AlertContext = createContext();
 
 function App() {
@@ -20,45 +23,7 @@ function App() {
   const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [prevPlayListQuery, setPrevPlayListQuery] = useState(null);
 
-  const getUserData = async () => {
-    try {
-      const res = await fetch(`${userUrl}`, {
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setUserData({ isLoggedIn: true, user: data.user });
-      } else if (res.status === 401 || res.status === 403) {
-        // 다시 한 번 시도
-        try {
-          const secondRes = await fetch(`${userUrl}`, {
-            credentials: "include",
-          });
-
-          if (secondRes.ok) {
-            const secondData = await secondRes.json();
-            setUserData({ isLoggedIn: true, user: secondData.user });
-          } else {
-            // 두 번째 시도에서도 오류가 발생하면 isLoggedIn을 false로 설정
-            setUserData({ isLoggedIn: false });
-          }
-        } catch (secondErr) {
-          console.error(secondErr);
-          // 두 번째 시도 자체가 실패하면 isLoggedIn을 false로 설정
-          setUserData({ isLoggedIn: false });
-        }
-      } else {
-        setUserData({ isLoggedIn: false });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
+  useGetUser();
 
   return (
     <div className="App">
