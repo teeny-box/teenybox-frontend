@@ -2,7 +2,8 @@ import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } fro
 import React, { Children, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import Editor from "@toast-ui/editor";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -145,9 +146,11 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
     }
   };
 
-  const handleChangeContent = (e) => {
-    setInputContent(e.target.value);
-    if (e.target.value.trim().length < 3) {
+  const handleChangeContent = () => {
+    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    console.log(editorRef.current.getInstance());
+    // setInputContent(editorMarkdown);
+    if (editorMarkdown < 3) {
       setErrorContent("내용을 최소 3자 이상 입력해주세요.");
     } else {
       setErrorContent("");
@@ -515,7 +518,8 @@ export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
         </label>
         {/* <textarea id="content" name="content" value={inputContent} onChange={handleChangeContent} placeholder="내용을 작성해 주세요." required></textarea> */}
         <Editor
-          initialValue="hello react editor world!"
+          ref={editorRef}
+          initialValue={inputContent}
           previewStyle="vertical"
           height="600px"
           initialEditType="wysiwyg"
