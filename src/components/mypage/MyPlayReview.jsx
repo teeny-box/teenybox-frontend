@@ -2,10 +2,10 @@
 import { DataGrid } from "@mui/x-data-grid";
 import "./MyPlayReview.scss";
 import Button from "@mui/material/Button";
-import { reviewUrl, userUrl } from "../../apis/apiURLs";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { reviewUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
 import TimeFormat from "../common/time/TimeFormat";
@@ -39,9 +39,7 @@ const columns = [
     field: "created_at",
     headerName: "작성 시기",
     width: 150,
-    renderCell: (data) => (
-      <TimeFormat time={data.row.createdAt} type={"time"} />
-    ),
+    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
@@ -61,11 +59,7 @@ function MyPlayReview({ user, setUserData }) {
       const data = await res.json();
 
       if (res.ok) {
-        setReviews(
-          data.data.map((review) => {
-            return { ...review, id: review._id };
-          })
-        );
+        setReviews(data.data.map((review) => ({ ...review, id: review._id })));
         setState("hasValue");
       } else {
         setState("hasError");
@@ -88,12 +82,7 @@ function MyPlayReview({ user, setUserData }) {
       });
 
       if (res.ok) {
-        let newReviews = [...reviews];
-        for (let id of checkedList) {
-          let index = newReviews.findIndex((review) => review.id === id);
-          newReviews.splice(index, 1);
-        }
-
+        const newReviews = reviews.filter((review) => !checkedList.includes(review.id));
         setReviews(newReviews);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
@@ -103,7 +92,7 @@ function MyPlayReview({ user, setUserData }) {
           handleDelete();
         } else {
           setUserData({ isLoggedIn: false });
-          return nav(`/signup-in`);
+          nav(`/signup-in`);
         }
       } else {
         const data = await res.json();
@@ -159,10 +148,7 @@ function MyPlayReview({ user, setUserData }) {
           )}
         </div>
       </div>
-      <Backdrop
-        open={openAlert}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"
           open={openAlert}

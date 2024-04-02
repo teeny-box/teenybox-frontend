@@ -10,7 +10,7 @@ export default function NicknameContainer({ nicknameInfo, setNicknameInfo, user_
 
   // 닉네임 중복 확인
   const duplicationCheck = () => {
-    const nickname = { nicknameInfo };
+    const { nickname } = nicknameInfo;
 
     // 닉네임 길이부터 확인
     if (nickname.length === 0) {

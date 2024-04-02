@@ -3,12 +3,7 @@ import "./MyPagePagination.scss";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-export default function MyPagePagination({
-  innerWidth,
-  playsCount,
-  Plays,
-  setPaginationPlays,
-}) {
+export default function MyPagePagination({ innerWidth, playsCount, Plays, setPaginationPlays }) {
   // 현재 페이지 숫자를 나타내기 위한 상태
   const [currentPage, setCurrentPage] = useState(1);
 

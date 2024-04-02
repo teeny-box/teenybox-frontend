@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import "./MyPRBoard.scss";
 import Button from "@mui/material/Button";
-import { promotionUrl, userUrl } from "../../apis/apiURLs";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { ErrorOutline } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
+import { promotionUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
-import { Link, useNavigate } from "react-router-dom";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { AlertContext } from "../../App";
@@ -57,11 +56,7 @@ function MyPRBoard({ user, setUserData }) {
       const data = await res.json();
 
       if (res.ok) {
-        setPosts(
-          data.promotions.map((promotion) => {
-            return { ...promotion, id: promotion.promotion_number };
-          })
-        );
+        setPosts(data.promotions.map((promotion) => ({ ...promotion, id: promotion.promotion_number })));
         setState("hasValue");
       } else {
         setState("hasError");
@@ -82,14 +77,14 @@ function MyPRBoard({ user, setUserData }) {
           promotionNumbers: checkedList,
         }),
       });
-
+  
       if (res.ok) {
-        let newPosts = [...posts];
-        checkedList.map((id) => {
-          let index = newPosts.findIndex((post) => post.id === id);
+        const newPosts = [...posts];
+        checkedList.forEach((id) => {
+          const index = newPosts.findIndex((post) => post.id === id);
           newPosts.splice(index, 1);
         });
-
+  
         setPosts(newPosts);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
@@ -102,8 +97,10 @@ function MyPRBoard({ user, setUserData }) {
           return nav(`/signup-in`);
         }
       }
+      return undefined;
     } catch (e) {
-      setOpenFetchErrorAlert(ture);
+      setOpenFetchErrorAlert(true);
+      return undefined;
     }
   };
 

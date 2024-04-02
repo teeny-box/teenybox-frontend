@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import "./MyFreeBoard.scss";
 import Button from "@mui/material/Button";
-import { postUrl, userUrl } from "../../apis/apiURLs";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { postUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
-import { Link, useNavigate } from "react-router-dom";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { AlertContext } from "../../App";
@@ -55,11 +55,7 @@ function MyFreeBoard({ user, setUserData }) {
       const data = await res.json();
 
       if (res.ok) {
-        setPosts(
-          data.posts.map((post) => {
-            return { ...post, id: post.post_number };
-          })
-        );
+        setPosts(data.posts.map((post) => ({ ...post, id: post.post_number })));
         setState("hasValue");
       } else {
         setState("hasError");
@@ -82,9 +78,9 @@ function MyFreeBoard({ user, setUserData }) {
       });
 
       if (res.ok) {
-        let newPosts = [...posts];
-        checkedList.map((id) => {
-          let index = newPosts.findIndex((post) => post.id === id);
+        const newPosts = [...posts];
+        checkedList.forEach((id) => {
+          const index = newPosts.findIndex((post) => post.id === id);
           newPosts.splice(index, 1);
         });
 
@@ -100,8 +96,10 @@ function MyFreeBoard({ user, setUserData }) {
           return nav(`/signup-in`);
         }
       }
+      return true;
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      return false;
     }
   };
 

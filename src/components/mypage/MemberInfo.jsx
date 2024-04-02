@@ -1,5 +1,5 @@
 /* 마이페이지 - 회원정보 조회/수정/탈퇴 컴포넌트 */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./MemberInfo.scss";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -7,14 +7,14 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
-import { userUrl, uploadImgUrl, presignedUrl } from "../../apis/apiURLs";
 import { Alert, Backdrop, TextField } from "@mui/material";
-import { EditAttributes, ErrorOutline, ImageSearchRounded, WarningRounded } from "@mui/icons-material";
-import { AlertCustom } from "../common/alert/Alerts";
+import { ErrorOutline, ImageSearchRounded, WarningRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { AlertCustom } from "../common/alert/Alerts";
+import { userUrl, presignedUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 
-const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9 `]/;
+const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?0-9 `]/;
 
 function MemberInfo({ user, setUserData }) {
   const [inputNickname, setInputNickname] = useState(user?.nickname);
@@ -33,58 +33,58 @@ function MemberInfo({ user, setUserData }) {
     setIsHovered(false);
     if (!e.target.files.length) return;
     const file = e.target.files[0];
-
+  
     if (file.size > 1024 * 1024 * 5) {
-      return setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
     }
-
+  
     try {
       let res = await fetch(presignedUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ key: file.name }),
       });
-      let data = await res.json();
-
+      const presignedData = await res.json();
+  
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
           const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
           if (loginRes.ok) {
-            const data = await loginRes.json();
-            setUserData({ isLoggedIn: true, user: data.user });
+            const userData = await loginRes.json();
+            setUserData({ isLoggedIn: true, user: userData.user });
           } else {
             setUserData({ isLoggedIn: false });
-            return nav(`/signup-in`);
+            nav(`/signup-in`);
           }
         } else {
-          const data = await res.json();
-          console.error(data);
+          const errorData = await res.json();
+          console.error(errorData);
         }
-        return setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
+        setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
       }
-
-      res = await fetch(data.presigned_url, {
+  
+      res = await fetch(presignedData.presigned_url, {
         method: "PUT",
         headers: { "Content-Type": file.type },
         body: file,
       });
-
+  
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
           const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
           if (loginRes.ok) {
-            const data = await loginRes.json();
-            setUserData({ isLoggedIn: true, user: data.user });
+            const userData = await loginRes.json();
+            setUserData({ isLoggedIn: true, user: userData.user });
           } else {
             setUserData({ isLoggedIn: false });
-            return nav(`/signup-in`);
+            nav(`/signup-in`);
           }
         }
-        return setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
+        setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
       }
-      setProfileURL(data.public_url);
+      setProfileURL(presignedData.public_url);
       setErrorImage("");
-    } catch (e) {
+    } catch (error) {
       setOpenFetchErrorAlert(true);
     }
   };
@@ -103,7 +103,7 @@ function MemberInfo({ user, setUserData }) {
     }
   };
 
-  const handleCheckNickname = async (e) => {
+  const handleCheckNickname = async () => {
     try {
       const res = await fetch(`${userUrl}/nickname`, {
         method: "POST",
@@ -121,10 +121,10 @@ function MemberInfo({ user, setUserData }) {
           <div className="nick-err">
             <WarningRounded sx={{ fontSize: 16, marginRight: "6px" }} />
             중복된 닉네임 입니다.
-          </div>
+          </div>,
         );
       }
-    } catch (e) {
+    } catch (error) {
       setOpenFetchErrorAlert(true);
     }
   };
@@ -157,7 +157,7 @@ function MemberInfo({ user, setUserData }) {
           handleSubmit();
         } else {
           setUserData({ isLoggedIn: false });
-          return nav(`/signup-in`);
+          nav(`/signup-in`);
         }
       } else {
         const data = await res.json();
@@ -195,7 +195,7 @@ function MemberInfo({ user, setUserData }) {
                 <input type="file" id="inputFile" onChange={handleChangeProfile} />
               </div>
               <div className="profile-nickname">
-                <p>"{user?.nickname || "user"}"님의 회원정보 페이지 입니다.</p>
+                <p>&quot;{user?.nickname || "user"}&quot;님의 회원정보 페이지 입니다.</p>
               </div>
             </div>
             {errorImage && (
