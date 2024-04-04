@@ -1,11 +1,14 @@
-import React, { Children, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Backdrop } from "@mui/material";
 import { CalendarMonth, FormatQuote, LocationOn, MovieCreation } from "@mui/icons-material";
 import "./PRBoardPost.scss";
+import { Viewer } from "@toast-ui/react-editor";
 import { PostTop } from "../board";
 import empty_img from "../../assets/img/empty_img.svg";
 import TimeFormat from "../common/time/TimeFormat";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
 export default function PRBoardPost({ data, totalCommentCount }) {
   const [openMainImg, setOpenMainImg] = useState(false);
@@ -63,26 +66,15 @@ export default function PRBoardPost({ data, totalCommentCount }) {
       )}
 
       <h2 className="title">{data.title}</h2>
-      <div className="content">{Children.toArray(data.content?.split("\n").map((text) => <p>{text || <br />}</p>))}</div>
+      <div className="content">
+        <Viewer initialValue={data.content} />
+      </div>
       {data.tags && data.tags.length !== 0 && (
         <div className="tags">
           {data.tags.map((tag, idx) => (
             <div className="tag" key={idx}>
               <Link to={`/search?query=${tag}&category=홍보게시판&type=tag`}># {tag}</Link>
             </div>
-          ))}
-        </div>
-      )}
-      {data.image_url[0] && (
-        <div className="images">
-          {data.image_url.map((url) => (
-            <img
-              src={url}
-              key={url}
-              onError={(e) => {
-                e.target.src = empty_img;
-              }}
-            />
           ))}
         </div>
       )}

@@ -1,12 +1,15 @@
 import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
-import React, { Children, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
+import { Close, ErrorOutline } from "@mui/icons-material";
 import "./PRBoardForm.scss";
+import { Editor } from "@toast-ui/react-editor";
 import { AlertCustom } from "../common/alert/Alerts";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
@@ -23,11 +26,11 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   const [tagList, setTagList] = useState(post.tags);
   const [inputTag, setInputTag] = useState("");
   // 사진
-  const [imageURL, setImageURL] = useState(post.image_url[0] ? post.image_url : []);
   const [errorImage, setErrorImage] = useState("");
   // 고정(관리자)
   const [fixed, setFixed] = useState(post.is_fixed === "고정");
 
+  const editorRef = useRef();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
@@ -41,7 +44,7 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
           title: inputTitle,
           content: inputContent,
           tags: tagList,
-          image_url: imageURL.length ? imageURL : [""],
+          image_url: [""],
           start_date: dayjs(),
           end_date: dayjs(),
           category: "공지",
@@ -138,37 +141,20 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
     }
   };
 
-  const handleChangeImage = async (e) => {
-    if (!e.target.files.length) return;
+  const handleChangeImage = async (file, callback) => {
+    if (file.size > 1024 * 1024 * 5) {
+      setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      return;
+    }
+    const imageUrl = await uploadImage(file);
+    console.log(imageUrl);
 
-    const newImg = [];
-    let error = "";
-
-    const newImage = Array.from(e.target.files);
-    newImage.forEach(async (file) => {
-      if (file.size > 1024 * 1024 * 5) {
-        error = "사진은 최대 5MB까지 업로드 가능합니다.";
-      } else {
-        const data = await uploadImage(file);
-
-        if (data) {
-          newImg.push(data);
-        } else {
-          error = error || "사진 업로드에 실패했습니다. 다시 시도해주세요.";
-        }
-      }
-    });
-
-    setImageURL([...imageURL, ...newImg]);
-    setErrorImage(error);
-    e.target.value = null;
-  };
-
-  // 선택한 이미지 하나씩 삭제하는 기능
-  const handleRemoveImage = async (e) => {
-    const idx = Number(e.currentTarget.id);
-    const newImageURL = imageURL.filter((url, _idx) => idx !== _idx);
-    setImageURL(newImageURL);
+    if (imageUrl) {
+      setErrorImage("");
+      callback(imageUrl);
+    } else {
+      setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
+    }
   };
 
   const handleOnKeyDownTag = (e) => {
@@ -193,9 +179,9 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
   };
 
   useEffect(() => {
-    if (inputTitle || inputContent || imageURL || tagList) setInput(true);
+    if (inputTitle || inputContent || tagList) setInput(true);
     else setInput(false);
-  }, [inputTitle, inputContent, imageURL, tagList]);
+  }, [inputTitle, inputContent, tagList]);
 
   return (
     <div className="post-form-box">
@@ -240,8 +226,18 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
         <label htmlFor="content">
           내용<span className="star">*</span>
         </label>
-        <textarea id="content" name="content" value={inputContent} onChange={handleChangeContent} placeholder="내용을 작성해 주세요." required></textarea>
+        <Editor
+          ref={editorRef}
+          initialValue={inputContent}
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="wysiwyg"
+          useCommandShortcut={true}
+          hooks={{ addImageBlobHook: handleChangeImage }}
+          onChange={handleChangeContent}
+        />
         {handleErrorPlaceholder(errorContent)}
+        {handleErrorPlaceholder(errorImage)}
       </div>
 
       <div className="input tag flex-box">
@@ -268,38 +264,6 @@ export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotic
                 </IconButton>
               </div>
             ))}
-          </div>
-        )}
-      </div>
-
-      <div className="input image">
-        <div>
-          <label htmlFor="image">이미지</label>
-          <Button id="imageBtn" color="darkGray" variant="outlined" size="small" startIcon={<DriveFolderUpload />}>
-            <label className="pointer" htmlFor="image">
-              파일 찾기
-            </label>
-          </Button>
-          <input type="file" id="image" name="image" accept="image/*" multiple onChange={handleChangeImage} required />
-        </div>
-        {errorImage && (
-          <div className="error">
-            <ErrorOutline fontSize="inherit" />
-            {errorImage}
-          </div>
-        )}
-        {imageURL[0] && (
-          <div className="preview-box">
-            {Children.toArray(
-              imageURL.map((url, idx) => (
-                <div className="image">
-                  <img src={url} />
-                  <IconButton id={idx.toString()} className="icon" onClick={handleRemoveImage}>
-                    <Close />
-                  </IconButton>
-                </div>
-              )),
-            )}
           </div>
         )}
       </div>
