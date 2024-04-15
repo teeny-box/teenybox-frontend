@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../board-pr/PRBoardForm.scss";
+import { Editor } from "@toast-ui/react-editor";
 import { AlertCustom } from "../common/alert/Alerts";
-import { postUrl } from "../../apis/apiURLs";
+import { postUrl, presignedUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
   const [submit, setSubmit] = useState(false);
@@ -17,11 +20,13 @@ export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
   const [errorTitle, setErrorTitle] = useState("제목을 최소 3자 이상 입력해주세요.");
   const [inputContent, setInputContent] = useState("");
   const [errorContent, setErrorContent] = useState("내용을 최소 3자 이상 입력해주세요.");
+  const [errorImage, setErrorImage] = useState("");
   const [tagList, setTagList] = useState([]);
   const [inputTag, setInputTag] = useState();
   // 고정(관리자)
   const [fixed, setFixed] = useState(false);
 
+  const editorRef = useRef();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
@@ -83,12 +88,61 @@ export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
     }
   };
 
-  const handleContentChange = (e) => {
-    setInputContent(e.target.value);
-    if (e.target.value.trim().length < 1) {
-      setErrorContent("내용을 최소 1자 이상 입력해주세요.");
+  const handleContentChange = () => {
+    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    console.log(editorMarkdown);
+    setInputContent(editorMarkdown);
+    if (editorMarkdown.length < 1) {
+      setErrorContent("내용을 입력해주세요.");
     } else {
       setErrorContent("");
+    }
+  };
+
+  const uploadImage = async (file) => {
+    try {
+      let res = await fetch(presignedUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: file.name }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+        return false;
+      }
+
+      res = await fetch(data.presigned_url, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!res.ok) {
+        return false;
+      }
+      return data.public_url;
+    } catch (e) {
+      console.error(e);
+      setOpenFetchErrorAlert(true);
+      return false;
+    }
+  };
+
+  const handleChangeImage = async (file, callback) => {
+    if (file.size > 1024 * 1024 * 5) {
+      setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      return;
+    }
+    const imageUrl = await uploadImage(file);
+    console.log(imageUrl);
+
+    if (imageUrl) {
+      setErrorImage("");
+      callback(imageUrl);
+    } else {
+      setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
     }
   };
 
@@ -152,8 +206,18 @@ export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
 
       <div className="input content flex-box">
         <label htmlFor="content">*내용</label>
-        <textarea id="content" name="content" value={inputContent} onChange={handleContentChange} placeholder="내용을 작성해 주세요." required></textarea>
+        <Editor
+          ref={editorRef}
+          initialValue={inputContent}
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="wysiwyg"
+          useCommandShortcut={true}
+          hooks={{ addImageBlobHook: handleChangeImage }}
+          onChange={handleContentChange}
+        />
         {handleError(errorContent)}
+        {handleError(errorImage)}
       </div>
 
       <div className="input tag flex-box">
