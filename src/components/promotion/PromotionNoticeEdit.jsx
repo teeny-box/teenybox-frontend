@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { Close, ErrorOutline } from "@mui/icons-material";
-import "./PRBoardForm.scss";
+import "./PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
 import { AlertCustom } from "../common/alert/Alerts";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
@@ -11,7 +11,7 @@ import { AlertContext } from "../../App";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-export function PRBoardNoticeEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
+export function PromotionNoticeEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);

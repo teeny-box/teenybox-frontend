@@ -1,4 +1,4 @@
-import "./PRBoardList.scss";
+import "./PromotionList.scss";
 import { Link } from "react-router-dom";
 import { SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
 import empty_img from "../../assets/img/empty_img.svg";
@@ -8,9 +8,9 @@ import numberFormat from "../../utils/numberFormat";
 
 const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
 
-export default function PRBoardList({ newList, fixedList }) {
+export default function PromotionList({ newList, fixedList }) {
   return (
-    <div className="pr-board-list-box">
+    <div className="promotion-list-box">
       {fixedList.map((post) => (
         <div className={`post-card fixed-notice`} key={post._id} id={post._id}>
           <Link to={`${post.promotion_number}`}>

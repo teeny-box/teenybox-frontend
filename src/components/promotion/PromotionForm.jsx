@@ -9,13 +9,13 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
-import "./PRBoardForm.scss";
+import "./PromotionForm.scss";
 import { AlertCustom } from "../common/alert/Alerts";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
 import empty_img from "../../assets/img/empty_img.svg";
 import { AlertContext } from "../../App";
 
-export function PRBoardForm({ setInput, handleCancle, setIsNotice, userRole }) {
+export function PromotionForm({ setInput, handleCancle, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);

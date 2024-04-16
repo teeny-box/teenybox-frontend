@@ -6,7 +6,7 @@ import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import "./PRBoardForm.scss";
+import "./PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
 import { AlertCustom } from "../common/alert/Alerts";
 import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
@@ -15,7 +15,7 @@ import { AlertContext } from "../../App";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-export function PRBoardEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
+export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);

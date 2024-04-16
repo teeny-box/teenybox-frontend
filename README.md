@@ -93,7 +93,7 @@
    │  ├─ mypage
    │  ├─ play-detail
    │  ├─ play-list
-   │  ├─ pr-board
+   │  ├─ promotion
    │  ├─ redirection
    │  ├─ search-result
    │  ├─ user

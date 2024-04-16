@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Backdrop } from "@mui/material";
 import { CalendarMonth, FormatQuote, LocationOn, MovieCreation } from "@mui/icons-material";
-import "./PRBoardPost.scss";
+import "./PromotionPost.scss";
 import { Viewer } from "@toast-ui/react-editor";
 import { PostTop } from "../board";
 import empty_img from "../../assets/img/empty_img.svg";
@@ -10,10 +10,10 @@ import TimeFormat from "../common/time/TimeFormat";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
-export default function PRBoardPost({ data, totalCommentCount }) {
+export default function PromotionPost({ data, totalCommentCount }) {
   const [openMainImg, setOpenMainImg] = useState(false);
   return (
-    <div className="pr-board-post">
+    <div className="promotion-post">
       <PostTop user={data.user_id || { nickname: "user" }} type={"promotion"} post={data} totalCommentCount={totalCommentCount} />
       {data.category === "공지" || (
         <div className="top-container">

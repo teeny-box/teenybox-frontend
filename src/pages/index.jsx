@@ -18,10 +18,10 @@ export * from "./mypage/MyPage";
 export * from "./play-list/PlayList";
 export * from "./play-detail/PlayDetail";
 
-export * from "./pr-board/PRBoardDetailPage";
-export * from "./pr-board/PRBoardFormPage";
-export * from "./pr-board/PRBoardListPage";
-export * from "./pr-board/PRBoardEdit";
+export * from "./promotion/PromotionDetailPage";
+export * from "./promotion/PromotionFormPage";
+export * from "./promotion/PromotionListPage";
+export * from "./promotion/PromotionEdit";
 
 export * from "./redirection/NaverRedirection";
 export * from "./redirection/KakaoRedirection";

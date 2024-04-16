@@ -1,11 +1,11 @@
-import "./PRBoardListPage.scss";
+import "./PromotionListPage.scss";
 import React, { Children, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom/dist";
 import { useInView } from "react-intersection-observer";
 import { Button, CircularProgress, FormControl, MenuItem, Select, Skeleton } from "@mui/material";
 import { ArrowBackIosRounded, ArrowForwardIosRounded, SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { BoardListHeader } from "../../components/board";
-import PRBoardList from "../../components/board-pr/PRBoardList";
+import PromotionList from "../../components/promotion/PromotionList";
 import { UpButton } from "../../components/common/button/UpButton";
 import ServerError from "../../components/common/state/ServerError";
 import TimeFormat from "../../components/common/time/TimeFormat";
@@ -14,7 +14,7 @@ import getBestPromotionPlay from "../../utils/getBestPromotionPlay";
 import { promotionUrl } from "../../apis/apiURLs";
 import numberFormat from "../../utils/numberFormat";
 
-export function PRBoardListPage() {
+export function PromotionListPage() {
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
@@ -123,7 +123,7 @@ export function PRBoardListPage() {
   }, []);
 
   return (
-    <div className="pr-board-page page-margin">
+    <div className="promotion-page page-margin">
       <BoardListHeader header="홍보게시판" />
       {bannerList.length + fixedList.length ? (
         <div className="best-box ">
@@ -260,7 +260,7 @@ export function PRBoardListPage() {
         </div>
       ) : boardList.length + fixedList.length ? (
         <>
-          <PRBoardList newList={boardList} fixedList={fixedList} />
+          <PromotionList newList={boardList} fixedList={fixedList} />
           {state === "loading" && (
             <div className={`state`}>
               <CircularProgress color="secondary" />

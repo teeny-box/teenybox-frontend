@@ -1,15 +1,15 @@
-import "./PRBoardDetailPage.scss";
+import "./PromotionDetailPage.scss";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
-import PRBoardPost from "../../components/board-pr/PRBoardPost";
+import PromotionPost from "../../components/promotion/PromotionPost";
 import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
 import { commentUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
 import { COMMENTS_LIMIT } from "../../utils/const";
 
-export function PRBoardDetailPage() {
+export function PromotionDetailPage() {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -136,7 +136,7 @@ export function PRBoardDetailPage() {
   }, [params]);
 
   return (
-    <div className="pr-board-detail-page page-margin">
+    <div className="promotion-detail-page page-margin">
       {state === "hasError" ? (
         <NotFoundPage prev={true} />
       ) : (
@@ -149,7 +149,7 @@ export function PRBoardDetailPage() {
               </div>
             ) : (
               <div className="body">
-                {post._id && <PRBoardPost data={post} totalCommentCount={totalCount} />}
+                {post._id && <PromotionPost data={post} totalCommentCount={totalCount} />}
                 <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                 <CommentForm createComment={createComment} postId={post?._id} />
                 {!comments.length || (

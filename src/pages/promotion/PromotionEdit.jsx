@@ -1,15 +1,15 @@
-import "./PRBoardFormPage.scss";
+import "./PromotionFormPage.scss";
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Backdrop } from "@mui/material";
 import { AlertCustom } from "../../components/common/alert/Alerts";
-import { PRBoardEditForm } from "../../components/board-pr/PRBoardEdit";
+import { PromotionEditForm } from "../../components/promotion/PromotionEdit";
 import { promotionUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
-import { PRBoardNoticeEditForm } from "../../components/board-pr/PRBoardNoticeEdit";
+import { PromotionNoticeEditForm } from "../../components/promotion/PromotionNoticeEdit";
 
-export function PRBoardEdit() {
+export function PromotionEdit() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const [post, setPost] = useState();
@@ -60,11 +60,11 @@ export function PRBoardEdit() {
   }, [post]);
 
   return (
-    <div className="pr-board-form-page page-margin">
+    <div className="promotion-form-page page-margin">
       <div className="body">
         {post &&
           (isNotice ? (
-            <PRBoardNoticeEditForm
+            <PromotionNoticeEditForm
               setInput={(boolean) => setInput(boolean)}
               handleCancle={handleCancle}
               post={post}
@@ -72,7 +72,7 @@ export function PRBoardEdit() {
               userRole={user?.user?.role}
             />
           ) : (
-            <PRBoardEditForm
+            <PromotionEditForm
               setInput={(boolean) => setInput(boolean)}
               handleCancle={handleCancle}
               post={post}

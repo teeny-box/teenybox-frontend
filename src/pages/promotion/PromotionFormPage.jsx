@@ -1,14 +1,14 @@
-import "./PRBoardFormPage.scss";
+import "./PromotionFormPage.scss";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Backdrop } from "@mui/material";
-import { PRBoardNoticeForm } from "../../components/board-pr/PRBoardNoticeForm";
-import { PRBoardForm } from "../../components/board-pr/PRBoardForm";
+import { PromotionNoticeForm } from "../../components/promotion/PromotionNoticeForm";
+import { PromotionForm } from "../../components/promotion/PromotionForm";
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 import { AlertContext } from "../../App";
 
-export function PRBoardFormPage() {
+export function PromotionFormPage() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const [isNotice, setIsNotice] = useState(false);
@@ -31,12 +31,12 @@ export function PRBoardFormPage() {
   }, [user]);
 
   return (
-    <div className="pr-board-form-page page-margin">
+    <div className="promotion-form-page page-margin">
       <div className="body">
         {isNotice ? (
-          <PRBoardNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+          <PromotionNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
         ) : (
-          <PRBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+          <PromotionForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
         )}
       </div>
 

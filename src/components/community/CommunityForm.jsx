@@ -3,7 +3,7 @@ import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/m
 import React, { useContext, useEffect, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import "../board-pr/PRBoardForm.scss";
+import "../promotion/PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
 import { AlertCustom } from "../common/alert/Alerts";
 import { postUrl, presignedUrl } from "../../apis/apiURLs";

@@ -3,11 +3,11 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
 import {
-  PRBoardListPage,
-  PRBoardDetailPage,
-  PRBoardFormPage,
+  PromotionListPage,
+  PromotionDetailPage,
+  PromotionFormPage,
   CommunityEdit,
-  PRBoardEdit,
+  PromotionEdit,
   CommunityDetailPage,
   CommunityFormPage,
   CommunityListPage,
@@ -82,10 +82,10 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
                 <Route path="/community/write" element={<CommunityFormPage />} />
                 <Route path="/community/edit/:postId" element={<CommunityEdit />} />
 
-                <Route path="/promotion" element={<PRBoardListPage />} />
-                <Route path="/promotion/:postId" element={<PRBoardDetailPage />} />
-                <Route path="/promotion/write" element={<PRBoardFormPage />} />
-                <Route path="/promotion/edit/:postId" element={<PRBoardEdit />} />
+                <Route path="/promotion" element={<PromotionListPage />} />
+                <Route path="/promotion/:postId" element={<PromotionDetailPage />} />
+                <Route path="/promotion/write" element={<PromotionFormPage />} />
+                <Route path="/promotion/edit/:postId" element={<PromotionEdit />} />
 
                 <Route path="/play" element={<PlayList />} />
                 <Route path="/play/:playId" element={<PlayDetail />} />
