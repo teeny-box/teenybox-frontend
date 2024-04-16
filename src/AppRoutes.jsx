@@ -6,11 +6,11 @@ import {
   PRBoardListPage,
   PRBoardDetailPage,
   PRBoardFormPage,
-  FreeBoardEdit,
+  CommunityEdit,
   PRBoardEdit,
-  FreeBoardDetailPage,
-  FreeBoardFormPage,
-  FreeBoardListPage,
+  CommunityDetailPage,
+  CommunityFormPage,
+  CommunityListPage,
   PlayList,
   PlayDetail,
   SignUp_In,
@@ -77,10 +77,10 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
 
                 <Route path="/admin" element={<Admin />} />
 
-                <Route path="/community" element={<FreeBoardListPage />} />
-                <Route path="/community/:postId" element={<FreeBoardDetailPage />} />
-                <Route path="/community/write" element={<FreeBoardFormPage />} />
-                <Route path="/community/edit/:postId" element={<FreeBoardEdit />} />
+                <Route path="/community" element={<CommunityListPage />} />
+                <Route path="/community/:postId" element={<CommunityDetailPage />} />
+                <Route path="/community/write" element={<CommunityFormPage />} />
+                <Route path="/community/edit/:postId" element={<CommunityEdit />} />
 
                 <Route path="/promotion" element={<PRBoardListPage />} />
                 <Route path="/promotion/:postId" element={<PRBoardDetailPage />} />

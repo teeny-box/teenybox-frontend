@@ -1,5 +1,5 @@
 import React from "react";
-import "./FreeBoardList.scss";
+import "./CommunityList.scss";
 import { Link } from "react-router-dom";
 import { SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
@@ -7,9 +7,9 @@ import default_user_img from "../../assets/img/default_user_img.svg";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
 
-export default function FreeBoardList({ boardList, isFixed }) {
+export default function CommunityList({ boardList, isFixed }) {
   return (
-    <div className="free-board-list-box">
+    <div className="Community-list-box">
       {boardList.map((post) => (
         <div className={`content-box${isFixed ? " fixed" : ""}`} key={post._id} id={post.post_number}>
           <div className="flex-box top">

@@ -6,10 +6,10 @@ export * from "./errorPage/ForbiddenPage";
 export * from "./errorPage/NotFoundPage";
 export * from "./errorPage/NotFoundRedirect";
 
-export * from "./free-board/FreeBoardDetailPage";
-export * from "./free-board/FreeBoardFormPage";
-export * from "./free-board/FreeBoardListPage";
-export * from "./free-board/FreeBoardEdit";
+export * from "./community/CommunityDetailPage";
+export * from "./community/CommunityFormPage";
+export * from "./community/CommunityListPage";
+export * from "./community/CommunityEdit";
 
 export * from "./main/Main";
 

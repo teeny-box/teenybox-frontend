@@ -11,7 +11,7 @@ import { AlertContext } from "../../App";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-export default function FreeBoardForm({ setInput, handleCancle, userRole }) {
+export default function CommunityForm({ setInput, handleCancle, userRole }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);

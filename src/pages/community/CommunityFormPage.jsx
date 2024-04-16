@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Backdrop } from "@mui/material";
-import FreeBoardForm from "../../components/board-free/FreeBoardForm";
-import "./FreeBoardFormPage.scss";
+import CommunityForm from "../../components/community/CommunityForm";
+import "./CommunityFormPage.scss";
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 import { AlertContext } from "../../App";
 
-export function FreeBoardFormPage() {
+export function CommunityFormPage() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const nav = useNavigate();
@@ -26,9 +26,9 @@ export function FreeBoardFormPage() {
   }, [user]);
 
   return (
-    <div className="free-board-form-page page-margin">
+    <div className="Community-form-page page-margin">
       <div className="body">
-        <FreeBoardForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.user?.role} />
+        <CommunityForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.user?.role} />
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>

@@ -87,7 +87,7 @@
    │  ├─ admin
    │  ├─ common
    │  ├─ errorPage
-   │  ├─ free-board
+   │  ├─ Community
    │  ├─ index.jsx
    │  ├─ main
    │  ├─ mypage

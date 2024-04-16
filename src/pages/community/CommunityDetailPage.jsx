@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
-import FreeBoardPost from "../../components/board-free/FreeBoardPost";
-import "./FreeBoardDetailPage.scss";
+import CommunityPost from "../../components/community/CommunityPost";
+import "./CommunityDetailPage.scss";
 import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
 import { commentUrl, postUrl, userUrl } from "../../apis/apiURLs";
 import setStoreViewList from "../../utils/setStoreRecentViewList";
@@ -10,7 +10,7 @@ import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
 import { COMMENTS_LIMIT } from "../../utils/const";
 
-export function FreeBoardDetailPage() {
+export function CommunityDetailPage() {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -142,12 +142,12 @@ export function FreeBoardDetailPage() {
   }, [params]);
 
   return (
-    <div className="free-board-detail page-margin">
+    <div className="Community-detail page-margin">
       {state === "hasError" ? (
         <NotFoundPage prev={true} />
       ) : (
         <>
-          <div className="free-board-left-container">
+          <div className="Community-left-container">
             <BoardSecondHeader header="커뮤니티" onclick={() => nav("/community")} />
             {state === "loading" ? (
               <div className="progress-box">
@@ -155,7 +155,7 @@ export function FreeBoardDetailPage() {
               </div>
             ) : (
               <div className="body">
-                {post._id && <FreeBoardPost data={post} totalCommentCount={totalCount} />}
+                {post._id && <CommunityPost data={post} totalCommentCount={totalCount} />}
                 <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                 <CommentForm createComment={createComment} postId={post?._id} />
                 {!comments.length || (

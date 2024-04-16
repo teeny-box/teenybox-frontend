@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Backdrop } from "@mui/material";
-import "./FreeBoardFormPage.scss";
+import "./CommunityFormPage.scss";
 import { AlertCustom } from "../../components/common/alert/Alerts";
-import FreeBoardEditForm from "../../components/board-free/FreeBoardEdit";
+import CommunityEditForm from "../../components/community/CommunityEdit";
 import { postUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 
-export function FreeBoardEdit() {
+export function CommunityEdit() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const [post, setPost] = useState();
@@ -52,9 +52,9 @@ export function FreeBoardEdit() {
   }, [user]);
 
   return (
-    <div className="free-board-form-page page-margin">
+    <div className="Community-form-page page-margin">
       <div className="body">
-        {post && <FreeBoardEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.user?.role} />}
+        {post && <CommunityEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.user?.role} />}
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>

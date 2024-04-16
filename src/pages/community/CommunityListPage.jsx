@@ -1,16 +1,16 @@
-import "./FreeBoardListPage.scss";
+import "./CommunityListPage.scss";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { Loop } from "@mui/icons-material";
 import { BoardListHeader } from "../../components/board";
-import FreeBoardList from "../../components/board-free/FreeBoardList";
+import CommunityList from "../../components/community/CommunityList";
 import ServerError from "../../components/common/state/ServerError";
 import Empty from "../../components/common/state/Empty";
 import { BoardRightContainer } from "../../components/board/BoardRightContainer";
 import { postUrl } from "../../apis/apiURLs";
 
-export function FreeBoardListPage() {
+export function CommunityListPage() {
   const [fixedList, setFixedList] = useState([]);
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
@@ -81,8 +81,8 @@ export function FreeBoardListPage() {
   }, [sort]);
 
   return (
-    <div className="free-board-page page-margin">
-      <div className="free-board-left-container">
+    <div className="Community-page page-margin">
+      <div className="Community-left-container">
         <BoardListHeader header="커뮤니티" />
         <div className="header flex-box">
           <div className="left">
@@ -114,8 +114,8 @@ export function FreeBoardListPage() {
             </div>
           ) : boardList.length ? (
             <>
-              {page === 1 && <FreeBoardList boardList={fixedList} isFixed={true} />}
-              <FreeBoardList boardList={boardList} />
+              {page === 1 && <CommunityList boardList={fixedList} isFixed={true} />}
+              <CommunityList boardList={boardList} />
               <div className="pagination">
                 <Pagination page={page} onChange={handleChange} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />
               </div>
