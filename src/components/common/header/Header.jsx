@@ -80,13 +80,13 @@ const Header = () => {
             <Link to="/">
               <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
             </Link>
-            {userData && userData.isLoggedIn ? (
+            {userData ? (
               <div className="header-icon-box">
                 <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
                   <AccountCircleIcon className="header-icon" />
                   <p className="header-icon-text">마이페이지</p>
                 </Link>
-                {userData.user.role === "admin" && (
+                {userData.role === "admin" && (
                   <Link to="/admin" style={{ textDecoration: "none" }} className="header-login-btn-box">
                     <AdminPanelSettingsOutlinedIcon className="header-icon" />
                     <p className="header-icon-text">관리자페이지</p>
