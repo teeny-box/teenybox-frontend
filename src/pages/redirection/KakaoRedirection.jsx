@@ -30,7 +30,7 @@ export function KakaoRedirection({ popup, setPopup, setAlert }) {
         return null;
       })
       .then((data) => {
-        setUserData({ isLoggedIn: true, user: data.user });
+        setUserData(data.user);
       })
       .then(() => {
         setTimeout(() => {
