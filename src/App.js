@@ -21,9 +21,9 @@ function App() {
   const [prevPlayListQuery, setPrevPlayListQuery] = useState(null);
 
   // userData 상태가 변경될 때마다 실행되는 useEffect
-  useEffect(() => {
-    console.log("업데이트 후 userData:", userData);
-  }, [userData]);
+  // useEffect(() => {
+  //   console.log("업데이트 후 userData:", userData);
+  // }, [userData]);
 
   return (
     <div className="App">
