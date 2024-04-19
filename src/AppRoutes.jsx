@@ -1,9 +1,9 @@
-import { useContext,useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
 import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
-import { AppContext } from "./App";
+
 
 import {
   PRBoardListPage,
@@ -37,10 +37,9 @@ let currentPath = "";
 let reloard = true;
 
 export default function AppRoutes({ setPrevPlayListQuery }) {
-  const { setUserData } = useContext(AppContext);
   const location = useLocation();
   useScrollToTop();
-  useGetUser(setUserData);
+  useGetUser();
 
   useEffect(() => {
     if (location.pathname === "/search" || location.pathname === "/mypages") {
