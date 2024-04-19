@@ -1,0 +1,86 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import { CalendarMonth, FormatQuote, LocationOn, MovieCreation } from "@mui/icons-material";
+import "./PromotionPost.scss";
+import { Viewer } from "@toast-ui/react-editor";
+import { PostTop } from "../board";
+import empty_img from "../../assets/img/empty_img.svg";
+import TimeFormat from "../common/time/TimeFormat";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+
+export default function PromotionPost({ data, totalCommentCount }) {
+  const [openMainImg, setOpenMainImg] = useState(false);
+  return (
+    <div className="promotion-post">
+      <PostTop user={data.user_id || { nickname: "user" }} type={"promotion"} post={data} totalCommentCount={totalCommentCount} />
+      {data.category === "공지" || (
+        <div className="top-container">
+          <img
+            className="main-img"
+            src={data.image_url[0] || empty_img}
+            onError={(e) => {
+              e.target.src = empty_img;
+            }}
+            alt="홍보 포스터"
+            onClick={() => setOpenMainImg(true)}
+          />
+          <div className="flex-column">
+            <div className="box">
+              <div className="lable">타이틀</div>
+              <div className="value">{data.play_title}</div>
+              <FormatQuote className="icon double" />
+            </div>
+            <div className="box">
+              <div className="lable">{data.category === "연극" ? "공연기간" : "행사기간"}</div>
+              <div className="value">
+                {data.start_date && <TimeFormat time={data.start_date} />} ~ {data.end_date && <TimeFormat time={data.end_date} />}
+              </div>
+              <CalendarMonth className="icon" />
+            </div>
+          </div>
+          <div className="flex-column">
+            <div className="box">
+              <div className="lable">장소</div>
+              <div className="value">{data.location || <span className="undefined">본문참고</span>}</div>
+              <LocationOn className="icon" />
+            </div>
+            <div className="box add">
+              <div className="lable">추가정보</div>
+              {data.category === "연극" && (
+                <div className="value">
+                  <span className="sub-lable">러닝타임</span>
+                  {data.runtime ? `${data.runtime}분` : <span className="undefined">본문참고</span>}
+                </div>
+              )}
+              <div className={`value ${data.category === "연극" && "mg-6"}`}>
+                <span className="sub-lable">주최</span>
+                {data.host || <span className="undefined">본문참고</span>}
+              </div>
+
+              <MovieCreation className="icon" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <h2 className="title">{data.title}</h2>
+      <div className="content">
+        <Viewer initialValue={data.content} />
+      </div>
+      {data.tags && data.tags.length !== 0 && (
+        <div className="tags">
+          {data.tags.map((tag, idx) => (
+            <div className="tag" key={idx}>
+              <Link to={`/search?query=${tag}&category=홍보게시판&type=tag`}># {tag}</Link>
+            </div>
+          ))}
+        </div>
+      )}
+      <Backdrop open={openMainImg} onClick={() => setOpenMainImg(false)}>
+        <img className="zoom" src={data.image_url[0]} />
+      </Backdrop>
+    </div>
+  );
+}

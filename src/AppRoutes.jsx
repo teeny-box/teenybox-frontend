@@ -6,14 +6,14 @@ import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
 
 
 import {
-  PRBoardListPage,
-  PRBoardDetailPage,
-  PRBoardFormPage,
-  FreeBoardEdit,
-  PRBoardEdit,
-  FreeBoardDetailPage,
-  FreeBoardFormPage,
-  FreeBoardListPage,
+  PromotionListPage,
+  PromotionDetailPage,
+  PromotionFormPage,
+  CommunityEdit,
+  PromotionEdit,
+  CommunityDetailPage,
+  CommunityFormPage,
+  CommunityListPage,
   PlayList,
   PlayDetail,
   SignUp_In,
@@ -81,15 +81,15 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
 
                 <Route path="/admin" element={<Admin />} />
 
-                <Route path="/community" element={<FreeBoardListPage />} />
-                <Route path="/community/:postId" element={<FreeBoardDetailPage />} />
-                <Route path="/community/write" element={<FreeBoardFormPage />} />
-                <Route path="/community/edit/:postId" element={<FreeBoardEdit />} />
+                <Route path="/community" element={<CommunityListPage />} />
+                <Route path="/community/:postId" element={<CommunityDetailPage />} />
+                <Route path="/community/write" element={<CommunityFormPage />} />
+                <Route path="/community/edit/:postId" element={<CommunityEdit />} />
 
-                <Route path="/promotion" element={<PRBoardListPage />} />
-                <Route path="/promotion/:postId" element={<PRBoardDetailPage />} />
-                <Route path="/promotion/write" element={<PRBoardFormPage />} />
-                <Route path="/promotion/edit/:postId" element={<PRBoardEdit />} />
+                <Route path="/promotion" element={<PromotionListPage />} />
+                <Route path="/promotion/:postId" element={<PromotionDetailPage />} />
+                <Route path="/promotion/write" element={<PromotionFormPage />} />
+                <Route path="/promotion/edit/:postId" element={<PromotionEdit />} />
 
                 <Route path="/play" element={<PlayList />} />
                 <Route path="/play/:playId" element={<PlayDetail />} />

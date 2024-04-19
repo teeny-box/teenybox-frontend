@@ -155,12 +155,12 @@ export function PostTop({ user, type, post, commentsCnt }) {
   }, [openShareBox]);
 
   useEffect(() => {
-    if (userData?.user?.nickname === user?.nickname) {
+    if (userData?.nickname === user?.nickname) {
       setIsWriter(true);
     }
 
-    if (userData?.user?._id) {
-      setIsLiked(post.likedUsers.includes(userData?.user?._id));
+    if (userData?._id) {
+      setIsLiked(post.likedUsers.includes(userData?._id));
     }
   }, [userData, user]);
 

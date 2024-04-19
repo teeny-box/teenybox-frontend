@@ -150,7 +150,7 @@ export function BoardRightContainer({ post }) {
   }, [post]);
 
   return (
-    <div className="free-board-right-container">
+    <div className="Community-right-container">
       <div className="right-box">
         <h4>최근 본 글</h4>
         <ul>

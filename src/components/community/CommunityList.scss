@@ -1,0 +1,135 @@
+.progress {
+  margin: auto;
+}
+
+.Community-list-box {
+  display: flex;
+  flex-direction: column;
+
+  .content-box {
+    width: 100%;
+    color: #787878;
+    display: flex;
+    flex-direction: column;
+    border-bottom: #6b72804d solid 1px;
+    box-sizing: border-box;
+    padding: 16px 2px;
+    background-color: #fff;
+
+    .flex-box {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .top {
+      font-size: 14px;
+      align-items: center;
+
+      .user {
+        display: flex;
+        align-items: center;
+        span {
+          margin-left: 6px;
+        }
+        .user-img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50px;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .title {
+      display: inline-block;
+      color: #111827;
+      font-size: 17px;
+      font-weight: 500;
+      margin: 8px 0 5px;
+      height: 26px;
+      line-height: 26px;
+    }
+
+    .bottom {
+      .content {
+        width: 70%;
+        max-width: 500px;
+        height: 22px;
+        font-size: small;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        line-height: 22px;
+      }
+
+      .tags {
+        width: 70%;
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 22px;
+        overflow: hidden;
+
+        .tag {
+          flex: 0 0 auto;
+          box-sizing: border-box;
+          background-color: #f3f4f6;
+          margin-right: 6px;
+          padding: 4px 9px;
+          border-radius: 10px;
+          height: 22px;
+
+          display: flex;
+          flex-wrap: wrap;
+          overflow: hidden;
+
+          a {
+            font-weight: 400;
+            font-size: 12px;
+            color: #62676c;
+            height: min-content;
+          }
+        }
+      }
+
+      .post-card-footer {
+        font-size: 12px;
+        display: flex;
+        justify-content: flex-end;
+
+        .MuiSvgIcon-root {
+          margin-left: 10px;
+        }
+
+        span {
+          margin-left: 2px;
+          line-height: 14px;
+        }
+      }
+    }
+  }
+
+  .content-box.fixed {
+    background-color: #fcf9f5;
+    padding: 16px 10px;
+
+    .notice {
+      margin: auto 0;
+      color: #eb0b0be8;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+
+      span {
+        display: inline-block;
+        margin: auto 6px;
+        color: #d9d9d9;
+        font-size: 11px;
+      }
+    }
+
+    .tags .tag {
+      // background-color: #f8efda;
+      background-color: #f1f1f1;
+    }
+  }
+}

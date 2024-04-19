@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CircularProgress, Pagination } from "@mui/material";
 import { useSearchParams } from "react-router-dom/dist";
 import { postUrl } from "../../../apis/apiURLs";
-import FreeBoardList from "../../board-free/FreeBoardList";
+import CommunityList from "../../community/CommunityList";
 import "./CommunitySearchResult.scss";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
@@ -93,7 +93,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
           </div>
         ) : (
           <>
-            <FreeBoardList boardList={searchResult} />
+            <CommunityList boardList={searchResult} />
             <div className="search-pagination">
               <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
             </div>

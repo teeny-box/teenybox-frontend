@@ -1,0 +1,318 @@
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import { Close, ErrorOutline } from "@mui/icons-material";
+import "./PromotionForm.scss";
+import { Editor } from "@toast-ui/react-editor";
+import { AlertCustom } from "../common/alert/Alerts";
+import { presignedUrl, promotionUrl } from "../../apis/apiURLs";
+import { AlertContext } from "../../App";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "@toast-ui/editor/dist/toastui-editor.css";
+
+export function PromotionNoticeForm({ setInput, handleCancle, setIsNotice, userRole }) {
+  const [submit, setSubmit] = useState(false);
+  const [openSubmit, setOpenSubmit] = useState(false);
+  const [openComplete, setOpenComplete] = useState(false);
+
+  // 글제목
+  const [inputTitle, setInputTitle] = useState();
+  const [errorTitle, setErrorTitle] = useState("제목을 최소 3자 이상 입력해주세요.");
+  // 내용
+  const [inputContent, setInputContent] = useState();
+  const [errorContent, setErrorContent] = useState("내용을 최소 3자 이상 입력해주세요.");
+  // 태그
+  const [tagList, setTagList] = useState([]);
+  const [inputTag, setInputTag] = useState();
+  // 사진
+  const [errorImage, setErrorImage] = useState("");
+  // 고정(관리자)
+  const [fixed, setFixed] = useState(true);
+
+  const editorRef = useRef();
+  const { setOpenFetchErrorAlert } = useContext(AlertContext);
+  const nav = useNavigate();
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch(`${promotionUrl}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          title: inputTitle,
+          content: inputContent,
+          tags: tagList,
+          image_url: [""],
+          start_date: dayjs(),
+          end_date: dayjs(),
+          category: "공지",
+          play_title: "공지사항",
+          runtime: 0,
+          location: "",
+          host: "",
+          is_fixed: fixed ? "고정" : "일반",
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setOpenComplete(true);
+      } else {
+        console.error(data);
+      }
+    } catch (e) {
+      setOpenFetchErrorAlert(true);
+    }
+  };
+
+  const handleClickSubmitButton = () => {
+    setSubmit(true);
+
+    if (errorTitle ) {
+      document.querySelector("#title").focus();
+    } else if (errorContent) {
+      // document.querySelector("#content").focus();
+    } else {
+      setOpenSubmit(true);
+    }
+  };
+
+  const handleErrorPlaceholder = (error) => {
+    if (submit && error) {
+      return (
+        <div className="error">
+          <ErrorOutline fontSize="inherit" />
+          {error}
+        </div>
+      );
+    }
+    return <></>;
+  };
+
+  const handleChangeTitle = (e) => {
+    if (e.target.value.trim().length > 40) return;
+    setInputTitle(e.target.value.trimStart());
+    if (e.target.value.length < 3) {
+      setErrorTitle("제목을 최소 3자 이상 입력해주세요.");
+    } else {
+      setErrorTitle("");
+    }
+  };
+
+  const handleChangeContent = () => {
+    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    console.log(editorMarkdown);
+    setInputContent(editorMarkdown);
+    if (editorMarkdown.length < 3) {
+      setErrorContent("내용을 입력해주세요.");
+    } else {
+      setErrorTitle("");
+    }
+  };
+
+  const uploadImage = async (file) => {
+    try {
+      let res = await fetch(presignedUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: file.name }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+        return false;
+      }
+
+      res = await fetch(data.presigned_url, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!res.ok) {
+        return false;
+      }
+      return data.public_url;
+    } catch (e) {
+      console.error(e);
+      setOpenFetchErrorAlert(true);
+      return false;
+    }
+  };
+
+  const handleChangeImage = async (file, callback) => {
+    if (file.size > 1024 * 1024 * 5) {
+      setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
+      return;
+    }
+    const imageUrl = await uploadImage(file);
+    console.log(imageUrl);
+
+    if (imageUrl) {
+      setErrorImage("");
+      callback(imageUrl);
+    } else {
+      setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
+    }
+  };
+
+  const handleOnKeyDownTag = (e) => {
+    if (e.keyCode === 13) {
+      if (!inputTag) return;
+      setTagList((cur) => [...cur, inputTag]);
+      setInputTag("");
+    }
+  };
+
+  const handleChangeTag = (e) => {
+    if (e.target.value.trim().length <= 15) {
+      setInputTag(e.target.value.trimStart());
+    }
+  };
+
+  const handleRemoveTag = (e) => {
+    const tagId = e.target.closest(".tag-box").id;
+    const newList = [...tagList];
+    newList.splice(tagId, 1);
+    setTagList(newList);
+  };
+
+  useEffect(() => {
+    if (inputTitle || inputContent || tagList) setInput(true);
+    else setInput(false);
+  }, [inputTitle, inputContent, tagList]);
+
+  return (
+    <div className="post-form-box">
+      <div className="form-header">
+        <h2 className="title">
+          홍보 게시글 작성하기
+          {userRole === "admin" && (
+            <Button onClick={() => setIsNotice(false)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
+              (공지사항)
+            </Button>
+          )}
+        </h2>
+      </div>
+
+      <div className="flex-box fixed">
+        <div className="input flex-center">
+          <label htmlFor="">고정</label>
+          <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+        </div>
+      </div>
+
+      <div className="flex-box title">
+        <div className="input">
+          <label htmlFor="title">
+            글 제목<span className="star">*</span>
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={inputTitle}
+            onChange={handleChangeTitle}
+            maxLength={40}
+            placeholder="제목을 작성해 주세요."
+            required
+          />
+        </div>
+        {handleErrorPlaceholder(errorTitle)}
+      </div>
+
+      <div className="input content flex-box">
+        <label htmlFor="content">
+          내용<span className="star">*</span>
+        </label>
+        <Editor
+          ref={editorRef}
+          initialValue={inputContent}
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="wysiwyg"
+          useCommandShortcut={true}
+          hooks={{ addImageBlobHook: handleChangeImage }}
+          onChange={handleChangeContent}
+        />
+        {handleErrorPlaceholder(errorContent)}
+        {handleErrorPlaceholder(errorImage)}
+      </div>
+
+      <div className="input tag flex-box">
+        <div>
+          <label htmlFor="tags">태그</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            onKeyDown={handleOnKeyDownTag}
+            value={inputTag}
+            onChange={handleChangeTag}
+            placeholder="엔터를 입력하여 태그를 등록할 수 있습니다."
+            maxLength={15}
+          />
+        </div>
+        {tagList && (
+          <div className="tag-list flex">
+            {tagList.map((tag, idx) => (
+              <div id={idx} key={tag + idx} className="tag-box flex">
+                <span># {tag} </span>
+                <IconButton onClick={handleRemoveTag} size="small" sx={{ padding: "2px", fontSize: 14, marginLeft: "4px" }}>
+                  <Close fontSize="inherit" />
+                </IconButton>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="form-footer">
+        <div className="notice">
+          <span className="star">*</span>표시가 되어 있는 항목은 필수 기재 항목입니다.
+        </div>
+        <div>
+          <Button color="darkGray" size="large" variant="outlined" onClick={handleCancle} sx={{ marginRight: "14px" }}>
+            취소
+          </Button>
+          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
+            등록
+          </Button>
+        </div>
+      </div>
+
+      <Backdrop open={openSubmit || openComplete} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AlertCustom
+          open={openSubmit}
+          onclose={() => setOpenSubmit(false)}
+          title={"teenybox.com 내용:"}
+          content={"게시글을 작성하시겠습니까?"}
+          onclick={() => {
+            handleSubmit();
+          }}
+          checkBtn={"등록"}
+          closeBtn={"취소"}
+          checkBtnColor={"#42BB48"}
+        />
+        <AlertCustom
+          open={openComplete}
+          onclose={() => {
+            setOpenComplete(false);
+            nav("/promotion");
+          }}
+          onclick={() => {
+            setOpenComplete(false);
+            nav("/promotion");
+          }}
+          title={"teenybox.com 내용:"}
+          content={"글 등록이 완료되었습니다!"}
+          btnCloseHidden={true}
+          time={1000}
+        />
+      </Backdrop>
+    </div>
+  );
+}
