@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
@@ -8,12 +8,9 @@ import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
 import FetchErrorAlert from "./components/common/alert/FetchErrorAlert";
-import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
 
-export const AppContext = createContext({
-  userData: null, // 기본 사용자 데이터 : userGetUser() 훅에서는 userData를 직접참조하지 않고 AppContext에 담긴 값을 업데이트 해주고 있기 때문.
-  setUserData: () => {}, // 기본 함수
-});
+
+export const AppContext = createContext();
 export const AlertContext = createContext();
 
 function App() {
@@ -23,7 +20,10 @@ function App() {
   const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [prevPlayListQuery, setPrevPlayListQuery] = useState(null);
 
-  useGetUser();
+  // userData 상태가 변경될 때마다 실행되는 useEffect
+  useEffect(() => {
+    console.log("업데이트 후 userData:", userData);
+  }, [userData]);
 
   return (
     <div className="App">
