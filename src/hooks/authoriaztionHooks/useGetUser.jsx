@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { userUrl } from "../../apis/apiURLs";
+import {AppContext} from "../../App"
 
-export default function useGetUser(setUserData) {
+export default function useGetUser() {
+
+const {userData,setUserData} = useContext(AppContext);
+
   const fetchUserData = async (attempt = 0) => {
     try {
       const res = await fetch(`${userUrl}`, { method: "GET", credentials: "include" });
@@ -30,5 +34,6 @@ export default function useGetUser(setUserData) {
     fetchUserData();
   }, []);
 
-  // 사용자 데이터 반환 로직은 제거됨. 상태는 전역 컨텍스트(AppContext)를 통해 관리됩니다.
+  // 사용자 데이터 반환.
+  return userData
 }
