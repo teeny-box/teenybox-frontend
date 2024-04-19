@@ -22,10 +22,13 @@ export function PromotionFormPage() {
   };
 
   useEffect(() => {
-    if (user && !user.isLoggedIn) {
+    console.log(user);
+    if (user === null) {
       setOpenLoginAlertBack(true);
+    } else {
+      setOpenLoginAlertBack(false);
     }
-    if (user?.user?.role === "admin") {
+    if (user?.role === "admin") {
       setIsNotice(true);
     }
   }, [user]);
@@ -34,9 +37,9 @@ export function PromotionFormPage() {
     <div className="promotion-form-page page-margin">
       <div className="body">
         {isNotice ? (
-          <PromotionNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+          <PromotionNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.role} />
         ) : (
-          <PromotionForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.user?.role} />
+          <PromotionForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.role} />
         )}
       </div>
 

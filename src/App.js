@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext } from "react";
 import { Helmet } from "react-helmet";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
@@ -8,7 +8,6 @@ import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
 import FetchErrorAlert from "./components/common/alert/FetchErrorAlert";
-
 
 export const AppContext = createContext();
 export const AlertContext = createContext();

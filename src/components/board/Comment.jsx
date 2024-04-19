@@ -40,7 +40,7 @@ export function Comment({ commentData, deleteComment }) {
         setComment({ ...comment, content: data.content });
         setIsEditing(false);
       } else if (res.status === 401 || res.status === 403) {
-        setUserData({ isLoggedIn: false });
+        setUserData(null);
         nav("/signup-in");
       } else {
         console.error(data);
@@ -76,7 +76,7 @@ export function Comment({ commentData, deleteComment }) {
               <LiveTimeDiff time={comment.createdAt} />
             </div>
           </div>
-          {userData?.user?.nickname === comment.user.nickname && (
+          {userData?.nickname === comment.user.nickname && (
             <>
               {isEditing ? (
                 <div className="buttons editing">

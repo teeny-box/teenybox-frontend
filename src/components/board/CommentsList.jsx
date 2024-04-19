@@ -23,7 +23,7 @@ export function CommentsList({ comments, totalCount, getComments, setComments, s
         setUniqueComments(newComments);
         setTotalCount(totalCount - 1);
       } else if (res.status === 401 || res.status === 403) {
-        setUserData({ isLoggedIn: false });
+        setUserData(null);
         nav("/signup-in");
       } else {
         console.error(data);

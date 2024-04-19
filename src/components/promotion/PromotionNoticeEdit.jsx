@@ -73,7 +73,7 @@ export function PromotionNoticeEditForm({ setInput, handleCancle, post, setIsNot
     if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else {
       setOpenSubmit(true);
     }
@@ -101,12 +101,14 @@ export function PromotionNoticeEditForm({ setInput, handleCancle, post, setIsNot
     }
   };
 
-  const handleChangeContent = (e) => {
-    setInputContent(e.target.value);
-    if (e.target.value.trim().length < 3) {
-      setErrorContent("내용을 최소 3자 이상 입력해주세요.");
+  const handleChangeContent = () => {
+    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    console.log(editorMarkdown);
+    setInputContent(editorMarkdown);
+    if (editorMarkdown.length < 3) {
+      setErrorContent("내용을 입력해주세요.");
     } else {
-      setErrorContent("");
+      setErrorTitle("");
     }
   };
 
@@ -227,6 +229,8 @@ export function PromotionNoticeEditForm({ setInput, handleCancle, post, setIsNot
           내용<span className="star">*</span>
         </label>
         <Editor
+          id="title"
+          name="title"
           ref={editorRef}
           initialValue={inputContent}
           previewStyle="vertical"

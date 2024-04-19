@@ -20,15 +20,17 @@ export function CommunityFormPage() {
   };
 
   useEffect(() => {
-    if (user && !user.isLoggedIn) {
+    if (!user) {
       setOpenLoginAlertBack(true);
+    } else {
+      setOpenLoginAlertBack(false);
     }
   }, [user]);
 
   return (
     <div className="Community-form-page page-margin">
       <div className="body">
-        <CommunityForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.user?.role} />
+        <CommunityForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.role} />
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>

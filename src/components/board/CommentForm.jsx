@@ -10,7 +10,7 @@ export function CommentForm({ createComment }) {
   const { setOpenLoginAlert } = useContext(AlertContext);
 
   const handleClick = () => {
-    if (!userData.user?._id) {
+    if (!userData._id) {
       setOpenLoginAlert(true);
       return;
     }
@@ -26,7 +26,7 @@ export function CommentForm({ createComment }) {
       <div className="flex-box">
         <img
           className="user-profile-img"
-          src={userData?.user?.profile_url || default_user_img}
+          src={userData?.profile_url || default_user_img}
           onError={(e) => {
             e.target.src = default_user_img;
           }}

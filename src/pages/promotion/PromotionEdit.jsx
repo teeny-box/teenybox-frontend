@@ -34,7 +34,7 @@ export function PromotionEdit() {
         nav("/not-found");
         return;
       }
-      if (data.user_id.nickname !== user.user?.nickname) {
+      if (data.user_id.nickname !== user.nickname) {
         nav("/forbidden");
         return;
       }
@@ -46,9 +46,10 @@ export function PromotionEdit() {
   };
 
   useEffect(() => {
-    if (user && !user.isLoggedIn) {
+    if (!user) {
       setOpenLoginAlertBack(true);
-    } else if (user) {
+    } else {
+      setOpenLoginAlertBack(false);
       getPost();
     }
   }, [user]);
@@ -69,7 +70,7 @@ export function PromotionEdit() {
               handleCancle={handleCancle}
               post={post}
               setIsNotice={setIsNotice}
-              userRole={user?.user?.role}
+              userRole={user?.role}
             />
           ) : (
             <PromotionEditForm
@@ -77,7 +78,7 @@ export function PromotionEdit() {
               handleCancle={handleCancle}
               post={post}
               setIsNotice={setIsNotice}
-              userRole={user?.user?.role}
+              userRole={user?.role}
             />
           ))}
       </div>

@@ -100,7 +100,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
     } else if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else if (!mainImageURL) {
       document.querySelector("#imageBtn").focus();
     } else {
@@ -150,6 +150,8 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
     setInputContent(editorMarkdown);
     if (editorMarkdown.length < 3) {
       setErrorContent("내용을 입력해주세요.");
+    } else {
+      setErrorTitle("");
     }
   };
 

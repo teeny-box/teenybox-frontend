@@ -61,7 +61,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
     if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else {
       setOpenSubmit(true);
     }

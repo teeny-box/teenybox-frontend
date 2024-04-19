@@ -61,7 +61,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
     if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else {
       setOpenSubmit(true);
     }

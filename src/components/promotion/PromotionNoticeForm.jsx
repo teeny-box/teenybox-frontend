@@ -70,10 +70,10 @@ export function PromotionNoticeForm({ setInput, handleCancle, setIsNotice, userR
   const handleClickSubmitButton = () => {
     setSubmit(true);
 
-    if (errorTitle) {
+    if (errorTitle ) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else {
       setOpenSubmit(true);
     }
@@ -101,12 +101,14 @@ export function PromotionNoticeForm({ setInput, handleCancle, setIsNotice, userR
     }
   };
 
-  const handleChangeContent = (e) => {
-    setInputContent(e.target.value);
-    if (e.target.value.trim().length < 3) {
-      setErrorContent("내용을 최소 3자 이상 입력해주세요.");
+  const handleChangeContent = () => {
+    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    console.log(editorMarkdown);
+    setInputContent(editorMarkdown);
+    if (editorMarkdown.length < 3) {
+      setErrorContent("내용을 입력해주세요.");
     } else {
-      setErrorContent("");
+      setErrorTitle("");
     }
   };
 

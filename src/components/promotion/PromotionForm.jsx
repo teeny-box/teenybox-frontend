@@ -101,7 +101,7 @@ export function PromotionForm({ setInput, handleCancle, setIsNotice, userRole })
     } else if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
-      document.querySelector("#content").focus();
+      // document.querySelector("#content").focus();
     } else if (!mainImageURL) {
       document.querySelector("#imageBtn").focus();
     } else {

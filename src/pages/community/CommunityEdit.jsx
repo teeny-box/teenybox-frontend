@@ -32,7 +32,7 @@ export function CommunityEdit() {
         nav("/not-found");
         return;
       }
-      if (data.user_id.nickname !== user.user?.nickname) {
+      if (data.user_id.nickname !== user.nickname) {
         nav("/forbidden");
         return;
       }
@@ -44,9 +44,10 @@ export function CommunityEdit() {
   };
 
   useEffect(() => {
-    if (user && !user.isLoggedIn) {
+    if (!user) {
       setOpenLoginAlertBack(true);
-    } else if (user) {
+    } else {
+      setOpenLoginAlertBack(false);
       getPost();
     }
   }, [user]);
@@ -54,7 +55,7 @@ export function CommunityEdit() {
   return (
     <div className="Community-form-page page-margin">
       <div className="body">
-        {post && <CommunityEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.user?.role} />}
+        {post && <CommunityEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.role} />}
       </div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>

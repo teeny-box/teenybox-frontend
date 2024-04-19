@@ -80,7 +80,7 @@ export function CommunityDetailPage() {
       if (res.ok) {
         const newComment = {
           ...data,
-          user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id },
+          user: { nickname: userData.nickname, profile_url: userData.profile_url, state: "가입", _id: userData._id },
         };
         setComments([newComment, ...comments]);
         setTotalCount(totalCount + 1);
@@ -89,9 +89,9 @@ export function CommunityDetailPage() {
         if (loginRes.ok) {
           const _data = await loginRes.json();
           createComment(inputText);
-          setUserData({ isLoggedIn: true, user: _data.user });
+          setUserData(_data.user);
         } else {
-          setUserData({ isLoggedIn: false });
+          setUserData(null);
           setOpenLoginAlert(true);
         }
       } else {

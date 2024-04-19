@@ -76,7 +76,7 @@ export function PromotionDetailPage() {
         }),
       });
       const data = await res.json();
-      const newComment = { ...data, user: { nickname: userData.user.nickname, profile_url: userData.user.profile_url, state: "가입", _id: userData.user._id } };
+      const newComment = { ...data, user: { nickname: userData.nickname, profile_url: userData.profile_url, state: "가입", _id: userData._id } };
 
       if (res.ok) {
         setComments([newComment, ...comments]);
@@ -85,9 +85,9 @@ export function PromotionDetailPage() {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
           const _data = await loginRes.json();
-          setUserData({ isLoggedIn: true, user: _data.user });
+          setUserData(_data.user);
         } else {
-          setUserData({ isLoggedIn: false });
+          setUserData(null);
           setOpenLoginAlertBack(true);
         }
       } else {
