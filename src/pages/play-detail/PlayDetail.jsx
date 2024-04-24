@@ -75,7 +75,7 @@ export function PlayDetail() {
             severity={"error"}
           />
         )}
-        {!isLoading && playInfo && userData && (
+        {!isLoading && playInfo && (
           <>
             <UpButton />
             <PlayDetailTop
@@ -90,7 +90,7 @@ export function PlayDetail() {
               state={playInfo.state}
               title={playInfo.title}
               reviews={playInfo.reviews}
-              isLoggedIn={userData.isLoggedIn}
+              isLoggedIn={userData}
               averageRate={playInfo.avg_rating}
             />
             <PlayDetailNav selected={detailNavMenu} handleClick={handleDetailNavMenuClick} />
@@ -111,11 +111,11 @@ export function PlayDetail() {
               {detailNavMenu === "reviews" && (
                 <PlayReview
                   showId={playInfo.showId}
-                  isLoggedIn={userData.isLoggedIn}
-                  author={userData.user?.nickname}
+                  isLoggedIn={userData}
+                  author={userData?.nickname}
                   averageRate={playInfo.avg_rating}
                   state={playInfo.state}
-                  userId={userData.user?.user_id}
+                  userId={userData?.user_id}
                   getPlayDetailInfo={getPlayDetailInfo}
                 />
               )}
