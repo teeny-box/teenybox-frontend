@@ -13,21 +13,11 @@ import { userUrl } from "../../../apis/apiURLs";
 import "./Header.scss";
 
 const Header = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태 추가
   const [activeTab, setActiveTab] = useState("");
   const { userData, setUserData } = useContext(AppContext);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     // 페이지 URL에 따라 activeTab 상태를 변경
