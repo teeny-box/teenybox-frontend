@@ -43,6 +43,7 @@ const MainReview = () => {
 
         setReviews(reorderedReviews);
         setShows(showDetails); // 해당 리뷰들에 대한 연극 상세 정보
+        
       } catch (error) {
         console.error(error);
       }
@@ -118,14 +119,18 @@ const MainReview = () => {
             {reviews.map((review, index) => (
               <div key={index} className="review-box">
                 <div className="review-img-box">
-                  <img src={shows[review.show_id].show.poster} alt="review-thumbnail" onClick={() => handleShowClick(review.show_id)} />
+                  {shows[review.show_id] && shows[review.show_id].show && (
+                    <img src={shows[review.show_id].show.poster} alt="review-thumbnail" onClick={() => handleShowClick(review.show_id)} />
+                  )}
                 </div>
                 <div className="main-review-content">
                   <div className="main-review-header">
                     <p className="review-show-title">{trimText(review.show_title, 9)}</p>
+                    {shows[review.show_id] && shows[review.show_id].show && (
                     <p className="review-show-period">
                       {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
-                    </p>
+                      </p>
+                      )}
                   </div>
                   <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
                     <div className="review-main-top">
