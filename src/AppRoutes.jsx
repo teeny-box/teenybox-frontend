@@ -4,7 +4,6 @@ import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
 import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
 
-
 import {
   PromotionListPage,
   PromotionDetailPage,
