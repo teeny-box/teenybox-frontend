@@ -24,11 +24,11 @@ export function Main() {
       <div className="review-container">
         <MainReview />
       </div>
-      <div className="preferred-region-container">
-        <MainPreferredRegion />
-      </div>
       <div className="promotion-container">
         <MainPromotion />
+      </div>
+      <div className="preferred-region-container">
+        <MainPreferredRegion />
       </div>
       <UpButton />
     </div>

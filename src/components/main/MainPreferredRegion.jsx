@@ -49,7 +49,7 @@ function MainPreferredRegion() {
         if (data.shows) {
           // 시작일 기준으로 가장 가까운 공연부터 정렬
           const sortedShows = data.shows.sort((a, b) => Math.abs(new Date(a.start_date) - today) - Math.abs(new Date(b.start_date) - today));
-          setShows(sortedShows.slice(0, 5));
+          setShows(sortedShows.slice(0, 10));
         } else {
           console.error("API에서 shows 데이터를 찾을 수 없습니다.");
         }
@@ -67,8 +67,11 @@ function MainPreferredRegion() {
 
   return (
     <div className="main-layout-container">
-      <div className="main-title-box">
-        <p className="main-title">지역별 신작</p>
+      <div className="main-title-box-center">
+        <div className="main-center-title">
+          <p className="main-sub-title">어디서든 연극을 즐겨요</p>
+          <p className="main-title">지역별 신작</p>
+        </div>
       </div>
       <div className="region-list-container">
         <ul className="region-list-box">

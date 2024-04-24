@@ -115,7 +115,13 @@ function MyComments({ setUserData }) {
         <div className="header">
           <h1>MY 댓글</h1>
           {!comments.length || (
-            <Button onClick={() => setOpenAlert(true)} variant="contained" color="orange" sx={{ width: "70px", height: "36px", color: "white" }}>
+            <Button
+              disabled={!checkedList.length}
+              onClick={() => setOpenAlert(true)}
+              variant="contained"
+              color="orange"
+              sx={{ width: "70px", height: "36px", color: "white" }}
+            >
               <h4>삭제</h4>
             </Button>
           )}

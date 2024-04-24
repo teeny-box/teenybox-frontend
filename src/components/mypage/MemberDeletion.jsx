@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./MemberDeletion.scss";
 import Button from "@mui/material/Button";
 import { Backdrop, Checkbox, FormControlLabel } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Navigate } from "react-router";
 import { Link } from "react-router-dom";
 import { AlertCustom } from "../common/alert/Alerts";
 import { userUrl } from "../../apis/apiURLs";
@@ -11,7 +11,6 @@ function MemberDeletion({ setUserData }) {
   const [openAlert, setOpenAlert] = useState(false);
   const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [checked, setChecked] = useState(false);
-  const nav = useNavigate();
 
   const handleDelete = async () => {
     try {
@@ -20,22 +19,20 @@ function MemberDeletion({ setUserData }) {
 
       if (res.ok) {
         setUserData({ isLoggedIn: false });
-        nav(`/`);
+        <Navigate to="/" />;
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
           handleDelete();
         } else {
           setUserData({ isLoggedIn: false });
-          return nav(`/signup-in`);
+          <Navigate to="/signup-in" />;
         }
       } else {
         console.error(data);
       }
-      return null;
     } catch (e) {
       setOpenFetchErrorAlert(true);
-      return null;
     }
   };
 

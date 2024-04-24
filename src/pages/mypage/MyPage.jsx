@@ -7,8 +7,8 @@ import MemberInfo from "../../components/mypage/MemberInfo";
 import MemberDeletion from "../../components/mypage/MemberDeletion";
 import MyPickList from "../../components/mypage/MyPickList";
 import MyPlayReview from "../../components/mypage/MyPlayReview";
-import MyPRBoard from "../../components/mypage/MyPRBoard";
-import MyFreeBoard from "../../components/mypage/MyFreeBoard";
+import MyPromotionBoard from "../../components/mypage/MyPromotionBoard";
+import MyCommunityBoard from "../../components/mypage/MyCommunityBoard";
 import MyComments from "../../components/mypage/MyComments";
 import { AlertContext, AppContext } from "../../App";
 import { userUrl } from "../../apis/apiURLs";
@@ -31,10 +31,10 @@ export function MyPage() {
         return <MyPickList user={userData.user} setUserData={setUserData} />;
       case "MyPlayReview":
         return <MyPlayReview user={userData.user} setUserData={setUserData} />;
-      case "MyPRBoard":
-        return <MyPRBoard user={userData.user} setUserData={setUserData} />;
-      case "MyFreeBoard":
-        return <MyFreeBoard user={userData.user} setUserData={setUserData} />;
+      case "MyPromotionBoard":
+        return <MyPromotionBoard user={userData.user} setUserData={setUserData} />;
+      case "MyCommunityBoard":
+        return <MyCommunityBoard user={userData.user} setUserData={setUserData} />;
       case "MyComments":
         return <MyComments user={userData.user} setUserData={setUserData} />;
       default:
@@ -100,10 +100,10 @@ export function MyPage() {
                 </div>
                 <div className="my-nav-box">
                   <h3>My 작성글</h3>
-                  <p className={isSelected("MyPRBoard")} onClick={() => setSelectedComponent("MyPRBoard")}>
+                  <p className={isSelected("MyPromotionBoard")} onClick={() => setSelectedComponent("MyPromotionBoard")}>
                     홍보 게시판
                   </p>
-                  <p className={isSelected("MyFreeBoard")} onClick={() => setSelectedComponent("MyFreeBoard")}>
+                  <p className={isSelected("MyCommunityBoard")} onClick={() => setSelectedComponent("MyCommunityBoard")}>
                     커뮤니티
                   </p>
                   <p className={isSelected("MyComments")} onClick={() => setSelectedComponent("MyComments")}>

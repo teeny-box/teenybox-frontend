@@ -78,8 +78,11 @@ function MainPromotion() {
 
   return (
     <div className="main-layout-container">
-      <div className="main-title-box">
-        <p className="main-title">소규모 추천 연극</p>
+      <div className="main-title-box-center">
+        <div className="main-center-title">
+          <p className="main-sub-title">숨소리까지 들리는 생생함</p>
+          <p className="main-title">소규모 추천 연극</p>
+        </div>
       </div>
       <div className="main-promotion-container">
         <div>

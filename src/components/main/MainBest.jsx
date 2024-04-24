@@ -93,7 +93,10 @@ function MainBest() {
   return (
     <div className="main-layout-container">
       <div className="main-title-box">
-        <p className="main-title">실시간 베스트 연극</p>
+        <div>
+          <p className="main-sub-title">보고 또 봐도 좋은</p>
+          <p className="main-title">국내 베스트 연극</p>
+        </div>
         <div className="slide-info-box">
           <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
           <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>

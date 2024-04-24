@@ -5,6 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchModal from "./SearchModal";
 import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
@@ -82,6 +83,7 @@ const Header = () => {
             </Link>
             {userData ? (
               <div className="header-icon-box">
+                <MenuIcon className="buger-menu" style={{ textDecoration: "none" }}></MenuIcon>
                 <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
                   <AccountCircleIcon className="header-icon" />
                   <p className="header-icon-text">마이페이지</p>

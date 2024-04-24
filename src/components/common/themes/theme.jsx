@@ -18,6 +18,10 @@ export const theme = createTheme({
       main: "#898989",
       contrastText: "#FFFFFF",
     },
+    darkDarkGray: {
+      main: "##2d2d2d",
+      contrastText: "#FFFFFF",
+    },
     moreDarkGray: {
       main: "#282828",
       contrastText: "#FFFFFF",

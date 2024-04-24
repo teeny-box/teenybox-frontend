@@ -86,7 +86,10 @@ function MainChild() {
   return (
     <div className="main-layout-container">
       <div className="main-title-box">
-        <p className="main-title">아이와 같이 즐기는 문화생활</p>
+        <div>
+          <p className="main-sub-title">아이와 같이 즐기는</p>
+          <p className="main-title">연극 문화생활</p>
+        </div>
         <div className="slide-info-box">
           <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
           <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>
