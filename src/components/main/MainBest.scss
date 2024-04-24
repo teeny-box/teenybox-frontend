@@ -9,9 +9,17 @@
   justify-content: space-between;
   width: 1110px;
 }
-.main-title {
-  font-size: 26px;
+.main-sub-title {
+  color: white;
+  font-size: 16px;
   font-weight: 500;
+  margin: 0 0 4px 0 !important;
+}
+.main-title {
+  font-size: 30px;
+  font-weight: 500;
+  color: white;
+  margin: 0 0 16px 0 !important;
 }
 .slide-info-box {
   display: flex;
@@ -81,10 +89,6 @@
     font-weight: 900;
     text-align: center; // 텍스트 가운데 정렬
   }
-}
-.main-title {
-  color: white;
-  margin: 0 0 16px 0 !important;
 }
 .main-play-box {
   display: flex;

@@ -81,6 +81,7 @@ const AdminCommunity = () => {
         <div className="admin-board-header">
           <h1>커뮤니티 게시글</h1>
           <Button
+            disabled={!posts}
             variant="contained"
             color="moreDarkGray"
             sx={{ width: "80px", height: "40px", color: "white" }}

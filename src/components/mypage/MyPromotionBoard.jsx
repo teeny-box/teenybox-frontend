@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import "./MyFreeBoard.scss";
+import "./MyPromotionBoard.scss";
 import Button from "@mui/material/Button";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { postUrl, userUrl } from "../../apis/apiURLs";
+import { promotionUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
 import TimeFormat from "../common/time/TimeFormat";
@@ -13,10 +13,10 @@ import { AlertContext } from "../../App";
 
 const columns = [
   {
-    field: "post_number",
+    field: "promotion_number",
     headerName: "번호",
     renderCell: (data) => (
-      <Link className="link" to={`/community/${data.value}`}>
+      <Link className="link" to={`/promotion/${data.value}`}>
         {data.value}
       </Link>
     ),
@@ -26,7 +26,7 @@ const columns = [
     headerName: "제목",
     width: 248,
     renderCell: (data) => (
-      <Link className="link" to={`/community/${data.row.post_number}`}>
+      <Link className="link" to={`/promotion/${data.row.promotion_number}`}>
         {data.value}
       </Link>
     ),
@@ -35,12 +35,12 @@ const columns = [
   {
     field: "createdAt",
     headerName: "작성 시기",
-    width: 150,
+    width: 200,
     renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
   },
 ];
 
-function MyFreeBoard({ user, setUserData }) {
+function MyPromotionBoard({ user, setUserData }) {
   const [posts, setPosts] = useState([]);
   const [state, setState] = useState("loading");
   const [checkedList, setCheckedList] = useState([]);
@@ -50,12 +50,13 @@ function MyFreeBoard({ user, setUserData }) {
 
   const getPosts = async () => {
     setState("loading");
+
     try {
-      const res = await fetch(`${postUrl}/user/${user._id}`);
+      const res = await fetch(`${promotionUrl}/user/${user._id}`);
       const data = await res.json();
 
       if (res.ok) {
-        setPosts(data.posts.map((post) => ({ ...post, id: post.post_number })));
+        setPosts(data.promotions.map((promotion) => ({ ...promotion, id: promotion.promotion_number })));
         setState("hasValue");
       } else {
         setState("hasError");
@@ -68,22 +69,22 @@ function MyFreeBoard({ user, setUserData }) {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`${postUrl}/bulk`, {
+      const res = await fetch(`${promotionUrl}/bulk`, {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          postNumbers: checkedList,
+          promotionNumbers: checkedList,
         }),
       });
-
+  
       if (res.ok) {
         const newPosts = [...posts];
         checkedList.forEach((id) => {
           const index = newPosts.findIndex((post) => post.id === id);
           newPosts.splice(index, 1);
         });
-
+  
         setPosts(newPosts);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
@@ -96,10 +97,10 @@ function MyFreeBoard({ user, setUserData }) {
           return nav(`/signup-in`);
         }
       }
-      return true;
+      return undefined;
     } catch (e) {
       setOpenFetchErrorAlert(true);
-      return false;
+      return undefined;
     }
   };
 
@@ -109,12 +110,12 @@ function MyFreeBoard({ user, setUserData }) {
 
   return (
     <>
-      <div className="my-free-board-container">
+      <div className="my-pr-board-container">
         <div className="header">
-          <h1>MY 커뮤니티</h1>
+          <h1>MY 홍보 게시글</h1>
           {!posts.length || (
-            <Button onClick={() => setOpenAlert(true)} variant="contained" color="orange" sx={{ width: "70px", height: "36px", color: "white" }}>
-              삭제
+            <Button disabled={!checkedList.length} onClick={() => setOpenAlert(true)} variant="contained" color="orange" sx={{ width: "70px", height: "36px", color: "white" }}>
+              <h4>삭제</h4>
             </Button>
           )}
         </div>
@@ -138,7 +139,7 @@ function MyFreeBoard({ user, setUserData }) {
               onRowSelectionModelChange={(e) => setCheckedList(e)}
             />
           ) : (
-            <Empty onClickBtn={() => nav(`/community/write`)} />
+            <Empty onClickBtn={() => nav(`/promotion/write`)} />
           )}
         </div>
       </div>
@@ -159,4 +160,4 @@ function MyFreeBoard({ user, setUserData }) {
   );
 }
 
-export default MyFreeBoard;
+export default MyPromotionBoard;

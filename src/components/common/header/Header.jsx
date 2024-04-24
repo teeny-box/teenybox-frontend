@@ -5,6 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchModal from "./SearchModal";
 import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
@@ -12,11 +13,21 @@ import { userUrl } from "../../../apis/apiURLs";
 import "./Header.scss";
 
 const Header = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태 추가
   const [activeTab, setActiveTab] = useState("");
   const { userData, setUserData } = useContext(AppContext);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     // 페이지 URL에 따라 activeTab 상태를 변경
@@ -82,6 +93,7 @@ const Header = () => {
             </Link>
             {userData ? (
               <div className="header-icon-box">
+                <MenuIcon className="buger-menu" style={{ textDecoration: "none" }}></MenuIcon>
                 <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
                   <AccountCircleIcon className="header-icon" />
                   <p className="header-icon-text">마이페이지</p>
