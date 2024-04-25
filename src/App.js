@@ -1,6 +1,6 @@
 import "./App.scss";
 import { useState, createContext } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "./components/common/themes/theme";
