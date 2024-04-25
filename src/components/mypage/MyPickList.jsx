@@ -2,12 +2,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./MyPickList.scss";
 import Button from "@mui/material/Button";
-import { Checkbox, CircularProgress, Pagination, Tooltip, Typography } from "@mui/material";
+import { Checkbox, CircularProgress, Pagination, Tooltip, Typography, Backdrop } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
 import TimeFormat from "../common/time/TimeFormat";
+import { AlertCustom } from "../common/alert/Alerts";
 import { AlertContext } from "../../App";
 
 function MyPickList({ setUserData }) {
@@ -15,9 +16,12 @@ function MyPickList({ setUserData }) {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
+  const [allList, setAllList] = useState([]);
   const [renderState, setRenderState] = useState("loading");
+  const [openAlert, setOpenAlert] = useState(false);
   const nav = useNavigate();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
+  
 
   const getBookmarks = async () => {
     setRenderState("loading");
@@ -26,6 +30,7 @@ function MyPickList({ setUserData }) {
       const data = await res.json();
 
       if (res.ok) {
+        setAllList(data.bookmarks.validShows.map((show) => show.showId));
         setBookmarks(data.bookmarks.validShows);
         setTotalCount(data.bookmarks.totalCount);
         setRenderState("hasValue");
@@ -86,6 +91,38 @@ function MyPickList({ setUserData }) {
     }
   };
 
+  const handleDeleteAll = async () => {
+    try {
+      const res = await fetch(`${userUrl}/bookmarks`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          showIds: allList,
+        }),
+      });
+
+      if (res.ok) {
+        getBookmarks();
+      } else if (res.status === 401 || res.status === 403) {
+        const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
+        if (loginRes.ok) {
+          const data = await loginRes.json();
+          setUserData({ isLoggedIn: true, user: data.user });
+          handleDeleteAll();
+        } else {
+          setUserData({ isLoggedIn: false });
+          nav(`/signup-in`);
+        }
+      } else {
+        const data = await res.json();
+        console.error(data);
+      }
+    } catch (e) {
+      setOpenFetchErrorAlert(true);
+    }
+  };
+
   const renderComponent = (mainComponent) => {
     switch (renderState) {
       case "loading":
@@ -110,6 +147,8 @@ function MyPickList({ setUserData }) {
 
   useEffect(() => {
     getBookmarks();
+    console.log(bookmarks);
+    console.log(checkedList);
   }, []);
 
   return (
@@ -117,17 +156,24 @@ function MyPickList({ setUserData }) {
       <div className="my-pick-list-container">
         <div className="header">
           <h1>찜한 연극 LIST</h1>
-          {!bookmarks.length || (
-            <Button
-              disabled={!checkedList.length}
-              onClick={handleClickDeleteBtn}
-              variant="contained"
-              color="orange"
-              sx={{ width: "70px", height: "36px", color: "white" }}
-            >
-              삭제
-            </Button>
-          )}
+          <div className="btn-box">
+            {!bookmarks.length || (
+              <Button onClick={() => setOpenAlert(true)} variant="contained" color="secondary" sx={{ width: "100px", height: "36px", color: "white" }}>
+                전체삭제
+              </Button>
+            )}
+            {!bookmarks.length || (
+              <Button
+                disabled={!checkedList.length}
+                onClick={handleClickDeleteBtn}
+                variant="contained"
+                color="orange"
+                sx={{ width: "100px", height: "36px", color: "white" }}
+              >
+                선택삭제
+              </Button>
+            )}
+          </div>
         </div>
         <div className="body">
           {renderComponent(
@@ -193,6 +239,19 @@ function MyPickList({ setUserData }) {
           )}
         </div>
       </div>
+      <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AlertCustom
+          severity="error"
+          open={openAlert}
+          onclose={() => setOpenAlert(false)}
+          onclick={() => handleDeleteAll()}
+          checkBtn={"확인"}
+          closeBtn={"취소"}
+          checkBtnColor={"#fa2828"}
+          title={"teenybox.com 내용:"}
+          content={"정말 전체 삭제하시겠습니까?"}
+        />
+      </Backdrop>
     </>
   );
 }

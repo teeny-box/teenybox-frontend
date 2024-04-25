@@ -1,80 +1,149 @@
 .main-review-container {
   display: flex;
-  align-items: flex-end;
-  width: 1140px;
-  .review-title-box {
-    display: flex;
-    flex-direction: column;
-    width: 310px;
-    margin: 0 0 300px 50px;
-    color: #eee;
-  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-title-box-center {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  width: 1110px;
+}
+.main-center-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.review-slide-container {
+  display: flex;
+  align-items: center;
+}
+.review-box-wrap {
+  position: relative;
+  display: flex;
+  width: 1110px;
+  overflow: hidden;
+  gap: 30px;
+}
+.review-box-wrap::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 1;
+  background: linear-gradient(to right, rgb(41, 41, 41), transparent);
+}
+.review-box-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 1;
+  background: linear-gradient(to left, rgb(41, 41, 41), transparent);
+}
+
+.review-box-wrap::before {
+  left: 0px;
+}
+.review-box-wrap::after {
+  right: 0px;
 }
 .review-box {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 400px;
-  width: 280px;
-  padding: 10px;
-  margin-bottom: 24px;
-  margin-right: 20px;
-  background-color: #eee;
-  border: black solid 1px;
-  border-radius: 28px;
-  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.3);
+  height: 287px;
+  width: 540px;
+  background-color: #202020;
+  border-radius: 15px;
   transition: transform 0.25s ease;
-  h3 {
-    font-size: 16px;
-    margin: 24px 0 16px 0;
-    text-align: center;
-    color: #414141;
+  .review-show-title {
+    font-size: 20px;
+    font-weight: 500;
   }
-  img {
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 16px;
-    border: 1px solid rgb(135, 135, 135);
+  .review-show-period {
+    font-size: 11px;
+    font-weight: 400;
+  }
+  .main-review-title {
+    font-size: 16px;
+  }
+  .main-review-rating {
+    font-size: 14px;
   }
   p {
     font-size: 14px;
-    word-wrap: break-word;
-    padding: 10px;
-    line-height: 24px;
-    color: #414141;
-  }
-  .stars {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    margin: 0 0 4px 0;
-    padding-top: 12px;
-    color: rgb(135, 135, 135);
-    font-size: 14px;
-    border-top: 0.5px solid rgb(135, 135, 135);
+    color: #eee;
   }
 }
-.main-review-img-box {
-    display: flex;
-    justify-content: center;
-}
-.review-box:hover {
-  cursor: pointer;
-  transform: translateY(-24px);
-}
-.main-review-nickname {
-  width: 100px;
-  display: flex;
-  justify-content: center;
-}
+.review-img-box {
+  width: 186px;
+  height: 247px;
+  margin: 20px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  img {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s ease-in-out;
 
-.review-h2 {
-  font-size: 26px;
-  color: white;
-  margin-bottom: 8px;
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+  }
 }
-.review-p {
-  font-size: 16px;
+.main-review-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 0;
+}
+.main-review-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.main-review-main {
+  width: 294px;
+  height: 140px;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+  }
+}
+.main-review-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  font-size: 14px;
+  button:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+  }
+}
+.review-main-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 10px;
+  font-weight: 300;
+}
+.review-main-mid {
+  height: 70px;
+  margin: 15px 10px 0px 10px;
+  font-weight: 200;
+}
+.review-main-bottom {
+  width: 284px;
+  display: flex;
+  justify-content: flex-end;
+  font-weight: 200;
 }

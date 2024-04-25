@@ -129,3 +129,11 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+.buger-menu {
+  display: none !important;
+}
+@media (max-width: 768px) {
+  .buger-menu {
+    display: flex !important;
+  }
+}

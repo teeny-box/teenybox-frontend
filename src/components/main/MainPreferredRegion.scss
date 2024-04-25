@@ -3,21 +3,22 @@
 }
 .region-list-box {
   display: flex;
+  justify-content: center;
   align-items: center;
   height: 50px;
-  gap: 12px;
-  margin-left: 4px;
-  margin-top: 14px;
+  gap: 16px;
+  margin: 14px 0 32px 0;
 }
 .region-list {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 40px;
   padding: 0px 16px;
   font-size: 16px;
   color: white;
   background-color: #282828;
-  border-radius: 16px;
+  border: 1px solid #eee;
+  border-radius: 100px;
 }
 .region-list:hover {
   cursor: pointer;
@@ -36,12 +37,11 @@
 .main-region-play-container {
   display: flex;
   align-items: flex-end;
-  height: 336px;
   width: 1110px;
-  overflow: hidden;
 }
 .main-region-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 20px;
 }
 .main-region-play-img-box {

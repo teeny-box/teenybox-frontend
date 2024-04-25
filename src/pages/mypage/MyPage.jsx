@@ -1,5 +1,5 @@
 // 마이페이지 화면
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MyPage.scss";
 import { CircularProgress } from "@mui/material";
 import { useSearchParams, Navigate } from "react-router-dom";
@@ -7,53 +7,37 @@ import MemberInfo from "../../components/mypage/MemberInfo";
 import MemberDeletion from "../../components/mypage/MemberDeletion";
 import MyPickList from "../../components/mypage/MyPickList";
 import MyPlayReview from "../../components/mypage/MyPlayReview";
-import MyPRBoard from "../../components/mypage/MyPRBoard";
-import MyFreeBoard from "../../components/mypage/MyFreeBoard";
+import MyPromotionBoard from "../../components/mypage/MyPromotionBoard";
+import MyCommunityBoard from "../../components/mypage/MyCommunityBoard";
 import MyComments from "../../components/mypage/MyComments";
-import { AlertContext, AppContext } from "../../App";
-import { userUrl } from "../../apis/apiURLs";
+import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
 
 export function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedComponent, setSelectedComponent] = useState(searchParams.get("tab") || "MemberInfo");
-  const { userData, setUserData } = useContext(AppContext);
-  const { setOpenFetchErrorAlert } = useContext(AlertContext);
+
+  const userData = useGetUser();
 
   const isSelected = (componentName) => (selectedComponent === componentName ? "selected" : "");
 
   const renderComponent = () => {
     switch (selectedComponent) {
       case "MemberInfo":
-        return <MemberInfo user={userData.user} setUserData={setUserData} />;
+        return <MemberInfo user={userData} />;
       case "MemberDeletion":
-        return <MemberDeletion user={userData.user} setUserData={setUserData} />;
+        return <MemberDeletion user={userData} />;
       case "MyPickList":
-        return <MyPickList user={userData.user} setUserData={setUserData} />;
+        return <MyPickList user={userData} />;
       case "MyPlayReview":
-        return <MyPlayReview user={userData.user} setUserData={setUserData} />;
-      case "MyPRBoard":
-        return <MyPRBoard user={userData.user} setUserData={setUserData} />;
-      case "MyFreeBoard":
-        return <MyFreeBoard user={userData.user} setUserData={setUserData} />;
+        return <MyPlayReview user={userData} />;
+      case "MyPromotionBoard":
+        return <MyPromotionBoard user={userData} />;
+      case "MyCommunityBoard":
+        return <MyCommunityBoard user={userData} />;
       case "MyComments":
-        return <MyComments user={userData.user} setUserData={setUserData} />;
+        return <MyComments user={userData} />;
       default:
-        return <MemberInfo user={userData.user} setUserData={setUserData} />;
-    }
-  };
-
-  const isLoggedIn = async () => {
-    try {
-      const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
-      if (loginRes.ok) {
-        const data = await loginRes.json();
-        setUserData({ isLoggedIn: true, user: data.user });
-      } else {
-        setUserData({ isLoggedIn: false });
-        <Navigate to="/signup-in" />;
-      }
-    } catch (e) {
-      setOpenFetchErrorAlert(true);
+        return <MemberInfo user={userData} />;
     }
   };
 
@@ -62,10 +46,10 @@ export function MyPage() {
     setSearchParams(searchParams);
   }, [selectedComponent]);
 
-  useEffect(() => {
-    setSelectedComponent(searchParams.get("tab") || "MemberInfo");
-    isLoggedIn();
-  }, [searchParams]);
+  if (!userData) {
+    // 사용자 데이터가 없으면 로그인 페이지로 리다이렉트
+    return <Navigate to="/signup-in" />;
+  }
 
   return (
     <>
@@ -100,10 +84,10 @@ export function MyPage() {
                 </div>
                 <div className="my-nav-box">
                   <h3>My 작성글</h3>
-                  <p className={isSelected("MyPRBoard")} onClick={() => setSelectedComponent("MyPRBoard")}>
+                  <p className={isSelected("MyPromotionBoard")} onClick={() => setSelectedComponent("MyPromotionBoard")}>
                     홍보 게시판
                   </p>
-                  <p className={isSelected("MyFreeBoard")} onClick={() => setSelectedComponent("MyFreeBoard")}>
+                  <p className={isSelected("MyCommunityBoard")} onClick={() => setSelectedComponent("MyCommunityBoard")}>
                     커뮤니티
                   </p>
                   <p className={isSelected("MyComments")} onClick={() => setSelectedComponent("MyComments")}>
