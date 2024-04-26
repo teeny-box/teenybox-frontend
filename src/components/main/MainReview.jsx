@@ -55,7 +55,7 @@ const MainReview = () => {
   const wrapperStyles = isAnimating
     ? {
         display: "flex",
-        gap: "15px",
+        gap: "30px",
         paddingLeft: "277.5px",
         paddingRight: "277.5px",
         transform: `translateX(-${sliderIndex * 555}px)`,
@@ -63,7 +63,7 @@ const MainReview = () => {
       }
     : {
         display: "flex",
-        gap: "15px",
+        gap: "30px",
         paddingLeft: "277.5px",
         paddingRight: "277.5px",
         transform: `translateX(-${sliderIndex * 555}px)`,
@@ -125,7 +125,7 @@ const MainReview = () => {
                 </div>
                 <div className="main-review-content">
                   <div className="main-review-header">
-                    <p className="review-show-title">{trimText(review.show_title, 9)}</p>
+                    <p className="review-show-title">{trimText(review.show_title, 7)}</p>
                     {shows[review.show_id] && shows[review.show_id].show && (
                     <p className="review-show-period">
                       {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
@@ -134,7 +134,7 @@ const MainReview = () => {
                   </div>
                   <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
                     <div className="review-main-top">
-                      <p className="main-review-title">{trimText(review.title, 12)}</p>
+                      <p className="main-review-title">{trimText(review.title, 10)}</p>
                       <Rating
                         className="main-review-rating"
                         value={review.rate}
@@ -151,7 +151,7 @@ const MainReview = () => {
                         }}
                       />
                     </div>
-                    <p className="review-main-mid">{trimText(review.content, 80)}</p>
+                    <p className="review-main-mid">{trimText(review.content, 70)}</p>
                     <div className="review-main-bottom">
                       <p>{trimText(review.user_nickname, 6)}</p>
                     </div>

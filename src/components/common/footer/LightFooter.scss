@@ -1,0 +1,112 @@
+.light-footer-layout::before {
+  content: "";
+  position: absolute;
+  top: 17%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: rgb(40, 40, 40, 0.5);
+}
+.light-footer-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1.5px solid rgb(40, 40, 40, 0.5);
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 1110px;
+  }
+  .footer-nav-tab1 {
+    display: flex;
+    align-items: center;
+    height: 20px;
+    width: 140px;
+    color: rgb(40, 40, 40, 0.5);
+    font-size: 16px;
+    border-right: 1.5px solid rgb(40, 40, 40, 0.5);
+    p {
+      color: #4d4d4d;
+      font-size: 16px;
+    }
+    p:hover {
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+  .footer-nav-tab2 {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 120px;
+    font-size: 16px;
+    p {
+      color: #ffb300;
+      font-size: 16px;
+    }
+    p:hover {
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+  .footer-container {
+    display: flex;
+    width: 1110px;
+    height: 160px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    margin-bottom: 35px;
+  }
+  .footer-inner-box {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+  }
+  .footer-inner {
+    color: #505050;
+    font-weight: 500;
+    margin: 4px 0;
+    font-size: 14px;
+  }
+  .footer-span1 {
+    padding-right: 6px;
+  }
+  .footer-span2 {
+    padding-left: 6px;
+  }
+  .footer-comment {
+    color: #ffb400;
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .footer-text-link {
+    color: rgb(30, 143, 235);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .footer-copyright {
+    margin-top: 20px;
+    color: #505050;
+    font-size: 12px;
+  }
+  .footer-logo-box {
+    width: 40%;
+    height: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .footer-share {
+    color: #505050;
+    font-size: large;
+  }
+  .footer-logo {
+    width: 180px;
+  }
+}
