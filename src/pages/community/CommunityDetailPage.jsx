@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
+import { Helmet } from "react-helmet-async";
 import CommunityPost from "../../components/community/CommunityPost";
 import "./CommunityDetailPage.scss";
 import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
@@ -148,6 +149,15 @@ export function CommunityDetailPage() {
       ) : (
         <>
           <div className="Community-left-container">
+            <Helmet>
+              <title>{post.title}</title>
+              <meta name="description" content={post.content} />
+              <meta property="og:type" content="website" />
+              <meta property="og:title" content={post.title} />
+              <meta property="og:site_name" content={post.title} />
+              <meta property="og:description" content={post.description} />
+              <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
+            </Helmet>
             <BoardSecondHeader header="커뮤니티" onclick={() => nav("/community")} />
             {state === "loading" ? (
               <div className="progress-box">

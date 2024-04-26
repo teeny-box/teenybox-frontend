@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { Loop } from "@mui/icons-material";
+import { Helmet } from "react-helmet-async";
 import { BoardListHeader } from "../../components/board";
 import CommunityList from "../../components/community/CommunityList";
 import ServerError from "../../components/common/state/ServerError";
@@ -82,6 +83,13 @@ export function CommunityListPage() {
 
   return (
     <div className="Community-page page-margin">
+      <Helmet>
+        <title>Teeny Box - 커뮤니티</title>
+        <meta name="description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TeenyBox(티니박스) 커뮤니티" />
+        <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
+      </Helmet>
       <div className="Community-left-container">
         <BoardListHeader header="커뮤니티" />
         <div className="header flex-box">

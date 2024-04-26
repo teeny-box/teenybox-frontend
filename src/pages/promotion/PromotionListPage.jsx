@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom/dist";
 import { useInView } from "react-intersection-observer";
 import { Button, CircularProgress, FormControl, MenuItem, Select, Skeleton } from "@mui/material";
 import { ArrowBackIosRounded, ArrowForwardIosRounded, SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { Helmet } from "react-helmet-async";
 import { BoardListHeader } from "../../components/board";
 import PromotionList from "../../components/promotion/PromotionList";
 import { UpButton } from "../../components/common/button/UpButton";
@@ -124,6 +125,13 @@ export function PromotionListPage() {
 
   return (
     <div className="promotion-page page-margin">
+      <Helmet>
+        <title>Teeny Box - 연극 홍보 게시판</title>
+        <meta name="description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TeenyBox(티니박스) 홍보 게시판" />
+        <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
+      </Helmet>
       <BoardListHeader header="홍보게시판" />
       {bannerList.length + fixedList.length ? (
         <div className="best-box ">

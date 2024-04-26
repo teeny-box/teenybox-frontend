@@ -6,6 +6,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import dayjs from "dayjs";
 import "./PlayList.scss";
+import { Helmet } from "react-helmet-async";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
 import PlayListHeader from "../../components/play-list/PlayListHeader";
 import PlayBox from "../../components/play-list/PlayBox";
@@ -181,6 +182,13 @@ export function PlayList() {
 
   return (
     <div className="play-list-container" ref={playListContainerRef}>
+      <Helmet>
+        <title>Teeny Box - 연극찾기</title>
+        <meta name="description" content="티니박스에서 다양한 연극을 찾아보세요!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TeenyBox(티니박스) - 연극" />
+        <meta property="og:description" content="티니박스에서 다양한 연극을 찾아보세요!" />
+      </Helmet>
       {error ? <AlertCustom title="tennybox.com 내용:" content={error} open={isAlertOpen} onclose={() => setIsAlertOpen(false)} severity={"error"} /> : null}
       {isLoading && <Loading />}
       {!isLoading && (

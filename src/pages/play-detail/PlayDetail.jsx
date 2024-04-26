@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./PlayDetail.scss";
+import { Helmet } from "react-helmet-async";
 import PlayDetailTop from "../../components/play-detail/PlayDetailTop";
 import PlayDetailNav from "../../components/play-detail/PlayDetailNav";
 import PlayDetailInfo from "../../components/play-detail/PlayDetailInfo";
@@ -62,6 +63,15 @@ export function PlayDetail() {
 
   return (
     <>
+      <Helmet>
+        <title>{playInfo.title}</title>
+        <meta name="description" content={playInfo.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={playInfo.title} />
+        <meta property="og:site_name" content={playInfo.title} />
+        <meta property="og:description" content={playInfo.description} />
+        <meta property="og:image" content={playInfo.poster || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
+      </Helmet>
       <div className="play-detail-container">
         {error && (
           <AlertCustom
