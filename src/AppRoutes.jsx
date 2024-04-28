@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
+import LightHeader from "./components/common/header/LightHeader";
 import Footer from "./components/common/footer/Footer";
+import LightFooter from "./components/common/footer/LightFooter";
 import useGetUser from "./hooks/authoriaztionHooks/useGetUser";
 
 import {
@@ -39,6 +41,7 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
   const location = useLocation();
   useScrollToTop();
   useGetUser();
+  console.log(location.pathname);
 
   useEffect(() => {
     if (location.pathname === "/search" || location.pathname === "/mypages") {
@@ -68,7 +71,7 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
         path="/*"
         element={
           <>
-            <Header />
+            {location.pathname === "/" ? <Header/> : <LightHeader/>}
             <CommonLayout setPrevPlayListQuery={setPrevPlayListQuery}>
               <Routes>
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -97,7 +100,7 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
                 <Route path="/*" element={<NotFoundRedirect />} />
               </Routes>
             </CommonLayout>
-            <Footer />
+            {location.pathname === "/" ? <Footer /> : <LightFooter/>}
           </>
         }
       />
