@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /privacy-policy
+Disallow: /signup-in
+Disallow: /additional-user-info
+Disallow: /mypages
+Disallow: /admin
+Allow: /
