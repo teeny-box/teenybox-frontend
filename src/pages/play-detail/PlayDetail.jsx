@@ -63,19 +63,19 @@ export function PlayDetail() {
 
   return (
     <>
-      <Helmet>
-        <title>{playInfo.title}</title>
-        <meta name="description" content={playInfo.description.slice(0, 50)} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={playInfo.title.slice(0, 50)} />
-        <meta property="og:site_name" content={playInfo.title.slice(0, 50)} />
-        <meta property="og:description" content={playInfo.description.slice(0, 50)} />
-        <meta property="og:image" content={playInfo.poster || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
-      </Helmet>
       <div className="play-detail-container">
         {error && <AlertCustom title="tennybox.com 내용:" content={error} open={true} onclose={() => setError(null)} severity={"error"} />}
         {!isLoading && playInfo && (
           <>
+            <Helmet>
+              <title>{playInfo.title}</title>
+              <meta name="description" content={playInfo.description?.slice(0, 50)} />
+              <meta property="og:type" content="website" />
+              <meta property="og:title" content={playInfo.title?.slice(0, 50)} />
+              <meta property="og:site_name" content={playInfo.title?.slice(0, 50)} />
+              <meta property="og:description" content={playInfo.description?.slice(0, 50)} />
+              <meta property="og:image" content={playInfo.poster || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
+            </Helmet>
             <UpButton />
             <PlayDetailTop
               showId={playInfo.showId}
