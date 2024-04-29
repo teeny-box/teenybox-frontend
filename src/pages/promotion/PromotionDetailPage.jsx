@@ -27,7 +27,7 @@ export function PromotionDetailPage() {
 
     try {
       const { postId } = params;
-      const res = await fetch(`${promotionUrl}/${postId}&usage=view`);
+      const res = await fetch(`${promotionUrl}/${postId}?usage=view`);
       const data = await res.json();
 
       if (res.ok) {
@@ -143,15 +143,6 @@ export function PromotionDetailPage() {
       ) : (
         <>
           <div className="board-left-container">
-            <Helmet>
-              <title>{post.title}</title>
-              <meta name="description" content={post.content.slice(0, 50)} />
-              <meta property="og:type" content="website" />
-              <meta property="og:title" content={post.title.slice(0, 50)} />
-              <meta property="og:site_name" content={post.title.slice(0, 50)} />
-              <meta property="og:description" content={post.description.slice(0, 50)} />
-              <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
-            </Helmet>
             <BoardSecondHeader header={"홍보게시판"} onclick={() => nav("/promotion")} />
             {state === "loading" ? (
               <div className="progress-box">
@@ -159,6 +150,15 @@ export function PromotionDetailPage() {
               </div>
             ) : (
               <div className="body">
+                <Helmet>
+                  <title>{post.title}</title>
+                  <meta name="description" content={post.content?.slice(0, 50)} />
+                  <meta property="og:type" content="website" />
+                  <meta property="og:title" content={post.title?.slice(0, 50)} />
+                  <meta property="og:site_name" content={post.title?.slice(0, 50)} />
+                  <meta property="og:description" content={post.description?.slice(0, 50)} />
+                  <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
+                </Helmet>
                 {post._id && <PromotionPost data={post} totalCommentCount={totalCount} />}
                 <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                 <CommentForm createComment={createComment} postId={post?._id} />
