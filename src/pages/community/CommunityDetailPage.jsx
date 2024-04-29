@@ -27,7 +27,7 @@ export function CommunityDetailPage() {
     setState("loading");
     try {
       const { postId } = params;
-      const res = await fetch(`${postUrl}/${postId}`);
+      const res = await fetch(`${postUrl}/${postId}&usage=view`);
       const data = await res.json();
 
       if (res.ok) {

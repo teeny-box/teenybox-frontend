@@ -27,7 +27,7 @@ export function PromotionDetailPage() {
 
     try {
       const { postId } = params;
-      const res = await fetch(`${promotionUrl}/${postId}`);
+      const res = await fetch(`${promotionUrl}/${postId}&usage=view`);
       const data = await res.json();
 
       if (res.ok) {
