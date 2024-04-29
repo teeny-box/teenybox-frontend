@@ -95,7 +95,6 @@ const AdminCommunity = () => {
         </div>
         <div style={{ height: "631px", width: "800px" }}>
           <DataGrid
-            // 해당 상세페이지로 이동
             onRowClick={(params) => {
               const postNumber = params.row.post_number;
               navigate(`/community/${postNumber}`);
