@@ -157,12 +157,12 @@ export function CommunityDetailPage() {
             ) : (
               <div className="body">
                 <Helmet>
-                  <title>{post.title}</title>
-                  <meta name="description" content={post.content?.slice(0, 50)} />
+                  <title>{post.title?.replace(/\r/g, "")}</title>
+                  <meta name="description" content={post.content?.slice(0, 50).replace(/\r/g, "")} />
                   <meta property="og:type" content="website" />
-                  <meta property="og:title" content={post.title?.slice(0, 50)} />
-                  <meta property="og:site_name" content={post.title?.slice(0, 50)} />
-                  <meta property="og:description" content={post.description?.slice(0, 50)} />
+                  <meta property="og:title" content={post.title?.slice(0, 50).replace(/\r/g, "")} />
+                  <meta property="og:site_name" content={post.title?.slice(0, 50).replace(/\r/g, "")} />
+                  <meta property="og:description" content={post.description?.slice(0, 50).replace(/\r/g, "")} />
                   <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
                 </Helmet>
                 {post._id && <CommunityPost data={post} totalCommentCount={totalCount} />}

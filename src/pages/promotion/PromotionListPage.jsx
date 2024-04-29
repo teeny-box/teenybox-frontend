@@ -126,10 +126,10 @@ export function PromotionListPage() {
   return (
     <div className="promotion-page page-margin">
       <Helmet>
-        <title>Teeny Box - 연극 홍보 게시판</title>
+        <title>티니박스(TeenyBox) 연극 홍보 게시판</title>
         <meta name="description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="TeenyBox(티니박스) 홍보 게시판" />
+        <meta property="og:title" content="티니박스(TeenyBox) 홍보 게시판" />
         <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
       </Helmet>
       <BoardListHeader header="홍보게시판" />
