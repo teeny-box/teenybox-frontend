@@ -405,7 +405,7 @@ export function PromotionForm({ setInput, handleCancle, setIsNotice, userRole })
                   label="종료"
                   format="YYYY-MM-DD"
                   value={inputEndDate}
-                  minDate={dayjs().isAfter(inputStartDate) ? dayjs() : inputStartDate} // 시작일로 변경
+                  minDate={dayjs().isAfter(inputStartDate) ? dayjs() : inputStartDate}
                   maxDate={dayjs().add(1, "year").endOf("day")}
                   onChange={(value) => setInputEndDate(value)}
                   slotProps={{ textField: { size: "small" } }}

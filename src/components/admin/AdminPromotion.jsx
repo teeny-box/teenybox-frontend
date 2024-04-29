@@ -94,7 +94,6 @@ const AdminPromotion = () => {
         </div>
         <div style={{ height: "631px", width: "800px" }}>
           <DataGrid
-            // 해당 상세페이지로 이동
             onRowClick={(params) => {
               const promotionNumber = params.row.promotion_number;
               navigate(`/promotion/${promotionNumber}`);

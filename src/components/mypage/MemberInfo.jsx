@@ -33,11 +33,11 @@ function MemberInfo({ user, setUserData }) {
     setIsHovered(false);
     if (!e.target.files.length) return;
     const file = e.target.files[0];
-  
+
     if (file.size > 1024 * 1024 * 5) {
       setErrorImage("사진은 최대 5MB까지 업로드 가능합니다.");
     }
-  
+
     try {
       let res = await fetch(presignedUrl, {
         method: "POST",
@@ -45,7 +45,7 @@ function MemberInfo({ user, setUserData }) {
         body: JSON.stringify({ key: file.name }),
       });
       const presignedData = await res.json();
-  
+
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
           const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
@@ -62,13 +62,13 @@ function MemberInfo({ user, setUserData }) {
         }
         setErrorImage("사진 업로드에 실패했습니다. 다시 시도해주세요");
       }
-  
+
       res = await fetch(presignedData.presigned_url, {
         method: "PUT",
         headers: { "Content-Type": file.type },
         body: file,
       });
-  
+
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
           const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
@@ -242,12 +242,7 @@ function MemberInfo({ user, setUserData }) {
             <div className="member-preferred-region-box">
               <p>선호지역</p>
               <div className="member-preferred-region-check-list">
-                <FormControl
-                  required
-                  // error={error}
-                  component="fieldset"
-                  variant="standard"
-                >
+                <FormControl required component="fieldset" variant="standard">
                   <FormGroup
                     sx={{
                       display: "flex",
