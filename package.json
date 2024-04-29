@@ -47,6 +47,10 @@
       "/promotion",
       "/community",
       "/search"
+    ],
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
     ]
   },
   "browserslist": {
