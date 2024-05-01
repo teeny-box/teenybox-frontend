@@ -16,7 +16,7 @@ export function Main() {
       <Helmet>
         <meta name="description" content="티니박스는 연극을 사랑하는 사람들이 연극을 찾고 홍보할 수 있는 소규모 연극 커뮤니티 사이트입니다." />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="TeenyBox(티니박스) 홈페이지" />
+        <meta property="og:title" content="티니박스(TeenyBox) 홈페이지" />
         <meta property="og:description" content="티니박스는 연극을 사랑하는 사람들이 연극을 찾고 홍보할 수 있는 소규모 연극 커뮤니티 사이트입니다." />
       </Helmet>
       <div className="banner-container">

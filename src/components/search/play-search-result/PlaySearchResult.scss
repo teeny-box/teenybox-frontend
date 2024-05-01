@@ -1,22 +1,13 @@
-@mixin basic-margin-and-width {
-  margin: 20px auto;
-  margin-top: 40px;
-  width: 100%;
-}
-
 .play-search-result-container {
-  @include basic-margin-and-width();
-  margin-bottom: 0;
-
-  @media (max-width: 1000px) {
-    width: 100%;
-  }
+  margin: 40px auto 0;
+  width: 100%;
 
   .play-search-content {
     background-color: #ffffff;
-    border: 1px solid #d6d6d6;
-    margin: 20px 0 100px;
-    padding: 30px 50px;
+    border-top: 1px solid #ffb400;
+    border-bottom: 1px solid #ffb400;
+    margin: 20px 0;
+    padding: 30px 40px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -28,22 +19,5 @@
 
   .no-result {
     margin: 80px auto;
-  }
-}
-
-.play-search-result-none {
-  @include basic-margin-and-width();
-  margin-bottom: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  h2 {
-    margin-bottom: 30px;
-  }
-
-  ul {
-    list-style-type: circle;
   }
 }

@@ -19,18 +19,16 @@ export default function PlaySearchResult({
   return (
     <>
       <section className="play-search-result-container">
-        <PlaySearchHeader
-          setSortStandard={setSortStandard}
-          setCurPage={setCurPage}
-          resultCnt={playTotalCnt}
-        />
-        <div className="play-search-content">
-          {playSearchResult === "error" ? (
+        <PlaySearchHeader setSortStandard={setSortStandard} setCurPage={setCurPage} resultCnt={playTotalCnt} />
+        {playSearchResult === "error" ? (
+          <div className="play-search-content">
             <div style={{ margin: "80px auto" }}>
               <ServerError onClickBtn={() => getPlaySearchResult()} />
             </div>
-          ) : playSearchResult.length ? (
-            <>
+          </div>
+        ) : playSearchResult.length ? (
+          <>
+            <div className="play-search-content">
               {playSearchResult.map((play, idx) => (
                 <PlaySearchContentBox
                   showId={play.showId}
@@ -44,21 +42,23 @@ export default function PlaySearchResult({
                   key={idx}
                 />
               ))}
-              <PlaySearchPagination
-                curPage={curPage}
-                setCurPage={setCurPage}
-                playTotalCnt={playTotalCnt}
-                keyword={searchKeyword}
-                setPlaySearchResult={setPlaySearchResult}
-                setAlert={setAlert}
-              />
-            </>
-          ) : (
+            </div>
+            <PlaySearchPagination
+              curPage={curPage}
+              setCurPage={setCurPage}
+              playTotalCnt={playTotalCnt}
+              keyword={searchKeyword}
+              setPlaySearchResult={setPlaySearchResult}
+              setAlert={setAlert}
+            />
+          </>
+        ) : (
+          <div className="play-search-content">
             <div className="no-result">
               <EmptySearchResult play={true} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     </>
   );

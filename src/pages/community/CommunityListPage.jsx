@@ -84,10 +84,10 @@ export function CommunityListPage() {
   return (
     <div className="Community-page page-margin">
       <Helmet>
-        <title>Teeny Box - 커뮤니티</title>
+        <title>티니박스(TeenyBox) 커뮤니티</title>
         <meta name="description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="TeenyBox(티니박스) 커뮤니티" />
+        <meta property="og:title" content="티니박스(TeenyBox) 커뮤니티" />
         <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
       </Helmet>
       <div className="Community-left-container">

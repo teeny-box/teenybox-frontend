@@ -78,7 +78,7 @@ export function SearchResultPage() {
   }, [selectedTabMenu]);
 
   return (
-    <div className="bg-gray">
+    <div className="search-result-page">
       {alert && <AlertCustom title={alert.title} content={alert.content} open={alert.open} onclose={alert.onclose} severity={alert.severity} />}
       {isLoading && !playSearchResult && <Loading />}
       {!isLoading && playSearchResult && (
