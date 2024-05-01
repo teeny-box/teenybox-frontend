@@ -70,7 +70,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
           <span className="title">홍보 검색결과</span>
           <span className="title count">({totalCnt.toLocaleString("ko-KR")})</span>
         </div>
-        <div>
+        <div className="left">
           <span>검색 범위 : </span>
           <select className="sort-by" value={type} onChange={handleChangeType}>
             <option value="play_title">연극/행사명</option>

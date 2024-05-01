@@ -1,64 +1,81 @@
-@mixin flex-center {
+@import "../../../styles/mixin.scss";
+
+.search-result-tab-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 45px;
-}
+  margin-top: 80px;
+  width: 100%;
 
-@mixin common-menu-style {
-  font-weight: bold;
-  height: 48px;
-  line-height: 48px;
-  box-sizing: border-box;
-  font-size: 16px;
-  border: 1px solid #bcbcbc;
-  text-align: center;
-  cursor: pointer;
-  background-color: #fff;
-}
-
-@media (min-width: 930px) {
-  .search-result-tab-container {
-    width: 100%;
-    @include flex-center();
-
-    .menu {
-      @include common-menu-style();
-      width: 100%;
-    }
-
-    .menu:nth-child(2) {
-      border-right: none;
-      border-left: none;
-    }
-
-    .active-tab {
-      background-color: #282828;
-      color: #ffb400;
-    }
+  .menu {
+    flex: 1 1;
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #ffd12dcd;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fff;
   }
-}
 
-@media (max-width: 930px) {
-  .search-result-tab-container {
-    @include flex-center();
+  .active-tab {
+    background-color: #ffb400;
+    border-color: #ffb400;
+  }
+
+  .dropdown-icon {
+    display: none;
+  }
+
+  @include moblie {
     flex-direction: column;
+    position: relative;
+    color: #ffb400;
+    border: 1px solid #ffb400;
+    border-radius: 23px;
+    overflow: hidden;
+    margin: 80px 10px 0;
+    width: calc(100% - 20px);
 
     .menu {
-      @include common-menu-style();
-      width: 50%;
+      border: none;
+      font-size: 20px;
+      color: #6f6f6f;
+      font-weight: 600;
+      height: 46px;
+      line-height: 46px;
     }
 
-    .menu:nth-child(2) {
-      border-top: none;
-      border-bottom: none;
+    &.open {
+      .menu {
+        display: block;
+        &:hover {
+          background-color: #ffb30015;
+        }
+      }
+      .active-tab {
+        display: block;
+        background-color: #fff;
+        color: #ffb400;
+      }
     }
 
-    .active-tab {
-      background-color: #282828;
-      color: #ffb400;
+    &.close {
+      .menu {
+        display: none;
+      }
+      .active-tab {
+        display: block;
+        background-color: #fff;
+        color: #ffb400;
+      }
+      .dropdown-icon {
+        display: block;
+        position: absolute;
+        right: 24px;
+        top: 14px;
+        font-size: 14px;
+        cursor: pointer;
+      }
     }
   }
 }
-
-// 탭을 클릭했을 때 클릭한 메뉴에 적용할 디자인

@@ -1,0 +1,31 @@
+@import "./variables";
+
+@mixin moblie {
+  @media (max-width: #{$breakpoint-moblie}) {
+    @content;
+  }
+}
+
+@mixin tablet-vertical {
+  @media (min-width: #{$breakpoint-moblie+1}) and (max-width: #{$breakpoint-tablet-vertical}) {
+    @content;
+  }
+}
+
+@mixin tablet-horizontal {
+  @media (min-width: #{$breakpoint-tablet-vertical+1}) and (max-width: #{$breakpoint-tablet-horizontal}) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: #{$breakpoint-tablet-horizontal+1}) and (max-width: #{$breakpoint-laptop}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-laptop+1}) {
+    @content;
+  }
+}

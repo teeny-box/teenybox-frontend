@@ -8,8 +8,14 @@
     align-items: center;
 
     .title {
-      font-weight: bold;
-      font-size: 24px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      margin-top: 2px;
     }
 
     .sort-by {
