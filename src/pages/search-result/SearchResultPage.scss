@@ -21,21 +21,21 @@
 @include desktop {
   .search-result-container {
     max-width: 1700px;
-    padding: 0 90px;
+    padding: 0 100px;
   }
 }
 
 @include laptop {
   .search-result-container {
     max-width: 1700px;
-    padding: 0 90px;
+    padding: 0 100px;
   }
 }
 
 @include tablet-horizontal {
   .search-result-container {
     max-width: 1024px;
-    padding: 0 90px;
+    padding: 0 100px;
   }
 }
 
