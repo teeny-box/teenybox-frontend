@@ -2,17 +2,6 @@
   width: 1110px;
   height: 100%;
 }
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-
-  /* Center slide text vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .swiper-slide img {
   display: block;
   width: 100%;
@@ -21,4 +10,10 @@
 }
 .swiper-pagination-bullet {
   background: #eee !important;
+}
+@media (min-width: 1920px) {
+  .swiper {
+    width: 1520px;
+    height: 100%;
+  }
 }

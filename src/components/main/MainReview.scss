@@ -149,3 +149,19 @@
   justify-content: flex-end;
   font-weight: 200;
 }
+@media (min-width: 1920px) {
+  .main-title-box-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    width: 1520px;
+  }
+  .review-box-wrap {
+    position: relative;
+    display: flex;
+    width: 1520px;
+    height: 297px;
+    overflow: hidden;
+    gap: 30px;
+  }
+}

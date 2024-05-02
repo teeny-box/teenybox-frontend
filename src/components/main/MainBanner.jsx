@@ -26,16 +26,16 @@ export default function App() {
           clickable: true,
         }}
         modules={[Autoplay, Pagination, EffectFade]}
-        className="mySwiper"
+        className="swiper"
       >
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner1.png`} alt="logo-image"></img>
+          <img src={`${process.env.PUBLIC_URL}/banner.svg`} alt="banner-image"></img>
         </SwiperSlide>
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner2.png`} alt="logo-image"></img>
+          <img src={`${process.env.PUBLIC_URL}/banner2.svg`} alt="banner-image"></img>
         </SwiperSlide>
         <SwiperSlide>
-          <img className="footer-logo" src={`${process.env.PUBLIC_URL}/banner3.png`} alt="logo-image"></img>
+          <img src={`${process.env.PUBLIC_URL}/banner3.svg`} alt="banner-image"></img>
         </SwiperSlide>
       </Swiper>
     </>

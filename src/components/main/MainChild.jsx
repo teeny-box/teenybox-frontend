@@ -9,6 +9,8 @@ function MainChild() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
+
 
   const navigate = useNavigate();
 
@@ -17,14 +19,24 @@ function MainChild() {
     navigate(`/play/${showId}`);
   };
 
-  // 스타일 결정: isAnimating 상태에 따라 다른 스타일을 적용
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
+
+  const slideWidth = innerWidth > 1920 ? 1520 : 1110; // 화면 너비에 따라 슬라이드 너비 결정
+
+  // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
     ? {
         display: "flex",
         gap: "15px",
         paddingLeft: "7.5px",
         paddingRight: "7.5px",
-        transform: `translateX(-${sliderIndex * 1110}px)`,
+        transform: `translateX(-${sliderIndex * slideWidth}px)`,
         transition: "transform 0.4s ease",
       }
     : {
@@ -32,7 +44,7 @@ function MainChild() {
         gap: "15px",
         paddingLeft: "7.5px",
         paddingRight: "7.5px",
-        transform: `translateX(-${sliderIndex * 1110}px)`,
+        transform: `translateX(-${sliderIndex * slideWidth}px)`,
       };
 
   useEffect(() => {
