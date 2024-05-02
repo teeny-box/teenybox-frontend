@@ -1,10 +1,14 @@
 import { useContext, useEffect } from "react";
 import { userUrl } from "../../apis/apiURLs";
-import {AppContext} from "../../App"
+import { AppContext } from "../../App";
 
+/**
+ * 1. 서버에서 api 호출하여 유저 데이터를 가져오는 함수.
+ * 2. 최대 세 번까지 조건 처리하여 반복 처리 함.
+ * 3. 마지막으로 전역 context에 유저 데이터를 업데이트
+ */
 export default function useGetUser() {
-
-const {userData,setUserData} = useContext(AppContext);
+  const { userData, setUserData } = useContext(AppContext);
 
   const fetchUserData = async (attempt = 0) => {
     try {
@@ -35,5 +39,5 @@ const {userData,setUserData} = useContext(AppContext);
   }, []);
 
   // 사용자 데이터 반환.
-  return userData
+  return userData;
 }
