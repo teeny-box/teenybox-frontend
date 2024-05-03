@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { CircularProgress, Pagination } from "@mui/material";
 import { useSearchParams } from "react-router-dom/dist";
-import PromotionSearchContentBox from "./PromotionSearchContentBox";
 import "./PromotionSearchResult.scss";
 import { promotionUrl } from "../../../apis/apiURLs";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
+import { PromotionListCard } from "../../promotion/PromotionCard";
 
 const TYPES = ["play_title", "title", "tag"];
 
@@ -34,6 +34,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
         setSearchResult(data.promotions);
         setTotalCnt(data.totalCount);
         setState("hasValue");
+        console.log(data);
       } else {
         setState("hasError");
         console.error(data);
@@ -79,30 +80,36 @@ export default function PromotionSearchResult({ searchKeyword }) {
           </select>
         </div>
       </div>
-      <div className="search-content">
-        {state === "loading" ? (
+      {state === "loading" ? (
+        <div className="search-content">
           <div className="loading">
             <CircularProgress color="secondary" />
           </div>
-        ) : state === "hasError" ? (
+        </div>
+      ) : state === "hasError" ? (
+        <div className="search-content">
           <div className={`state`}>
             <ServerError onClickBtn={getPromotionSearchResult} />
           </div>
-        ) : !searchResult?.length ? (
+        </div>
+      ) : !searchResult?.length ? (
+        <div className="search-content">
           <div className="state">
             <EmptySearchResult play={true} type={true} />
           </div>
-        ) : (
-          <>
+        </div>
+      ) : (
+        <>
+          <div className="search-content">
             {searchResult.map((content, index) => (
-              <PromotionSearchContentBox key={index} content={content} />
+              <PromotionListCard key={index} post={content} />
             ))}
-            <div className="search-pagination">
-              <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
-            </div>
-          </>
-        )}
-      </div>
+          </div>
+          <div className="search-pagination">
+            <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

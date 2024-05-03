@@ -10,44 +10,34 @@
   font-family: "Noto Sans KR", sans-serif;
   min-height: 70vh;
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
   box-sizing: border-box;
 
   .count {
     color: #898989;
   }
-}
 
-@include desktop {
-  .search-result-container {
+  @include desktop {
     max-width: 1700px;
+    padding: 0 200px;
+  }
+
+  @include laptop {
+    max-width: 1300px;
     padding: 0 100px;
   }
-}
 
-@include laptop {
-  .search-result-container {
-    max-width: 1700px;
-    padding: 0 100px;
-  }
-}
-
-@include tablet-horizontal {
-  .search-result-container {
+  @include tablet-horizontal {
     max-width: 1024px;
     padding: 0 100px;
   }
-}
 
-@include tablet-vertical {
-  .search-result-container {
+  @include tablet-vertical {
     max-width: 768px;
     padding: 0 40px;
   }
-}
 
-@include moblie {
-  .search-result-container {
+  @include moblie {
     max-width: 480px;
     padding: 0;
   }
