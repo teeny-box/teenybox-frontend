@@ -1,4 +1,5 @@
 @import "../../App.scss";
+@import "../../styles/mixin.scss";
 
 @keyframes fadein {
   from {
@@ -46,8 +47,19 @@
 
 .promotion-page {
   font-family: "Noto Sans KR";
-  max-width: 1110px;
   width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  @include tablet-vertical {
+    max-width: 768px;
+    padding: 0;
+  }
+
+  @include moblie {
+    max-width: 480px;
+    padding: 0;
+  }
 
   .flex-box {
     display: flex;
@@ -59,13 +71,21 @@
     color: inherit;
   }
 
+  .fixed-top-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: #ffb4001a;
+  }
+
   .best-box {
     width: 100%;
     height: 420px;
     overflow: hidden;
     border-radius: 6px;
     position: relative;
-    margin-bottom: 60px;
+    margin: 100px 0 60px;
     transition: all 1s ease-in-out;
     background-color: #000;
 

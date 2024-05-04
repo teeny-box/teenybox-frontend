@@ -61,7 +61,7 @@ export function PromotionEdit() {
   }, [post]);
 
   return (
-    <div className="promotion-form-page page-margin">
+    <div className="promotion-form-page page-padding">
       <div className="body">
         {post &&
           (isNotice ? (

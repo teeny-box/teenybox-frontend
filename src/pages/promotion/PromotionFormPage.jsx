@@ -34,7 +34,7 @@ export function PromotionFormPage() {
   }, [user]);
 
   return (
-    <div className="promotion-form-page page-margin">
+    <div className="promotion-form-page page-padding">
       <div className="body">
         {isNotice ? (
           <PromotionNoticeForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} setIsNotice={setIsNotice} userRole={user?.role} />
