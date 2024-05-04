@@ -1,6 +1,76 @@
 @import "../../App.scss";
 @import "../../styles/mixin.scss";
 
+.fixed-top-banner-outbox {
+  width: 100%;
+  height: 90px;
+  background-color: #ffb4001a;
+}
+
+.fixed-top-banner {
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: normal;
+  box-sizing: border-box;
+
+  @include desktop {
+    max-width: calc(100% - (200px * 2));
+  }
+
+  @include laptop {
+    max-width: calc(100% - (100px * 2));
+  }
+
+  @include tablet-horizontal {
+    max-width: calc(100% - (100px * 2));
+  }
+
+  .h2 {
+    line-height: normal;
+  }
+
+  .description {
+    width: 65%;
+    max-width: 1200px;
+    @include laptop {
+      max-width: 1000px;
+    }
+    display: flex;
+    font-weight: 400;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+
+    p {
+      flex: 1 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    span {
+      color: #3333334e;
+      margin-left: 8px;
+    }
+  }
+
+  &:hover {
+    .p1 {
+      color: #5b5b5b;
+    }
+    span {
+      color: #ffb400;
+    }
+  }
+}
+
 @keyframes fadein {
   from {
     opacity: 0;
@@ -45,11 +115,9 @@
   }
 }
 
-.promotion-page {
-  font-family: "Noto Sans KR";
+.promotion-page.page-layout {
   width: 100%;
   box-sizing: border-box;
-  position: relative;
 
   @include tablet-vertical {
     max-width: 768px;
@@ -71,23 +139,14 @@
     color: inherit;
   }
 
-  .fixed-top-banner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    background-color: #ffb4001a;
-  }
-
   .best-box {
     width: 100%;
-    height: 420px;
+    height: 600px;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 15px;
     position: relative;
-    margin: 100px 0 60px;
-    transition: all 1s ease-in-out;
-    background-color: #000;
+    margin: 30px 0 60px;
+    transition: fadein 1s ease-in-out;
 
     .absolute {
       position: absolute;
@@ -120,111 +179,110 @@
       position: absolute;
       left: 0;
       top: 0;
-      // z-index: 4;
       width: 100%;
       height: 100%;
-      -webkit-backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(6px);
-      background: linear-gradient(to right, #0f0f0f 5%, rgba(15, 15, 15, 0.304) 50%, #0f0f0f 95%);
+      background: rgba(15, 15, 15, 0.63);
+      // background: linear-gradient(to right, rgba(15, 15, 15, 0.508) 0%, rgba(15, 15, 15, 0.697) 35%, rgba(15, 15, 15, 0.697) 65%, rgba(15, 15, 15, 0.508) 100%);
     }
 
     .contents-container {
-      margin: 42px 100px;
-      z-index: 10;
+      margin: 50px auto;
+      width: fit-content;
+      max-width: calc(100% - (90px * 2));
+      height: calc(100% - (50px * 2));
+      z-index: 2;
       color: #fff;
-      height: calc(100% - 88px);
       display: flex;
       justify-content: space-between;
 
-      .left-box {
-        width: 100%;
+      .right-box {
         flex: 1 1;
         display: flex;
         flex-direction: column;
-        margin-right: 100px;
+        margin-left: 50px;
+        padding: 30px 0;
         flex-wrap: wrap;
 
-        .number {
-          position: absolute;
-          left: 180px;
-          bottom: 10px;
-          font-size: 300px;
-          color: #cacaca50;
-        }
-
         .sub-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #e0e0e0;
+          color: #fff;
+          line-height: normal;
         }
 
-        .title {
-          font-size: 36px;
-          font-weight: 400;
-          margin: 30px 0;
+        .post-play-title {
+          font-size: 48px;
+          font-weight: 800;
+          margin: 10px 0 50px;
+          @include ellipsis(2, 70px);
+        }
+
+        .post-title {
+          @include ellipsis(1, 20px);
+          color: #ffffff;
+          margin-bottom: 6px;
         }
 
         .content {
-          font-size: 14px;
-          font-weight: 300;
-          color: #ffffff98;
-          margin: 12px 0;
+          margin-top: 15px;
           flex-grow: 1;
 
-          > * {
-            margin-bottom: 6px;
+          > div {
+            color: #fff;
+            @include ellipsis(1, 30px);
+            font-weight: 300;
           }
 
           .lable {
             display: inline-block;
-            width: 80px;
+            width: 72px;
           }
-        }
 
-        .ellipsis {
-          @include ellipsis(3, 20px);
-          white-space: wrap;
-          font-size: 14px;
-          color: #ffffffbb;
-          margin-bottom: 6px;
-        }
-
-        .notice {
-          a {
-            white-space: pre-wrap;
+          .line {
+            margin: 0 28px;
           }
-          @include ellipsis(7, 20px);
         }
 
         .footer {
-          font-size: 30px;
-          color: #7c7c7c;
+          font-size: 36px;
           display: flex;
-          align-items: flex-end;
+          align-items: center;
+          line-height: normal;
 
           .MuiSvgIcon-root {
+            font-size: 43px;
             padding-top: 4px;
           }
 
           span {
-            margin: 0 36px 0 6px;
-            line-height: 34px;
-            color: #ffffffeb;
+            margin: 0 40px 0 12px;
+
+            &:last-child {
+              margin-right: 0;
+            }
           }
         }
       }
 
       .poster {
+        display: block;
         height: 100%;
-        min-width: 190px;
-        max-width: 265px;
-        object-fit: cover;
+        max-width: 384px;
+        border-radius: 15px;
+        overflow: hidden;
+        aspect-ratio: 3/4;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
 
     .arrow-left {
       position: absolute;
-      top: 180px;
+      top: calc(100% / 2 - 20px);
       left: 0;
       display: flex;
       align-items: center;
@@ -240,7 +298,7 @@
 
     .arrow-right {
       position: absolute;
-      top: 180px;
+      top: calc(100% / 2 - 20px);
       right: 0;
       display: flex;
       align-items: center;
@@ -252,6 +310,220 @@
       &:hover {
         color: #ffffff67;
       }
+    }
+
+    @include laptop {
+      height: 460px;
+
+      .contents-container {
+        margin: 38px auto;
+        max-width: calc(100% - (86px * 2));
+        height: calc(100% - (38px * 2));
+
+        .right-box {
+          padding: 20px 0;
+
+          .sub-title {
+            font-size: 14px;
+          }
+
+          .post-play-title {
+            font-size: 38px;
+            @include ellipsis(1, 55px);
+          }
+
+          .post-title {
+            font-size: 18px;
+            font-weight: 500;
+          }
+
+          .content {
+            font-size: 14px;
+
+            > div {
+              @include ellipsis(1, 24px);
+            }
+
+            .line {
+              margin: 0 20px;
+            }
+          }
+
+          .footer {
+            font-size: 28px;
+
+            .MuiSvgIcon-root {
+              font-size: 34px;
+            }
+          }
+        }
+      }
+    }
+
+    @include tablet-horizontal {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16/9;
+
+      .bg-mask {
+        background: rgba(15, 15, 15, 0.75);
+      }
+
+      .contents-container {
+        width: 100%;
+        margin: 30px auto;
+        max-width: calc(100% - (60px * 2));
+        height: calc(100% - (30px * 2));
+        position: relative;
+
+        .right-box {
+          padding: 10px 0;
+          // padding-top: 34px;
+          margin-left: 30px;
+
+          .sub-title {
+            font-size: 14px;
+            // position: absolute;
+            // top: 0;
+            // left: 2px;
+          }
+
+          .post-play-title {
+            font-size: 36px;
+            font-weight: 700;
+            // margin-bottom: 30px;
+            @include ellipsis(1, 52px);
+            // margin: 0 0 28px;
+          }
+
+          .post-title {
+            font-size: 16px;
+            font-weight: 300;
+            flex-grow: 1;
+            display: block;
+            max-height: none;
+          }
+
+          .content {
+            display: none;
+            font-size: 14px;
+
+            > div {
+              @include ellipsis(1, 24px);
+            }
+
+            .line {
+              display: none;
+            }
+          }
+
+          .footer {
+            font-size: 2.2vw;
+
+            .MuiSvgIcon-root {
+              font-size: 2.8vw;
+            }
+
+            span {
+              margin: 0 30px 0 8px;
+            }
+          }
+        }
+
+        .poster {
+          // height: calc(100% - 34px);
+          aspect-ratio: 3/4.5;
+          // margin-top: 34px;
+        }
+      }
+
+      .arrow-left,
+      .arrow-right {
+        margin: 0 10px;
+      }
+    }
+
+    @include tablet-vertical {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16/9;
+      margin-top: 0;
+      border-radius: 0;
+
+      .bg-mask {
+        background: rgba(15, 15, 15, 0.75);
+      }
+
+      .contents-container {
+        width: 100%;
+        margin: 40px auto;
+        max-width: calc(100% - (30px * 2));
+        height: calc(100% - (40px * 2));
+        position: relative;
+
+        .right-box {
+          padding: 0;
+          margin-left: 30px;
+
+          .sub-title {
+            font-size: 12px;
+          }
+
+          .post-play-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 6px 0 30px;
+            @include ellipsis(1, 52px);
+            @media (max-width: "650px") {
+              margin: 30px 0 6px;
+            }
+          }
+
+          .post-title {
+            font-size: 14px;
+            font-weight: 300;
+
+            @media (max-width: "650px") {
+              flex-grow: 1;
+              display: block;
+              max-height: none;
+            }
+          }
+
+          .content {
+            font-size: 12px;
+
+            > div {
+              @include ellipsis(1, 24px);
+            }
+
+            .line {
+              display: none;
+            }
+
+            @media (max-width: "650px") {
+              display: none;
+            }
+          }
+
+          .footer {
+            font-size: 2.2vw;
+
+            .MuiSvgIcon-root {
+              font-size: 3vw;
+            }
+
+            span {
+              margin: 0 20px 0 4px;
+            }
+          }
+        }
+      }
+
+      // .arrow-left,
+      // .arrow-right {
+      //   display: none;
+      // }
     }
   }
 

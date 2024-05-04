@@ -83,14 +83,14 @@ export function PromotionListPage() {
 
   const handleClickLeftArrow = () => {
     if (bannerIndex <= 0) {
-      setBannerIndex(bannerList.length);
+      setBannerIndex(bannerList.length - 1);
     } else {
       setBannerIndex((cur) => cur - 1);
     }
   };
 
   const handleClickRightArrow = () => {
-    if (bannerIndex >= bannerList.length) {
+    if (bannerIndex >= bannerList.length - 1) {
       setBannerIndex(0);
     } else {
       setBannerIndex((cur) => cur + 1);
@@ -123,7 +123,7 @@ export function PromotionListPage() {
   }, []);
 
   return (
-    <div className="promotion-page page-layout">
+    <>
       <Helmet>
         <title>티니박스(TeenyBox) 연극 홍보 게시판</title>
         <meta name="description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
@@ -131,165 +131,151 @@ export function PromotionListPage() {
         <meta property="og:title" content="티니박스(TeenyBox) 홍보 게시판" />
         <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
       </Helmet>
-      <div className="fixed-top-banner">
-        <p>📢 티니박스(TeenyBox) 서비스 오픈!</p>
-        <p>
-          안녕하세요😊 개발자 취준생이 모여서 만든 연극 정보 사이트 “티니박스”를 소개합니다! 티니박스는 연극인들을 위한 활발한 커뮤니티를 만들자는 목적으로
-          제작되었으며, 연극을 사랑하는 사람들이 연극을 찾고 홍보할 수 있는 소규모 연극 커뮤니티 사이트입니다. 대학생 연극 동아리, 소규모 연극 동아리라면
-          티니박스를 이용해보세요!
-        </p>
+      <div className="fixed-top-banner-outbox">
+        <Link to={`/promotion/${fixedList[fixedList.length - 1]?.promotion_number}`} className="fixed-top-banner">
+          <p className="h2">📢 티니박스(TeenyBox) 서비스 오픈!</p>
+          <div className="description">
+            <p>
+              안녕하세요😊 개발자 취준생이 모여서 만든 연극 정보 사이트 “티니박스”를 소개합니다! 티니박스는 연극인들을 위한 활발한 커뮤니티를 만들자는 목적으로
+              제작되었으며, 연극을 사랑하는 사람들이 연극을 찾고 홍보할 수 있는 소규모 연극 커뮤니티 사이트입니다.
+            </p>
+            <span>자세히 보기</span>
+          </div>
+        </Link>
       </div>
-      {bannerList.length + fixedList.length ? (
-        <div className="best-box ">
-          <img
-            className={`bg-img${bannerIndex ? "" : " small"}`}
-            src={bannerIndex ? bannerList[bannerIndex - 1]?.image_url[0] : "https://i.pinimg.com/564x/6e/b0/9f/6eb09f7b1a6467f17847f99ae732791b.jpg"} // "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"}
-          />
-          <div className="bg-mask">
-            <div className={`absolute ${bannerIndex === 0 && "visible"}`}>
-              <div className={"contents-container"}>
-                <div className="left-box">
-                  <div className="sub-title">📢 공지사항</div>
-                  <h2 className="title">
-                    <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].title}</Link>
-                  </h2>
-                  <div className="ellipsis notice">
-                    <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{fixedList[fixedList.length - 1].content}</Link>
-                  </div>
+      <div className="promotion-page page-layout">
+        {bannerList.length ? (
+          <div className="best-box">
+            <img
+              className={`bg-img`}
+              src={bannerList[bannerIndex]?.image_url[0]} // "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"}
+            />
+            <div className="bg-mask">
+              {Children.toArray(
+                bannerList.map((post, idx) => (
+                  <div className={`absolute ${bannerIndex === idx && "visible"}`}>
+                    <div className={"contents-container"}>
+                      <Link className="poster" to={`/promotion/${post.promotion_number}`}>
+                        <img src={post.image_url[0]} />
+                      </Link>
+                      <div className="right-box">
+                        <div className="sub-title p1">인기 소규모 연극</div>
+                        <h2 className="post-play-title">
+                          <Link to={`/promotion/${post.promotion_number}`}>{post.play_title}</Link>
+                        </h2>
+                        <div className="post-title h2">
+                          <Link to={`/promotion/${post.promotion_number}`}>{post.title}</Link>
+                        </div>
 
-                  <div className="content"></div>
-                  <div className="footer">
-                    <VisibilityOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[fixedList.length - 1].views || 0)}</span>
-                    <ThumbUpOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[fixedList.length - 1].likes || 0)}</span>
-                    <SmsOutlined sx={{ fontSize: 20 }} />
-                    <span>{numberFormat(fixedList[fixedList.length - 1].commentsCount || 0)}</span>
-                  </div>
-                </div>
-                <Link to={`/promotion/${fixedList[fixedList.length - 1].promotion_number}`}>{/* <img className="poster" src={""} /> */}</Link>
-              </div>
-            </div>
-            {Children.toArray(
-              bannerList.map((post, idx) => (
-                <div className={`absolute ${bannerIndex === idx + 1 && "visible"}`}>
-                  <div className={"contents-container"}>
-                    <div className="left-box">
-                      <div className="sub-title">인기 소규모 연극</div>
-                      <h2 className="title">
-                        <Link to={`/promotion/${post.promotion_number}`}>{post.play_title}</Link>
-                      </h2>
-                      <div className="ellipsis">
-                        <Link to={`/promotion/${post.promotion_number}`}>{post.title}</Link>
-                      </div>
-
-                      <div className="content">
-                        {post.start_date && post.end_date && (
-                          <div className="date">
-                            <span className="lable">공연기간</span>
-                            {post.start_date && <TimeFormat time={post.start_date} />}
-                            {" ~ "}
-                            {post.end_date && <TimeFormat time={post.end_date} />}
-                          </div>
-                        )}
-                        {post.location && (
-                          <div>
-                            <span className="lable">장소</span>
-                            {post.location}
-                          </div>
-                        )}
-                        {post.host && (
-                          <div>
-                            <span className="lable">주최</span>
-                            {post.host}
-                          </div>
-                        )}
-                        {!post.runtime || (
-                          <div>
-                            <span className="lable">런타임</span>
-                            {post.runtime} 분
-                          </div>
-                        )}
-                      </div>
-                      <div className="footer">
-                        <VisibilityOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(post.views || 0)}</span>
-                        <ThumbUpOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(post.likes || 0)}</span>
-                        <SmsOutlined sx={{ fontSize: 20 }} />
-                        <span>{numberFormat(post.commentsCount || 0)}</span>
+                        <div className="content p1">
+                          {post.start_date && post.end_date && (
+                            <div className="date">
+                              <span className="lable">공연기간</span>
+                              <span className="line">|</span>
+                              {post.start_date && <TimeFormat time={post.start_date} />}
+                              {" ~ "}
+                              {post.end_date && <TimeFormat time={post.end_date} />}
+                            </div>
+                          )}
+                          {post.location && (
+                            <div>
+                              <span className="lable">장소</span>
+                              <span className="line">|</span>
+                              {post.location}
+                            </div>
+                          )}
+                          {post.host && (
+                            <div>
+                              <span className="lable">주최</span>
+                              <span className="line">|</span>
+                              {post.host}
+                            </div>
+                          )}
+                          {!post.runtime || (
+                            <div>
+                              <span className="lable">런타임</span>
+                              <span className="line">|</span>
+                              {post.runtime} 분
+                            </div>
+                          )}
+                        </div>
+                        <div className="footer">
+                          <VisibilityOutlined />
+                          <span>{numberFormat(post.views || 0)}</span>
+                          <ThumbUpOutlined />
+                          <span>{numberFormat(post.likes || 0)}</span>
+                          <SmsOutlined />
+                          <span>{numberFormat(post.commentsCount || 0)}</span>
+                        </div>
                       </div>
                     </div>
-                    <Link to={`/promotion/${post.promotion_number}`}>
-                      <img className="poster" src={post.image_url[0] || "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"} />
-                    </Link>
                   </div>
-                </div>
-              )),
-            )}
-            {bannerList.length > 0 && (
-              <>
-                <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
-                <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
-              </>
-            )}
-          </div>
-        </div>
-      ) : (
-        <Skeleton variant="rectangular" width={1110} height={420} sx={{ borderRadius: "6px", marginBottom: "60px" }} />
-      )}
-      <div className="header flex-box">
-        <div className="division flex-box">
-          <div id="" className={category === "" ? "selected" : ""} onClick={handleClickDivision}>
-            전체보기
-          </div>
-          <div id="연극" className={category === "연극" ? "selected" : ""} onClick={handleClickDivision}>
-            연극
-          </div>
-          <div id="기타" className={category === "기타" ? "selected" : ""} onClick={handleClickDivision}>
-            기타
-          </div>
-        </div>
-        <div className="buttons">
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
-              <MenuItem value="promotion_number desc">최신순</MenuItem>
-              <MenuItem value="likes desc">추천순</MenuItem>
-              <MenuItem value="views desc">조회순</MenuItem>
-              <MenuItem value="promotion_number asc">오래된순</MenuItem>
-            </Select>
-          </FormControl>
-          <Button onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
-            작성하기
-          </Button>
-        </div>
-      </div>
-      {state === "loading" && !boardList.length ? (
-        <div className={`state box`}>
-          <CircularProgress color="secondary" />
-        </div>
-      ) : state === "hasError" ? (
-        <div className={`state box`}>
-          <ServerError onClickBtn={() => getPage()} />
-        </div>
-      ) : boardList.length + fixedList.length ? (
-        <>
-          <PromotionList newList={boardList} fixedList={fixedList} />
-          {state === "loading" && (
-            <div className={`state`}>
-              <CircularProgress color="secondary" />
+                )),
+              )}
+              {bannerList.length > 0 && (
+                <>
+                  <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
+                  <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
+                </>
+              )}
             </div>
-          )}
-          <UpButton />
-          <div className="scroll-ref" ref={scrollRef}></div>
-        </>
-      ) : (
-        <div className={`state box`}>
-          <Empty>
-            <></>
-          </Empty>
+          </div>
+        ) : (
+          <Skeleton className="best-box" variant="rectangular" sx={{ borderRadius: "15px", marginBottom: "60px", marginTop: "30px" }} />
+        )}
+        <div className="header flex-box">
+          <div className="division flex-box">
+            <div id="" className={category === "" ? "selected" : ""} onClick={handleClickDivision}>
+              전체보기
+            </div>
+            <div id="연극" className={category === "연극" ? "selected" : ""} onClick={handleClickDivision}>
+              연극
+            </div>
+            <div id="기타" className={category === "기타" ? "selected" : ""} onClick={handleClickDivision}>
+              기타
+            </div>
+          </div>
+          <div className="buttons">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                <MenuItem value="promotion_number desc">최신순</MenuItem>
+                <MenuItem value="likes desc">추천순</MenuItem>
+                <MenuItem value="views desc">조회순</MenuItem>
+                <MenuItem value="promotion_number asc">오래된순</MenuItem>
+              </Select>
+            </FormControl>
+            <Button onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
+              작성하기
+            </Button>
+          </div>
         </div>
-      )}
-    </div>
+        {state === "loading" && !boardList.length ? (
+          <div className={`state box`}>
+            <CircularProgress color="secondary" />
+          </div>
+        ) : state === "hasError" ? (
+          <div className={`state box`}>
+            <ServerError onClickBtn={() => getPage()} />
+          </div>
+        ) : boardList.length + fixedList.length ? (
+          <>
+            <PromotionList newList={boardList} fixedList={fixedList} />
+            {state === "loading" && (
+              <div className={`state`}>
+                <CircularProgress color="secondary" />
+              </div>
+            )}
+            <UpButton />
+            <div className="scroll-ref" ref={scrollRef}></div>
+          </>
+        ) : (
+          <div className={`state box`}>
+            <Empty>
+              <></>
+            </Empty>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
