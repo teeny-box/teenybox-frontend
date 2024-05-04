@@ -28,7 +28,7 @@ export function CommunityFormPage() {
   }, [user]);
 
   return (
-    <div className="Community-form-page page-padding">
+    <div className="Community-form-page page-layout">
       <div className="body">
         <CommunityForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} userRole={user?.role} />
       </div>

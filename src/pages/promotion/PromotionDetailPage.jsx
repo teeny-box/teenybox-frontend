@@ -137,7 +137,7 @@ export function PromotionDetailPage() {
   }, [params]);
 
   return (
-    <div className="promotion-detail-page page-padding">
+    <div className="promotion-detail-page page-layout">
       {state === "hasError" ? (
         <NotFoundPage prev={true} />
       ) : (

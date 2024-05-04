@@ -85,6 +85,7 @@ h6 {
 }
 
 .page-layout {
+  margin: 0 auto;
   @include desktop {
     max-width: 1700px;
     padding: 0 200px;

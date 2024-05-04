@@ -53,7 +53,7 @@ export function CommunityEdit() {
   }, [user]);
 
   return (
-    <div className="Community-form-page page-padding">
+    <div className="Community-form-page page-layout">
       <div className="body">
         {post && <CommunityEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} userRole={user?.role} />}
       </div>

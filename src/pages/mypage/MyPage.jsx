@@ -54,7 +54,7 @@ export function MyPage() {
   return (
     <>
       {userData ? (
-        <div className="mypage-template page-padding">
+        <div className="mypage-template page-layout">
           <div className="mypage-container">
             <div className="mypage-nav">
               <div className="nav-header">

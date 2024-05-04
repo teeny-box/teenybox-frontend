@@ -143,7 +143,7 @@ export function CommunityDetailPage() {
   }, [params]);
 
   return (
-    <div className="Community-detail page-padding">
+    <div className="Community-detail page-layout">
       {state === "hasError" ? (
         <NotFoundPage prev={true} />
       ) : (

@@ -123,7 +123,7 @@ export function PromotionListPage() {
   }, []);
 
   return (
-    <div className="promotion-page page-padding">
+    <div className="promotion-page page-layout">
       <Helmet>
         <title>티니박스(TeenyBox) 연극 홍보 게시판</title>
         <meta name="description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
@@ -132,7 +132,7 @@ export function PromotionListPage() {
         <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
       </Helmet>
       <div className="fixed-top-banner">
-        <p >📢 티니박스(TeenyBox) 서비스 오픈!</p>
+        <p>📢 티니박스(TeenyBox) 서비스 오픈!</p>
         <p>
           안녕하세요😊 개발자 취준생이 모여서 만든 연극 정보 사이트 “티니박스”를 소개합니다! 티니박스는 연극인들을 위한 활발한 커뮤니티를 만들자는 목적으로
           제작되었으며, 연극을 사랑하는 사람들이 연극을 찾고 홍보할 수 있는 소규모 연극 커뮤니티 사이트입니다. 대학생 연극 동아리, 소규모 연극 동아리라면
