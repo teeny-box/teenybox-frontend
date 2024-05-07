@@ -1,4 +1,5 @@
 @import "./styles/text.scss";
+@import "./styles/mixin.scss";
 
 // 멀티라인 말줄임 표시
 // $line-cnt : 라인 수
@@ -83,8 +84,32 @@ h6 {
   margin-block-end: 2.33em;
 }
 
-.page-margin {
-  margin: 40px auto 200px;
+.page-layout {
+  margin: 0 auto;
+  @include desktop {
+    max-width: 1700px;
+    padding: 0 200px;
+  }
+
+  @include laptop {
+    max-width: 1300px;
+    padding: 0 100px;
+  }
+
+  @include tablet-horizontal {
+    max-width: 1024px;
+    padding: 0 40px;
+  }
+
+  @include tablet-vertical {
+    max-width: 768px;
+    padding: 0 40px;
+  }
+
+  @include moblie {
+    max-width: 480px;
+    padding: 0;
+  }
 }
 
 .page-margin-bottom {

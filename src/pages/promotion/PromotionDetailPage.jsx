@@ -137,7 +137,7 @@ export function PromotionDetailPage() {
   }, [params]);
 
   return (
-    <div className="promotion-detail-page page-margin">
+    <div className="promotion-detail-page page-layout">
       {state === "hasError" ? (
         <NotFoundPage prev={true} />
       ) : (

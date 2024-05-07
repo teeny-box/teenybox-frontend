@@ -1,11 +1,17 @@
+@import "../../../styles/mixin.scss";
+
 .promotion-search-result-container {
-  margin: 40px auto 0;
+  margin: 40px 0 0;
   width: 100%;
 
   .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @include moblie {
+      padding: 0 20px;
+    }
 
     .title {
       font-size: 20px;
@@ -29,13 +35,32 @@
   }
 
   .search-content {
-    background-color: #ffffff;
-    border: 1px solid #d6d6d6;
-    margin: 20px 0 100px;
-    padding: 30px 40px;
+    border-top: 1px solid #ffb400;
+    border-bottom: 1px solid #ffb400;
+    margin: 20px 0;
+    padding: 30px 0;
+
     display: flex;
-    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 70px 36px;
+
+    @include laptop {
+      column-gap: 36px;
+    }
+
+    @include tablet-horizontal {
+      column-gap: 40px;
+    }
+
+    @include tablet-vertical {
+      column-gap: 33px;
+    }
+
+    @include moblie {
+      column-gap: 20px;
+    }
 
     .loading {
       margin: 200px auto;
@@ -44,16 +69,12 @@
     .state {
       margin: 80px auto;
     }
-
-    a {
-      margin-bottom: 20px;
-    }
   }
 
   .search-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    margin: 40px 0 80px;
   }
 }

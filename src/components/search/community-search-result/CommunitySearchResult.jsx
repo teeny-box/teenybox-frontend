@@ -78,28 +78,34 @@ export default function CommunitySearchResult({ searchKeyword }) {
           </select>
         </div>
       </div>
-      <div className="search-content">
-        {state === "loading" ? (
+      {state === "loading" ? (
+        <div className="search-content">
           <div className="loading">
             <CircularProgress color="secondary" />
           </div>
-        ) : state === "hasError" ? (
+        </div>
+      ) : state === "hasError" ? (
+        <div className="search-content">
           <div className={`state`}>
             <ServerError onClickBtn={getCommunitySearchResult} />
           </div>
-        ) : !searchResult?.length ? (
+        </div>
+      ) : !searchResult?.length ? (
+        <div className="search-content">
           <div className="state">
             <EmptySearchResult type={true} />
           </div>
-        ) : (
-          <>
+        </div>
+      ) : (
+        <>
+          <div className="search-content">
             <CommunityList boardList={searchResult} />
-            <div className="search-pagination">
-              <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
-            </div>
-          </>
-        )}
-      </div>
+          </div>
+          <div className="search-pagination">
+            <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

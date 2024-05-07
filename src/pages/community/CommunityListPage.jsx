@@ -82,7 +82,7 @@ export function CommunityListPage() {
   }, [sort]);
 
   return (
-    <div className="Community-page page-margin">
+    <div className="Community-page page-layout">
       <Helmet>
         <title>티니박스(TeenyBox) 커뮤니티</title>
         <meta name="description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
