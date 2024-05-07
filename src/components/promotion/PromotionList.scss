@@ -1,7 +1,7 @@
 @import "../../styles/mixin.scss";
 
 .promotion-list-box {
-  margin-top: 60px;
+  margin-top: 40px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -18,6 +18,13 @@
 
   @include tablet-vertical {
     column-gap: 33px;
+    margin-top: 28px;
+  }
+
+  // @include moblie {
+  @media (max-width: 500px) {
+    column-gap: 20px;
+    margin-top: 20px;
   }
 
   .flex-box {

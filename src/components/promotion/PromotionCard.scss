@@ -139,11 +139,11 @@
   }
 
   @include tablet-vertical {
-    width: calc((100% - (33px * 2)) / 3);
+    width: calc((100% - 33px) / 2);
   }
 
   @include moblie {
-    // width: calc((100% - (49px * 3)) / 4);
+    width: calc((100% - 20px) / 2);
   }
 
   .post-card-footer {
