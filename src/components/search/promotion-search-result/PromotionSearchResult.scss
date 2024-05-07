@@ -9,6 +9,10 @@
     justify-content: space-between;
     align-items: center;
 
+    @include moblie {
+      padding: 0 20px;
+    }
+
     .title {
       font-size: 20px;
       font-weight: 500;
@@ -52,6 +56,10 @@
 
     @include tablet-vertical {
       column-gap: 33px;
+    }
+
+    @include moblie {
+      column-gap: 20px;
     }
 
     .loading {
