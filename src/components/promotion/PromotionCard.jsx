@@ -1,3 +1,4 @@
+import { Children } from "react";
 import { Link } from "react-router-dom";
 import { SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
 import empty_img from "../../assets/img/empty_img.svg";
@@ -7,10 +8,10 @@ import "./PromotionCard.scss";
 
 const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
 
-export function PromotionListCard({ post }) {
+export function PromotionListCard({ post, idx }) {
   return (
-    <div className={`promotion-post-card`} key={post._id} id={post._id}>
-      <Link to={`/promotion/${post.promotion_number}`}>
+    <div className={`promotion-post-card ${idx % 2 ? "" : "bg-point"}`} key={post._id} id={post._id}>
+      <Link className="img-box" to={`/promotion/${post.promotion_number}`}>
         {post.category === "공지" ? (
           <img
             src={logo3}
@@ -43,11 +44,13 @@ export function PromotionListCard({ post }) {
         )}
         {post.tags && post.tags.length !== 0 && (
           <div className="tags">
-            {post.tags.map((tag, idx) => (
-              <div className="tag" key={idx}>
-                <Link to={`/search?query=${tag}&category=홍보게시판&type=tag`}># {tag}</Link>
-              </div>
-            ))}
+            {Children.toArray(
+              post.tags.map((tag) => (
+                <div className="tag">
+                  <Link to={`/search?query=${tag}&category=홍보게시판&type=tag`}># {tag}</Link>
+                </div>
+              )),
+            )}
           </div>
         )}
         <div className="flex-box post-card-footer">

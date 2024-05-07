@@ -47,7 +47,7 @@ export default function PromotionList({ newList, fixedList }) {
           </div>
         </div>
       ))}
-      {Children.toArray(newList.map((post) => <PromotionListCard post={post} />))}
+      {Children.toArray(newList.map((post, idx) => <PromotionListCard post={post} idx={idx} />))}
     </div>
   );
 }

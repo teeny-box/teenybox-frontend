@@ -32,11 +32,17 @@
     flex-wrap: wrap;
   }
 
-  img {
+  .img-box {
+    display: block;
     width: 100%;
-    aspect-ratio: 248/262;
-    object-fit: cover;
-    background-color: #d9d9d927;
+
+    img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 248/262;
+      object-fit: cover;
+      background-color: #d9d9d927;
+    }
   }
 
   .post-card-content {
@@ -61,10 +67,6 @@
       height: 126px;
     }
 
-    @include moblie {
-      height: auto;
-    }
-
     .title {
       // font-size: 16px;
       font-weight: 700;
@@ -72,18 +74,13 @@
       width: 100%;
       height: 20px;
       text-overflow: ellipsis;
-      white-space: nowrap;
       overflow: hidden;
+      white-space: nowrap;
 
       &.tl-2 {
         @include ellipsis(2, 20px);
         height: fit-content;
         white-space: wrap;
-      }
-
-      @media (max-width: 992px) {
-        font-size: 20px;
-        padding-bottom: 4px;
       }
     }
 
@@ -123,10 +120,6 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       color: #62676c;
-
-      @media (max-width: 992px) {
-        -webkit-line-clamp: 1;
-      }
     }
   }
 
@@ -143,7 +136,53 @@
   }
 
   @include moblie {
-    width: calc((100% - 20px) / 2);
+    width: 100%;
+    height: 200px;
+    flex-direction: row;
+    gap: 12px;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 22px 20px;
+    box-sizing: border-box;
+
+    &.bg-point {
+      background-color: rgba(255, 179, 0, 0.05);
+    }
+
+    .img-box {
+      display: block;
+      width: auto;
+      height: 100%;
+      aspect-ratio: 3/4;
+      flex-shrink: 0;
+
+      img {
+        border-radius: 15px;
+      }
+    }
+
+    .post-card-content {
+      width: auto;
+      height: 100%;
+      padding: 0;
+      flex: 1 1;
+      display: flex;
+      flex-wrap: wrap;
+
+      .title,
+      .title.tl-2 {
+        font-size: 20px;
+        font-weight: 700;
+        height: fit-content;
+        white-space: wrap;
+        @include ellipsis(2, 24px);
+      }
+    }
+
+    &:hover {
+      top: 0;
+      box-shadow: none;
+    }
   }
 
   .post-card-footer {
