@@ -6,10 +6,17 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const SearchModal = ({ onCloseModal }) => {
   const inputRef = useRef(null);
+  const modalRef = useRef(null);
   const [isClosing, setIsClosing] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
   const [recentSearches, setRecentSearches] = useState([]);
 
+  const handleCloseStart = () => {
+    setIsClosing(true);
+    setContentVisible(false);
+    setTimeout(onCloseModal, 200); // 애니메이션 시간에 맞추어 모달을 닫습니다.
+  };
+  
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus(); // input 요소에 포커스 주기
@@ -20,6 +27,19 @@ const SearchModal = ({ onCloseModal }) => {
     if (storedRecentSearches) {
       setRecentSearches(storedRecentSearches);
     }
+
+    // 스크롤 이벤트 추가
+    const handleScroll = (event) => {
+      const { target } = event;
+      if (!modalRef.current.contains(target)) {
+        handleCloseStart();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const sendUrl = (query) => {
@@ -32,12 +52,6 @@ const SearchModal = ({ onCloseModal }) => {
       encodedQuery = encodeURIComponent(query);
       window.location.href = `/search?query=${encodedQuery}`;
     }
-  };
-
-  const handleCloseStart = () => {
-    setIsClosing(true);
-    setContentVisible(false);
-    setTimeout(onCloseModal, 200); // 애니메이션 시간에 맞추어 모달을 닫습니다.
   };
 
   const handleKeyDown = (event) => {
@@ -92,7 +106,7 @@ const SearchModal = ({ onCloseModal }) => {
   return (
     <>
       <div className="search-modal-backdrop" onClick={handleCloseStart}></div>
-      <div className={`search-modal-container ${isClosing ? "closing" : ""}`}>
+      <div ref={modalRef} className={`search-modal-container ${isClosing ? "closing" : ""}`}>
         <div className={`search-modal-box ${contentVisible ? "" : "hide-content"}`}>
           <SearchRoundedIcon className="search-modal-search-icon" />
           <input className="search-modal-input" ref={inputRef} placeholder="Teeny-Box.com 검색하기" onKeyDown={handleKeyDown}></input>

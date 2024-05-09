@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainBest.scss";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { showUrl } from "../../apis/apiURLs";
 
@@ -26,23 +26,15 @@ function MainBest() {
     window.addEventListener("resize", resizeListener);
   });
 
-  const slideWidth = innerWidth > 1920 ? 1520 : 1110; // 화면 너비에 따라 슬라이드 너비 결정
+  const slideWidth = innerWidth > 1700 ? 1300 : (innerWidth > 1300 ? 1100 : (innerWidth > 1024 ? innerWidth - 80 : (innerWidth > 480 ? innerWidth - 40 : innerWidth)));
 
   // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
     ? {
-        display: "flex",
-        gap: "15px",
-        paddingLeft: "7.5px",
-        paddingRight: "7.5px",
         transform: `translateX(-${sliderIndex * slideWidth}px)`,
         transition: "transform 0.4s ease",
       }
     : {
-        display: "flex",
-        gap: "15px",
-        paddingLeft: "7.5px",
-        paddingRight: "7.5px",
         transform: `translateX(-${sliderIndex * slideWidth}px)`,
       };
 
@@ -108,29 +100,27 @@ function MainBest() {
           <p className="main-sub-title">보고 또 봐도 좋은</p>
           <p className="main-title">국내 베스트 연극</p>
         </div>
+        <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
+        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
         <div className="slide-info-box">
           <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
           <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>
           <p className={`slide-info3 ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>ㅡ</p>
         </div>
       </div>
-      <div className="main-slide-container">
-        <ArrowBackIosIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
-        <div className="main-play-container">
-          <div style={wrapperStyles}>
-            {shows.map((show, index) => (
-              <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
-                <div className="main-play-img-box">
-                  <img src={show.poster} alt={show.title} style={{ opacity: 0.9 }} />
-                  <p className="best-overlay-rank">{show.newRank}</p>
-                </div>
-                <p className="main-play-title">{formatTitle(show.title)}</p>
-                <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+      <div className="main-play-container">
+        <div style={wrapperStyles} className="slide-wrapper">
+          {shows.map((show, index) => (
+            <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
+              <div className="main-play-img-box">
+                <img src={show.poster} alt={show.title} style={{ opacity: 0.9 }} />
+                <p className="best-overlay-rank">{show.newRank}</p>
               </div>
-            ))}
-          </div>
+              <p className="main-play-title">{formatTitle(show.title)}</p>
+              <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+            </div>
+          ))}
         </div>
-        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
       </div>
     </div>
   );

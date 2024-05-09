@@ -1,4 +1,5 @@
-//Main
+@import "../../styles/mixin.scss";
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -50,27 +51,14 @@
   padding: 108px 0 108px 0;
   background-color: #202020;
 }
-@media (min-width: 1920px) {
+@include desktop {
   .best-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 700px;
-    background-color: #282828;
   }
   .child-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
     height: 700px;
-    background-color: #202020;
   }
   .review-container {
-    display: flex;
-    justify-content: center;
     height: 700px;
-    background: #282828;
   }
 }

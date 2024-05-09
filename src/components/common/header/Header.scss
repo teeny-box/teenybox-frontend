@@ -1,3 +1,5 @@
+@import "../../../styles/mixin.scss";
+
 .header-container {
   position: relative;
   display: flex;
@@ -137,13 +139,13 @@
 .buger-menu {
   display: none !important;
 }
-@media (min-width: 1920px) {
+@include desktop {
   .header-box {
-    display: flex;
-    flex-direction: column;
     width: 1520px;
-    height: 150px;
   }
+}
+@include laptop {
+  
 }
 @media (max-width: 768px) {
   .buger-menu {
