@@ -6,6 +6,7 @@ import MovieIcon from "@mui/icons-material/Movie";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import dayjs from "dayjs";
+import { Helmet } from "react-helmet-async";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
 import PlayListHeader from "../../components/play-list/PlayListHeader";
 import PlayBox from "../../components/play-list/PlayBox";
@@ -25,6 +26,11 @@ import { showUrl } from "../../apis/apiURLs";
 export function PlayList() {
   const { prevPlayListQuery, setPrevPlayListQuery } = useContext(AppContext);
   const queryParams = new URLSearchParams(prevPlayListQuery);
+
+  /**
+   * 컴포넌트의 props가 변경되지 않았다면, 불필요하게 리렌더링되지 않도록 React.memo를 사용.
+   */
+  const PlayBoxMemo = React.memo(PlayBox);
 
   const playListContainerRef = useRef(null);
 
@@ -75,63 +81,34 @@ export function PlayList() {
 
   /**
    * API에서 연극 데이터를 가져오는 함수
-   */
+  //  */
+  // 쿼리 파라미터 생성 로직을 별도의 함수로 분리
+  const createQueryParams = useCallback(() => {
+    const regionQuery = selectedRegion[0] === "전체" ? "" : selectedRegion.map((region) => `region=${region}`).join("&");
+    const stateQuery = conditions["상태별"][0] === "전체" ? "" : conditions["상태별"].map((state) => `state=${state}`).join("&");
+    const priceQuery = `lowPrice=${conditions["가격별"][0]}&highPrice=${conditions["가격별"][1]}`;
+    const dateQuery = conditions["날짜별"] ? `date=${conditions["날짜별"]}` : "";
+    const queries = [regionQuery, stateQuery, priceQuery, dateQuery].filter((q) => q).join("&");
+
+    return `?${queries}&order=${sortStandard}&page=${curPage}&limit=24`;
+  }, [selectedRegion, conditions, sortStandard, curPage]);
+
+  // fetchData 함수 리팩터링
   const fetchData = useCallback(() => {
-    let queryParam = "";
-
-    if (prevPlayListQuery) {
-      queryParam = prevPlayListQuery;
-      setReqQuery(queryParam);
-    } else {
-      const regionQuery =
-        selectedRegion[0] === "전체"
-          ? ""
-          : selectedRegion.length === 1
-            ? `region=${selectedRegion}&`
-            : selectedRegion.map((region) => `region=${region}&`).reduce((acc, cur) => acc + cur);
-
-      const stateQuery =
-        conditions["상태별"][0] === "전체"
-          ? ""
-          : conditions["상태별"].length === 1
-            ? `state=${conditions["상태별"][0]}&`
-            : conditions["상태별"].map((state) => `state=${state}&`).reduce((acc, cur) => acc + cur);
-
-      const lowPriceQuery = conditions["가격별"][0] === 0 ? "" : `lowPrice=${conditions["가격별"][0]}&`;
-
-      const highPriceQuery = conditions["가격별"][1] === 100000 ? "" : `highPrice=${conditions["가격별"][1]}&`;
-
-      const dateQuery = conditions["날짜별"] ? `&date=${conditions["날짜별"]}&` : "";
-
-      queryParam = `?${regionQuery}${stateQuery}${lowPriceQuery}${highPriceQuery}order=${sortStandard}${dateQuery}&page=${curPage}&limit=24`;
-
-      setReqQuery(queryParam);
-    }
-
+    const queryParam = createQueryParams(selectedRegion, conditions, sortStandard, curPage);
+    setReqQuery(queryParam);
     fetch(`${showUrl}${queryParam}`)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        setError("연극 목록 가져오기에 실패하였습니다.");
-        return null;
-      })
+      .then((res) => res.json())
       .then((data) => {
-        setIsLoading(true);
+        setIsLoading(false);
         setPlays(data.shows);
         setPlayTotalCnt(data.total);
-        setIsLoading(false);
-        setError(null);
       })
-      .finally(() => setPrevPlayListQuery(null))
-      .catch(() => {
-        setError("연극 목록 가져오기에 실패하였습니다.");
-        setPlays(null);
-        setPlayTotalCnt(0);
+      .catch((e) => {
+        setError(`연극 목록 가져오기에 실패하였습니다. ${e.message}`);
         setIsAlertOpen(true);
-        setIsLoading(false);
       });
-  }, [prevPlayListQuery, selectedRegion, sortStandard, curPage, conditions]);
+  }, [selectedRegion, conditions, sortStandard, curPage]);
 
   useEffect(() => {
     fetchData();
@@ -172,8 +149,7 @@ export function PlayList() {
    * @param {Event} e 이벤트
    * @param {string[]} region 선택된 지역
    */
-  const changeSelectedRegion = useCallback((e, region) => {
-    setSelectedRegion(region);
+  const resetFilters = useCallback(() => {
     setSortStandard("recent");
     setCurPage(1);
     setConditions({
@@ -184,11 +160,29 @@ export function PlayList() {
     setIsExpandClicked(false);
   }, []);
 
+  const changeSelectedRegion = useCallback(
+    (e, region) => {
+      setSelectedRegion(region);
+      resetFilters();
+    },
+    [resetFilters, setSelectedRegion],
+  );
+
   return (
     <div className="play-list-container" ref={playListContainerRef}>
+      <Helmet>
+        <title>Teeny Box - 연극찾기</title>
+        <title>티니박스(TeenyBox) 연극찾기</title>
+        <meta name="description" content="티니박스에서 다양한 연극을 찾아보세요!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TeenyBox(티니박스) - 연극" />
+        <meta property="og:title" content="티니박스(TeenyBox) 연극찾기" />
+        <meta property="og:description" content="티니박스에서 다양한 연극을 찾아보세요!" />
+      </Helmet>
       {error ? <AlertCustom title="tennybox.com 내용:" content={error} open={isAlertOpen} onclose={() => setIsAlertOpen(false)} severity={"error"} /> : null}
-      {isLoading && <Loading />}
-      {!isLoading && (
+      {isLoading ? (
+        <Loading />
+      ) : (
         <>
           <RegionSelectBar changeSelectedRegion={changeSelectedRegion} selectedRegion={selectedRegion} />
           <ConditionSearch
@@ -228,7 +222,7 @@ export function PlayList() {
               <PlayListHeader count={playTotalCnt} setSortStandard={setSortStandard} sortStandard={sortStandard} />
               <div className="play-list-main">
                 {plays.map((play) => (
-                  <PlayBox
+                  <PlayBoxMemo
                     key={play.showId}
                     playInfo={{
                       playId: play.showId,
