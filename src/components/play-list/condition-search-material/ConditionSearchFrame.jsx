@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import "./ConditionSearchFrame.scss";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
@@ -34,15 +34,18 @@ export default function ConditionSearchFrame({ division, options, innerWidth }) 
   const { conditions, setConditions } = useContext(ConditionContext);
   const [values, setValues] = useState([conditions["가격별"][0] ? conditions["가격별"][0] / 1000 : 0, conditions["가격별"][1] / 1000]);
 
-  const handleChangeSlider = (event, newValues) => {
+  const handleChangeSlider = useCallback((event, newValues) => {
     setValues(newValues);
-    const priceRange = newValues.map((val) => val * 1000);
+  }, []);
+
+  const handleCommitSlider = useCallback((event, finalValues) => {
+    const priceRange = finalValues.map((val) => val * 1000);
     setConditions((prev) => {
       const newObj = { ...prev };
       newObj["가격별"] = priceRange;
       return newObj;
     });
-  };
+  }, []);
 
   const handleChangeDatePicker = (date, info) => {
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
@@ -102,6 +105,7 @@ export default function ConditionSearchFrame({ division, options, innerWidth }) 
             <Slider
               value={values}
               onChange={handleChangeSlider}
+              onChangeCommitted={handleCommitSlider}
               getAriaValueText={valuetext}
               step={10}
               marks={marks}
