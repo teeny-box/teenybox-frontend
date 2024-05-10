@@ -12,7 +12,7 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 
 export default function App() {
   return (
-    <>
+    <div className="banner-layout-container">
       <Swiper
         spaceBetween={0}
         effect={"fade"}
@@ -38,6 +38,6 @@ export default function App() {
           <img src={`${process.env.PUBLIC_URL}/banner3.svg`} alt="banner-image"></img>
         </SwiperSlide>
       </Swiper>
-    </>
+    </div>
   );
 }

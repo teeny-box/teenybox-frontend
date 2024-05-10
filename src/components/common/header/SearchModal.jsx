@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./SearchModal.scss";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const SearchModal = ({ onCloseModal }) => {
@@ -16,7 +15,7 @@ const SearchModal = ({ onCloseModal }) => {
     setContentVisible(false);
     setTimeout(onCloseModal, 200); // 애니메이션 시간에 맞추어 모달을 닫습니다.
   };
-  
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus(); // input 요소에 포커스 주기
@@ -110,12 +109,11 @@ const SearchModal = ({ onCloseModal }) => {
         <div className={`search-modal-box ${contentVisible ? "" : "hide-content"}`}>
           <SearchRoundedIcon className="search-modal-search-icon" />
           <input className="search-modal-input" ref={inputRef} placeholder="Teeny-Box.com 검색하기" onKeyDown={handleKeyDown}></input>
-          <HighlightOffIcon className="search-modal-exit-icon" onClick={handleCloseStart} />
           <div className="last-search-header-box">
-            <div className="last-search-title">&nbsp;&nbsp;최근 검색어</div>
+            <div className="last-search-title">최근 검색어</div>
             <div className="last-search-delete" onClick={handleDeleteRecentSearches}>
               <DeleteOutlineIcon className="last-search-delete-icon" />
-              삭제&nbsp;&nbsp;
+              검색 기록 삭제
             </div>
           </div>
           <div className="recent-search-box">

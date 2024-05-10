@@ -26,7 +26,18 @@ function MainBest() {
     window.addEventListener("resize", resizeListener);
   });
 
-  const slideWidth = innerWidth > 1700 ? 1300 : (innerWidth > 1300 ? 1100 : (innerWidth > 1024 ? innerWidth - 80 : (innerWidth > 480 ? innerWidth - 40 : innerWidth)));
+  const slideWidth =
+    innerWidth > 1700
+      ? 1300
+      : innerWidth > 1300
+        ? 1100
+        : innerWidth > 1024
+          ? innerWidth - 200
+          : innerWidth > 768
+            ? innerWidth - 80
+            : innerWidth > 480
+              ? innerWidth - 80
+              : innerWidth - 40;
 
   // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
@@ -100,12 +111,9 @@ function MainBest() {
           <p className="main-sub-title">보고 또 봐도 좋은</p>
           <p className="main-title">국내 베스트 연극</p>
         </div>
-        <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
-        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
-        <div className="slide-info-box">
-          <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
-          <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>
-          <p className={`slide-info3 ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>ㅡ</p>
+        <div className="main-slide-btn-box">
+          <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-icon" />
+          <ArrowForwardIosIcon onClick={handleRightClick} className="slide-icon" />
         </div>
       </div>
       <div className="main-play-container">
@@ -113,7 +121,7 @@ function MainBest() {
           {shows.map((show, index) => (
             <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
               <div className="main-play-img-box">
-                <img src={show.poster} alt={show.title} style={{ opacity: 0.9 }} />
+                <img src={show.poster} alt={show.title} />
                 <p className="best-overlay-rank">{show.newRank}</p>
               </div>
               <p className="main-play-title">{formatTitle(show.title)}</p>
@@ -121,6 +129,11 @@ function MainBest() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="slide-info-box">
+        <p className={`slide-info ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>.</p>
+        <p className={`slide-info ${sliderIndex === 2 ? "active" : ""}`}>.</p>
+        <p className={`slide-info ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>.</p>
       </div>
     </div>
   );
