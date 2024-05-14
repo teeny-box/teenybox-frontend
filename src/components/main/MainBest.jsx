@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainBest.scss";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { showUrl } from "../../apis/apiURLs";
 
@@ -9,6 +9,7 @@ function MainBest() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
 
   const navigate = useNavigate();
 
@@ -17,22 +18,35 @@ function MainBest() {
     navigate(`/play/${showId}`);
   };
 
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
+
+  const slideWidth =
+    innerWidth > 1700
+      ? 1300
+      : innerWidth > 1300
+        ? 1100
+        : innerWidth > 1024
+          ? innerWidth - 200
+          : innerWidth > 768
+            ? innerWidth - 80
+            : innerWidth > 480
+              ? innerWidth - 80
+              : innerWidth - 40;
+
   // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
     ? {
-        display: "flex",
-        gap: "15px",
-        paddingLeft: "7.5px",
-        paddingRight: "7.5px",
-        transform: `translateX(-${sliderIndex * 1110}px)`,
+        transform: `translateX(-${sliderIndex * slideWidth}px)`,
         transition: "transform 0.4s ease",
       }
     : {
-        display: "flex",
-        gap: "15px",
-        paddingLeft: "7.5px",
-        paddingRight: "7.5px",
-        transform: `translateX(-${sliderIndex * 1110}px)`,
+        transform: `translateX(-${sliderIndex * slideWidth}px)`,
       };
 
   useEffect(() => {
@@ -97,29 +111,29 @@ function MainBest() {
           <p className="main-sub-title">보고 또 봐도 좋은</p>
           <p className="main-title">국내 베스트 연극</p>
         </div>
-        <div className="slide-info-box">
-          <p className={`slide-info1 ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>ㅡ</p>
-          <p className={`slide-info2 ${sliderIndex === 2 ? "active" : ""}`}>ㅡ</p>
-          <p className={`slide-info3 ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>ㅡ</p>
+        <div className="main-slide-btn-box">
+          <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-icon" />
+          <ArrowForwardIosIcon onClick={handleRightClick} className="slide-icon" />
         </div>
       </div>
-      <div className="main-slide-container">
-        <ArrowBackIosIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
-        <div className="main-play-container">
-          <div style={wrapperStyles}>
-            {shows.map((show, index) => (
-              <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
-                <div className="main-play-img-box">
-                  <img src={show.poster} alt={show.title} style={{ opacity: 0.9 }} />
-                  <p className="best-overlay-rank">{show.newRank}</p>
-                </div>
-                <p className="main-play-title">{formatTitle(show.title)}</p>
-                <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+      <div className="main-play-container">
+        <div style={wrapperStyles} className="slide-wrapper">
+          {shows.map((show, index) => (
+            <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
+              <div className="main-play-img-box">
+                <img src={show.poster} alt={show.title} />
+                <p className="best-overlay-rank">{show.newRank}</p>
               </div>
-            ))}
-          </div>
+              <p className="main-play-title">{formatTitle(show.title)}</p>
+              <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+            </div>
+          ))}
         </div>
-        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
+      </div>
+      <div className="slide-info-box">
+        <p className={`slide-info ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>.</p>
+        <p className={`slide-info ${sliderIndex === 2 ? "active" : ""}`}>.</p>
+        <p className={`slide-info ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>.</p>
       </div>
     </div>
   );

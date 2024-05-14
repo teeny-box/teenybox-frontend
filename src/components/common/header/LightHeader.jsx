@@ -127,7 +127,9 @@ const LightHeader = () => {
               </div>
             </div>
             <div className="search-container">
-              <div className="header-search-btn" onClick={onShowModal}></div>
+              <div className="header-search-btn" onClick={onShowModal}>
+                {searchModalOpen || "search"}
+              </div>
               <SearchRoundedIcon className="search-icon" onClick={onShowModal} />
             </div>
           </div>

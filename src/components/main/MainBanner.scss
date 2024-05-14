@@ -1,18 +1,11 @@
+@import "../../styles/mixin.scss";
+
+.banner-layout-container {
+  box-sizing: border-box;
+}
 .swiper {
-  width: 1110px;
-  height: 100%;
+  width: 100%;
 }
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-
-  /* Center slide text vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .swiper-slide img {
   display: block;
   width: 100%;
@@ -21,4 +14,38 @@
 }
 .swiper-pagination-bullet {
   background: #eee !important;
+}
+@include desktop {
+  .banner-layout-container {
+    max-width: 1700px;
+    padding: 0 200px;
+  }
+}
+
+@include laptop {
+  .banner-layout-container {
+    max-width: 1300px;
+    padding: 0 100px;
+  }
+}
+
+@include tablet-horizontal {
+  .banner-layout-container {
+    max-width: 1024px;
+    padding: 0 40px;
+  }
+}
+
+@include tablet-vertical {
+  .banner-layout-container {
+    max-width: 768px;
+    padding: 0 40px;
+  }
+}
+
+@include moblie {
+  .banner-layout-container {
+    max-width: 480px;
+    padding: 0 20px;
+  }
 }

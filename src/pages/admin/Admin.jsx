@@ -16,15 +16,17 @@ export function Admin() {
 
   // contextApi로 전역 관리하는 유저 정보를 확인하여 비 로그인이거나 일반회원일 경우 접근을 막고 forbidden페이지로 리다이렉션
   useEffect(() => {
-    if (!userData || !userData.user || userData.user.role !== "admin") {
+    if (!userData || userData.role !== "admin") {
       navigate("/forbidden");
     }
   }, [userData]);
 
+  console.log(userData);
+
   const isSelected = (componentName) => (selectedComponent === componentName ? "selected" : "");
   // nav 에서 선택된 탭에 따라 다른 컴포넌트 랜더링
   const renderComponent = () => {
-    if (userData && userData.user) {
+    if (userData) {
       switch (selectedComponent) {
         case "AdminUser":
           return <AdminUser />;
@@ -45,6 +47,7 @@ export function Admin() {
       return null;
     }
   };
+
   return (
     <div className="admin-template">
       <div className="admin-container">
