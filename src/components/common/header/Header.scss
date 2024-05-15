@@ -177,8 +177,7 @@
   .logo {
     height: 60px;
     width: 210px;
-    margin-top: 8px;
-    user-select: none;
+    margin-top: 0px;
   }
 }
 @include moblie {
@@ -196,7 +195,6 @@
   .logo {
     height: 60px;
     width: 210px;
-    margin-top: 8px;
-    user-select: none;
+    margin-top: 0px;
   }
 }
