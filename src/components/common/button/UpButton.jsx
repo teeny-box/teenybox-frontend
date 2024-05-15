@@ -3,7 +3,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import "./UpButton.scss";
 
 export function UpButton({ y }) {
-  const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(window.scrollY > (y || 1));
 
   const scrollToTop = () => {
     window.scroll({

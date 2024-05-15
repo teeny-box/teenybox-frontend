@@ -1,11 +1,25 @@
-.up-button {
+@import "../../../styles/mixin.scss";
+
+.up-button.MuiSvgIcon-root {
   background-color: #bcbcbc;
   border-radius: 50px;
-  padding: 4px;
+  padding: 6px;
   position: fixed;
   bottom: 30px;
   right: 30px;
   cursor: pointer;
   font-size: 32px;
-  z-index: 1;
+  z-index: 2;
+
+  @include tablet-vertical {
+    width: 46px;
+    height: 46px;
+    background-color: #333;
+  }
+
+  @include moblie {
+    width: 46px;
+    height: 46px;
+    background-color: #333;
+  }
 }

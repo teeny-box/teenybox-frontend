@@ -1,71 +1,10 @@
 @import "../../App.scss";
 @import "../../styles/mixin.scss";
 
-@keyframes fadein {
-  from {
-    opacity: 0;
-    top: -10px;
-  }
-  to {
-    opacity: 1;
-    top: 0;
-  }
-}
-@-moz-keyframes fadein {
-  /* Firefox */
-  from {
-    opacity: 0;
-    top: -10px;
-  }
-  to {
-    opacity: 1;
-    top: 0;
-  }
-}
-@-webkit-keyframes fadein {
-  /* Safari and Chrome */
-  from {
-    opacity: 0;
-    top: -10px;
-  }
-  to {
-    opacity: 1;
-    top: 0;
-  }
-}
-@-o-keyframes fadein {
-  /* Opera */
-  from {
-    opacity: 0;
-    top: -10px;
-  }
-  to {
-    opacity: 1;
-    top: 0;
-  }
-}
-
 .promotion-page.page-layout {
   width: 100%;
   box-sizing: border-box;
-
-  @include tablet-vertical {
-    max-width: 768px;
-    padding: 0;
-    & > div {
-      padding: 0 40px;
-    }
-    .best-box {
-      padding: 0;
-    }
-  }
-
-  @include moblie {
-    // @media (max-width: 500px) { 개발용
-    // max-width: 480px;
-    max-width: 500px;
-    padding: 0;
-  }
+  margin-bottom: 100px;
 
   .flex-box {
     display: flex;
@@ -77,479 +16,12 @@
     color: inherit;
   }
 
-  .best-box {
-    width: 100%;
-    height: 600px;
-    overflow: hidden;
-    border-radius: 15px;
-    position: relative;
-    margin: 30px 0 60px;
-    transition: fadein 1s ease-in-out;
-
-    .absolute {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-
-      left: 0;
-      opacity: 0;
-      display: none;
-
-      &.visible {
-        animation: fadein 1s forwards;
-        display: initial;
-      }
-    }
-
-    .bg-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-
-      &.small {
-        width: 80%;
-        left: 20%;
-      }
-    }
-
-    .bg-mask {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      background: rgba(15, 15, 15, 0.58);
-      // background: linear-gradient(to right, rgba(15, 15, 15, 0.508) 0%, rgba(15, 15, 15, 0.697) 35%, rgba(15, 15, 15, 0.697) 65%, rgba(15, 15, 15, 0.508) 100%);
-    }
-
-    .contents-container {
-      margin: 50px auto;
-      width: 100%;
-      max-width: 900px;
-      height: calc(100% - (50px * 2));
-      z-index: 2;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-
-      .right-box {
-        width: 100%;
-        max-width: 460px;
-        flex: 1 1;
-        display: flex;
-        flex-direction: column;
-        margin-left: 50px;
-        padding: 20px 0;
-        flex-wrap: wrap;
-
-        .sub-title {
-          color: #fff;
-          line-height: normal;
-        }
-
-        .post-play-title {
-          font-size: 48px;
-          font-weight: 800;
-          margin: 10px 0 50px;
-          @include ellipsis(2, 70px);
-        }
-
-        .post-title {
-          @include ellipsis(1, 20px);
-          color: #ffffff;
-          margin-bottom: 6px;
-        }
-
-        .content {
-          margin-top: 15px;
-          flex-grow: 1;
-
-          > div {
-            color: #fff;
-            @include ellipsis(1, 30px);
-            font-weight: 300;
-          }
-
-          .lable {
-            display: inline-block;
-            width: 72px;
-          }
-
-          .line {
-            margin: 0 28px;
-          }
-        }
-
-        .footer {
-          font-size: 36px;
-          display: flex;
-          align-items: center;
-          line-height: normal;
-
-          .MuiSvgIcon-root {
-            font-size: 43px;
-            padding-top: 4px;
-          }
-
-          span {
-            margin: 0 40px 0 12px;
-
-            &:last-child {
-              margin-right: 0;
-            }
-          }
-        }
-      }
-
-      .poster {
-        display: block;
-        height: 100%;
-        max-width: 384px;
-        border-radius: 15px;
-        overflow: hidden;
-        aspect-ratio: 3/4;
-        flex-shrink: 0;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-
-    .arrow-left {
-      position: absolute;
-      top: calc(100% / 2 - 20px);
-      left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #ffffff33;
-      font-size: 40px;
-      margin: 0 20px;
-
-      &:hover {
-        color: #ffffff67;
-      }
-    }
-
-    .arrow-right {
-      position: absolute;
-      top: calc(100% / 2 - 20px);
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #ffffff33;
-      font-size: 40px;
-      margin: 0 20px;
-
-      &:hover {
-        color: #ffffff67;
-      }
-    }
-
-    @include laptop {
-      height: 460px;
-
-      .contents-container {
-        margin: 38px auto;
-        max-width: 650px;
-        box-sizing: border-box;
-        height: calc(100% - (38px * 2));
-
-        .right-box {
-          padding: 20px 0;
-
-          .sub-title {
-            font-size: 14px;
-          }
-
-          .post-play-title {
-            font-size: 38px;
-            @include ellipsis(1, 55px);
-          }
-
-          .post-title {
-            font-size: 18px;
-            font-weight: 500;
-          }
-
-          .content {
-            font-size: 14px;
-
-            > div {
-              @include ellipsis(1, 24px);
-            }
-
-            .line {
-              margin: 0 20px;
-            }
-          }
-
-          .footer {
-            font-size: 28px;
-
-            .MuiSvgIcon-root {
-              font-size: 34px;
-            }
-          }
-        }
-      }
-    }
-
-    @include tablet-horizontal {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16/8;
-
-      .contents-container {
-        width: 100%;
-        margin: 30px auto;
-        max-width: calc(100% - (60px * 2));
-        height: calc(100% - (30px * 2));
-        position: relative;
-
-        .right-box {
-          padding: 10px 0;
-          // padding-top: 34px;
-          margin-left: 30px;
-
-          .sub-title {
-            font-size: 14px;
-            // position: absolute;
-            // top: 0;
-            // left: 2px;
-          }
-
-          .post-play-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            @include ellipsis(1, 52px);
-            // margin: 0 0 28px;
-          }
-
-          .post-title {
-            font-size: 16px;
-            font-weight: 300;
-            display: block;
-            max-height: none;
-            @media (max-width: "860px") {
-              flex-grow: 1;
-            }
-          }
-
-          .content {
-            font-size: 14px;
-
-            > div {
-              @include ellipsis(1, 24px);
-            }
-
-            .line {
-              display: none;
-            }
-
-            @media (max-width: "860px") {
-              display: none;
-            }
-          }
-
-          .footer {
-            font-size: 2.2vw;
-
-            .MuiSvgIcon-root {
-              font-size: 2.8vw;
-            }
-
-            span {
-              margin: 0 30px 0 8px;
-            }
-          }
-        }
-      }
-
-      .arrow-left,
-      .arrow-right {
-        margin: 0 10px;
-      }
-    }
-
-    @include tablet-vertical {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16/9;
-      margin-top: 0;
-      border-radius: 0;
-
-      .contents-container {
-        width: 100%;
-        margin: 40px auto;
-        max-width: calc(100% - (40px * 2));
-        height: calc(100% - (40px * 2));
-        position: relative;
-
-        .right-box {
-          padding: 0;
-          margin-left: 30px;
-
-          .sub-title {
-            font-size: 12px;
-          }
-
-          .post-play-title {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 6px 0 30px;
-            @include ellipsis(1, 52px);
-            @media (max-width: "650px") {
-              margin: 22px 0 5px;
-            }
-          }
-
-          .post-title {
-            font-size: 14px;
-            font-weight: 300;
-
-            @media (max-width: "650px") {
-              flex-grow: 1;
-              display: block;
-              max-height: none;
-            }
-          }
-
-          .content {
-            font-size: 12px;
-
-            > div {
-              @include ellipsis(1, 24px);
-            }
-
-            .line {
-              display: none;
-            }
-
-            @media (max-width: "650px") {
-              display: none;
-            }
-          }
-
-          .footer {
-            font-size: 2.2vw;
-
-            .MuiSvgIcon-root {
-              font-size: 3vw;
-            }
-
-            span {
-              margin: 0 20px 0 4px;
-            }
-          }
-        }
-      }
-
-      .arrow-left,
-      .arrow-right {
-        display: none;
-      }
-    }
-
-    @include moblie {
-      // @media (max-width: 500px) { 개발용
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16/9;
-      margin-top: 0;
-      border-radius: 0;
-
-      .contents-container {
-        width: 100%;
-        margin: 24px auto;
-        max-width: calc(100% - (20px * 2));
-        height: calc(100% - (24px * 2));
-        position: relative;
-
-        .right-box {
-          padding: 0;
-          margin-left: 30px;
-
-          .sub-title {
-            font-size: 12px;
-          }
-
-          .post-play-title {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 6px 0 30px;
-            @include ellipsis(1, 52px);
-            @media (max-width: "650px") {
-              margin: 22px 0 5px;
-            }
-          }
-
-          .post-title {
-            font-size: 14px;
-            font-weight: 300;
-
-            @media (max-width: "650px") {
-              flex-grow: 1;
-              display: block;
-              max-height: none;
-            }
-          }
-
-          .content {
-            font-size: 12px;
-
-            > div {
-              @include ellipsis(1, 24px);
-            }
-
-            .line {
-              display: none;
-            }
-
-            @media (max-width: "650px") {
-              display: none;
-            }
-          }
-
-          .footer {
-            font-size: 2.2vw;
-
-            .MuiSvgIcon-root {
-              font-size: 3vw;
-            }
-
-            span {
-              margin: 0 20px 0 4px;
-            }
-          }
-        }
-      }
-
-      .arrow-left,
-      .arrow-right {
-        display: none;
-      }
-    }
-  }
-
   .header {
     width: 100%;
     padding: 10px 0;
     margin-bottom: 10px;
-    border-bottom: #6b72804d solid 1px;
+    border-bottom: 1px solid rgba(255, 180, 0, 0.8);
     box-sizing: border-box;
-    @include moblie {
-      padding: 10px 20px;
-      margin-bottom: 0;
-    }
 
     .division > div {
       margin-right: 24px;
@@ -577,6 +49,10 @@
         }
       }
 
+      .create-button-moblie {
+        display: none;
+      }
+
       .MuiFormControl-root {
         height: 30px;
         margin: 0;
@@ -596,6 +72,39 @@
             height: 24px;
           }
         }
+      }
+    }
+  }
+
+  @include tablet-vertical {
+    max-width: 768px;
+    padding: 0;
+
+    .promotion-list-box {
+      padding: 0 30px;
+    }
+
+    .header {
+      padding: 10px 30px;
+      margin-bottom: 0;
+
+      .create-button {
+        display: none;
+      }
+    }
+  }
+
+  @include moblie {
+    max-width: 500px;
+    padding: 0;
+
+    .header {
+      padding: 10px 20px;
+      margin-bottom: 0;
+      border-bottom: none;
+
+      .create-button {
+        display: none;
       }
     }
   }
