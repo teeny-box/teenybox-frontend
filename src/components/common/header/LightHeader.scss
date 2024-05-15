@@ -135,7 +135,8 @@
     cursor: pointer;
   }
   .buger-menu {
-    display: none !important;
+    color: #404040;
+    font-size: 32px !important;
   }
 }
 
@@ -158,22 +159,38 @@
 }
 
 @include tablet-horizontal {
-  .header-box {
-    max-width: 1024px;
-    padding: 0 40px;
+  .light-header-container {
+    .header-box {
+      max-width: 1024px;
+      padding: 0 40px;
+    }
   }
 }
 
 @include tablet-vertical {
-  .header-box {
-    max-width: 768px;
-    padding: 0 40px;
+  .light-header-container::before {
+    height: 0;
+  }
+  .light-header-container {
+    height: 100px;
+    border-bottom: none;
+    .header-box {
+      max-width: 768px;
+      padding: 0 40px;
+    }
   }
 }
 
 @include moblie {
-  .header-box {
-    max-width: 480px;
-    padding: 0 20px;
+  .light-header-container::before {
+    height: 0;
+  }
+  .light-header-container {
+    height: 100px;
+    border-bottom: none;
+    .header-box {
+      max-width: 480px;
+      padding: 0 20px;
+    }
   }
 }

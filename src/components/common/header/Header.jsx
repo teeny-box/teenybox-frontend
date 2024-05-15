@@ -18,6 +18,19 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState("");
   const { userData, setUserData } = useContext(AppContext);
   const location = useLocation();
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsWideScreen(window.innerWidth > 768);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
     // 페이지 URL에 따라 activeTab 상태를 변경
@@ -75,66 +88,82 @@ const Header = () => {
         width={450}
         color="secondary"
       />
-      <div className="header-container">
-        <div className="header-box">
-          <div className="vertical-box1">
-            <Link to="/">
-              <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
-            </Link>
-            {userData ? (
-              <div className="header-icon-box">
-                <MenuIcon className="buger-menu" style={{ textDecoration: "none" }}></MenuIcon>
-                <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
-                  <AccountCircleIcon className="header-icon" />
-                  <p className="header-icon-text">마이페이지</p>
-                </Link>
-                {userData.role === "admin" && (
-                  <Link to="/admin" style={{ textDecoration: "none" }} className="header-login-btn-box">
-                    <AdminPanelSettingsOutlinedIcon className="header-icon" />
-                    <p className="header-icon-text">관리자페이지</p>
-                  </Link>
-                )}
-                <div className="header-login-btn-box" onClick={handleLogout}>
-                  <LockOpenOutlinedIcon className="header-icon" />
-                  <p className="header-icon-text">로그아웃</p>
-                </div>
-              </div>
-            ) : (
-              <Link to="/signup-in" style={{ textDecoration: "none" }} className="header-login-btn-box">
-                <LockOutlinedIcon className="header-icon" />
-                <p className="header-icon-text">로그인</p>
+
+      {isWideScreen ? (
+        <div className="header-container">
+          <div className="header-box">
+            <div className="vertical-box1">
+              <Link to="/">
+                <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
               </Link>
-            )}
-          </div>
-          <div className="vertical-box2">
-            <div className="header-tab-box">
-              <div className="header-tab-box">
-                <div className="header-tab">
-                  <Link to="/play" className={`header-tab-text1 ${activeTab === "play" && "active"}`}>
-                    연극
+              {userData ? (
+                <div className="header-icon-box">
+                  <Link to="/mypages" style={{ textDecoration: "none" }} className="header-login-btn-box">
+                    <AccountCircleIcon className="header-icon" />
+                    <p className="header-icon-text">마이페이지</p>
                   </Link>
+                  {userData.role === "admin" && (
+                    <Link to="/admin" style={{ textDecoration: "none" }} className="header-login-btn-box">
+                      <AdminPanelSettingsOutlinedIcon className="header-icon" />
+                      <p className="header-icon-text">관리자페이지</p>
+                    </Link>
+                  )}
+                  <div className="header-login-btn-box" onClick={handleLogout}>
+                    <LockOpenOutlinedIcon className="header-icon" />
+                    <p className="header-icon-text">로그아웃</p>
+                  </div>
                 </div>
-                <div className="header-tab">
-                  <Link to="/promotion" className={`header-tab-text1 ${activeTab === "promotion" && "active"}`}>
-                    홍보
-                  </Link>
-                </div>
-                <div className="header-tab">
-                  <Link to="/community" className={`header-tab-text2 ${activeTab === "community" && "active"}`}>
-                    커뮤니티
-                  </Link>
-                </div>
-              </div>
+              ) : (
+                <Link to="/signup-in" style={{ textDecoration: "none" }} className="header-login-btn-box">
+                  <LockOutlinedIcon className="header-icon" />
+                  <p className="header-icon-text">로그인</p>
+                </Link>
+              )}
             </div>
-            <div className="search-container">
-              <div className="header-search-btn" onClick={onShowModal}>
-                {searchModalOpen || "search"}
+            <div className="vertical-box2">
+              <div className="header-tab-box">
+                <div className="header-tab-box">
+                  <div className="header-tab">
+                    <Link to="/play" className={`header-tab-text1 ${activeTab === "play" && "active"}`}>
+                      연극
+                    </Link>
+                  </div>
+                  <div className="header-tab">
+                    <Link to="/promotion" className={`header-tab-text1 ${activeTab === "promotion" && "active"}`}>
+                      홍보
+                    </Link>
+                  </div>
+                  <div className="header-tab">
+                    <Link to="/community" className={`header-tab-text2 ${activeTab === "community" && "active"}`}>
+                      커뮤니티
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <SearchRoundedIcon className="search-icon" onClick={onShowModal} />
+              <div className="search-container">
+                <div className="header-search-btn" onClick={onShowModal}>
+                  {searchModalOpen || "search"}
+                </div>
+                <SearchRoundedIcon className="search-icon" onClick={onShowModal} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        // 브라우저의 폭이 768 이하인 경우 모바일 헤더 랜더링
+        <div className="header-container">
+          <div className="header-box">
+            <div className="vertical-box1">
+              <Link to="/">
+                <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
+              </Link>
+              <div className="header-icon-box">
+                <MenuIcon className="buger-menu"></MenuIcon>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* 모달 */}
       {searchModalOpen && <SearchModal onCloseModal={onCloseModal} />}
     </>
