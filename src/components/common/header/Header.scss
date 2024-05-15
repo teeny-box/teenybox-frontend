@@ -138,7 +138,8 @@
   cursor: pointer;
 }
 .buger-menu {
-  display: none !important;
+  color: #ddd;
+  font-size: 32px !important;
 }
 @include desktop {
   .header-box {
@@ -162,15 +163,40 @@
 }
 
 @include tablet-vertical {
+  .header-container::before {
+    height: 0;
+  }
+  .header-container {
+    height: 100px;
+    border-bottom: none;
+  }
   .header-box {
     max-width: 768px;
     padding: 0 40px;
   }
+  .logo {
+    height: 60px;
+    width: 210px;
+    margin-top: 8px;
+    user-select: none;
+  }
 }
-
 @include moblie {
+  .header-container::before {
+    height: 0;
+  }
+  .header-container {
+    height: 100px;
+    border-bottom: none;
+  }
   .header-box {
     max-width: 480px;
     padding: 0 20px;
+  }
+  .logo {
+    height: 60px;
+    width: 210px;
+    margin-top: 8px;
+    user-select: none;
   }
 }
