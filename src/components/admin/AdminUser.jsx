@@ -11,7 +11,7 @@ import { userUrl } from "../../apis/apiURLs";
 const columns = [
   { field: "nickname", headerName: "닉네임", width: 146 },
   { field: "social_provider", headerName: "가입 경로", width: 146 },
-  { field: "role", headerName: "회원 등급", width: 146 },
+  { field: "role", headerName: "회원 권한", width: 146 },
   { field: "state", headerName: "회원 상태", width: 146 },
   {
     field: "createdAt",

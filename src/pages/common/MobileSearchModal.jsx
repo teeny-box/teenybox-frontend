@@ -1,0 +1,138 @@
+import React, { useState, useRef, useEffect } from "react";
+import "./MobileSearchModal.scss";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
+const MobileSearchModal = ({ onCloseModal }) => {
+  const inputRef = useRef(null);
+  const modalRef = useRef(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const [contentVisible, setContentVisible] = useState(true);
+  const [recentSearches, setRecentSearches] = useState([]);
+
+  const handleCloseStart = () => {
+    setIsClosing(true);
+    setContentVisible(false);
+    setTimeout(onCloseModal, 200); // 애니메이션 시간에 맞추어 모달을 닫습니다.
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus(); // input 요소에 포커스 주기
+    }
+
+    // 컴포넌트가 처음으로 렌더링될 때 로컬 스토리지에서 최근 검색어 가져오기
+    const storedRecentSearches = JSON.parse(localStorage.getItem("recentSearches"));
+    if (storedRecentSearches) {
+      setRecentSearches(storedRecentSearches);
+    }
+
+    // 스크롤 이벤트 추가
+    const handleScroll = (event) => {
+      const { target } = event;
+      if (!modalRef.current.contains(target)) {
+        handleCloseStart();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const sendUrl = (query) => {
+    let encodedQuery = "";
+
+    if (query.charAt(0) === "#") {
+      encodedQuery = encodeURIComponent(query.slice(1));
+      window.location.href = `/search?query=${encodedQuery}&category=홍보게시판&type=tag`;
+    } else {
+      encodedQuery = encodeURIComponent(query);
+      window.location.href = `/search?query=${encodedQuery}`;
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // 엔터 키를 누르면 검색어를 URL 쿼리로 전달
+      const searchQuery = inputRef.current.value.trim();
+      if (!searchQuery) return;
+      sendUrl(searchQuery);
+
+      // 최근 검색어 목록에서 입력한 검색어의 인덱스를 찾습니다.
+      const existingIndex = recentSearches.indexOf(searchQuery);
+
+      // 이미 최근 검색어 목록에 있는 검색어라면 해당 검색어를 배열에서 제거하고 다시 맨 앞에 추가
+      if (existingIndex !== -1) {
+        recentSearches.splice(existingIndex, 1);
+      }
+
+      // 새로운 검색어를 최상단에 추가
+      const updatedRecentSearches = [searchQuery, ...recentSearches.slice(0, 4)];
+      setRecentSearches(updatedRecentSearches);
+
+      // 로컬 스토리지에 최근 검색어 저장
+      localStorage.setItem("recentSearches", JSON.stringify(updatedRecentSearches));
+    }
+  };
+
+  const handleDeleteRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem("recentSearches");
+  }; // 비우기 클릭 시 로컬스토리지 비우기
+
+  const handleRecentSearchClick = (searchQuery) => {
+    // 검색을 실행
+    sendUrl(searchQuery);
+
+    // 최근 검색어 목록에서 클릭한 검색어의 인덱스를 찾습니다
+    const existingIndex = recentSearches.indexOf(searchQuery);
+
+    // 이미 최근 검색어 목록에 있는 검색어라면 해당 검색어를 배열에서 제거하고 다시 맨 앞에 추가
+    if (existingIndex !== -1) {
+      recentSearches.splice(existingIndex, 1);
+    }
+
+    // 클릭한 검색어를 최상단에 추가
+    const updatedRecentSearches = [searchQuery, ...recentSearches.slice(0, 4)];
+    setRecentSearches(updatedRecentSearches);
+
+    // 로컬 스토리지에 최근 검색어 저장
+    localStorage.setItem("recentSearches", JSON.stringify(updatedRecentSearches));
+  };
+
+  return (
+    <>
+      <div className="mobile-search-modal-backdrop" onClick={handleCloseStart}></div>
+      <div ref={modalRef} className={`mobile-search-modal-container ${isClosing ? "closing" : ""}`}>
+        <div className={`mobile-search-modal-box ${contentVisible ? "" : "hide-content"}`}>
+          <SearchRoundedIcon className="mobile-search-modal-search-icon" />
+          <input className="mobile-search-modal-input" ref={inputRef} placeholder="Teeny-Box.com 검색하기" onKeyDown={handleKeyDown}></input>
+          <div className="mobile-last-search-header-box">
+            <div className="mobile-last-search-title">최근 검색어</div>
+            <div className="mobile-last-search-delete" onClick={handleDeleteRecentSearches}>
+              <DeleteOutlineIcon className="mobile-last-search-delete-icon" />
+              검색 기록 삭제
+            </div>
+          </div>
+          <div className="recent-search-box">
+            {recentSearches.length > 0 ? (
+              recentSearches.slice(0, 5).map((search, index) => (
+                <div key={index} className="mobile-recent-search-contents">
+                  <p className="mobile-recent-search-text" onClick={() => handleRecentSearchClick(search)}>
+                    {search}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="mobile-no-recent-search-text">최근 검색어가 없습니다.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MobileSearchModal;
