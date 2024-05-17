@@ -14,7 +14,7 @@ import "./Header.scss";
 
 const Header = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태 추가
+  const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태
   const [activeTab, setActiveTab] = useState("");
   const { userData, setUserData } = useContext(AppContext);
   const location = useLocation();
@@ -158,7 +158,9 @@ const Header = () => {
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
               </Link>
               <div className="header-icon-box">
-                <MenuIcon className="buger-menu"></MenuIcon>
+                <Link to="/mobileMenu" style={{ textDecoration: "none" }} className="header-login-btn-box">
+                  <MenuIcon className="buger-menu"></MenuIcon>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,6 +1,8 @@
 export * from "./admin/Admin";
 
 export * from "./common/CommonLayout";
+export * from "./common/MobileMenuPage";
+export * from "./common/LightMobileMenuPage";
 
 export * from "./errorPage/ForbiddenPage";
 export * from "./errorPage/NotFoundPage";
@@ -33,3 +35,4 @@ export * from "./user/InputAdditionalInfo";
 export * from "./user/SignUp_In";
 
 export * from "./util/PrivacyPolicy";
+
