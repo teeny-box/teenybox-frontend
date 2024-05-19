@@ -99,7 +99,7 @@ export function MobileMenuPage() {
               />
               <div className="profile-info">
                 <p className="profile-text">어서오세요!</p>
-                <p className="user-nickname">김성재 님</p>
+                <p className="user-nickname">{userData.nickname} 님</p>
               </div>
             </div>
             <div className="logined-header-bottom-box">
