@@ -2,6 +2,7 @@
 
 .banner-layout-container {
   box-sizing: border-box;
+  width: 100%;
 }
 .swiper {
   width: 100%;
@@ -9,43 +10,36 @@
 .swiper-slide img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .swiper-pagination-bullet {
   background: #eee !important;
 }
 @include desktop {
   .banner-layout-container {
-    max-width: 1700px;
-    padding: 0 200px;
+    max-width: 1300px;
   }
 }
 
 @include laptop {
   .banner-layout-container {
-    max-width: 1300px;
-    padding: 0 100px;
+    max-width: 1100px;
   }
 }
 
 @include tablet-horizontal {
   .banner-layout-container {
-    max-width: 1024px;
-    padding: 0 40px;
+    max-width: 944px;
   }
 }
 
 @include tablet-vertical {
   .banner-layout-container {
-    max-width: 768px;
-    padding: 0 40px;
+    max-width: 688px;
   }
 }
 
 @include moblie {
   .banner-layout-container {
-    max-width: 480px;
-    padding: 0 20px;
+    max-width: 440px;
   }
 }
