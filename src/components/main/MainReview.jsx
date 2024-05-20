@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./MainReview.scss";
-import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
 import { reviewUrl, showUrl } from "../../apis/apiURLs";
 
 const MainReview = () => {
-  const [sliderIndex, setSliderIndex] = useState(1);
+  const [sliderIndex, setSliderIndex] = useState(2);
   const [isAnimating, setIsAnimating] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [shows, setShows] = useState({});
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +43,6 @@ const MainReview = () => {
 
         setReviews(reorderedReviews);
         setShows(showDetails); // 해당 리뷰들에 대한 연극 상세 정보
-        
       } catch (error) {
         console.error(error);
       }
@@ -51,23 +50,46 @@ const MainReview = () => {
     fetchReviewData();
   }, []);
 
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
+
+  const slideWidth =
+    innerWidth > 1700
+      ? 1300 / 2
+      : innerWidth > 1300
+        ? 1100 / 2
+        : innerWidth > 1024
+          ? (innerWidth - 200) / 2
+          : innerWidth > 768
+            ? innerWidth - 80
+            : innerWidth > 480
+              ? innerWidth - 80
+              : innerWidth - 40;
+
   // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
-  const wrapperStyles = isAnimating
-    ? {
-        display: "flex",
-        gap: "30px",
-        paddingLeft: "277.5px",
-        paddingRight: "277.5px",
-        transform: `translateX(-${sliderIndex * 555}px)`,
-        transition: "transform 0.4s ease",
-      }
-    : {
-        display: "flex",
-        gap: "30px",
-        paddingLeft: "277.5px",
-        paddingRight: "277.5px",
-        transform: `translateX(-${sliderIndex * 555}px)`,
-      };
+  const wrapperStyles =
+    innerWidth > 1024
+      ? isAnimating
+        ? {
+            transform: `translateX(-${(sliderIndex - 0.5) * slideWidth}px)`,
+            transition: "transform 0.4s ease",
+          }
+        : {
+            transform: `translateX(-${(sliderIndex - 0.5) * slideWidth}px)`,
+          }
+      : isAnimating
+        ? {
+            transform: `translateX(-${sliderIndex * slideWidth}px)`,
+            transition: "transform 0.4s ease",
+          }
+        : {
+            transform: `translateX(-${sliderIndex * slideWidth}px)`,
+          };
 
   useEffect(() => {
     if (sliderIndex === 12) {
@@ -112,10 +134,10 @@ const MainReview = () => {
           <p className="main-title">실시간 리뷰</p>
         </div>
       </div>
-      <div className="review-slide-container">
-        <ArrowBackIosIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
+      <div className="review-box-container">
+        <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
         <div className="review-box-wrap">
-          <div style={wrapperStyles}>
+          <div style={wrapperStyles} className="review-slide-wrapper">
             {reviews.map((review, index) => (
               <div key={index} className="review-box">
                 <div className="review-img-box">
@@ -127,10 +149,10 @@ const MainReview = () => {
                   <div className="main-review-header">
                     <p className="review-show-title">{trimText(review.show_title, 7)}</p>
                     {shows[review.show_id] && shows[review.show_id].show && (
-                    <p className="review-show-period">
-                      {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
+                      <p className="review-show-period">
+                        {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
                       </p>
-                      )}
+                    )}
                   </div>
                   <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
                     <div className="review-main-top">
@@ -157,23 +179,18 @@ const MainReview = () => {
                     </div>
                   </div>
                   <div className="main-review-footer">
-                    <a
-                      href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="contained" color="moreDarkGray" sx={{ width: "100px", height: "40px", color: "#eee", borderRadius: "7px" }}>
-                        예매하기
-                      </Button>
-                    </a>
-                    <Button
-                      variant="contained"
-                      color="darkGray"
-                      sx={{ width: "100px", height: "40px", color: "#111111", borderRadius: "7px" }}
-                      onClick={() => handleClickMoreReview(review.show_id)}
-                    >
+                    <div className="review-footer-btn1">
+                      <a
+                        href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <p className="review-footer-btn1-text">예매하기</p>
+                      </a>
+                    </div>
+                    <div className="review-footer-btn2" onClick={() => handleClickMoreReview(review.show_id)}>
                       후기더보기
-                    </Button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -31,7 +31,7 @@ const LightHeader = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
-  
+
   useEffect(() => {
     // 페이지 URL에 따라 activeTab 상태를 변경
     if (location.pathname === "/play") {
@@ -157,9 +157,9 @@ const LightHeader = () => {
               <Link to="/">
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo3.png`} alt="logo-image" to="/Main" />
               </Link>
-              <div className="header-icon-box">
+              <Link to="/lightMobileMenu" style={{ textDecoration: "none" }} className="header-login-btn-box">
                 <MenuIcon className="buger-menu"></MenuIcon>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

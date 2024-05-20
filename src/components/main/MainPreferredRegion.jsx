@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainPreferredRegion.scss";
+import { FormControl, Select, MenuItem } from "@mui/material";
 import { AppContext } from "../../App";
 import { showUrl } from "../../apis/apiURLs";
 
@@ -8,7 +9,16 @@ function MainPreferredRegion() {
   const { userData } = useContext(AppContext);
   const [selectedRegion, setSelectedRegion] = useState("");
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
+
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
 
   useEffect(() => {
     // userData가 있고 interested_area가 존재할 때 해당 지역으로 선택
@@ -73,30 +83,109 @@ function MainPreferredRegion() {
           <p className="main-title">지역별 신작</p>
         </div>
       </div>
-      <div className="region-list-container">
-        <ul className="region-list-box">
-          {regionArray.map((region) => (
-            <li key={region}>
-              <div className={`region-list ${selectedRegion === region ? "selected" : ""}`} onClick={() => handleRegionClick(region)}>
-                {region}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="main-region-play-container">
-        <div className="main-region-container">
-          {shows.map((show, index) => (
-            <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
-              <div className="main-region-play-img-box">
-                <img src={show.poster} alt={show.title} />
-              </div>
-              <p className="main-region-play-title">{formatTitle(show.title)}</p>
-              <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
-            </div>
-          ))}
+      {innerWidth > 1024 ? (
+        <div className="region-list-container">
+          <ul className="region-list-box">
+            {regionArray.map((region) => (
+              <li key={region}>
+                <div className={`region-list ${selectedRegion === region ? "selected" : ""}`} onClick={() => handleRegionClick(region)}>
+                  {region}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+      ) : innerWidth > 480 ? (
+        <div className="region-list-container">
+          <ul className="region-list-box">
+            {regionArray.slice(0, 4).map((region) => (
+              <li key={region}>
+                <div className={`region-list ${selectedRegion === region ? "selected" : ""}`} onClick={() => handleRegionClick(region)}>
+                  {region}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <ul className="region-list-box">
+            {regionArray.slice(4, 8).map((region) => (
+              <li key={region}>
+                <div className={`region-list ${selectedRegion === region ? "selected" : ""}`} onClick={() => handleRegionClick(region)}>
+                  {region}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="region-list-container">
+          <FormControl fullWidth>
+            <Select className="select-region-list" value={selectedRegion} onChange={(e) => handleRegionClick(e.target.value)} displayEmpty>
+              {regionArray.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+      )}
+      {innerWidth > 1700 ? (
+        <div className="main-region-play-container">
+          <div className="main-region-container">
+            {shows.map((show, index) => (
+              <div key={index} className="main-region-play-box" onClick={() => handleShowClick(show.showId)}>
+                <div className="main-region-play-img-box">
+                  <img src={show.poster} alt={show.title} />
+                </div>
+                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : innerWidth > 1024 ? (
+        <div className="main-region-play-container">
+          <div className="main-region-container">
+            {shows.slice(0, 8).map((show, index) => (
+              <div key={index} className="main-region-play-box" onClick={() => handleShowClick(show.showId)}>
+                <div className="main-region-play-img-box">
+                  <img src={show.poster} alt={show.title} />
+                </div>
+                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : innerWidth > 768 ? (
+        <div className="main-region-play-container">
+          <div className="main-region-container">
+            {shows.slice(0, 6).map((show, index) => (
+              <div key={index} className="main-region-play-box" onClick={() => handleShowClick(show.showId)}>
+                <div className="main-region-play-img-box">
+                  <img src={show.poster} alt={show.title} />
+                </div>
+                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="main-region-play-container">
+          <div className="main-region-container">
+            {shows.slice(0, 4).map((show, index) => (
+              <div key={index} className="main-region-play-box" onClick={() => handleShowClick(show.showId)}>
+                <div className="main-region-play-img-box">
+                  <img src={show.poster} alt={show.title} />
+                </div>
+                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

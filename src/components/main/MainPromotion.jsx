@@ -5,7 +5,16 @@ import { promotionUrl } from "../../apis/apiURLs";
 
 function MainPromotion() {
   const [promotions, setPromotions] = useState([]);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
+
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -85,20 +94,18 @@ function MainPromotion() {
         </div>
       </div>
       <div className="main-promotion-container">
-        <div>
-          <div className="promotion-box1">
-            {promotions.length > 0 && (
-              <div className="promotion-product1" onClick={() => handleProductClick(promotions[0].promotion_number)}>
-                <div className="main-promotion1-img-box">
-                  {promotions[0]?.image_url && <img src={promotions[0]?.image_url[0]} alt={promotions[0]?.play_title} />}
-                </div>
-                <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 20)}</p>
-                <p className="promotions-period">
-                  {formatDate(promotions[0]?.start_date)} ~ {formatDate(promotions[0]?.end_date)}
-                </p>
+        <div className="promotion-box1">
+          {promotions.length > 0 && (
+            <div className="promotion-product1" onClick={() => handleProductClick(promotions[0].promotion_number)}>
+              <div className="main-promotion1-img-box">
+                {promotions[0]?.image_url && <img src={promotions[0]?.image_url[0]} alt={promotions[0]?.play_title} />}
               </div>
-            )}
-          </div>
+              <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 16)}</p>
+              <p className="promotions-period">
+                {formatDate(promotions[0]?.start_date)} ~ {formatDate(promotions[0]?.end_date)}
+              </p>
+            </div>
+          )}
         </div>
         <div className="promotion-box2">
           {promotions.length > 1 &&
@@ -107,26 +114,28 @@ function MainPromotion() {
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
-                <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
+                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
                 <p className="promotions-period">
                   {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
                 </p>
               </div>
             ))}
         </div>
-        <div className="promotion-box3">
-          {promotions.slice(4, 7).map((promotion, index) => (
-            <div key={index} className="promotion-product" onClick={() => handleProductClick(promotion.promotion_number)}>
-              <div className="main-promotion-img-box">
-                {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
+        {innerWidth > 768 && (
+          <div className="promotion-box3">
+            {promotions.slice(4, 7).map((promotion, index) => (
+              <div key={index} className="promotion-product" onClick={() => handleProductClick(promotion.promotion_number)}>
+                <div className="main-promotion-img-box">
+                  {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
+                </div>
+                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
+                <p className="promotions-period">
+                  {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
+                </p>
               </div>
-              <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
-              <p className="promotions-period">
-                {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

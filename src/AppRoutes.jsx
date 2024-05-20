@@ -23,6 +23,8 @@ import {
   Main,
   Admin,
   SearchResultPage,
+  MobileMenuPage,
+  LightMobileMenuPage,
   CommonLayout,
   PrivacyPolicy,
   KakaoRedirection,
@@ -71,9 +73,11 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
         path="/*"
         element={
           <>
-            {location.pathname === "/" ? <Header/> : <LightHeader/>}
+            {location.pathname !== "/mobileMenu" && location.pathname !== "/lightMobileMenu" && (location.pathname === "/" ? <Header /> : <LightHeader />)}
             <CommonLayout setPrevPlayListQuery={setPrevPlayListQuery}>
               <Routes>
+                <Route path="/mobileMenu" element={<MobileMenuPage />} />
+                <Route path="/lightMobileMenu" element={<LightMobileMenuPage />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/signup-in" element={<SignUp_In />} />
                 <Route path="/additional-user-info" element={<InputAdditionalInfo />} />
@@ -100,7 +104,7 @@ export default function AppRoutes({ setPrevPlayListQuery }) {
                 <Route path="/*" element={<NotFoundRedirect />} />
               </Routes>
             </CommonLayout>
-            {location.pathname === "/" ? <Footer /> : <LightFooter/>}
+            {location.pathname !== "/mobileMenu" && location.pathname !== "/lightMobileMenu" && (location.pathname === "/" ? <Footer /> : <LightFooter />)}
           </>
         }
       />
