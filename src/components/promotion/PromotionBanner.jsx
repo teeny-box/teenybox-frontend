@@ -115,7 +115,11 @@ export function PromotionBanner() {
           </div>
         </div>
       ) : (
-        <Skeleton className="best-box" variant="rectangular" sx={{ borderRadius: "15px", marginBottom: "60px", marginTop: "30px" }} />
+        <Skeleton
+          className="promotion-banner-container skeleton"
+          variant="rectangular"
+          sx={{ borderRadius: "15px", marginBottom: "60px", marginTop: "30px" }}
+        />
       )}
     </>
   );

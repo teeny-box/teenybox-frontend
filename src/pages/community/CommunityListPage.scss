@@ -1,12 +1,39 @@
-.Community-page {
+@import "../../App.scss";
+@import "../../styles/mixin.scss";
+
+.Community-page.page-layout {
   font-family: "Noto Sans KR";
   width: 100%;
-  max-width: 1110px;
-  display: flex;
-  justify-content: space-between;
+  box-sizing: border-box;
+  margin-bottom: 100px;
+
+  .Community-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 
   .Community-left-container {
-    flex: 1 1;
+    @include desktop {
+      width: calc(100% - 230px);
+    }
+
+    @include laptop {
+      width: calc(100% - 230px);
+    }
+
+    @include tablet-vertical {
+      .create-button {
+        display: none;
+      }
+    }
+
+    @include moblie {
+      .create-button {
+        display: none;
+      }
+    }
+    width: 100%;
   }
 
   .flex-box {
@@ -18,12 +45,17 @@
   .header {
     width: 100%;
     padding: 10px 0;
-    border-bottom: #6b72804d solid 1px;
-    color: #7f7f7f;
+    border-bottom: #ffb400 solid 1px;
+    color: #555;
+    box-sizing: border-box;
+
+    @include moblie {
+      padding: 10px;
+    }
 
     .left {
-      font-weight: 500;
       font-size: 16px;
+      font-weight: 400;
       display: flex;
       align-items: center;
 

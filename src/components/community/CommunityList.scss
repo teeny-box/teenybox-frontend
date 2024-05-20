@@ -1,3 +1,5 @@
+@import "../../styles/mixin.scss";
+
 .progress {
   margin: auto;
 }
@@ -5,16 +7,26 @@
 .Community-list-box {
   display: flex;
   flex-direction: column;
+  border-bottom: #ffb400 1px solid;
 
   .content-box {
     width: 100%;
-    color: #787878;
+    color: #858585;
     display: flex;
     flex-direction: column;
-    border-bottom: #6b72804d solid 1px;
+    border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
     box-sizing: border-box;
-    padding: 16px 2px;
+    padding: 16px 10px;
     background-color: #fff;
+    flex-shrink: 1;
+
+    @include moblie {
+      padding: 16px 14px;
+    }
+
+    &:nth-last-child(1) {
+      border: none;
+    }
 
     .flex-box {
       display: flex;
@@ -23,13 +35,17 @@
 
     .top {
       font-size: 14px;
+      display: flex;
       align-items: center;
+      justify-content: flex-start;
 
       .user {
         display: flex;
         align-items: center;
+
         span {
-          margin-left: 6px;
+          margin-left: 5px;
+          margin-right: 3px;
         }
         .user-img {
           width: 20px;
@@ -38,14 +54,18 @@
           object-fit: cover;
         }
       }
+
+      .time {
+        margin-left: 3px;
+      }
     }
 
     .title {
       display: inline-block;
       color: #111827;
-      font-size: 17px;
-      font-weight: 500;
-      margin: 8px 0 5px;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 10px 0;
       height: 26px;
       line-height: 26px;
     }
@@ -70,23 +90,26 @@
         overflow: hidden;
 
         .tag {
-          flex: 0 0 auto;
           box-sizing: border-box;
-          background-color: #f3f4f6;
+          background-color: rgba(255, 180, 0, 0.3);
           margin-right: 6px;
           padding: 4px 9px;
-          border-radius: 10px;
+          border-radius: 100px;
           height: 22px;
 
           display: flex;
           flex-wrap: wrap;
           overflow: hidden;
 
-          a {
-            font-weight: 400;
+          span {
+            font-weight: 600;
             font-size: 12px;
-            color: #62676c;
+            color: #333;
             height: min-content;
+          }
+
+          &:hover {
+            background-color: rgb(255, 180, 0, 0.7);
           }
         }
       }
@@ -97,7 +120,7 @@
         justify-content: flex-end;
 
         .MuiSvgIcon-root {
-          margin-left: 10px;
+          margin-left: 12px;
         }
 
         span {
@@ -107,29 +130,33 @@
       }
     }
   }
+  &.fixed {
+    border-color: rgba(0, 0, 0, 0.1);
 
-  .content-box.fixed {
-    background-color: #fcf9f5;
-    padding: 16px 10px;
+    .content-box {
+      background-color: rgba(255, 179, 0, 0.1);
 
-    .notice {
-      margin: auto 0;
-      color: #eb0b0be8;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
+      .notice {
+        box-sizing: border-box;
+        margin-right: 6px;
+        padding: 4px 9px;
+        background-color: #fff;
+        border: 1px solid rgba(235, 11, 11);
+        border-radius: 100px;
+        height: 22px;
+        cursor: default;
 
-      span {
-        display: inline-block;
-        margin: auto 6px;
-        color: #d9d9d9;
-        font-size: 11px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+
+        span {
+          font-weight: 600;
+          font-size: 12px;
+          color: rgba(235, 11, 11);
+          height: min-content;
+        }
       }
-    }
-
-    .tags .tag {
-      // background-color: #f8efda;
-      background-color: #f1f1f1;
     }
   }
 }

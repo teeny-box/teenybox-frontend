@@ -45,7 +45,8 @@
   }
 }
 
-.promotion-banner-container {
+.promotion-banner-container,
+.promotion-banner-container.skeleton {
   width: 100%;
   height: 600px;
   overflow: hidden;

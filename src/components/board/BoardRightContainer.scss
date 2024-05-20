@@ -1,6 +1,18 @@
+@import "../../styles/mixin.scss";
+
 .Community-right-container {
-  width: 250px;
-  margin-left: 60px;
+  @include tablet-horizontal {
+    display: none;
+  }
+  @include tablet-vertical {
+    display: none;
+  }
+  @include moblie {
+    display: none;
+  }
+
+  width: 200px;
+  margin-left: 30px;
   flex-shrink: 0;
 
   .right-box {
@@ -9,9 +21,9 @@
     h4 {
       margin: 0;
       padding: 12px 0;
-      border-bottom: #dcdcdc solid 1px;
+      border-bottom: #ffb400 solid 1px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     li {
@@ -26,13 +38,14 @@
       .category {
         flex-shrink: 0;
         margin-right: 3px;
+        font-weight: 500;
 
-        &.promotion {
-          color: #b04c00;
-        }
-        &.community {
-          color: #4267b2;
-        }
+        // &.promotion {
+        //   color: #b04c00;
+        // }
+        // &.community {
+        //   color: #4267b2;
+        // }
       }
 
       p {

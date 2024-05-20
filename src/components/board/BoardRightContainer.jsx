@@ -1,6 +1,6 @@
 import { Children, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { VisibilityOutlined } from "@mui/icons-material";
 import "./BoardRightContainer.scss";
 import dayjs from "dayjs";
 import { commentUrl, postUrl, promotionUrl } from "../../apis/apiURLs";
@@ -159,15 +159,10 @@ export function BoardRightContainer({ post }) {
               viewList.map((_post) => (
                 <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
-                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
-                    </span>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
-                      <VisibilityOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(_post.views || 0)}</span>
-                      <ThumbUpOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(_post.likes || 0)}</span>
+                      <LiveTimeDiff time={_post.createdAt} />
                     </div>
                   </li>
                 </Link>
@@ -188,15 +183,11 @@ export function BoardRightContainer({ post }) {
                 <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
                     <span>{idx + 1}.&nbsp;</span>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
-                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
-                    </span>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
                       <VisibilityOutlined sx={{ fontSize: 12 }} />
                       <span>{numberFormat(_post.views || 0)}</span>
-                      <ThumbUpOutlined sx={{ fontSize: 12 }} />
-                      <span>{numberFormat(_post.likes || 0)}</span>
                     </div>
                   </li>
                 </Link>
@@ -214,9 +205,7 @@ export function BoardRightContainer({ post }) {
               latestList.map((_post) => (
                 <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>
-                      {_post.category ? `[홍보/${_post.category}]` : "[커뮤니티]"}
-                    </span>
+                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
                       <LiveTimeDiff time={_post.createdAt} />
@@ -248,7 +237,7 @@ export function BoardRightContainer({ post }) {
                 >
                   <li>
                     <span className={`category ${_post.promotion === null || _post.promotion ? "promotion" : "community"}`}>
-                      {_post.promotion === null ? "[홍보]" : _post.promotion ? `[홍보/${_post.promotion.category}]` : "[커뮤니티]"}
+                      {_post.promotion === null ? "[홍보]" : _post.promotion ? `[홍보]` : "[커뮤]"}
                     </span>
                     <p>{_post.content}</p>
                     <div className="right">
