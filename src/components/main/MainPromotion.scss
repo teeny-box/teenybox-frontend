@@ -90,13 +90,14 @@
   font-size: 14px;
 }
 
-@include desktop {
-}
-
-@include laptop {
-}
 
 @include tablet-horizontal {
+  .promotions-title {
+    font-size: 16px;
+  }
+  .promotions-period {
+    font-size: 12px;
+  }
 }
 
 @include tablet-vertical {
@@ -110,6 +111,12 @@
     width: 40%;
     height: 100%;
   }
+  .promotions-title {
+    font-size: 14px;
+  }
+  .promotions-period {
+    font-size: 10px;
+  }
 }
 
 @include moblie {
@@ -122,5 +129,11 @@
     gap: 40px;
     width: 40%;
     height: 100%;
+  }
+  .promotions-title {
+    font-size: 14px;
+  }
+  .promotions-period {
+    font-size: 10px;
   }
 }

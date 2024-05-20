@@ -100,7 +100,7 @@ function MainPromotion() {
               <div className="main-promotion1-img-box">
                 {promotions[0]?.image_url && <img src={promotions[0]?.image_url[0]} alt={promotions[0]?.play_title} />}
               </div>
-              <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 20)}</p>
+              <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 16)}</p>
               <p className="promotions-period">
                 {formatDate(promotions[0]?.start_date)} ~ {formatDate(promotions[0]?.end_date)}
               </p>
@@ -114,7 +114,7 @@ function MainPromotion() {
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
-                <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
+                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
                 <p className="promotions-period">
                   {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
                 </p>
@@ -128,7 +128,7 @@ function MainPromotion() {
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
-                <p className="promotions-title">{limitTitleLength(promotion.play_title, 14)}</p>
+                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
                 <p className="promotions-period">
                   {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
                 </p>

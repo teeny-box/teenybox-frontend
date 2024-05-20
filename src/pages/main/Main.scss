@@ -88,6 +88,9 @@
 }
 
 @include tablet-vertical {
+  .banner-container {
+    background-color: #282828;
+  }
   .best-container {
     height: 500px;
   }
@@ -107,6 +110,9 @@
 }
 
 @include moblie {
+  .banner-container {
+    background-color: #282828;
+  }
   .best-container {
     height: 450px;
   }
