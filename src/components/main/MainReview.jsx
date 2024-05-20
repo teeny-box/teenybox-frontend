@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./MainReview.scss";
-import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -180,23 +179,18 @@ const MainReview = () => {
                     </div>
                   </div>
                   <div className="main-review-footer">
-                    <a
-                      href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="contained" color="moreDarkGray" sx={{ width: "100px", height: "40px", color: "#eee", borderRadius: "7px" }}>
-                        예매하기
-                      </Button>
-                    </a>
-                    <Button
-                      variant="contained"
-                      color="darkGray"
-                      sx={{ width: "100px", height: "40px", color: "#111111", borderRadius: "7px" }}
-                      onClick={() => handleClickMoreReview(review.show_id)}
-                    >
+                    <div className="review-footer-btn1">
+                      <a
+                        href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <p className="review-footer-btn1-text">예매하기</p>
+                      </a>
+                    </div>
+                    <div className="review-footer-btn2" onClick={() => handleClickMoreReview(review.show_id)}>
                       후기더보기
-                    </Button>
+                    </div>
                   </div>
                 </div>
               </div>
