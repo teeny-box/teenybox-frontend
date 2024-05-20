@@ -69,21 +69,12 @@
   box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.3);
   transition: transform 0.25s ease;
   .review-show-title {
-    font-size: 20px;
     font-weight: 500;
   }
   .review-show-period {
-    font-size: 11px;
     font-weight: 400;
   }
-  .main-review-title {
-    font-size: 16px;
-  }
-  .main-review-rating {
-    font-size: 14px;
-  }
   p {
-    font-size: 14px;
     color: #eee;
   }
 }
@@ -142,7 +133,6 @@
   justify-content: flex-end;
   gap: 12px;
   width: 100%;
-  font-size: 14px;
   button:hover {
     cursor: pointer;
     filter: brightness(120%);
@@ -165,6 +155,38 @@
   justify-content: flex-end;
   width: 90%;
   font-weight: 200;
+}
+.review-footer-btn1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  aspect-ratio: 5 / 2;
+  border-radius: 7px !important;
+  background-color: rgb(40, 40, 40);
+  cursor: pointer;
+}
+.review-footer-btn1:hover {
+  filter: brightness(120%);
+}
+.review-footer-btn1-text {
+  color: rgb(238, 238, 238);
+  font-weight: 500;
+}
+.review-footer-btn2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  aspect-ratio: 5 / 2;
+  border-radius: 7px !important;
+  background-color: rgb(137, 137, 137);
+  color: rgb(17, 17, 17);
+  font-weight: 500;
+  cursor: pointer;
+}
+.review-footer-btn2:hover {
+  filter: brightness(120%);
 }
 
 @include desktop {
@@ -204,6 +226,30 @@
     }
     .review-box-wrap::after {
       right: 0px;
+    }
+    .review-show-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .review-show-period {
+      font-size: 11px;
+      font-weight: 400;
+    }
+    .main-review-title {
+      font-size: 16px;
+    }
+    .main-review-rating {
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+      color: #eee;
+    }
+    .review-footer-btn1-text {
+      font-size: 12px;
+    }
+    .review-footer-btn2 {
+      font-size: 12px;
     }
   }
 }
@@ -252,6 +298,30 @@
     .review-box-wrap::after {
       right: 0px;
     }
+    .review-show-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .review-show-period {
+      font-size: 8px;
+      font-weight: 400;
+    }
+    .main-review-title {
+      font-size: 12px;
+    }
+    .main-review-rating {
+      font-size: 10px;
+    }
+    p {
+      font-size: 11px;
+      color: #eee;
+    }
+    .review-footer-btn1-text {
+      font-size: 12px;
+    }
+    .review-footer-btn2 {
+      font-size: 12px;
+    }
   }
 }
 
@@ -273,6 +343,30 @@
     }
     .review-slide-wrapper {
       width: 1400%;
+    }
+    .review-show-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .review-show-period {
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .main-review-title {
+      font-size: 16px;
+    }
+    .main-review-rating {
+      font-size: 12px;
+    }
+    p {
+      font-size: 14px;
+      color: #eee;
+    }
+    .review-footer-btn1-text {
+      font-size: 16px;
+    }
+    .review-footer-btn2 {
+      font-size: 16px;
     }
   }
 }
@@ -296,6 +390,30 @@
     .review-slide-wrapper {
       width: 1400%;
     }
+    .review-show-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .review-show-period {
+      font-size: 8px;
+      font-weight: 400;
+    }
+    .main-review-title {
+      font-size: 12px;
+    }
+    .main-review-rating {
+      font-size: 10px;
+    }
+    p {
+      font-size: 11px;
+      color: #eee;
+    }
+    .review-footer-btn1-text {
+      font-size: 12px;
+    }
+    .review-footer-btn2 {
+      font-size: 12px;
+    }
   }
 }
 
@@ -317,6 +435,30 @@
     }
     .review-slide-wrapper {
       width: 1400%;
+    }
+    .review-show-title {
+      font-size: 8px;
+      font-weight: 500;
+    }
+    .review-show-period {
+      font-size: 3px;
+      font-weight: 400;
+    }
+    .main-review-title {
+      font-size: 8px;
+    }
+    .main-review-rating {
+      font-size: 8px;
+    }
+    p {
+      font-size: 7px;
+      color: #eee;
+    }
+    .review-footer-btn1-text {
+      font-size: 10px;
+    }
+    .review-footer-btn2 {
+      font-size: 10px;
     }
   }
 }
