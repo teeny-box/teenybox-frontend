@@ -34,12 +34,14 @@
 
 @include tablet-vertical {
   .banner-layout-container {
-    max-width: 688px;
+    max-width: 768px;
+    padding: 0 40px;
   }
 }
 
 @include moblie {
   .banner-layout-container {
-    max-width: 440px;
+    max-width: 480px;
+    padding: 0 20px;
   }
 }
