@@ -64,7 +64,16 @@
   display: flex;
   align-items: center;
   width: 100%;
-  color: #6b72805b;
+  color: rgb(0, 0, 0, 0.5);
+  margin-bottom: 30px;
+
+  @include tablet-vertical {
+    margin-bottom: 10px;
+  }
+
+  @include moblie {
+    margin-bottom: 10px;
+  }
 
   .click-box {
     display: flex;
@@ -72,15 +81,8 @@
   }
 
   .header-title {
-    margin: 0 8px 2px 4px;
+    margin: 0 4px 2px 4px;
     font-size: 14px;
-    font-weight: 500;
-  }
-
-  hr {
-    flex-grow: 1;
-    border: none;
-    background-color: #6b72804d;
-    height: 1px;
+    font-weight: 700;
   }
 }

@@ -1,8 +1,8 @@
+import "./CommentsList.scss";
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Comment } from "./Comment";
-import "./CommentsList.scss";
 import { commentUrl } from "../../apis/apiURLs";
 import { AlertContext, AppContext } from "../../App";
 

@@ -34,7 +34,6 @@ export function BoardSecondHeader({ header }) {
         <KeyboardDoubleArrowLeftOutlined sx={{ fontSize: 18 }} />
         <span className="header-title">{header}</span>
       </div>
-      <hr />
     </div>
   );
 }

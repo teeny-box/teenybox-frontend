@@ -32,10 +32,10 @@ export function CommentForm({ createComment }) {
           }}
         />
         <textarea id="comment" value={inputComment} onChange={(e) => setInputComment(e.target.value)} placeholder="댓글을 작성하세요."></textarea>
+        <Button onClick={handleClick} color="secondary" size="small" className="btn" disableTouchRipple>
+          등록
+        </Button>
       </div>
-      <Button onClick={handleClick} color="secondary" variant="contained" size="small" className="btn">
-        댓글쓰기
-      </Button>
     </div>
   );
 }

@@ -1,9 +1,8 @@
 .nav-box {
   display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
+  gap: 10px;
+  padding-top: 50px;
   box-sizing: border-box;
-  border-top: #bcbcbc5b solid 1px;
   color: #111827;
 
   .point {

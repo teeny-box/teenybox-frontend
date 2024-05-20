@@ -16,7 +16,7 @@ export function BoardNav({ point, text, onclick }) {
         <span className="point">{point}</span>
         <span>{text}</span>
       </div>
-      <LoopIcon onClick={handleClick} color="secondary" className={`refresh pointer ${toggle && "start"}`} />
+      <LoopIcon fontSize="small" onClick={handleClick} color="secondary" className={`refresh pointer ${toggle && "start"}`} />
     </div>
   );
 }
