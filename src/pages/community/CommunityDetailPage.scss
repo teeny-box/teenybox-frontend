@@ -4,7 +4,7 @@
   font-family: "Noto Sans KR";
   width: 100%;
   box-sizing: border-box;
-  margin: 50px 0 100px;
+  margin: 50px auto 100px;
   display: flex;
   justify-content: space-between;
 
@@ -32,15 +32,23 @@
     display: flex;
     flex-direction: column;
 
-    .back-btn {
+    .btn {
+      float: right;
       width: 60px;
       height: 30px;
       font-family: "Nanum Gothic", "Noto Sans KR";
-      margin: 10px 20px;
+      margin: 10px 0 10px 10px;
       align-self: flex-end;
       background-color: #fff;
       border: 1px solid rgb(0, 0, 0, 0.3);
       border-radius: 10px;
+      cursor: pointer;
+
+      &.black {
+        background-color: #000;
+        color: #fff;
+        border: none;
+      }
     }
   }
 }

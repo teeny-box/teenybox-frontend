@@ -17,12 +17,6 @@ export default function CommunityPost({ post, totalCommentCount }) {
   const { setOpenLoginAlert, setOpenFetchErrorAlert } = useContext(AlertContext);
   const { userData } = useContext(AppContext);
 
-  useEffect(() => {
-    if (userData?._id) {
-      setIsLiked(post.likedUsers.includes(userData?._id));
-    }
-  }, [userData]);
-
   const handleClickLikes = async () => {
     try {
       if (isLiked) {
@@ -54,6 +48,12 @@ export default function CommunityPost({ post, totalCommentCount }) {
       setOpenFetchErrorAlert(true);
     }
   };
+
+  useEffect(() => {
+    if (userData?._id) {
+      setIsLiked(post.likedUsers.includes(userData?._id));
+    }
+  }, [userData]);
 
   return (
     <div className="Community-post">

@@ -2,7 +2,6 @@ import "./CommunityDetailPage.scss";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgress, Backdrop } from "@mui/material";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
 import { Helmet } from "react-helmet-async";
 import CommunityPost from "../../components/community/CommunityPost";
 import { AlertCustom } from "../../components/common/alert/Alerts";
@@ -195,16 +194,23 @@ export function CommunityDetailPage() {
                   <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
                 </Helmet>
                 {post._id && <CommunityPost post={post} totalCommentCount={totalCount} />}
-                <button className="back-btn pointer" color="inherit" onClick={() => nav(`/community`)}>
-                  목록
-                </button>
+
                 <div className="comment-top">
-                  {userData?.nickname === post?.user_id.nickname && (
-                    <>
-                      <EditOutlined onClick={handleEditButtonClick} />
-                      <DeleteOutline onClick={handleDeleteButtonClick} />
-                    </>
-                  )}
+                  <div>
+                    <button className="btn" onClick={() => nav(`/community`)}>
+                      목록
+                    </button>
+                    {userData?.nickname === post?.user_id.nickname && (
+                      <>
+                        <button className="black btn" onClick={handleEditButtonClick}>
+                          수정
+                        </button>
+                        <button className="black btn" onClick={handleDeleteButtonClick}>
+                          삭제
+                        </button>
+                      </>
+                    )}
+                  </div>
                   <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
                   <CommentForm createComment={createComment} postId={post?._id} />
                 </div>

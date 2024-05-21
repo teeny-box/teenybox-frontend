@@ -43,7 +43,7 @@ export default function CommunityList({ boardList, isFixed }) {
                 )}
                 {Children.toArray(
                   post.tags.map((tag) => (
-                    <Link to={`/search?query=${tag}&category=홍보게시판&type=tag`} className="tag">
+                    <Link to={`/search?query=${tag}&category=커뮤니티&type=tag`} className="tag">
                       <span># {tag}</span>
                     </Link>
                   )),
