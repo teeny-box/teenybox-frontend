@@ -105,37 +105,64 @@ function MainBest() {
 
   const formatTitle = (title) => (title.length > 13 ? title.slice(0, 13) : title);
   return (
-    <div className="main-layout-container">
-      <div className="main-title-box">
-        <div>
-          <p className="main-sub-title">보고 또 봐도 좋은</p>
-          <p className="main-title">국내 베스트 연극</p>
-        </div>
-        <div className="main-slide-btn-box">
-          <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-icon" />
-          <ArrowForwardIosIcon onClick={handleRightClick} className="slide-icon" />
-        </div>
-      </div>
-      <div className="main-play-container">
-        <div style={wrapperStyles} className="slide-wrapper">
-          {shows.map((show, index) => (
-            <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
-              <div className="main-play-img-box">
-                <img src={show.poster} alt={show.title} />
-                <p className="best-overlay-rank">{show.newRank}</p>
-              </div>
-              <p className="main-play-title">{formatTitle(show.title)}</p>
-              <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+    <>
+      {innerWidth > 1024 ? (
+        <div className="main-layout-container">
+          <div className="main-title-box">
+            <div>
+              <p className="main-sub-title">보고 또 봐도 좋은</p>
+              <p className="main-title">국내 베스트 연극</p>
             </div>
-          ))}
+            <div className="main-slide-btn-box">
+              <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-icon" />
+              <ArrowForwardIosIcon onClick={handleRightClick} className="slide-icon" />
+            </div>
+          </div>
+          <div className="main-play-container">
+            <div style={wrapperStyles} className="slide-wrapper">
+              {shows.map((show, index) => (
+                <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
+                  <div className="main-play-img-box">
+                    <img src={show.poster} alt={show.title} />
+                    <p className="best-overlay-rank">{show.newRank}</p>
+                  </div>
+                  <p className="main-play-title">{formatTitle(show.title)}</p>
+                  <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="slide-info-box">
+            <p className={`slide-info ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>.</p>
+            <p className={`slide-info ${sliderIndex === 2 ? "active" : ""}`}>.</p>
+            <p className={`slide-info ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>.</p>
+          </div>
         </div>
-      </div>
-      <div className="slide-info-box">
-        <p className={`slide-info ${sliderIndex === 4 || sliderIndex === 1 ? "active" : ""}`}>.</p>
-        <p className={`slide-info ${sliderIndex === 2 ? "active" : ""}`}>.</p>
-        <p className={`slide-info ${sliderIndex === 3 || sliderIndex === 0 ? "active" : ""}`}>.</p>
-      </div>
-    </div>
+      ) : (
+        <div className="main-layout-container">
+          <div className="main-title-box">
+            <div>
+              <p className="main-sub-title">보고 또 봐도 좋은</p>
+              <p className="main-title">국내 베스트 연극</p>
+            </div>
+          </div>
+          <div className="main-play-container">
+            <div className="slide-wrapper">
+              {shows.slice(6, 24).map((show, index) => (
+                <div key={index} className="main-play-box" onClick={() => handleShowClick(show.showId)}>
+                  <div className="main-play-img-box">
+                    <img src={show.poster} alt={show.title} />
+                    <p className="best-overlay-rank">{show.newRank}</p>
+                  </div>
+                  <p className="main-play-title">{formatTitle(show.title)}</p>
+                  <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

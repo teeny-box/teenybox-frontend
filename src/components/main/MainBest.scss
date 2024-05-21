@@ -51,21 +51,11 @@
 .slide-icon:hover {
   cursor: pointer;
   color: white;
-  transform: scale(1.2);
   transition: transform 0.1s ease;
-}
-.main-play-container {
-  width: 100%;
-  overflow: hidden;
-}
-.slide-wrapper {
-  display: flex;
-  width: 500%;
 }
 .main-play-box {
   display: flex;
   flex-direction: column;
-  text-align: center;
   width: 100%;
   margin: 0 10px;
 }
@@ -102,12 +92,12 @@
 .main-play-title {
   color: #eee;
   margin: 12px 0 8px 0;
-  font-size: 16px;
+  font-size: 0.8vw;
   font-weight: 300;
 }
 .main-play-period {
   color: #bbb;
-  font-size: 14px;
+  font-size: 0.7vw;
   margin: 0px;
 }
 
@@ -116,8 +106,22 @@
     max-width: 1700px;
     padding: 0 200px;
   }
+  .main-play-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .slide-wrapper {
+    display: flex;
+    width: 500%;
+  }
   .slide-icon {
     font-size: 30px !important;
+  }
+  .main-play-title {
+    font-size: 16px;
+  }
+  .main-play-period {
+    font-size: 14px;
   }
 }
 
@@ -125,6 +129,14 @@
   .main-layout-container {
     max-width: 1300px;
     padding: 0 100px;
+  }
+  .main-play-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .slide-wrapper {
+    display: flex;
+    width: 500%;
   }
   .slide-icon {
     font-size: 24px !important;
@@ -134,20 +146,87 @@
 @include tablet-horizontal {
   .main-layout-container {
     max-width: 1024px;
-    padding: 0 40px;
+    padding: 0 0 0 40px;
+  }
+  .main-play-container {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox용 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE와 Edge용 스크롤바 숨기기 */
+  }
+  .main-play-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
+  }
+  .slide-wrapper {
+    display: flex;
+    width: 390%;
+  }
+  .main-play-title {
+    font-size: 1.4vw;
+  }
+  .main-play-period {
+    font-size: 1.2vw;
+  }
+  .slide-icon:hover {
+    cursor: pointer;
+    color: white;
+  }
+  .main-play-title {
+    font-size: 1.6vw;
+  }
+  .main-play-period {
+    font-size: 1.4vw;
   }
 }
 
 @include tablet-vertical {
   .main-layout-container {
     max-width: 768px;
-    padding: 0 40px;
+    padding: 0 0 0 40px;
+  }
+  .main-play-container {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox용 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE와 Edge용 스크롤바 숨기기 */
+  }
+  .main-play-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
+  }
+  .slide-wrapper {
+    display: flex;
+    width: 500%;
+  }
+  .main-play-title {
+    font-size: 2vw;
+  }
+  .main-play-period {
+    font-size: 1.6vw;
   }
 }
 
 @include moblie {
   .main-layout-container {
     max-width: 480px;
-    padding: 0 20px;
+    padding: 0 0 0 20px;
+  }
+  .main-play-container {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox용 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE와 Edge용 스크롤바 숨기기 */
+  }
+  .main-play-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
+  }
+  .slide-wrapper {
+    display: flex;
+    width: 700%;
+  }
+  .main-play-title {
+    font-size: 3vw;
+  }
+  .main-play-period {
+    font-size: 2vw;
   }
 }

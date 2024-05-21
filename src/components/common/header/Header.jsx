@@ -158,7 +158,7 @@ const Header = () => {
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
               </Link>
               <div className="header-icon-box">
-                <Link to="/mobileMenu" style={{ textDecoration: "none" }} className="header-login-btn-box">
+                <Link className="menu-btn-box" to="/mobileMenu" style={{ textDecoration: "none" }} >
                   <MenuIcon className="buger-menu"></MenuIcon>
                 </Link>
               </div>
