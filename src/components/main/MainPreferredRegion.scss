@@ -1,5 +1,14 @@
 @import "../../styles/mixin.scss";
 
+.main-region-layout-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+  box-sizing: border-box;
+}
 .region-list-container {
   display: flex;
   flex-direction: column;
@@ -93,9 +102,17 @@
 }
 
 @include desktop {
+  .main-region-layout-container {
+    max-width: 1700px;
+    padding: 0 200px;
+  }
 }
 
 @include laptop {
+  .main-region-layout-container {
+    max-width: 1300px;
+    padding: 0 100px;
+  }
   .main-region-container {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 24px;
@@ -103,6 +120,10 @@
 }
 
 @include tablet-horizontal {
+  .main-region-layout-container {
+    max-width: 1024px;
+    padding: 0 40px;
+  }
   .main-region-container {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
@@ -110,15 +131,33 @@
 }
 
 @include tablet-vertical {
+  .main-region-layout-container {
+    max-width: 768px;
+    padding: 0 40px;
+  }
   .main-region-container {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
+  .region-list {
+    font-size: 14px;
+
+  }
 }
 
 @include moblie {
+  .main-region-layout-container {
+    max-width: 480px;
+    padding: 0 20px;
+  }
   .main-region-container {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+  }
+  .main-region-play-title {
+    font-size: 14px;
+  }
+  .main-region-play-period {
+    font-size: 12px;
   }
 }

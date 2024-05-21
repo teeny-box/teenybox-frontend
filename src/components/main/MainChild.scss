@@ -2,7 +2,7 @@
 
 .main-child-play-period {
   color: #40a86d;
-  font-size: 0.8vw;
+  font-size: 0.7vw;
   font-weight: 400;
   margin: 0px;
 }
@@ -27,5 +27,6 @@
 @include moblie {
   .main-child-play-period {
     font-size: 2vw;
+    margin-bottom: 2px;
   }
 }

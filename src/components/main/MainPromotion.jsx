@@ -86,7 +86,7 @@ function MainPromotion() {
   }
 
   return (
-    <div className="main-layout-container">
+    <div className="main-promotion-layout-container">
       <div className="main-title-box-center">
         <div className="main-center-title">
           <p className="main-sub-title">숨소리까지 들리는 생생함</p>
@@ -109,7 +109,7 @@ function MainPromotion() {
         </div>
         <div className="promotion-box2">
           {promotions.length > 1 &&
-            promotions.slice(1, 4).map((promotion, index) => (
+            promotions.slice(1, innerWidth > 768 ? 4 : 5).map((promotion, index) => (
               <div key={index} className="promotion-product" onClick={() => handleProductClick(promotion.promotion_number)}>
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
