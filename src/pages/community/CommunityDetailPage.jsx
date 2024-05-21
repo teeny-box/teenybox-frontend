@@ -147,7 +147,7 @@ export function CommunityDetailPage() {
   };
 
   const handleEditButtonClick = () => {
-    nav(`/community/edit/${post.post_number || post.promotion_number}`);
+    nav(`/community/edit/${post.post_number}`);
   };
 
   const handleDeleteButtonClick = () => {

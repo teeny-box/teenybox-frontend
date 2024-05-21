@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async";
 import PromotionPost from "../../components/promotion/PromotionPost";
 import { AlertCustom } from "../../components/common/alert/Alerts";
 import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
-import { commentUrl, postUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
+import { commentUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
 import { COMMENTS_LIMIT } from "../../utils/const";
@@ -125,13 +125,13 @@ export function PromotionDetailPage() {
 
   const deletePost = async () => {
     try {
-      const res = await fetch(`${postUrl}/${post.post_number}`, {
+      const res = await fetch(`${promotionUrl}/${post.promotion_number}`, {
         method: "DELETE",
         credentials: "include",
       });
 
       if (res.ok) {
-        nav(`/community`);
+        nav(`/promotion`);
       } else {
         const data = await res.json();
         console.error(data);
@@ -142,7 +142,7 @@ export function PromotionDetailPage() {
   };
 
   const handleEditButtonClick = () => {
-    nav(`/community/edit/${post.post_number || post.promotion_number}`);
+    nav(`/promotion/edit/${post.promotion_number}`);
   };
 
   const handleDeleteButtonClick = () => {
