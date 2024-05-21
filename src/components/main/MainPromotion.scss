@@ -29,7 +29,6 @@
 .promotion-product1 {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 6px;
   position: sticky;
   top: 0;
@@ -51,7 +50,6 @@
 .promotion-product {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 6px;
   cursor: pointer;
 }
@@ -81,11 +79,13 @@
 }
 .promotions-title {
   display: flex;
+  margin-left: 2%;
   font-weight: 400;
   color: #ddd;
   font-size: 20px;
 }
 .promotions-period {
+  margin-left: 2%;
   color: #aaa;
   font-size: 14px;
 }

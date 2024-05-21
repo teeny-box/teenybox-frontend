@@ -137,9 +137,16 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+.menu-btn-box{
+  display: flex;
+  align-items: center;
+}
 .buger-menu {
   color: #ddd;
-  font-size: 32px !important;
+  font-size: 40px !important;
+}
+.buger-menu:hover {
+  color: #eee;
 }
 @include desktop {
   .header-box {
