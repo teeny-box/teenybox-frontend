@@ -193,6 +193,12 @@
   .main-play-container::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
   }
+  .main-sub-title {
+    font-size: 14px;
+  }
+  .main-title {
+    font-size: 26px;
+  }
   .slide-wrapper {
     display: flex;
     width: 500%;
@@ -218,6 +224,12 @@
   }
   .main-play-container::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
+  }
+  .main-sub-title {
+    font-size: 12px;
+  }
+  .main-title {
+    font-size: 20px;
   }
   .slide-wrapper {
     display: flex;
