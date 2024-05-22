@@ -47,8 +47,8 @@
     background-color 0.2s ease;
 }
 .select-region-list {
-  width: 350px;
-  height: 45px;
+  width: 70vw;
+  height: 40px;
   text-align: center;
   color: #eee !important;
   border: 1px solid #eee;
@@ -128,6 +128,12 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
   }
+  .main-region-play-title {
+    font-size: 14px;
+  }
+  .main-region-play-period {
+    font-size: 12px;
+  }
 }
 
 @include tablet-vertical {
@@ -141,7 +147,12 @@
   }
   .region-list {
     font-size: 14px;
-
+  }
+  .main-region-play-title {
+    font-size: 12px;
+  }
+  .main-region-play-period {
+    font-size: 10px;
   }
 }
 
@@ -155,9 +166,9 @@
     gap: 20px;
   }
   .main-region-play-title {
-    font-size: 14px;
+    font-size: 10px;
   }
   .main-region-play-period {
-    font-size: 12px;
+    font-size: 8px;
   }
 }
