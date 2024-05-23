@@ -145,7 +145,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
   };
 
   const handleChangeContent = () => {
-    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    const editorMarkdown = editorRef.current.getInstance().getHTML();
     console.log(editorMarkdown);
     setInputContent(editorMarkdown);
     if (editorMarkdown.length < 3) {

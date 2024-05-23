@@ -70,7 +70,7 @@ export function PromotionNoticeForm({ setInput, handleCancle, setIsNotice, userR
   const handleClickSubmitButton = () => {
     setSubmit(true);
 
-    if (errorTitle ) {
+    if (errorTitle) {
       document.querySelector("#title").focus();
     } else if (errorContent) {
       // document.querySelector("#content").focus();
@@ -102,7 +102,7 @@ export function PromotionNoticeForm({ setInput, handleCancle, setIsNotice, userR
   };
 
   const handleChangeContent = () => {
-    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    const editorMarkdown = editorRef.current.getInstance().getHTML();
     console.log(editorMarkdown);
     setInputContent(editorMarkdown);
     if (editorMarkdown.length < 3) {

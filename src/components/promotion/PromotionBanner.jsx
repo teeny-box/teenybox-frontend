@@ -30,10 +30,6 @@ export function PromotionBanner() {
       {bannerList.length ? (
         <div className="swiper-wrapper promotion-banner-container">
           <Swiper
-            onSlideChange={(swiper) => {
-              console.log(swiper);
-              // setBannerIndex(swiper.realIndex);
-            }}
             navigation={true}
             pagination={true}
             modules={[Pagination, Navigation, EffectFade, Autoplay]}

@@ -89,7 +89,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
   };
 
   const handleContentChange = () => {
-    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    const editorMarkdown = editorRef.current.getInstance().getHTML();
     console.log(editorMarkdown);
     setInputContent(editorMarkdown);
     if (editorMarkdown.length < 1) {
