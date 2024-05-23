@@ -76,7 +76,7 @@ function MainPreferredRegion() {
   const regionArray = ["서울", "경기/인천", "강원", "대전/충청", "광주/전라", "대구/경상", "부산/울산", "제주"];
 
   return (
-    <div className="main-layout-container">
+    <div className="main-region-layout-container">
       <div className="main-title-box-center">
         <div className="main-center-title">
           <p className="main-sub-title">어디서든 연극을 즐겨요</p>

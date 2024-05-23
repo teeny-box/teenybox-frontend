@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
 import "./MainReview.scss";
+import { Pagination } from "swiper/modules";
 import Rating from "@mui/material/Rating";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -134,71 +138,144 @@ const MainReview = () => {
           <p className="main-title">실시간 리뷰</p>
         </div>
       </div>
-      <div className="review-box-container">
-        <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
-        <div className="review-box-wrap">
-          <div style={wrapperStyles} className="review-slide-wrapper">
-            {reviews.map((review, index) => (
-              <div key={index} className="review-box">
-                <div className="review-img-box">
-                  {shows[review.show_id] && shows[review.show_id].show && (
-                    <img src={shows[review.show_id].show.poster} alt="review-thumbnail" onClick={() => handleShowClick(review.show_id)} />
-                  )}
-                </div>
-                <div className="main-review-content">
-                  <div className="main-review-header">
-                    <p className="review-show-title">{trimText(review.show_title, 7)}</p>
+      {innerWidth > 1024 ? (
+        <div className="review-box-container">
+          <ArrowBackIosNewIcon onClick={handleLeftClick} className="slide-left-icon" style={{ fontSize: 32 }} />
+          <div className="review-box-wrap">
+            <div style={wrapperStyles} className="review-slide-wrapper">
+              {reviews.map((review, index) => (
+                <div key={index} className="review-box">
+                  <div className="review-img-box">
                     {shows[review.show_id] && shows[review.show_id].show && (
-                      <p className="review-show-period">
-                        {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
-                      </p>
+                      <img src={shows[review.show_id].show.poster} alt="review-thumbnail" onClick={() => handleShowClick(review.show_id)} />
                     )}
                   </div>
-                  <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
-                    <div className="review-main-top">
-                      <p className="main-review-title">{trimText(review.title, 10)}</p>
-                      <Rating
-                        className="main-review-rating"
-                        value={review.rate}
-                        readOnly
-                        precision={0.5}
-                        size="inherit"
-                        sx={{
-                          "& .MuiRating-iconFilled": {
-                            color: "#eee",
-                          },
-                          "& .MuiRating-iconEmpty": {
-                            color: "#bbb",
-                          },
-                        }}
-                      />
+                  <div className="main-review-content">
+                    <div className="main-review-header">
+                      <p className="review-show-title">{trimText(review.show_title, 7)}</p>
+                      {shows[review.show_id] && shows[review.show_id].show && (
+                        <p className="review-show-period">
+                          {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
+                        </p>
+                      )}
                     </div>
-                    <p className="review-main-mid">{trimText(review.content, 70)}</p>
-                    <div className="review-main-bottom">
-                      <p>{trimText(review.user_nickname, 6)}</p>
+                    <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
+                      <div className="review-main-top">
+                        <p className="main-review-title">{trimText(review.title, 10)}</p>
+                        <Rating
+                          className="main-review-rating"
+                          value={review.rate}
+                          readOnly
+                          precision={0.5}
+                          size="inherit"
+                          sx={{
+                            "& .MuiRating-iconFilled": {
+                              color: "#eee",
+                            },
+                            "& .MuiRating-iconEmpty": {
+                              color: "#bbb",
+                            },
+                          }}
+                        />
+                      </div>
+                      <p className="review-main-mid">{trimText(review.content, 70)}</p>
+                      <div className="review-main-bottom">
+                        <p>{trimText(review.user_nickname, 6)}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="main-review-footer">
-                    <div className="review-footer-btn1">
-                      <a
-                        href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <p className="review-footer-btn1-text">예매하기</p>
-                      </a>
-                    </div>
-                    <div className="review-footer-btn2" onClick={() => handleClickMoreReview(review.show_id)}>
-                      후기더보기
+                    <div className="main-review-footer">
+                      <div className="review-footer-btn1">
+                        <a
+                          href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p className="review-footer-btn1-text">예매하기</p>
+                        </a>
+                      </div>
+                      <div className="review-footer-btn2" onClick={() => handleClickMoreReview(review.show_id)}>
+                        후기더보기
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
         </div>
-        <ArrowForwardIosIcon onClick={handleRightClick} className="slide-right-icon" style={{ fontSize: 32 }} />
-      </div>
+      ) : (
+        <div className="review-box-container">
+          <Swiper
+            spaceBetween={30}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {reviews.map((review, index) => (
+              <SwiperSlide key={index}>
+                <div className="review-box">
+                  <div className="review-img-box">
+                    {shows[review.show_id] && shows[review.show_id].show && (
+                      <img src={shows[review.show_id].show.poster} alt="review-thumbnail" onClick={() => handleShowClick(review.show_id)} />
+                    )}
+                  </div>
+                  <div className="main-review-content">
+                    <div className="main-review-header">
+                      <p className="review-show-title">{trimText(review.show_title, 7)}</p>
+                      {shows[review.show_id] && shows[review.show_id].show && (
+                        <p className="review-show-period">
+                          {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
+                        </p>
+                      )}
+                    </div>
+                    <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
+                      <div className="review-main-top">
+                        <p className="main-review-title">{trimText(review.title, 10)}</p>
+                        <Rating
+                          className="main-review-rating"
+                          value={review.rate}
+                          readOnly
+                          precision={0.5}
+                          size="inherit"
+                          sx={{
+                            "& .MuiRating-iconFilled": {
+                              color: "#eee",
+                            },
+                            "& .MuiRating-iconEmpty": {
+                              color: "#bbb",
+                            },
+                          }}
+                        />
+                      </div>
+                      <p className="review-main-mid">{trimText(review.content, 70)}</p>
+                      <div className="review-main-bottom">
+                        <p>{trimText(review.user_nickname, 6)}</p>
+                      </div>
+                    </div>
+                    <div className="main-review-footer">
+                      <div className="review-footer-btn1">
+                        <a
+                          href={`https://tickets.interpark.com/contents/search?keyword=${review.show_title}&start=0&rows=20`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p className="review-footer-btn1-text">예매하기</p>
+                        </a>
+                      </div>
+                      <div className="review-footer-btn2" onClick={() => handleClickMoreReview(review.show_id)}>
+                        후기더보기
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
     </div>
   );
 };

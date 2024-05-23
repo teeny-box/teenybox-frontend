@@ -1,6 +1,32 @@
+@import "../../styles/mixin.scss";
+
 .main-child-play-period {
   color: #40a86d;
-  font-size: 14px;
+  font-size: 0.7vw;
   font-weight: 400;
   margin: 0px;
+}
+
+@include desktop {
+  .main-child-play-period {
+    font-size: 14px;
+  }
+}
+
+@include tablet-horizontal {
+  .main-child-play-period {
+    font-size: 1.4vw;
+  }
+}
+
+@include tablet-vertical {
+  .main-child-play-period {
+    font-size: 1.6vw;
+  }
+}
+@include moblie {
+  .main-child-play-period {
+    font-size: 2vw;
+    margin-bottom: 2px;
+  }
 }

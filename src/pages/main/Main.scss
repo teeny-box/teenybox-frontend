@@ -14,7 +14,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 560px;
   background-color: #282828;
 }
 .child-container {
@@ -22,20 +21,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 560px;
   background-color: #202020;
 }
 .review-container {
   display: flex;
   justify-content: center;
-  height: 560px;
   background: #282828;
 }
 .promotion-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 1800px;
   background-color: #202020;
 }
 .preferred-region-container {
@@ -43,47 +39,76 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 1200px;
-  padding-bottom: 100px;
   background-color: #282828;
 }
 @include desktop {
   .best-container {
-    height: 700px;
+    height: 100%;
+    padding: 80px 0;
   }
   .child-container {
-    height: 700px;
+    height: 100%;
+    padding: 80px 0;
   }
   .review-container {
-    height: 750px;
+    height: 100%;
+    padding: 80px 0;
   }
   .promotion-container {
-    height: 2100px;
+    height: 100%;
+    padding: 80px 0;
   }
   .preferred-region-container {
-    height: 1300px;
-    padding-bottom: 150px;
+    height: 100%;
+    padding: 80px 0;
+    padding-bottom: 240px;
   }
 }
 @include laptop {
+  .best-container {
+    height: 100%;
+    padding: 80px 0;
+  }
+  .child-container {
+    height: 100%;
+    padding: 80px 0;
+  }
+  .review-container {
+    height: 100%;
+    padding: 80px 0;
+  }
+  .promotion-container {
+    height: 100%;
+    padding: 80px 0;
+  }
+  .preferred-region-container {
+    height: 100%;
+    padding: 80px 0;
+    padding-bottom: 240px;
+  }
 }
 
 @include tablet-horizontal {
   .best-container {
-    height: 540px;
+    height: 100%;
+    padding: 60px 0;
   }
   .child-container {
-    height: 540px;
+    height: 100%;
+    padding: 60px 0;
   }
   .review-container {
-    height: 750px;
+    height: 100%;
+    padding: 60px 0;
   }
   .promotion-container {
-    height: 1600px;
+    height: 100%;
+    padding: 60px 0;
   }
   .preferred-region-container {
-    height: 1300px;
-    padding-bottom: 80px;
+    height: 100%;
+    padding: 60px 0;
+    padding-bottom: 240px;
   }
 }
 
@@ -92,20 +117,25 @@
     background-color: #282828;
   }
   .best-container {
-    height: 500px;
+    height: 100%;
+    padding: 50px 0;
   }
   .child-container {
-    height: 500px;
+    height: 100%;
+    padding: 50px 0;
   }
   .review-container {
-    height: 620px;
+    height: 100%;
+    padding: 50px 0;
   }
   .promotion-container {
-    height: 1600px;
+    height: 100%;
+    padding: 50px 0;
   }
   .preferred-region-container {
-    height: 1360px;
-    padding-bottom: 60px;
+    height: 100%;
+    padding: 50px 0;
+    padding-bottom: 220px;
   }
 }
 
@@ -114,19 +144,24 @@
     background-color: #282828;
   }
   .best-container {
-    height: 450px;
+    height: 100%;
+    padding: 40px 0;
   }
   .child-container {
-    height: 450px;
+    height: 100%;
+    padding: 40px 0;
   }
   .review-container {
-    height: 480px;
+    height: 100%;
+    padding: 40px 0;
   }
   .promotion-container {
-    height: 1200px;
+    height: 100%;
+    padding: 40px 0;
   }
   .preferred-region-container {
-    height: 1000px;
-    padding-bottom: 60px;
+    height: 100%;
+    padding: 40px 0;
+    padding-bottom: 200px;
   }
 }

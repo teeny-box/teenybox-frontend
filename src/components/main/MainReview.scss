@@ -10,7 +10,7 @@
 .main-title-box-center {
   display: flex;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 2%;
 }
 .main-center-title {
   display: flex;
@@ -345,28 +345,33 @@
       width: 1400%;
     }
     .review-show-title {
-      font-size: 20px;
+      font-size: 2.6vw;
       font-weight: 500;
     }
     .review-show-period {
-      font-size: 12px;
+      font-size: 1.8vw;
       font-weight: 400;
     }
     .main-review-title {
-      font-size: 16px;
+      font-size: 2.4vw;
     }
     .main-review-rating {
-      font-size: 12px;
+      font-size: 2.0vw;
     }
     p {
-      font-size: 14px;
+      font-size: 2.2vw;
       color: #eee;
     }
     .review-footer-btn1-text {
-      font-size: 16px;
+      font-size: 2vw;
     }
     .review-footer-btn2 {
-      font-size: 16px;
+      font-size: 2vw;
+    }
+    .review-box {
+      margin-bottom: 50px;
+      border-radius: 30px;
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -391,28 +396,33 @@
       width: 1400%;
     }
     .review-show-title {
-      font-size: 13px;
+      font-size: 2.6vw;
       font-weight: 500;
     }
     .review-show-period {
-      font-size: 8px;
+      font-size: 1.8vw;
       font-weight: 400;
     }
     .main-review-title {
-      font-size: 12px;
+      font-size: 2.4vw;
     }
     .main-review-rating {
-      font-size: 10px;
+      font-size: 2.0vw;
     }
     p {
-      font-size: 11px;
+      font-size: 2.2vw;
       color: #eee;
     }
     .review-footer-btn1-text {
-      font-size: 12px;
+      font-size: 2vw;
     }
     .review-footer-btn2 {
-      font-size: 12px;
+      font-size: 2vw;
+    }
+    .review-box {
+      margin-bottom: 45px;
+      border-radius: 25px;
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -437,28 +447,33 @@
       width: 1400%;
     }
     .review-show-title {
-      font-size: 12px;
+      font-size: 2.6vw;
       font-weight: 500;
     }
     .review-show-period {
-      font-size: 7px;
+      font-size: 1.8vw;
       font-weight: 400;
     }
     .main-review-title {
-      font-size: 11px;
+      font-size: 2.4vw;
     }
     .main-review-rating {
-      font-size: 9px;
+      font-size: 2.0vw;
     }
     p {
-      font-size: 10px;
+      font-size: 2.2vw;
       color: #eee;
     }
     .review-footer-btn1-text {
-      font-size: 10px;
+      font-size: 2vw;
     }
     .review-footer-btn2 {
-      font-size: 10px;
+      font-size: 2vw;
+    }
+    .review-box {
+      margin-bottom: 40px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.3);
     }
   }
 }
