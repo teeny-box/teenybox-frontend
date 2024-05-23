@@ -1,26 +1,67 @@
-.promotion-detail-page {
+@import "../../styles/mixin.scss";
+
+.promotion-detail-page.page-layout {
   font-family: "Noto Sans KR";
   width: 100%;
-  max-width: 1110px;
+  box-sizing: border-box;
+  margin: 50px auto 100px;
   display: flex;
   justify-content: space-between;
 
   .board-left-container {
-    flex-grow: 1;
+    width: 100%;
+
+    @include desktop {
+      width: calc(100% - 230px);
+    }
+
+    @include laptop {
+      width: calc(100% - 230px);
+    }
+  }
+
+  @include tablet-vertical {
+    margin-top: 30px;
+  }
+
+  @include moblie {
+    margin-top: 0;
+
+    .board-second-header {
+      display: none;
+    }
+
+    .comment-top {
+      padding: 0 20px;
+    }
   }
 
   .body {
     display: flex;
     flex-direction: column;
 
-    .back-btn {
-      width: fit-content;
-      align-self: center;
-      margin-top: 60px;
-    }
-  }
+    .button-box {
+      display: flex;
+      justify-content: flex-end;
 
-  .nav-box {
-    margin-top: 60px;
+      .btn {
+        float: right;
+        width: 60px;
+        height: 30px;
+        font-family: "Nanum Gothic", "Noto Sans KR";
+        margin: 10px 0 10px 10px;
+        align-self: flex-end;
+        background-color: #fff;
+        border: 1px solid rgb(0, 0, 0, 0.3);
+        border-radius: 10px;
+        cursor: pointer;
+
+        &.black {
+          background-color: #000;
+          color: #fff;
+          border: none;
+        }
+      }
+    }
   }
 }

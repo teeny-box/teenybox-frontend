@@ -1,9 +1,10 @@
 import "./PromotionDetailPage.scss";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, CircularProgress } from "@mui/material";
+import { CircularProgress, Backdrop } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import PromotionPost from "../../components/promotion/PromotionPost";
+import { AlertCustom } from "../../components/common/alert/Alerts";
 import { BoardSecondHeader, BoardNav, CommentForm, CommentsList, BoardRightContainer } from "../../components/board";
 import { commentUrl, promotionUrl, userUrl } from "../../apis/apiURLs";
 import { NotFoundPage } from "../errorPage/NotFoundPage";
@@ -21,6 +22,7 @@ export function PromotionDetailPage() {
   const params = useParams();
   const { userData, setUserData } = useContext(AppContext);
   const { setOpenLoginAlertBack, setOpenFetchErrorAlert } = useContext(AlertContext);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const getPromotion = async () => {
     setState("loading");
@@ -121,6 +123,32 @@ export function PromotionDetailPage() {
     }
   };
 
+  const deletePost = async () => {
+    try {
+      const res = await fetch(`${promotionUrl}/${post.promotion_number}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        nav(`/promotion`);
+      } else {
+        const data = await res.json();
+        console.error(data);
+      }
+    } catch (e) {
+      setOpenFetchErrorAlert(true);
+    }
+  };
+
+  const handleEditButtonClick = () => {
+    nav(`/promotion/edit/${post.promotion_number}`);
+  };
+
+  const handleDeleteButtonClick = () => {
+    setOpenDeleteAlert(true);
+  };
+
   useEffect(() => {
     if (post?._id) {
       getComments();
@@ -159,9 +187,26 @@ export function PromotionDetailPage() {
                   <meta property="og:description" content={post.description?.slice(0, 50).replace(/\r/g, "")} />
                   <meta property="og:image" content={post.image_url || "https://teeny-box.com/static/media/minilogo.c8da1ed0d7124e0acc3e.png"} />
                 </Helmet>
-                {post._id && <PromotionPost data={post} totalCommentCount={totalCount} />}
-                <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
-                <CommentForm createComment={createComment} postId={post?._id} />
+                {post._id && <PromotionPost post={post} totalCommentCount={totalCount} />}
+                <div className="comment-top">
+                  <div className="button-box">
+                    {userData?.nickname === post?.user_id.nickname && (
+                      <>
+                        <button className="black btn" onClick={handleEditButtonClick}>
+                          수정
+                        </button>
+                        <button className="black btn" onClick={handleDeleteButtonClick}>
+                          삭제
+                        </button>
+                      </>
+                    )}
+                    <button className="btn" onClick={() => nav(`/promotion`)}>
+                      목록
+                    </button>
+                  </div>
+                  <BoardNav point={totalCount.toLocaleString("ko-KR")} text="개의 댓글" onclick={handleRefreshComments} />
+                  <CommentForm createComment={createComment} postId={post?._id} />
+                </div>
                 {!comments.length || (
                   <CommentsList comments={comments} totalCount={totalCount} getComments={getComments} setComments={setComments} setTotalCount={setTotalCount} />
                 )}
@@ -170,15 +215,25 @@ export function PromotionDetailPage() {
                     <CircularProgress color="secondary" className="progress-100" />
                   </div>
                 )}
-                <Button className="back-btn" color="inherit" variant="contained" onClick={() => nav(`/promotion`)}>
-                  목록보기
-                </Button>
               </div>
             )}
           </div>
           <BoardRightContainer post={post} />
         </>
       )}
+      <Backdrop open={openDeleteAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AlertCustom
+          open={openDeleteAlert}
+          onclose={() => setOpenDeleteAlert(false)}
+          severity={"error"}
+          title={"teenybox.com 내용:"}
+          content={"정말 삭제하시겠습니까?"}
+          onclick={deletePost}
+          checkBtn={"확인"}
+          checkBtnColor={"#ef5350"}
+          closeBtn={"취소"}
+        />
+      </Backdrop>
     </div>
   );
 }

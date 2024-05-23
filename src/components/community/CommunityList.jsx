@@ -1,4 +1,4 @@
-import React from "react";
+import { Children } from "react";
 import "./CommunityList.scss";
 import { Link } from "react-router-dom";
 import { SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
@@ -9,10 +9,10 @@ import { DELETE_USER_NICKNAME } from "../../utils/const";
 
 export default function CommunityList({ boardList, isFixed }) {
   return (
-    <div className="Community-list-box">
+    <div className={`Community-list-box ${isFixed ? "fixed" : ""}`}>
       {boardList.map((post) => (
-        <div className={`content-box${isFixed ? " fixed" : ""}`} key={post._id} id={post.post_number}>
-          <div className="flex-box top">
+        <div className={`content-box`} key={post._id} id={post.post_number}>
+          <div className="top">
             <div className="user">
               <img
                 className="user-img"
@@ -23,6 +23,7 @@ export default function CommunityList({ boardList, isFixed }) {
               />
               <span>{(post.user?.state === "가입" && post.user?.nickname) || DELETE_USER_NICKNAME}</span>
             </div>
+            {" · "}
             <div className="time">
               <LiveTimeDiff time={post.createdAt} />
             </div>
@@ -36,15 +37,17 @@ export default function CommunityList({ boardList, isFixed }) {
             {post.tags?.length ? (
               <div className="tags">
                 {isFixed && (
-                  <h5 className="notice">
-                    📢 공지사항 <span>|</span>
-                  </h5>
-                )}
-                {post.tags.map((tag, idx) => (
-                  <div className="tag" key={idx}>
-                    <Link to={`/search?query=${tag}&category=커뮤니티&type=tag`}># {tag}</Link>
+                  <div className="notice">
+                    <span>공지사항</span>
                   </div>
-                ))}
+                )}
+                {Children.toArray(
+                  post.tags.map((tag) => (
+                    <Link to={`/search?query=${tag}&category=커뮤니티&type=tag`} className="tag">
+                      <span># {tag}</span>
+                    </Link>
+                  )),
+                )}
               </div>
             ) : (
               <div className="content">{post.content}</div>

@@ -1,23 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PostTop.scss";
-import { useNavigate } from "react-router-dom";
-import { Backdrop, Button, Tooltip } from "@mui/material";
-import {
-  Close,
-  DeleteOutline,
-  EditOutlined,
-  Facebook,
-  Link,
-  ShareOutlined,
-  SmsOutlined,
-  ThumbUpAlt,
-  ThumbUpAltOutlined,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
+import { Close, Facebook, Link, ShareOutlined, SmsOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import copyUrl from "../../utils/copyUrl";
-import { postUrl, promotionUrl } from "../../apis/apiURLs";
-import { AlertContext, AppContext } from "../../App";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
@@ -25,15 +11,8 @@ import default_user_img from "../../assets/img/default_user_img.svg";
 import kakaoTalkImg from "../../assets/img/SNSIcon/kakaoTalk.png";
 import XImg from "../../assets/img/SNSIcon/X.png";
 
-export function PostTop({ user, type, post, commentsCnt }) {
+export function PostTop({ user, post, commentsCnt }) {
   const [openURLCopyAlert, setOpenURLCopyAlert] = useState(false);
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const [isWriter, setIsWriter] = useState(false); // false로 바꾸기
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(post.likes);
-  const { userData } = useContext(AppContext);
-  const { setOpenLoginAlert, setOpenFetchErrorAlert } = useContext(AlertContext);
-  const nav = useNavigate();
 
   // 공유 버튼이 클릭되었는지 여부 (소셜 공유 버튼을 띄우기 위한)
   const [openShareBox, setOpenShareBox] = useState(false);
@@ -48,66 +27,6 @@ export function PostTop({ user, type, post, commentsCnt }) {
   const handleCopyButtonClick = () => {
     copyUrl();
     setOpenURLCopyAlert(true);
-  };
-
-  const handleEditButtonClick = () => {
-    nav(`/${type}/edit/${post.post_number || post.promotion_number}`);
-  };
-
-  const handleDeleteButtonClick = () => {
-    setOpenDeleteAlert(true);
-  };
-
-  const handleClickLikes = async () => {
-    const url = type === "community" ? `${postUrl}/${post.post_number}/like` : `${promotionUrl}/${post.promotion_number}/like`;
-    try {
-      if (isLiked) {
-        const res = await fetch(url, { method: "DELETE", credentials: "include" });
-
-        if (res.ok) {
-          setIsLiked(false);
-          setLikes((cur) => cur - 1);
-        } else if (res.status === 403) {
-          setOpenLoginAlert(true);
-        } else {
-          const data = await res.json();
-          console.error(data);
-        }
-      } else {
-        const res = await fetch(url, { method: "POST", credentials: "include" });
-
-        if (res.ok) {
-          setIsLiked(true);
-          setLikes((cur) => cur + 1);
-        } else if (res.status === 403) {
-          setOpenLoginAlert(true);
-        } else {
-          const data = await res.json();
-          console.error(data);
-        }
-      }
-    } catch (e) {
-      setOpenFetchErrorAlert(true);
-    }
-  };
-
-  const deletePost = async () => {
-    try {
-      const url = type === "community" ? `${postUrl}/${post.post_number}` : `${promotionUrl}/${post.promotion_number}`;
-      const res = await fetch(url, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        nav(`/${type}`);
-      } else {
-        const data = await res.json();
-        console.error(data);
-      }
-    } catch (e) {
-      setOpenFetchErrorAlert(true);
-    }
   };
 
   const shareKakao = () => {
@@ -154,16 +73,6 @@ export function PostTop({ user, type, post, commentsCnt }) {
     }
   }, [openShareBox]);
 
-  useEffect(() => {
-    if (userData?.nickname === user?.nickname) {
-      setIsWriter(true);
-    }
-
-    if (userData?._id) {
-      setIsLiked(post.likedUsers.includes(userData?._id));
-    }
-  }, [userData, user]);
-
   return (
     <>
       {user && (
@@ -181,8 +90,13 @@ export function PostTop({ user, type, post, commentsCnt }) {
               <LiveTimeDiff time={post.createdAt} />
               <span className="dot">•</span>
               <div className="view-cnt">
-                <VisibilityOutlined sx={{ fontSize: 16 }} />
+                <VisibilityOutlined sx={{ fontSize: 15 }} />
                 <span>{numberFormat(post.views || 0)}</span>
+              </div>
+              <span className="dot">•</span>
+              <div className="view-cnt pointer" onClick={handleCommentsButtonClick}>
+                <SmsOutlined sx={{ fontSize: 14 }} />
+                <span>{numberFormat(commentsCnt)}</span>
               </div>
             </div>
           </div>
@@ -190,29 +104,7 @@ export function PostTop({ user, type, post, commentsCnt }) {
             <div className="share-btn">
               <ShareOutlined className="share-icon" onClick={() => setOpenShareBox(true)} />
             </div>
-            {type === "community" && (
-              <div className="comments-icon" onClick={handleCommentsButtonClick}>
-                <SmsOutlined />
-                <span>{numberFormat(commentsCnt)}</span>
-              </div>
-            )}
-            {isWriter && (
-              <>
-                <EditOutlined onClick={handleEditButtonClick} />
-                <DeleteOutline onClick={handleDeleteButtonClick} />
-              </>
-            )}
-            <Tooltip title={isLiked ? "추천됨" : "추천하기"} arrow>
-              <Button
-                onClick={handleClickLikes}
-                variant={"outlined"}
-                size="small"
-                startIcon={isLiked ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
-                disableElevation
-              >
-                {numberFormat(likes)}
-              </Button>
-            </Tooltip>
+
             {openShareBox && (
               <div className="share-options">
                 <div className="share-option">
@@ -261,19 +153,6 @@ export function PostTop({ user, type, post, commentsCnt }) {
             content={window.location.href}
             time={1000}
           />
-          <Backdrop open={openDeleteAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-            <AlertCustom
-              open={openDeleteAlert}
-              onclose={() => setOpenDeleteAlert(false)}
-              severity={"error"}
-              title={"teenybox.com 내용:"}
-              content={"정말 삭제하시겠습니까?"}
-              onclick={deletePost}
-              checkBtn={"확인"}
-              checkBtnColor={"#ef5350"}
-              closeBtn={"취소"}
-            />
-          </Backdrop>
         </div>
       )}
     </>

@@ -1,0 +1,28 @@
+@import "../../../styles/mixin.scss";
+
+.create-button-moblie {
+  display: none;
+  position: fixed;
+  right: 30px;
+  width: 58px;
+  height: 58px;
+  z-index: 3;
+
+  transition: all 300ms ease-in-out;
+
+  @include tablet-vertical {
+    display: block;
+  }
+
+  @include moblie {
+    display: block;
+  }
+
+  &.up {
+    bottom: 100px;
+  }
+
+  &.down {
+    bottom: 30px;
+  }
+}

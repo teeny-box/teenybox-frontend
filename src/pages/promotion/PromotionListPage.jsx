@@ -1,19 +1,17 @@
 import "./PromotionListPage.scss";
-import React, { Children, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom/dist";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom/dist";
 import { useInView } from "react-intersection-observer";
-import { Button, CircularProgress, FormControl, MenuItem, Select, Skeleton } from "@mui/material";
-import { ArrowBackIosRounded, ArrowForwardIosRounded, SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { Button, CircularProgress, FormControl, MenuItem, Select } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import PromotionList from "../../components/promotion/PromotionList";
 import { UpButton } from "../../components/common/button/UpButton";
 import ServerError from "../../components/common/state/ServerError";
-import TimeFormat from "../../components/common/time/TimeFormat";
 import Empty from "../../components/common/state/Empty";
-import getBestPromotionPlay from "../../utils/getBestPromotionPlay";
 import { promotionUrl } from "../../apis/apiURLs";
-import numberFormat from "../../utils/numberFormat";
 import { FixedTopBanner } from "../../components/board/FixedTopBanner";
+import { PromotionBanner } from "../../components/promotion/PromotionBanner";
+import { MoblieCreateButton } from "../../components/common/button/MoblieCreateButton";
 
 export function PromotionListPage() {
   const [boardList, setBoardList] = useState([]);
@@ -23,18 +21,10 @@ export function PromotionListPage() {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("promotion_number desc");
 
-  const [bannerList, setBannerList] = useState([]);
-  const [bannerIndex, setBannerIndex] = useState(0);
-
   const [fixedList, setFixedList] = useState([]);
 
   const [scrollRef, inView] = useInView();
   const nav = useNavigate();
-
-  const getBannerList = async () => {
-    const newList = await getBestPromotionPlay();
-    setBannerList(newList.slice(0, 5));
-  };
 
   const getFixedList = async () => {
     try {
@@ -73,28 +63,14 @@ export function PromotionListPage() {
         setPage(curPage + 1);
         setTotalCnt(data.totalCount);
         setState("hasValue");
+
+        console.log(data);
       } else {
         setState("hasError");
         console.error(data);
       }
     } catch (err) {
       setState("hasError");
-    }
-  };
-
-  const handleClickLeftArrow = () => {
-    if (bannerIndex <= 0) {
-      setBannerIndex(bannerList.length - 1);
-    } else {
-      setBannerIndex((cur) => cur - 1);
-    }
-  };
-
-  const handleClickRightArrow = () => {
-    if (bannerIndex >= bannerList.length - 1) {
-      setBannerIndex(0);
-    } else {
-      setBannerIndex((cur) => cur + 1);
     }
   };
 
@@ -119,7 +95,6 @@ export function PromotionListPage() {
   }, [sort, category]);
 
   useEffect(() => {
-    getBannerList();
     getFixedList();
   }, []);
 
@@ -134,85 +109,7 @@ export function PromotionListPage() {
       </Helmet>
       <FixedTopBanner linkTo={`/promotion/${fixedList[fixedList.length - 1]?.promotion_number}`} />
       <div className="promotion-page page-layout">
-        {bannerList.length ? (
-          <div className="best-box">
-            <img
-              className={`bg-img`}
-              src={bannerList[bannerIndex]?.image_url[0]} // "https://elice-5th.s3.amazonaws.com/promotions%252F1707380134216_teeny-box-icon.png"}
-            />
-            <div className="bg-mask">
-              {Children.toArray(
-                bannerList.map((post, idx) => (
-                  <div className={`absolute ${bannerIndex === idx && "visible"}`}>
-                    <div className={"contents-container"}>
-                      <Link className="poster" to={`/promotion/${post.promotion_number}`}>
-                        <img src={post.image_url[0]} />
-                      </Link>
-                      <div className="right-box">
-                        <div className="sub-title p1">인기 소규모 연극</div>
-                        <h2 className="post-play-title">
-                          <Link to={`/promotion/${post.promotion_number}`}>{post.play_title}</Link>
-                        </h2>
-                        <div className="post-title h2">
-                          <Link to={`/promotion/${post.promotion_number}`}>{post.title}</Link>
-                        </div>
-
-                        <div className="content p1">
-                          {post.start_date && post.end_date && (
-                            <div className="date">
-                              <span className="lable">공연기간</span>
-                              <span className="line">|</span>
-                              {post.start_date && <TimeFormat time={post.start_date} />}
-                              {" ~ "}
-                              {post.end_date && <TimeFormat time={post.end_date} />}
-                            </div>
-                          )}
-                          {post.location && (
-                            <div>
-                              <span className="lable">장소</span>
-                              <span className="line">|</span>
-                              {post.location}
-                            </div>
-                          )}
-                          {post.host && (
-                            <div>
-                              <span className="lable">주최</span>
-                              <span className="line">|</span>
-                              {post.host}
-                            </div>
-                          )}
-                          {!post.runtime || (
-                            <div>
-                              <span className="lable">런타임</span>
-                              <span className="line">|</span>
-                              {post.runtime} 분
-                            </div>
-                          )}
-                        </div>
-                        <div className="footer">
-                          <VisibilityOutlined />
-                          <span>{numberFormat(post.views || 0)}</span>
-                          <ThumbUpOutlined />
-                          <span>{numberFormat(post.likes || 0)}</span>
-                          <SmsOutlined />
-                          <span>{numberFormat(post.commentsCount || 0)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )),
-              )}
-              {bannerList.length > 0 && (
-                <>
-                  <ArrowBackIosRounded className="arrow-left pointer" onClick={handleClickLeftArrow} />
-                  <ArrowForwardIosRounded className="arrow-right pointer" onClick={handleClickRightArrow} />
-                </>
-              )}
-            </div>
-          </div>
-        ) : (
-          <Skeleton className="best-box" variant="rectangular" sx={{ borderRadius: "15px", marginBottom: "60px", marginTop: "30px" }} />
-        )}
+        <PromotionBanner />
         <div className="header flex-box">
           <div className="division flex-box">
             <div id="" className={category === "" ? "selected" : ""} onClick={handleClickDivision}>
@@ -234,8 +131,8 @@ export function PromotionListPage() {
                 <MenuItem value="promotion_number asc">오래된순</MenuItem>
               </Select>
             </FormControl>
-            <Button onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
-              작성하기
+            <Button className="create-button" onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
+              글쓰기
             </Button>
           </div>
         </div>
@@ -256,6 +153,7 @@ export function PromotionListPage() {
               </div>
             )}
             <UpButton />
+            <MoblieCreateButton onClick={handleFormBtn} />
             <div className="scroll-ref" ref={scrollRef}></div>
           </>
         ) : (

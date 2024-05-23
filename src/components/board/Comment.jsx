@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { Backdrop, Button } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
 import "./Comment.scss";
+import { useNavigate } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import { AlertContext, AppContext } from "../../App";
 import { commentUrl } from "../../apis/apiURLs";
 import { AlertCustom } from "../common/alert/Alerts";
@@ -61,55 +61,56 @@ export function Comment({ commentData, deleteComment }) {
 
   return (
     <>
-      <div className="comment-box" id={`comment${comment._id}`}>
-        <div className="top">
-          <img
-            className="user-profile-img"
-            src={comment.user.profile_url || default_user_img}
-            onError={(e) => {
-              e.target.src = default_user_img;
-            }}
-          />
-          <div className="flex-box">
-            <div className="user-id">{comment.user.nickname || DELETE_USER_NICKNAME}</div>
-            <div className="time">
-              <LiveTimeDiff time={comment.createdAt} />
+      <div className={`comment-box ${userData?.nickname === comment.user.nickname && "my"}`} id={`comment${comment._id}`}>
+        <img
+          className="user-profile-img"
+          src={comment.user.profile_url || default_user_img}
+          onError={(e) => {
+            e.target.src = default_user_img;
+          }}
+        />
+        <div className="right-box">
+          <div className="top">
+            <div className="left">
+              <span className="user-id">{comment.user.nickname || DELETE_USER_NICKNAME}</span>
+              {" · "}
+              <span className="time">
+                <LiveTimeDiff time={comment.createdAt} />
+              </span>
             </div>
+            {userData?.nickname === comment.user.nickname && (
+              <>
+                {isEditing ? (
+                  <div className="buttons editing">
+                    <button className="edit" onClick={handleClickUpdateBtn}>
+                      완료
+                    </button>
+                    <button onClick={() => setIsEditing(false)}>취소</button>
+                  </div>
+                ) : (
+                  <div className="buttons default">
+                    <button onClick={() => setIsEditing(true)}>수정</button>
+                    <button onClick={() => setOpenAlertDelete(true)}>삭제</button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
-          {userData?.nickname === comment.user.nickname && (
-            <>
-              {isEditing ? (
-                <div className="buttons editing">
-                  <Button onClick={handleClickUpdateBtn} variant="contained" color="silver" size="small" disableElevation>
-                    완료
-                  </Button>
-                  <Button onClick={() => setIsEditing(false)} variant="outlined" color="darkGray" size="small" disableElevation>
-                    취소
-                  </Button>
-                </div>
-              ) : (
-                <div className="buttons default">
-                  <button onClick={() => setIsEditing(true)}>수정</button>
-                  <button onClick={() => setOpenAlertDelete(true)}>삭제</button>
-                </div>
-              )}
-            </>
+          {isEditing ? (
+            <div className="content edit">
+              <textarea id="comment" value={inputComment} onChange={(e) => setInputComment(e.target.value)} placeholder="댓글을 작성하세요."></textarea>
+            </div>
+          ) : (
+            <div className="content pre-wrap">
+              <span className={`text ${disable || "close"}`}>
+                {comment.content}
+                <span className="see-more-btn pointer" onClick={handleSeeMore}>
+                  {disable || (seeMoreOpen ? "▴접기" : "▾더보기")}
+                </span>
+              </span>
+            </div>
           )}
         </div>
-        {isEditing ? (
-          <div className="content edit">
-            <textarea id="comment" value={inputComment} onChange={(e) => setInputComment(e.target.value)} placeholder="댓글을 작성하세요."></textarea>
-          </div>
-        ) : (
-          <div className="content pre-wrap">
-            <span className={`text ${disable || "close"}`}>
-              {comment.content}
-              <span className="see-more-btn pointer" onClick={handleSeeMore}>
-                {disable || (seeMoreOpen ? "▴접기" : "▾더보기")}
-              </span>
-            </span>
-          </div>
-        )}
       </div>
       <Backdrop open={openAlertDelete} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
