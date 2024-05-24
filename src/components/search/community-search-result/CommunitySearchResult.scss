@@ -1,15 +1,28 @@
+@import "../../../styles/mixin.scss";
+
 .community-search-result-container {
-  margin: 40px auto 0;
+  margin: 40px 0 0;
   width: 100%;
 
   .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+
+    @include moblie {
+      padding: 0 20px;
+    }
 
     .title {
-      font-weight: bold;
-      font-size: 24px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      margin-top: 2px;
     }
 
     .sort-by {
@@ -24,12 +37,7 @@
 
   .search-content {
     border-top: 1px solid #ffb400;
-    border-bottom: 1px solid #ffb400;
     margin: 20px 0;
-    padding: 30px 50px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
 
     .loading {
       margin: 200px auto;
@@ -37,6 +45,23 @@
 
     a {
       margin-bottom: 20px;
+    }
+
+    @include laptop {
+      column-gap: 36px;
+    }
+
+    @include tablet-horizontal {
+      column-gap: 40px;
+    }
+
+    @include tablet-vertical {
+      column-gap: 33px;
+    }
+
+    @include moblie {
+      column-gap: 20px;
+      padding: 0;
     }
   }
 
