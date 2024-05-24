@@ -5,7 +5,7 @@ import "./PromotionSearchResult.scss";
 import { promotionUrl } from "../../../apis/apiURLs";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
-import { PromotionListCard } from "../../promotion/PromotionCard";
+import PromotionList from "../../promotion/PromotionList";
 
 const TYPES = ["play_title", "title", "tag"];
 
@@ -34,7 +34,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
         setSearchResult(data.promotions);
         setTotalCnt(data.totalCount);
         setState("hasValue");
-        console.log(data);
+        console.log(data.promotions);
       } else {
         setState("hasError");
         console.error(data);
@@ -100,11 +100,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
         </div>
       ) : (
         <>
-          <div className="search-content">
-            {searchResult.map((content, index) => (
-              <PromotionListCard key={index} post={content} />
-            ))}
-          </div>
+          <div className="search-content">{searchResult && <PromotionList newList={searchResult} />}</div>
           <div className="search-pagination">
             <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
           </div>

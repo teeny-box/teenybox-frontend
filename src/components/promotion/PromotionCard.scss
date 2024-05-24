@@ -46,7 +46,7 @@
   }
 
   .post-card-content {
-    height: 180px;
+    height: 156px;
     padding: 13px;
     box-sizing: border-box;
     display: flex;
@@ -57,15 +57,27 @@
     }
 
     @include laptop {
-      height: 130px;
+      height: 132px;
+
+      > * {
+        margin-bottom: 7px;
+      }
     }
 
     @include tablet-horizontal {
       height: 138px;
+
+      > * {
+        margin-bottom: 7px;
+      }
     }
 
     @include tablet-vertical {
       height: 128px;
+
+      > * {
+        margin-bottom: 6px;
+      }
     }
 
     .title {
@@ -74,16 +86,15 @@
       flex-shrink: 0;
       color: #333;
 
-      width: 100%;
-      height: 20px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+      @include ellipsis(1, 29px);
 
       &.tl-2 {
-        @include ellipsis(2, 20px);
-        height: fit-content;
+        @include ellipsis(2, 29px);
         white-space: wrap;
+      }
+
+      a {
+        position: inherit;
       }
     }
 
@@ -160,6 +171,26 @@
     }
   }
 
+  .post-card-footer {
+    font-size: 12px;
+    display: flex;
+    justify-content: flex-start;
+    color: #333;
+    margin-top: auto;
+    margin-bottom: 0;
+
+    span {
+      margin-left: 4px;
+      margin-right: 12px;
+      line-height: 16px;
+    }
+  }
+
+  &:hover {
+    top: -4px;
+    box-shadow: 2px 6px 9px 3px rgba(0, 0, 0, 0.2);
+  }
+
   @include laptop {
     width: calc((100% - (36px * 3)) / 4);
   }
@@ -220,25 +251,5 @@
       top: 0;
       box-shadow: none;
     }
-  }
-
-  .post-card-footer {
-    font-size: 12px;
-    display: flex;
-    justify-content: flex-start;
-    color: #333;
-    margin-top: auto;
-    margin-bottom: 0;
-
-    span {
-      margin-left: 4px;
-      margin-right: 12px;
-      line-height: 16px;
-    }
-  }
-
-  &:hover {
-    top: -4px;
-    box-shadow: 2px 6px 9px 3px rgba(0, 0, 0, 0.2);
   }
 }

@@ -8,6 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 
     @include moblie {
       padding: 0 20px;
@@ -38,7 +39,7 @@
     border-top: 1px solid #ffb400;
     border-bottom: 1px solid #ffb400;
     margin: 20px 0;
-    padding: 30px 0;
+    padding-bottom: 50px;
 
     display: flex;
     justify-content: flex-start;
@@ -48,6 +49,7 @@
 
     @include laptop {
       column-gap: 36px;
+      padding-bottom: 40px;
     }
 
     @include tablet-horizontal {
@@ -56,10 +58,13 @@
 
     @include tablet-vertical {
       column-gap: 33px;
+      padding-bottom: 30px;
     }
 
     @include moblie {
       column-gap: 20px;
+      border: none;
+      padding: 0;
     }
 
     .loading {
