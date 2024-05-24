@@ -101,7 +101,7 @@ export function Comment({ commentData, deleteComment }) {
             </div>
           ) : (
             <div className="content pre-wrap">
-              <span className={`text ${disable || seeMoreOpen || "close"}`}>
+              <span className={`text ${disable || (seeMoreOpen ? "open" : "close")}`}>
                 {comment.content}
                 <span className="see-more-btn pointer" onClick={handleSeeMore}>
                   {disable || (seeMoreOpen ? "▴접기" : "▾더보기")}

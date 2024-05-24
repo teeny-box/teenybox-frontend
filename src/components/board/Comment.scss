@@ -83,7 +83,6 @@
     .text {
       min-width: 0;
       word-break: break-all;
-      margin-bottom: 22px;
     }
 
     .close {
@@ -93,6 +92,10 @@
       overflow: hidden;
       width: fit-content;
       margin-bottom: 0;
+    }
+
+    .open {
+      margin-bottom: 22px;
     }
 
     .see-more-btn {
