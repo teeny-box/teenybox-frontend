@@ -8,7 +8,8 @@ body {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 1300px;
+    max-width: 1300px;
+    min-width: 1025px;
     margin: 30px auto;
     margin-bottom: 200px;
   }
@@ -34,7 +35,8 @@ body {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 1024px;
+    max-width: 1024px;
+    min-width: 769px;
     margin: 30px auto;
     margin-bottom: 200px;
     padding: 25px 20px;
@@ -62,7 +64,8 @@ body {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 768px;
+    max-width: 768px;
+    min-width: 481px;
     margin: 30px auto;
     margin-bottom: 200px;
     padding: 25px 20px;
@@ -90,7 +93,8 @@ body {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 480px;
+    max-width: 480px;
+    min-width: 10px;
     margin: 20px auto;
     padding: 20px 15px;
   }
@@ -116,7 +120,8 @@ body {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    max-width: 480px;
+    min-width: 10px;
     margin: 20px auto;
     padding: 0 15px;
   }
@@ -139,4 +144,9 @@ body {
   .adapted-conditions {
     margin-top: 20px;
   }
+}
+
+.load-more-button-container {
+  display: flex;
+  justify-content: center;
 }

@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import MovieIcon from "@mui/icons-material/Movie";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet-async";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
@@ -16,6 +17,7 @@ import { AlertCustom } from "../../../src/components/common/alert/Alerts";
 import Loading from "../../components/common/state/Loading";
 import { AppContext } from "../../App";
 import Empty from "../../components/common/state/Empty";
+import { ResetUpButton } from "../../components/common/button/ResetUpButton";
 import { showUrl } from "../../apis/apiURLs";
 
 export function PlayList() {
@@ -39,6 +41,7 @@ export function PlayList() {
   const [reqQuery, setReqQuery] = useState("");
   const [isRegionExpandClicked, setIsRegionExpandClicked] = useState(false);
   const [isConditionExpandClicked, setIsConditionExpandClicked] = useState(false);
+  const [isLoadMore, setIsLoadMore] = useState(false);
 
   const conditionTexts = useMemo(
     () => [
@@ -82,8 +85,9 @@ export function PlayList() {
       .then((res) => res.json())
       .then((data) => {
         setIsLoading(false);
-        setPlays(data.shows);
+        setPlays((prevPlays) => (curPage === 1 ? data.shows : [...prevPlays, ...data.shows])); // 페이지에 따라 데이터 추가
         setPlayTotalCnt(data.total);
+        setIsLoadMore(curPage < Math.ceil(data.total / 24)); // 더보기 버튼 표시 여부 결정
       })
       .catch((e) => {
         setError(`연극 목록 가져오기에 실패하였습니다. ${e.message}`);
@@ -143,6 +147,10 @@ export function PlayList() {
     },
     [resetFilters],
   );
+
+  const handleLoadMore = () => {
+    setCurPage((prevPage) => prevPage + 1);
+  };
 
   return (
     <div className="play-list-container" ref={playListContainerRef}>
@@ -220,7 +228,18 @@ export function PlayList() {
                   />
                 ))}
               </div>
-              {playTotalCnt ? (
+              {innerWidth <= 768 ? (
+                <div className="load-more-button-container">
+                  <div className="load-more-button">
+                    {isLoadMore && (
+                      <Button variant="contained" onClick={handleLoadMore} sx={{ width: 200, backgroundColor: "#ffb400" }}>
+                        더보기
+                      </Button>
+                    )}
+                  </div>
+                  <ResetUpButton setCurPage={setCurPage} />
+                </div>
+              ) : (
                 <PaginationBox
                   innerWidth={innerWidth}
                   playsCount={playTotalCnt}
@@ -228,7 +247,7 @@ export function PlayList() {
                   curPage={curPage}
                   playListContainerRef={playListContainerRef}
                 />
-              ) : null}
+              )}
             </>
           ) : null}
         </>

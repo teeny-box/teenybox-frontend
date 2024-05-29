@@ -100,8 +100,6 @@
   .flex-layout {
     padding: 5px 5px 20px 10px;
 
-    .condition-label {
-    }
     .condition-price {
       margin-left: 1vw; // 변경된 부분
       font-size: 14px;
@@ -164,7 +162,7 @@
 
 @include moblie {
   .flex-layout {
-    padding: 10px 10px 20px 20px;
+    padding: 10px 10px 20px 10px;
     align-items: center;
     flex-direction: column;
     position: relative;
@@ -197,6 +195,32 @@
     }
     .slider-box {
       width: 60vw; // 변경된 부분
+    }
+
+    @media (min-width: 200px) and (max-width: 401px) {
+      .condition-price {
+        position: absolute;
+        top: 60%;
+        left: 37%;
+      }
+
+      .condition-checkbox {
+        align-items: flex-start;
+        .condition-label {
+          padding-right: 0.5vw; // 변경된 부분
+        }
+        label {
+          margin-right: 0.5vw; // 변경된 부분
+        }
+      }
+      .date-picker {
+        input {
+          width: 120px;
+        }
+      }
+      .slider-box {
+        width: 60vw; // 변경된 부분
+      }
     }
   }
 }
