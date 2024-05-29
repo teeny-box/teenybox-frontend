@@ -1,13 +1,33 @@
+@import "../../styles/mixin.scss";
+
+@include tablet-vertical {
+  .responsive-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@include moblie {
+  .responsive-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .play-region-selected-design {
+  display: flex; // flex 컨테이너로 설정
   padding: 11px;
+  min-height: 20px; // 최소 높이 설정 (필요에 따라 조정)
   cursor: pointer;
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 0;
+  justify-content: center; // 텍스트를 가운데 정렬
+  align-items: center; // 텍스트를 가운데 정렬
   text-align: center;
   border-bottom: none;
-  color: #ffb400;
-  background-color: #282828;
+  color: #282828;
+  background-color: #ffb400;
   overflow: hidden;
 }
 
@@ -20,31 +40,31 @@
 }
 
 .play-region-select-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 50px;
   border-radius: 8px;
-  border: 1px solid #bcbcbc;
+  border: 1px solid #ffb400;
 
   .play-region-select {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch; // 모든 요소의 높이를 동일하게 맞춤
     font-size: 16px;
     font-weight: 500;
 
     .non-selected-design {
+      display: flex; // flex 컨테이너로 설정
       padding: 10px;
+      min-height: 20px; // 최소 높이 설정 (필요에 따라 조정)
       cursor: pointer;
       flex-grow: 1;
       flex-shrink: 0;
       flex-basis: 0;
+      justify-content: center; // 텍스트를 가운데 정렬
+      align-items: center; // 텍스트를 가운데 정렬
       text-align: center;
       color: #bcbcbc;
-      border-right: 1px solid #bcbcbc;
+      border-right: 1px solid #ffb400;
     }
 
     .non-selected-design:last-child {
@@ -52,7 +72,109 @@
     }
 
     span:hover {
+      color: black;
+    }
+  }
+
+  @include tablet-vertical {
+    width: 80%; // play-region-select-container의 너비를 설정
+    border-radius: 50px;
+
+    .all-region-border {
+      border-radius: 0;
+    }
+    .jeju-border {
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+
+    .play-region-select-accordian {
       color: #ffb400;
+      display: flex;
+      align-items: center;
+      padding: 5px 0 5px 45px;
+      cursor: pointer;
+
+      p {
+        flex: 2 1; // 각각의 <p> 요소가 동일한 비율로 크기를 가지도록 설정
+        font-size: 16px;
+        font-weight: 500;
+        text-align: center; // 텍스트를 가운데 정렬
+      }
+
+      .icon-wrapper {
+        padding-right: 10px;
+      }
+    }
+
+    .play-region-select {
+      flex-direction: column; // 세로(column)로 변경
+
+      .play-region-selected-design {
+        border-bottom: 1px solid #ffb400;
+      }
+
+      .non-selected-design {
+        border-right: none;
+        border-bottom: 1px solid #ffb400;
+      }
+    }
+    .non-selected-design:first-child {
+      border-top: 1px solid #ffb400;
+    }
+    .non-selected-design:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @include moblie {
+    width: 80%; // play-region-select-container의 너비를 설정
+    border-radius: 50px;
+
+    .all-region-border {
+      border-radius: 0;
+    }
+    .jeju-border {
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+
+    .play-region-select-accordian {
+      color: #ffb400;
+      display: flex;
+      padding: 5px 0 5px 50px;
+      align-items: center;
+      cursor: pointer;
+
+      p {
+        flex: 2 1; // 각각의 <p> 요소가 동일한 비율로 크기를 가지도록 설정
+        font-size: 16px;
+        font-weight: 500;
+        text-align: center; // 텍스트를 가운데 정렬
+      }
+
+      .icon-wrapper {
+        padding-right: 10px;
+      }
+    }
+
+    .play-region-select {
+      flex-direction: column; // 세로(column)로 변경
+
+      .play-region-selected-design {
+        border-bottom: 1px solid #ffb400;
+      }
+
+      .non-selected-design {
+        border-right: none;
+        border-bottom: 1px solid #ffb400;
+      }
+    }
+    .non-selected-design:first-child {
+      border-top: 1px solid #ffb400;
+    }
+    .non-selected-design:last-child {
+      border-bottom: 0;
     }
   }
 }

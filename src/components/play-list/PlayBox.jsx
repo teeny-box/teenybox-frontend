@@ -28,10 +28,12 @@ export default function PlayBox({ playInfo, query, setPrevPlayListQuery }) {
           )}
           <img src={imgSrc} alt={`${title} 포스터`} />
         </div>
-        <div className="play-title">{title.length >= 28 ? `${title.slice(0, 27)}...` : title}</div>
-        <div className="play-place">{place.length >= 17 ? `${place.slice(0, 16)}...` : place}</div>
-        <div className="play-period">{period}</div>
-        <div className="play-price">{price.length >= 40 ? `${price.slice(0, 40)}...` : price}</div>
+        <div className="play-details">
+          <div className="play-title">{title.length >= 28 ? `${title.slice(0, 27)}...` : title}</div>
+          <div className="play-place">{place.length >= 17 ? `${place.slice(0, 16)}...` : place}</div>
+          <div className="play-period">{period}</div>
+          <div className="play-price">{price.length >= 40 ? `${price.slice(0, 40)}...` : price}</div>
+        </div>
       </div>
     </>
   );

@@ -53,7 +53,12 @@ export default function ConditionCheckBox({ division, option }) {
     <FormControlLabel
       control={
         <Checkbox
-          color="secondary"
+          sx={{
+            color: "#FFB400",
+            "&.Mui-checked": {
+              color: "#FFB400",
+            },
+          }}
           checked={option === "전체" ? conditions[division].includes("전체") : conditions[division].includes(option)}
           value={option}
           onChange={() => (option === "전체" ? handleCheckAll(division) : handleCheckboxChange(division, option))}
