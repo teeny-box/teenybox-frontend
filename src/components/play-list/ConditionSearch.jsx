@@ -20,33 +20,31 @@ export default function ConditionSearch({ isExpandClicked, setIsExpandClicked, c
         <span>&nbsp;조건 검색</span>
       </div>
       <div className="condition-search-main">
-        {innerWidth > 480 && (
-          <>
-            <div
-              className="condition-search-accordian"
-              style={isExpandClicked ? { borderBottom: "1px solid rgba(188, 188, 188, 0.5)" } : {}}
-              onClick={() => handleConditionSearchExpand()}
-            >
-              <p>{!isExpandClicked ? "조건 검색 펼치기" : "조건 검색 접기"}&nbsp;</p>
-              {!isExpandClicked ? <KeyboardDoubleArrowDownIcon /> : <KeyboardDoubleArrowUpIcon />}
+        <>
+          <div
+            className="condition-search-accordian"
+            style={isExpandClicked ? { borderBottom: "1px solid #FFB400" } : {}}
+            onClick={() => handleConditionSearchExpand()}
+          >
+            <p>{!isExpandClicked ? "조건 검색 펼치기" : "조건 검색 접기"}&nbsp;</p>
+            {!isExpandClicked ? <KeyboardDoubleArrowDownIcon /> : <KeyboardDoubleArrowUpIcon />}
+          </div>
+          {isExpandClicked && (
+            <div>
+              {conditionTexts.map((conditionText, idx) => (
+                <ConditionContext.Provider
+                  value={{
+                    conditions,
+                    setConditions,
+                  }}
+                  key={idx}
+                >
+                  <ConditionSearchFrame key={idx} division={conditionText.division} options={conditionText.options} innerWidth={innerWidth} />
+                </ConditionContext.Provider>
+              ))}
             </div>
-            {isExpandClicked && (
-              <div>
-                {conditionTexts.map((conditionText, idx) => (
-                  <ConditionContext.Provider
-                    value={{
-                      conditions,
-                      setConditions,
-                    }}
-                    key={idx}
-                  >
-                    <ConditionSearchFrame key={idx} division={conditionText.division} options={conditionText.options} innerWidth={innerWidth} />
-                  </ConditionContext.Provider>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+          )}
+        </>
       </div>
     </>
   );
