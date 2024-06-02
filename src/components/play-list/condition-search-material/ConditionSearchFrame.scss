@@ -1,3 +1,5 @@
+@import "../../../styles/mixin.scss";
+
 .condition-search-display-none {
   display: none;
 }
@@ -6,8 +8,8 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(188, 188, 188, 0.5);
+  padding: 5px 5px 20px 0;
+  border-bottom: 1px solid #ffb400;
 
   .condition-label {
     width: 100px;
@@ -16,21 +18,29 @@
     align-items: center;
     padding: 0 20px;
     font-weight: 500;
-    border-right: 1.5px solid rgba(188, 188, 188, 0.5);
+  }
+
+  .condition-price {
+    color: #ffb400;
+    padding: 5px;
+    margin-left: 1vw; // 변경된 부분
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    font-weight: 500;
   }
 
   .condition-checkbox {
-    padding-left: 30px;
     display: flex;
-    padding: 5px 0 5px 30px;
+    padding: 5px 0 5px;
 
     .condition-label {
       margin: 0;
-      padding-right: 36px;
+      padding-right: 2vw; // 변경된 부분
     }
 
     label {
-      margin-right: 45px;
+      margin-right: 2.5vw; // 변경된 부분
     }
   }
 
@@ -38,6 +48,179 @@
     input {
       padding: 10px 0 10px 15px;
       width: 150px;
+    }
+  }
+
+  .slider-box {
+    width: 50vw; // 변경된 부분
+  }
+}
+
+@include desktop {
+  .flex-layout {
+    .condition-price {
+      font-size: 18px;
+    }
+    .date-picker {
+      input {
+        width: 200px;
+      }
+    }
+  }
+}
+
+@include laptop {
+  .flex-layout {
+    align-items: center;
+    padding: 5px 5px 20px 10px;
+
+    .condition-label {
+      padding: 10px 10px 20px 10px;
+    }
+    .condition-price {
+      font-size: 16px;
+      margin-left: 1vw; // 변경된 부분
+    }
+    .date-picker {
+      input {
+        width: 180px;
+      }
+    }
+    .slider-box {
+      width: 45vw; // 기본 값
+
+      @media (min-width: 1024px) and (max-width: 1500px) {
+        width: 50vw; // 1024px에서 1500px 사이일 때 적용
+      }
+    }
+  }
+}
+
+@include tablet-horizontal {
+  .flex-layout {
+    padding: 5px 5px 20px 10px;
+
+    .condition-price {
+      margin-left: 1vw; // 변경된 부분
+      font-size: 14px;
+    }
+    .condition-checkbox {
+      align-items: flex-start;
+      .condition-label {
+        padding-right: 2vw; // 변경된 부분
+      }
+      label {
+        margin-right: 3vw; // 변경된 부분
+      }
+    }
+    .date-picker {
+      input {
+        width: 160px;
+      }
+    }
+    .slider-box {
+      width: 50vw; // 변경된 부분
+    }
+  }
+}
+
+@include tablet-vertical {
+  .flex-layout {
+    padding: 5px 5px 20px 10px;
+
+    .condition-label {
+      width: 50px;
+      padding: 10px;
+    }
+    .condition-price {
+      margin-left: 1.5vw; // 변경된 부분
+      font-size: 12px;
+    }
+    .condition-checkbox {
+      align-items: flex-start;
+      .condition-label {
+        padding-right: 2vw; // 변경된 부분
+      }
+      label {
+        margin-right: 2vw; // 변경된 부분
+      }
+    }
+    .date-picker {
+      input {
+        width: 140px;
+      }
+    }
+    .slider-box {
+      width: 40vw; // 변경된 부분
+
+      @media (min-width: 481px) and (max-width: 650px) {
+        width: 45vw; // 481px에서 650px 사이일 때 적용
+      }
+    }
+  }
+}
+
+@include moblie {
+  .flex-layout {
+    padding: 10px 10px 20px 10px;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    .condition-label {
+      width: 50px;
+      padding: 5px;
+    }
+    .condition-price {
+      margin-left: 3vw; // 변경된 부분
+      font-size: 15px;
+
+      position: absolute;
+      top: 60%;
+      left: 39%;
+    }
+    .condition-checkbox {
+      align-items: flex-start;
+      .condition-label {
+        padding-right: 1.5vw; // 변경된 부분
+      }
+      label {
+        margin-right: 1.5vw; // 변경된 부분
+      }
+    }
+    .date-picker {
+      input {
+        width: 120px;
+      }
+    }
+    .slider-box {
+      width: 60vw; // 변경된 부분
+    }
+
+    @media (min-width: 200px) and (max-width: 401px) {
+      .condition-price {
+        position: absolute;
+        top: 60%;
+        left: 37%;
+      }
+
+      .condition-checkbox {
+        align-items: flex-start;
+        .condition-label {
+          padding-right: 0.5vw; // 변경된 부분
+        }
+        label {
+          margin-right: 0.5vw; // 변경된 부분
+        }
+      }
+      .date-picker {
+        input {
+          width: 120px;
+        }
+      }
+      .slider-box {
+        width: 60vw; // 변경된 부분
+      }
     }
   }
 }

@@ -1,20 +1,21 @@
+@import "../../styles/mixin.scss";
+
 body {
   font-family: "Noto Sans KR", sans-serif;
 }
 
-/*(반응형) 컴퓨터 사이즈에서 적용될 CSS*/
-@media (min-width: 1130px) {
+@include desktop {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    width: 1110px;
+    max-width: 1300px;
+    min-width: 1025px;
     margin: 30px auto;
     margin-bottom: 200px;
   }
 
   .play-list-main {
-    display: flex;
-    flex-wrap: wrap;
+    @include play-box-flex-wrap;
   }
 
   .play-no-exsist {
@@ -29,14 +30,20 @@ body {
   }
 }
 
-@media (min-width: 481px) and (max-width: 1130px) {
+// 노트북 스타일
+@include laptop {
   .play-list-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1024px;
+    min-width: 769px;
+    margin: 30px auto;
+    margin-bottom: 200px;
     padding: 25px 20px;
   }
 
   .play-list-main {
-    display: flex;
-    flex-wrap: wrap;
+    @include play-box-flex-wrap;
     justify-content: space-around;
   }
 
@@ -52,18 +59,75 @@ body {
   }
 }
 
-/*(반응형) 핸드폰 사이즈에서 적용될 CSS*/
-@media (max-width: 480px) {
+// 테블릿 (수평) 스타일
+@include tablet-horizontal {
   .play-list-container {
     display: flex;
     flex-direction: column;
+    max-width: 768px;
+    min-width: 481px;
+    margin: 30px auto;
+    margin-bottom: 200px;
+    padding: 25px 20px;
+  }
+
+  .play-list-main {
+    @include play-box-flex-wrap;
+    justify-content: space-around;
+  }
+
+  .play-no-exsist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 66px 0;
+  }
+
+  .adapted-conditions {
+    margin-top: 20px;
+  }
+}
+
+// 테블릿 (수직) 스타일
+@include tablet-vertical {
+  .play-list-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    min-width: 10px;
+    margin: 20px auto;
+    padding: 20px 15px;
+  }
+
+  .play-list-main {
+    @include play-box-flex-wrap;
+  }
+
+  .play-no-exsist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 66px 0;
+  }
+
+  .adapted-conditions {
+    margin-top: 20px;
+  }
+}
+
+// 모바일 스타일
+@include moblie {
+  .play-list-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    min-width: 10px;
     margin: 20px auto;
     padding: 0 15px;
   }
 
   .play-list-main {
-    display: flex;
-    flex-wrap: wrap;
+    @include play-box-flex-wrap;
   }
 
   .play-no-exsist {
@@ -80,4 +144,9 @@ body {
   .adapted-conditions {
     margin-top: 20px;
   }
+}
+
+.load-more-button-container {
+  display: flex;
+  justify-content: center;
 }

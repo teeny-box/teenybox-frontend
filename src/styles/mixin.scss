@@ -25,3 +25,8 @@
     @content;
   }
 }
+
+@mixin play-box-flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
