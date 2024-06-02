@@ -2,7 +2,7 @@ import { Backdrop, Button, FormControlLabel, IconButton, Radio, RadioGroup } fro
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { Close, ErrorOutline, DriveFolderUpload } from "@mui/icons-material";
+import { Close, ErrorOutline, DriveFolderUpload, ChevronLeft } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -15,7 +15,7 @@ import { AlertContext } from "../../App";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, userRole }) {
+export function PromotionEditForm({ setInput, handleCancle, post }) {
   const [submit, setSubmit] = useState(false);
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -287,14 +287,8 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
   return (
     <div className="post-form-box">
       <div className="form-header">
-        <h2 className="title">
-          홍보 게시글 수정하기{" "}
-          {userRole === "admin" && (
-            <Button onClick={() => setIsNotice(true)} size="large" color="secondary" sx={{ margin: "4px 8px" }}>
-              (일반)
-            </Button>
-          )}
-        </h2>
+        <ChevronLeft fontSize="large" className="back-button pointer" onClick={() => nav(-1)} />
+        <h2 className="title h1">홍보 게시글 수정하기</h2>
       </div>
 
       <div className="add-info">
@@ -302,8 +296,8 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
           <div className="input">
             <label htmlFor="">카테고리</label>
             <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
-              <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
-              <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
+              <FormControlLabel value="연극" control={<Radio size="small" color="secondary" />} label="연극" />
+              <FormControlLabel value="기타" control={<Radio size="small" color="secondary" />} label="기타" />
             </RadioGroup>
           </div>
         </div>
@@ -321,7 +315,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
               value={inputPlayTitle}
               onChange={handleChangePlayTitle}
               maxLength={30}
-              placeholder={`${inputCategory === "연극" ? "연극명" : "행사명"}을 작성해 주세요.`}
+              placeholder={`${inputCategory === "연극" ? "연극명" : "행사명"}을 작성하세요.`}
               required
             />
           </div>
@@ -338,7 +332,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
               value={inputLocation}
               onChange={handleChangeLocation}
               maxLength={40}
-              placeholder="장소를 작성해 주세요."
+              placeholder="장소를 작성하세요."
             />
           </div>
         </div>
@@ -353,7 +347,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
               value={inputHost}
               onChange={handleChangeHost}
               maxLength={20}
-              placeholder="주최자 또는 기관을 작성해 주세요."
+              placeholder="주최자 또는 기관을 작성하세요."
             />
           </div>
         </div>
@@ -423,16 +417,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
           <label htmlFor="title">
             글 제목<span className="star">*</span>
           </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={inputTitle}
-            onChange={handleChangeTitle}
-            maxLength={40}
-            placeholder="제목을 작성해 주세요."
-            required
-          />
+          <input type="text" id="title" name="title" value={inputTitle} onChange={handleChangeTitle} maxLength={40} placeholder="제목을 작성하세요." required />
         </div>
         {handleErrorPlaceholder(errorTitle)}
       </div>
@@ -465,7 +450,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
             onKeyDown={handleOnKeyDownTag}
             value={inputTag}
             onChange={handleChangeTag}
-            placeholder="엔터를 입력하여 태그를 등록할 수 있습니다."
+            placeholder="엔터를 입력하여 태그를 등록하세요."
             maxLength={15}
           />
         </div>
@@ -525,7 +510,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
           <Button color="darkGray" size="large" variant="outlined" onClick={handleCancle} sx={{ marginRight: "14px" }}>
             취소
           </Button>
-          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
+          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation color="secondary">
             수정
           </Button>
         </div>

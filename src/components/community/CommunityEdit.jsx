@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../promotion/PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
+import { ChevronLeft } from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { postUrl, presignedUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
@@ -179,7 +180,8 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
   return (
     <div className="post-form-box">
       <div className="form-header">
-        <div className="title">게시글 수정하기</div>
+        <ChevronLeft fontSize="large" className="back-button pointer" onClick={() => nav(-1)} />
+        <div className="title h1">게시글 수정하기</div>
       </div>
 
       {userRole === "admin" && (
@@ -188,15 +190,18 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
             <div className="input">
               <label htmlFor="">카테고리</label>
               <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
-                <FormControlLabel value="자유" control={<Radio size="small" />} label="일반" />
-                <FormControlLabel value="공지" control={<Radio size="small" />} label="공지" />
+                <FormControlLabel value="자유" control={<Radio size="small" color="secondary" />} label="일반" />
+                <FormControlLabel value="공지" control={<Radio size="small" color="secondary" />} label="공지" />
               </RadioGroup>
             </div>
           </div>
           <div className="flex-box fixed">
             <div className="input flex-center">
               <label htmlFor="">고정</label>
-              <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+              <FormControlLabel
+                label={fixed ? "고정 됨" : "고정 안 됨"}
+                control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} color="secondary" />}
+              />
             </div>
           </div>
         </>
@@ -205,16 +210,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
       <div className="flex-box title">
         <div className="input">
           <label htmlFor="title">제목*</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={inputTitle}
-            onChange={handleTitleChange}
-            maxLength={40}
-            placeholder="제목을 작성해 주세요."
-            required
-          />
+          <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성하세요." required />
         </div>
         {handleError(errorTitle)}
       </div>
@@ -245,7 +241,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
             onKeyDown={handleChangeTag}
             value={inputTag}
             onChange={(e) => setInputTag(e.target.value.trimStart())}
-            placeholder="엔터를 입력하여 태그를 등록할 수 있습니다."
+            placeholder="엔터를 입력하여 태그를 등록하세요."
             maxLength={16}
           />
         </div>
@@ -269,7 +265,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
           <Button color="darkGray" size="large" variant="outlined" onClick={handleCancle} sx={{ marginRight: "14px" }}>
             취소
           </Button>
-          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
+          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation color="secondary">
             수정
           </Button>
         </div>

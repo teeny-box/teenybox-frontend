@@ -289,7 +289,7 @@ export function PromotionForm({ setInput, handleCancle }) {
     <div className="post-form-box">
       <div className="form-header">
         <ChevronLeft fontSize="large" className="back-button pointer" onClick={() => nav(-1)} />
-        <h2 className="title">홍보 게시글 작성하기</h2>
+        <h2 className="title h1">홍보 게시글 작성하기</h2>
       </div>
 
       <div className="add-info">
