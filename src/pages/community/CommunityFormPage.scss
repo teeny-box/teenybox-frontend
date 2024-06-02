@@ -1,9 +1,30 @@
-.Community-form-page {
+@import "../../styles/mixin.scss";
+
+.Community-form-page.page-layout {
   font-family: "Noto Sans KR";
   width: 100%;
-  max-width: 950px;
+  box-sizing: border-box;
+  margin: 50px auto;
 
   .body {
     padding: 0 10px;
+  }
+
+  @include tablet-vertical {
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0 0 30px;
+    .body {
+      padding: 0;
+    }
+  }
+
+  @include moblie {
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0 0 30px;
+    .body {
+      padding: 0;
+    }
   }
 }

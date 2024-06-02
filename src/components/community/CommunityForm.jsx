@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../promotion/PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
+import { ChevronLeft } from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { postUrl, presignedUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
@@ -181,7 +182,8 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
   return (
     <div className="post-form-box">
       <div className="form-header">
-        <div className="title">게시글 작성하기</div>
+        <ChevronLeft fontSize="large" className="back-button pointer" onClick={() => nav(-1)} />
+        <div className="title h1">게시글 작성하기</div>
       </div>
 
       {userRole === "admin" && (
@@ -212,16 +214,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
       <div className="flex-box title">
         <div className="input">
           <label htmlFor="title">*제목</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={inputTitle}
-            onChange={handleTitleChange}
-            maxLength={40}
-            placeholder="제목을 작성해 주세요."
-            required
-          />
+          <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성하세요." required />
         </div>
         {handleError(errorTitle)}
       </div>
@@ -252,7 +245,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
             onKeyDown={handleChangeTag}
             value={inputTag}
             onChange={(e) => setInputTag(e.target.value.trimStart())}
-            placeholder="엔터를 입력하여 태그를 등록할 수 있습니다."
+            placeholder="엔터를 입력하여 태그를 등록하세요."
             maxLength={16}
           />
         </div>
