@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./PostTop.scss";
-import { Tooltip } from "@mui/material";
-import { Close, Facebook, Link, ShareOutlined, SmsOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { Close, ShareOutlined, SmsOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import copyUrl from "../../utils/copyUrl";
 import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
 import default_user_img from "../../assets/img/default_user_img.svg";
-import kakaoTalkImg from "../../assets/img/SNSIcon/kakaoTalk.png";
-import XImg from "../../assets/img/SNSIcon/X.png";
+import kakaoTalkIcon from "../../assets/img/shareIcon/kakaoTalk.png";
+import facebookIcon from "../../assets/img/shareIcon/facebook.png";
+import URLIcon from "../../assets/img/shareIcon/URL.png";
+import XIcon from "../../assets/img/shareIcon/X.png";
 
 export function PostTop({ user, post, commentsCnt }) {
   const [openURLCopyAlert, setOpenURLCopyAlert] = useState(false);
@@ -102,47 +103,42 @@ export function PostTop({ user, post, commentsCnt }) {
           </div>
           <div className="icons">
             <div className="share-btn">
-              <ShareOutlined className="share-icon" onClick={() => setOpenShareBox(true)} />
+              <ShareOutlined className="share-icon pointer" onClick={() => setOpenShareBox(true)} />
             </div>
 
             {openShareBox && (
-              <div className="share-options">
-                <div className="share-option">
-                  <Tooltip title="링크 복사" arrow>
-                    <Link onClick={handleCopyButtonClick} style={{ cursor: "pointer", width: "31px" }} />
-                  </Tooltip>
-                </div>
-                <div className="share-option">
-                  <Tooltip title="카카오톡" arrow>
+              <>
+                <div className="share-options">
+                  <div className="share-option pointer">
                     <div className="SNS-img-box">
-                      <img id="btnKakaoShare" src={kakaoTalkImg} alt="kakaoTalk-icon" style={{ cursor: "pointer" }} onClick={shareKakao} />
+                      <img src={URLIcon} alt="kakaoTalk-icon" onClick={handleCopyButtonClick} />
                     </div>
-                  </Tooltip>
-                </div>
-                <div className="share-option">
-                  <Tooltip title="X" arrow>
+                    <span className="label">URL복사</span>
+                  </div>
+                  <div className="share-option pointer">
                     <div className="SNS-img-box">
-                      <img src={XImg} onClick={shareTwitter} alt="X-icon" style={{ cursor: "pointer" }} />
+                      <img id="btnKakaoShare" src={kakaoTalkIcon} alt="kakaoTalk-icon" onClick={shareKakao} />
                     </div>
-                  </Tooltip>
+                    <span className="label">카카오톡</span>
+                  </div>
+                  <div className="share-option pointer">
+                    <div className="SNS-img-box">
+                      <img src={XIcon} onClick={shareTwitter} alt="X-icon" />
+                    </div>
+                    <span className="label">트위터</span>
+                  </div>
+                  <div className="share-option pointer">
+                    <div className="SNS-img-box">
+                      <img src={facebookIcon} onClick={shareFacebook} alt="X-icon" />
+                    </div>
+                    <span className="label">페이스북</span>
+                  </div>
+                  <div className="close-icon pointer" onClick={() => setOpenShareBox(false)}>
+                    <Close />
+                  </div>
                 </div>
-                <div className="share-option">
-                  <Tooltip title="페이스북" arrow>
-                    <Facebook fontSize="large" color="facebookBlue" onClick={shareFacebook} style={{ cursor: "pointer" }} />
-                  </Tooltip>
-                </div>
-                <div className="close-icon" onClick={() => setOpenShareBox(false)}>
-                  <Close
-                    fontSize="small"
-                    sx={{
-                      cursor: "pointer",
-                      color: "#bcbcbc",
-                      position: "relative",
-                      bottom: "33px",
-                    }}
-                  />
-                </div>
-              </div>
+                <div className="backdrop" onClick={() => setOpenShareBox(false)}></div>
+              </>
             )}
           </div>
 
