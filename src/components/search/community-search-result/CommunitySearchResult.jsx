@@ -1,23 +1,39 @@
 import { useEffect, useState } from "react";
 import { CircularProgress, Pagination } from "@mui/material";
-import { useSearchParams } from "react-router-dom/dist";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+import { useMediaQuery } from "react-responsive";
 import { postUrl } from "../../../apis/apiURLs";
 import CommunityList from "../../community/CommunityList";
 import "./CommunitySearchResult.scss";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
 
-const TYPES = ["title", "tag"];
+// const TYPES = ["title", "tag"];
 
 export default function CommunitySearchResult({ searchKeyword }) {
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
+  const [scrollRef, inView] = useInView();
+  const loc = useLocation();
+  const [reload, setReload] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchResult, setSearchResult] = useState();
+  const [searchResult, setSearchResult] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [type, setType] = useState(searchParams.get("type") || "title");
   const [state, setState] = useState("loading");
 
-  const getCommunitySearchResult = async () => {
+  const addSearchResult = (newList) => {
+    const uniqueList = [...searchResult, ...newList].reduce((newArr, current) => {
+      if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
+        newArr.push(current);
+      }
+      return newArr;
+    }, []);
+    setSearchResult(uniqueList);
+  };
+
+  const getCommunitySearchResult = async (method) => {
     setState("loading");
 
     if (!searchKeyword.trim()) {
@@ -27,11 +43,15 @@ export default function CommunitySearchResult({ searchKeyword }) {
     }
 
     try {
-      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=10`);
+      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=5`);
       const data = await res.json();
 
       if (res.ok) {
-        setSearchResult(data.posts);
+        if (method === "add" && page > 1) {
+          addSearchResult(data.posts);
+        } else {
+          setSearchResult(data.posts);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
       } else {
@@ -48,20 +68,47 @@ export default function CommunitySearchResult({ searchKeyword }) {
     searchParams.set("type", e.target.value);
     setSearchParams(searchParams);
   };
+  useEffect(() => {
+    setPage(1);
+  }, [type]);
 
   useEffect(() => {
-    if (!TYPES.includes(searchParams.get("type"))) {
-      setType("title");
-      searchParams.set("type", "title");
-      setSearchParams(searchParams);
+    if (isMoblie) {
+      console.log("moblie");
+      setPage(1);
     }
-
-    getCommunitySearchResult();
-  }, [searchParams, page, type]);
+    setReload((cur) => cur + 1);
+    setSearchResult([]);
+  }, [isMoblie]);
 
   useEffect(() => {
-    getCommunitySearchResult();
-  }, []);
+    console.log(inView, reload, isMoblie);
+    if (inView && isMoblie && state !== "loading") {
+      // 총 개수 받아서 page 넘어가면 api 호출 X
+      if (searchResult.length >= totalCnt) return;
+      console.log("asd", searchResult.length, totalCnt);
+      setPage((cur) => cur + 1);
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    if (!loc.search) {
+      setType("title");
+      setReload(loc.key);
+      setPage(1);
+    }
+  }, [loc.search]);
+
+  useEffect(() => {
+    console.log(page, type, reload);
+    if (isMoblie) {
+      getCommunitySearchResult("add");
+    } else {
+      getCommunitySearchResult();
+      window.scrollTo({ top: 0 });
+    }
+    setSearchParams({ query: searchKeyword, type, page });
+  }, [page, type, reload]);
 
   return (
     <div className="community-search-result-container">
@@ -78,21 +125,21 @@ export default function CommunitySearchResult({ searchKeyword }) {
           </select>
         </div>
       </div>
-      {state === "loading" ? (
+      {(state === "loading" && isMoblie && page === 1) || (state === "loading" && !isMoblie) ? (
         <div className="search-content">
-          <div className="loading">
+          <div className="state">
             <CircularProgress color="secondary" />
           </div>
         </div>
       ) : state === "hasError" ? (
         <div className="search-content">
-          <div className={`state`}>
+          <div className={`state box`}>
             <ServerError onClickBtn={getCommunitySearchResult} />
           </div>
         </div>
-      ) : !searchResult?.length ? (
+      ) : !searchResult.length ? (
         <div className="search-content">
-          <div className="state">
+          <div className="state box">
             <EmptySearchResult type={true} />
           </div>
         </div>
@@ -101,9 +148,17 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <div className="search-content">
             <CommunityList boardList={searchResult} />
           </div>
-          <div className="search-pagination">
-            <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
-          </div>
+          {isMoblie && state === "loading" && (
+            <div className={`state`}>
+              <CircularProgress color="secondary" />
+            </div>
+          )}
+          <div className="scroll-ref" ref={scrollRef}></div>
+          {isMoblie || (
+            <div className="search-pagination">
+              <Pagination count={Math.ceil(totalCnt / 5)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+            </div>
+          )}
         </>
       )}
     </div>

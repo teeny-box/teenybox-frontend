@@ -1,7 +1,7 @@
 @import "../../../styles/mixin.scss";
 
 .community-search-result-container {
-  margin: 40px 0 0;
+  margin: 40px 0;
   width: 100%;
 
   .search-header {
@@ -43,10 +43,6 @@
       margin: 200px auto;
     }
 
-    a {
-      margin-bottom: 20px;
-    }
-
     @include laptop {
       column-gap: 36px;
     }
@@ -73,6 +69,16 @@
   }
 
   .state {
-    margin: 80px auto;
+    width: 100%;
+    padding: 40px 0;
+    margin: 20px 0 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.box {
+      height: calc(100vh - 300px);
+      background-color: #0000000c;
+    }
   }
 }
