@@ -4,6 +4,8 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { Loop } from "@mui/icons-material";
 import { Helmet } from "react-helmet-async";
+import { useInView } from "react-intersection-observer";
+import { useMediaQuery } from "react-responsive";
 import CommunityList from "../../components/community/CommunityList";
 import ServerError from "../../components/common/state/ServerError";
 import Empty from "../../components/common/state/Empty";
@@ -22,10 +24,12 @@ const SORT = {
 };
 
 export function CommunityListPage() {
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
   const [searchParams, setSearchParams] = useSearchParams();
   const loc = useLocation();
   const nav = useNavigate();
   const [reload, setReload] = useState("");
+  const [scrollRef, inView] = useInView();
 
   const [selected, setSelected] = useState(searchParams.get("category") === "공지" ? "공지" : "자유");
   const [fixedList, setFixedList] = useState([]);
@@ -46,7 +50,17 @@ export function CommunityListPage() {
     }
   };
 
-  const getPage = async () => {
+  const addBoardList = (newList) => {
+    const uniqueList = [...boardList, ...newList].reduce((newArr, current) => {
+      if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
+        newArr.push(current);
+      }
+      return newArr;
+    }, []);
+    setBoardList(uniqueList);
+  };
+
+  const getPage = async (method) => {
     setState("loading");
     try {
       const [by, order] = SORT[sort].split(" ");
@@ -55,7 +69,11 @@ export function CommunityListPage() {
       console.log(res, data);
 
       if (res.ok) {
-        setBoardList(data.posts);
+        if (method === "add" && page > 1) {
+          addBoardList(data.posts);
+        } else {
+          setBoardList(data.posts);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
       } else {
@@ -84,11 +102,28 @@ export function CommunityListPage() {
   };
 
   useEffect(() => {
+    if (isMoblie) {
+      setPage(1);
+      setBoardList([]);
+    }
+  }, [isMoblie, sort, selected, reload]);
+
+  useEffect(() => {
+    console.log(inView, reload, isMoblie);
+    if (inView && isMoblie && state !== "loading") {
+      // 총 개수 받아서 page 넘어가면 api 호출 X
+      if (boardList.length >= totalCnt) return;
+      console.log("asd", boardList.length, totalCnt);
+      setPage((cur) => cur + 1);
+    }
+  }, [inView]);
+
+  useEffect(() => {
     if (!loc.search) {
       setSelected("자유");
-      setPage(1);
       setSort("최신순");
       setReload(loc.key);
+      setPage(1);
     }
   }, [loc.search]);
 
@@ -96,8 +131,12 @@ export function CommunityListPage() {
     console.log(page, sort, selected, reload);
     if (page && sort && selected) {
       getFixedList();
-      getPage();
-      window.scrollTo({ top: 0 });
+      if (isMoblie) {
+        getPage("add");
+      } else {
+        getPage();
+        window.scrollTo({ top: 0 });
+      }
       setSearchParams({ category: selected === "공지" ? "공지" : "일반", sort, page });
     }
   }, [page, sort, selected, reload]);
@@ -113,7 +152,7 @@ export function CommunityListPage() {
           <meta property="og:title" content="티니박스(TeenyBox) 커뮤니티" />
           <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
         </Helmet>
-        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} setReload={setReload} />
+        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} setReload={setReload} setSort={setSort} />
         <div className="Community-container">
           <div className="Community-left-container">
             <div className="header flex-box">
@@ -138,7 +177,7 @@ export function CommunityListPage() {
               </div>
             </div>
             <div className="main">
-              {state === "loading" ? (
+              {state === "loading" && !boardList.length ? (
                 <div className="state">
                   <CircularProgress color="secondary" className="progress" />
                 </div>
@@ -148,16 +187,24 @@ export function CommunityListPage() {
                 </div>
               ) : boardList.length ? (
                 <>
-                  {page === 1 && <CommunityList boardList={fixedList} isFixed={true} />}
+                  {(isMoblie || page === 1) && <CommunityList boardList={fixedList} isFixed={true} />}
                   <CommunityList boardList={boardList} />
-                  <div className="pagination">
-                    <Pagination page={page} onChange={handleChangePage} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />
-                  </div>
+                  {isMoblie && state === "loading" && (
+                    <div className={`state`}>
+                      <CircularProgress color="secondary" />
+                    </div>
+                  )}
+                  {isMoblie || (
+                    <div className="pagination">
+                      <Pagination page={page} onChange={handleChangePage} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />
+                    </div>
+                  )}
                   <UpButton />
                   <MoblieCreateButton onClick={handleFormBtn} />
+                  <div className="scroll-ref" ref={scrollRef}></div>
                 </>
               ) : (
-                <div className="state">
+                <div className="state box">
                   <Empty>
                     <></>
                   </Empty>
