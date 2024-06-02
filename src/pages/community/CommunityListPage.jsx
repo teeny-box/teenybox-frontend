@@ -15,7 +15,7 @@ import { UpButton } from "../../components/common/button/UpButton";
 import { MoblieCreateButton } from "../../components/common/button/MoblieCreateButton";
 
 export function CommunityListPage() {
-  const [selected, setSelected] = useState("post");
+  const [selected, setSelected] = useState("자유");
   const [fixedList, setFixedList] = useState([]);
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
@@ -40,8 +40,9 @@ export function CommunityListPage() {
     setState("loading");
     try {
       const [by, order] = sort.split(" ");
-      const res = await fetch(`${postUrl}?page=${page}&limit=10&sortBy=${by}&sortOrder=${order}`);
+      const res = await fetch(`${postUrl}?category=${selected}&page=${page}&limit=10&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
+      console.log(res, data);
 
       if (res.ok) {
         setBoardList(data.posts);
@@ -83,7 +84,7 @@ export function CommunityListPage() {
 
   useEffect(() => {
     getPage();
-  }, [sort]);
+  }, [sort, selected]);
 
   return (
     <>

@@ -21,7 +21,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
   const [openComplete, setOpenComplete] = useState(false);
 
   // 카테고리
-  const [inputCategory, setInputCategiry] = useState(post?.category === "공지" ? "연극" : post?.category);
+  const [inputCategory, setInputCategory] = useState(post?.category === "공지" ? "연극" : post?.category);
   // 연극명
   const [inputPlayTitle, setInputPlayTitle] = useState(post?.play_title);
   const [errorPlayTitle, setErrorPlayTitle] = useState("");
@@ -301,7 +301,7 @@ export function PromotionEditForm({ setInput, handleCancle, post, setIsNotice, u
         <div className="flex-box category">
           <div className="input">
             <label htmlFor="">카테고리</label>
-            <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategiry(e.target.value)}>
+            <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
               <FormControlLabel value="연극" control={<Radio size="small" />} label="연극" />
               <FormControlLabel value="기타" control={<Radio size="small" />} label="기타" />
             </RadioGroup>

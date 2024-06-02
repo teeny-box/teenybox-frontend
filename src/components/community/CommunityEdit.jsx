@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
+import { Backdrop, Button, Checkbox, FormControlLabel, IconButton, RadioGroup, Radio } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../promotion/PromotionForm.scss";
@@ -16,6 +16,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
   const [openSubmit, setOpenSubmit] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
 
+  const [inputCategory, setInputCategory] = useState(post.category);
   const [inputTitle, setInputTitle] = useState(post.title);
   const [errorTitle, setErrorTitle] = useState("");
   const [inputContent, setInputContent] = useState(post.content);
@@ -40,6 +41,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
           title: inputTitle,
           content: inputContent,
           tags: tagList,
+          category: inputCategory,
           is_fixed: fixed ? "고정" : "일반",
         }),
       });
@@ -181,12 +183,23 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
       </div>
 
       {userRole === "admin" && (
-        <div className="flex-box fixed">
-          <div className="input flex-center">
-            <label htmlFor="">고정</label>
-            <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+        <>
+          <div className="flex-box category">
+            <div className="input">
+              <label htmlFor="">카테고리</label>
+              <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
+                <FormControlLabel value="일반" control={<Radio size="small" />} label="일반" />
+                <FormControlLabel value="공지" control={<Radio size="small" />} label="공지" />
+              </RadioGroup>
+            </div>
           </div>
-        </div>
+          <div className="flex-box fixed">
+            <div className="input flex-center">
+              <label htmlFor="">고정</label>
+              <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+            </div>
+          </div>
+        </>
       )}
 
       <div className="flex-box title">
