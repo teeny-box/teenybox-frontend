@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom/dist";
 import "./BoardHeader.scss";
 import { KeyboardDoubleArrowLeftOutlined } from "@mui/icons-material";
 
-export function CommunityTabBar({ selected, setSelected }) {
+export function CommunityTabBar({ selected, setSelected, setPage, setReload }) {
   const handleClickTab = (e) => {
     setSelected(e.currentTarget.id);
+    setPage(1);
+    setReload((cur) => cur + 1);
   };
+
   return (
     <div className="community-tap-bar">
       <div className={`tab-menu pointer ${selected === "자유" && "selected"}`} onClick={handleClickTab} id="자유">

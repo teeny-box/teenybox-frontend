@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/material";
+import { Backdrop, Button, IconButton, Checkbox, FormControlLabel, RadioGroup, Radio } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -23,7 +23,8 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
   const [errorImage, setErrorImage] = useState("");
   const [tagList, setTagList] = useState([]);
   const [inputTag, setInputTag] = useState();
-  // 고정(관리자)
+  // 관리자
+  const [inputCategory, setInputCategory] = useState("자유");
   const [fixed, setFixed] = useState(false);
 
   const editorRef = useRef();
@@ -40,6 +41,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
           title: inputTitle,
           content: inputContent,
           tags: tagList,
+          category: inputCategory,
           is_fixed: fixed ? "고정" : "일반",
         }),
       });
@@ -172,6 +174,10 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
     }
   }, [userRole]);
 
+  useEffect(() => {
+    if (inputCategory === "자유") setFixed(false);
+  }, [inputCategory]);
+
   return (
     <div className="post-form-box">
       <div className="form-header">
@@ -179,12 +185,28 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
       </div>
 
       {userRole === "admin" && (
-        <div className="flex-box fixed">
-          <div className="input flex-center">
-            <label htmlFor="">고정</label>
-            <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+        <>
+          <div className="flex-box category">
+            <div className="input">
+              <label htmlFor="">카테고리</label>
+              <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
+                <FormControlLabel value="자유" control={<Radio size="small" />} label="일반" />
+                <FormControlLabel value="공지" control={<Radio size="small" />} label="공지" />
+              </RadioGroup>
+            </div>
           </div>
-        </div>
+          {inputCategory === "공지" && (
+            <div className="flex-box fixed">
+              <div className="input flex-center">
+                <label htmlFor="">고정</label>
+                <FormControlLabel
+                  label={fixed ? "고정 됨" : "고정 안 됨"}
+                  control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />}
+                />
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <div className="flex-box title">

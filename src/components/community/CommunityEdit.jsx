@@ -188,7 +188,7 @@ export default function CommunityEditForm({ setInput, handleCancle, post, userRo
             <div className="input">
               <label htmlFor="">카테고리</label>
               <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
-                <FormControlLabel value="일반" control={<Radio size="small" />} label="일반" />
+                <FormControlLabel value="자유" control={<Radio size="small" />} label="일반" />
                 <FormControlLabel value="공지" control={<Radio size="small" />} label="공지" />
               </RadioGroup>
             </div>
