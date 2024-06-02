@@ -192,8 +192,8 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
             <div className="input">
               <label htmlFor="">카테고리</label>
               <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
-                <FormControlLabel value="자유" control={<Radio size="small" />} label="일반" />
-                <FormControlLabel value="공지" control={<Radio size="small" />} label="공지" />
+                <FormControlLabel value="자유" control={<Radio size="small" color="secondary" />} label="일반" />
+                <FormControlLabel value="공지" control={<Radio size="small" color="secondary" />} label="공지" />
               </RadioGroup>
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
                 <label htmlFor="">고정</label>
                 <FormControlLabel
                   label={fixed ? "고정 됨" : "고정 안 됨"}
-                  control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />}
+                  control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} color="secondary" />}
                 />
               </div>
             </div>
@@ -213,14 +213,18 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
 
       <div className="flex-box title">
         <div className="input">
-          <label htmlFor="title">*제목</label>
+          <label htmlFor="title">
+            제목<span className="star">*</span>
+          </label>
           <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성하세요." required />
         </div>
         {handleError(errorTitle)}
       </div>
 
       <div className="input content flex-box">
-        <label htmlFor="content">*내용</label>
+        <label htmlFor="content">
+          내용<span className="star">*</span>
+        </label>
         <Editor
           ref={editorRef}
           initialValue={inputContent}
@@ -271,7 +275,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
           <Button color="darkGray" size="large" variant="outlined" onClick={handleCancle} sx={{ marginRight: "14px" }}>
             취소
           </Button>
-          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
+          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation color="secondary">
             등록
           </Button>
         </div>

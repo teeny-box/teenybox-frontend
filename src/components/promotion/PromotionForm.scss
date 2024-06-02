@@ -175,6 +175,7 @@
 
     label {
       display: inline-block;
+      flex-shrink: 0;
       width: 110px;
     }
 
@@ -361,6 +362,14 @@
       input[type="text"] {
         width: 70%;
       }
+
+      .line {
+        display: none;
+      }
+    }
+    .input.image .image.main.image {
+      width: 100%;
+      margin-right: 0;
     }
 
     .fixed {
@@ -384,6 +393,10 @@
       .error {
         margin-left: 85px;
       }
+    }
+
+    .add-info .MuiStack-root .MuiFormControl-root {
+      margin-top: 10px;
     }
   }
 }
