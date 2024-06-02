@@ -9,6 +9,10 @@
   flex-direction: column;
   border-bottom: #ffb400 1px solid;
 
+  a {
+    color: inherit;
+  }
+
   .content-box {
     width: 100%;
     color: #858585;
