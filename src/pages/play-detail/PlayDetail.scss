@@ -10,11 +10,25 @@
   }
 
   .play-detail-main-box {
-    border-radius: 8px;
-    border: 1.5px solid rgba(188, 188, 188, 0.5);
     padding: 0 30px 0;
     margin-top: 30px;
     background-color: #fff;
+
+    .play-detail-info-container {
+      background-color: #fff7e6;
+      padding: 10px 50px;
+      border-radius: 20px;
+    }
+    .detail-poster-container {
+      border-bottom: 2px solid #bcbcbc;
+    }
+  }
+  .goback-container {
+    margin: 20px 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .get-playInfo-error {
