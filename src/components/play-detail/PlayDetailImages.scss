@@ -1,0 +1,14 @@
+.detail-poster {
+  margin: 30px;
+
+  .detail-poster-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 100%;
+    }
+  }
+}

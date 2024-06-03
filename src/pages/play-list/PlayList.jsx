@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import ConditionSearch from "../../components/play-list/ConditionSearch";
 import PlayListHeader from "../../components/play-list/PlayListHeader";
 import PlayBox from "../../components/play-list/PlayBox";
@@ -23,6 +24,7 @@ import { showUrl } from "../../apis/apiURLs";
 export function PlayList() {
   const { prevPlayListQuery, setPrevPlayListQuery } = useContext(AppContext);
   const queryParams = new URLSearchParams(prevPlayListQuery);
+  const navigate = useNavigate();
 
   const PlayBoxMemo = React.memo(PlayBox);
   const playListContainerRef = useRef(null);
@@ -152,6 +154,12 @@ export function PlayList() {
     setCurPage((prevPage) => prevPage + 1);
   };
 
+  const handlePlayDetailNavigation = (playId) => {
+    const query = createQueryParams();
+    setPrevPlayListQuery(query);
+    navigate(`/play/${playId}`, { state: { from: query } });
+  };
+
   return (
     <div className="play-list-container" ref={playListContainerRef}>
       <Helmet>
@@ -225,6 +233,7 @@ export function PlayList() {
                     }}
                     query={reqQuery}
                     setPrevPlayListQuery={setPrevPlayListQuery}
+                    onClick={() => handlePlayDetailNavigation(play.showId)}
                   />
                 ))}
               </div>

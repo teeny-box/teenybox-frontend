@@ -1,17 +1,26 @@
 .play-detail-top-container {
   .play-detail-top {
+    margin-top: 50px;
     display: flex;
-    align-items: center;
 
     .title-container {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      h1 {
+        margin-top: 0;
+      }
+
+      .title-button-container {
+        display: flex;
+        align-items: center;
+      }
 
       .share-btn {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         position: relative;
-        top: 25px;
+        top: 20px;
 
         p {
           font-size: 17px;
@@ -42,21 +51,21 @@
             flex-grow: 1;
 
             .SNS-img-box {
-              height: 50px;
+              height: 90px;
+              width: 70px;
               display: flex;
+              flex-direction: column;
+              justify-content: center;
               align-items: center;
 
               img {
-                width: 30px;
-                height: 30px;
+                width: 40px;
+                height: 40px;
               }
-            }
-          }
-
-          .share-option:nth-child(3) {
-            img {
-              height: 27px;
-              width: 27px;
+              div {
+                font-weight: 300;
+                margin-top: 5px;
+              }
             }
           }
 
@@ -70,27 +79,27 @@
 
     .play-poster {
       display: flex;
+      position: relative;
 
       .poster-box {
-        width: 290px;
-        height: 390px;
+        width: 100%;
+        height: 500px;
         border-radius: 8px;
-        box-shadow: 5px 5px 10px #bcbcbc;
-
+        box-shadow: 4px 4px 3px #888787;
         .end-show-design {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 290px;
-          height: 390px;
+          width: 100%;
+          height: 500px;
           position: absolute;
           background-color: rgb(0, 0, 0, 0.5);
           font-family: "Noto Sans KR";
           border-radius: 8px;
 
           img {
-            width: 200px;
-            height: 200px;
+            width: 75%;
+            height: 290px;
           }
 
           .end-show-text {
@@ -106,8 +115,8 @@
         }
 
         img {
-          width: 290px;
-          height: 390px;
+          width: 100%;
+          height: 500px;
           border-radius: 8px;
         }
       }
@@ -167,9 +176,54 @@
           grid-column-start: 1;
           grid-column-end: 3;
           position: relative;
-          bottom: 12px;
+          bottom: 20px;
           display: flex;
           justify-content: flex-end;
+
+          .ticket-link-container {
+            display: flex;
+            align-items: center;
+
+            a {
+              position: relative;
+              display: inline-block;
+              margin-left: 15px;
+
+              img {
+                display: block;
+                transition: transform 0.3s ease;
+              }
+
+              &:hover::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                transform: scale(1.05); /* 호버 시 배경도 약간 확대 */
+              }
+
+              &:hover img {
+                transform: scale(1.05); /* 호버 시 약간 확대 */
+              }
+            }
+          }
+
+          .disabled-button {
+            width: 150px;
+            height: 45px;
+            border-radius: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            span {
+              font-size: large;
+              font-weight: 800;
+            }
+          }
         }
 
         .price {
@@ -183,14 +237,18 @@
       }
 
       p {
-        margin-left: 35px;
+        margin-left: 25px;
         font-size: 16px;
         line-height: 1.2;
         font-weight: 500;
+
+        white-space: nowrap; /* 줄 바꿈을 하지 않도록 설정 */
+        overflow: hidden; /* 넘치는 텍스트를 숨김 */
+        text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
       }
 
       hr {
-        margin: 15px 0 30px;
+        margin: 0px 0 30px;
       }
     }
   }

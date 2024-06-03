@@ -25,10 +25,12 @@ export default function AverageRatingBox({ isLoggedIn, setIsReviewFormOpened, co
       {openLoginAlert && <AlertCustom title={alert.title} content={alert.content} open={alert.open} onclose={alert.onclose} severity={alert.severity} />}
       <div className="average-rating-box">
         <div className="star-and-rating">
-          <h2>평균 평점</h2>
-          <Rating value={count ? averageRate : 0} readOnly size="large" precision={0.5} />
-          <span className="rating">{count ? `${averageRate.toFixed(1)} ` : "0.0 "}</span>
-          <p className="rating-addtional-text">* 아래의 관람 후기들을 바탕으로 한 평균 평점입니다.</p>
+          <div className="rating-title">
+            <h2>평균 평점</h2>
+            <span className="rating">{count ? `${averageRate.toFixed(1)} ` : "0.0 "} / 5 </span>
+          </div>
+          <Rating value={count ? averageRate : 0} readOnly sx={{ fontSize: 35 }} precision={0.5} />
+          <p className="rating-addtional-text">⨳아래의 관람 후기들을 바탕으로 한 평균 평점입니다.</p>
         </div>
         {state === "공연예정" ? (
           <Tooltip title="공연 예정인 연극에는 리뷰를 작성할 수 없습니다." arrow>
@@ -40,7 +42,22 @@ export default function AverageRatingBox({ isLoggedIn, setIsReviewFormOpened, co
           </Tooltip>
         ) : (
           <div className="review-button">
-            <Button color="inherit" state="focused" variant="outlined" size="large" onClick={handleReviewBtnClick}>
+            <Button
+              state="focused"
+              variant="outlined"
+              size="large"
+              onClick={handleReviewBtnClick}
+              sx={{
+                color: "#333333",
+                background: "#ffb400",
+                border: "none",
+                "&:hover": {
+                  background: "#cccccc", // hover 시 배경색
+                  color: "#808080", // hover 시 텍스트 색상
+                  border: "none",
+                },
+              }}
+            >
               <Typography fontFamily="Nanum Gothic, sans-serif" className="review-button-text">
                 관람 후기 {purpose}하기
               </Typography>

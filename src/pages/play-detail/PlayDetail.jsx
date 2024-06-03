@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./PlayDetail.scss";
 import { Helmet } from "react-helmet-async";
+import Button from "@mui/material/Button"; // 추가된 부분
 import PlayDetailTop from "../../components/play-detail/PlayDetailTop";
 import PlayDetailNav from "../../components/play-detail/PlayDetailNav";
 import PlayDetailInfo from "../../components/play-detail/PlayDetailInfo";
+import PlayDetailImages from "../../components/play-detail/PlayDetailImages"; // 추가된 부분
 import PlayReview from "../../components/play-detail/PlayReview";
 import TheaterLocation from "../../components/play-detail/TheaterLocation";
 import { UpButton } from "../../components/common/button/UpButton";
@@ -15,23 +17,17 @@ import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { showUrl } from "../../apis/apiURLs";
 
 export function PlayDetail() {
-  // 유저 로그인 여부 + 정보 확인
   const { userData } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
   const detailNavMenu = queryParams.get("tab") || "detail-info";
-  // 현재 연극의 id
   const { playId } = useParams();
-  // 데이터 가져올 때 로딩을 띄우기 (데이터가 다 가져와지기 전 파싱 작업이 이루어지지 않도록)
   const [isLoading, setIsLoading] = useState(true);
-  // 연극 상세 정보
   const [playInfo, setPlayInfo] = useState({});
-  // 에러 메시지 상태
   const [error, setError] = useState(null);
 
-  // 현재 연극 하나 데이터 받아오기
   const getPlayDetailInfo = () => {
     fetch(`${showUrl}/${playId}`)
       .then((res) => res.json())
@@ -50,7 +46,7 @@ export function PlayDetail() {
   }, []);
 
   const handleDetailNavMenuClick = (e) => {
-    const newQueryParams = new URLSearchParams(location.search); // 수정된 부분: 변수 이름 변경
+    const newQueryParams = new URLSearchParams(location.search);
     if (e.target.innerText === "상세정보") {
       newQueryParams.set("tab", "detail-info");
     } else if (e.target.innerText === "관람후기") {
@@ -59,6 +55,11 @@ export function PlayDetail() {
       newQueryParams.set("tab", "location-info");
     }
     navigate(`?${newQueryParams.toString()}`);
+  };
+
+  const handleGoBack = () => {
+    const previousPath = location.state?.from || "/";
+    navigate(previousPath);
   };
 
   return (
@@ -95,18 +96,40 @@ export function PlayDetail() {
             <PlayDetailNav selected={detailNavMenu} handleClick={handleDetailNavMenuClick} />
             <div className="play-detail-main-box">
               {detailNavMenu === "detail-info" && (
-                <PlayDetailInfo
-                  title={playInfo.title}
-                  cast={playInfo.cast}
-                  company={playInfo.company}
-                  creator={playInfo.creator}
-                  description={playInfo.description}
-                  detail_images={playInfo.detail_images}
-                  schedule={playInfo.schedule}
-                  seat_cnt={playInfo.seat_cnt}
-                  state={playInfo.state}
-                />
+                <div className="play-detail-content">
+                  <div className="play-detail-info-container">
+                    <PlayDetailInfo
+                      cast={playInfo.cast}
+                      company={playInfo.company}
+                      description={playInfo.description}
+                      schedule={playInfo.schedule}
+                      seat_cnt={playInfo.seat_cnt}
+                      state={playInfo.state}
+                    />
+                  </div>
+                  <div className="detail-poster-container">
+                    <PlayDetailImages title={playInfo.title} detail_images={playInfo.detail_images} />
+                  </div>
+                  <div className="goback-container">
+                    <Button
+                      variant="contained"
+                      onClick={handleGoBack}
+                      sx={{
+                        width: "100px",
+                        color: "#333333",
+                        background: "#fff",
+                        "&:hover": {
+                          background: "#cccccc", // hover 시 배경색
+                          color: "#000000", // hover 시 텍스트 색상
+                        },
+                      }}
+                    >
+                      목록
+                    </Button>
+                  </div>
+                </div>
               )}
+
               {detailNavMenu === "reviews" && (
                 <PlayReview
                   showId={playInfo.showId}
