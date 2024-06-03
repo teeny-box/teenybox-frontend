@@ -1,4 +1,5 @@
 @import "../../styles/mixin.scss";
+@import "../../App.scss";
 
 .main-region-layout-container {
   display: flex;
@@ -93,6 +94,7 @@
   margin: 12px 0 8px 0;
   font-size: 16px;
   font-weight: 400;
+  @include ellipsis(1, 16px);
 }
 .main-region-play-period {
   color: #00aaff;

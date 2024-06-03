@@ -103,7 +103,6 @@ function MainBest() {
       .catch((err) => console.error(err));
   }, []);
 
-  const formatTitle = (title) => (title.length > 13 ? title.slice(0, 13) : title);
   return (
     <>
       {innerWidth > 1024 ? (
@@ -126,7 +125,7 @@ function MainBest() {
                     <img src={show.poster} alt={show.title} />
                     <p className="best-overlay-rank">{show.newRank}</p>
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
+                  <p className="main-play-title">{show.title}</p>
                   <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
                 </div>
               ))}
@@ -154,7 +153,7 @@ function MainBest() {
                     <img src={show.poster} alt={show.title} />
                     <p className="best-overlay-rank">{show.newRank}</p>
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
+                  <p className="main-play-title">{show.title}</p>
                   <p className="main-play-period">{`${new Date(show.start_date).toLocaleDateString()} ~ ${new Date(show.end_date).toLocaleDateString()}`}</p>
                 </div>
               ))}

@@ -1,4 +1,5 @@
 @import "../../styles/mixin.scss";
+@import "../../App.scss";
 
 .main-layout-container {
   display: flex;
@@ -94,6 +95,7 @@
   margin: 12px 0 8px 0;
   font-size: 0.8vw;
   font-weight: 400;
+  @include ellipsis(1, 0.8vw);
 }
 .main-play-period {
   color: #bbb;
@@ -119,6 +121,7 @@
   }
   .main-play-title {
     font-size: 16px;
+    @include ellipsis(1, 16px);
   }
   .main-play-period {
     font-size: 14px;
@@ -161,18 +164,13 @@
     display: flex;
     width: 390%;
   }
-  .main-play-title {
-    font-size: 1.4vw;
-  }
-  .main-play-period {
-    font-size: 1.2vw;
-  }
   .slide-icon:hover {
     cursor: pointer;
     color: white;
   }
   .main-play-title {
     font-size: 1.6vw;
+    @include ellipsis(1, 1.6vw);
   }
   .main-play-period {
     font-size: 1.4vw;
@@ -205,6 +203,7 @@
   }
   .main-play-title {
     font-size: 2vw;
+    @include ellipsis(1, 2vw);
   }
   .main-play-period {
     font-size: 1.6vw;
@@ -237,8 +236,9 @@
   }
   .main-play-title {
     font-size: 3vw;
+    @include ellipsis(1, 3vw);
   }
   .main-play-period {
-    font-size: 2vw;
+    font-size: 2.5vw;
   }
 }

@@ -95,8 +95,6 @@ function MainChild() {
       .catch((err) => console.error(err));
   }, []);
 
-  const formatTitle = (title) => (title.length > 13 ? title.slice(0, 13) : title);
-
   return (
     <>
       {innerWidth > 1024 ? (
@@ -118,8 +116,8 @@ function MainChild() {
                   <div className="main-play-img-box">
                     <img src={show.poster} alt={show.title} />
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
-                  <p className="main-child-play-period">{formatTitle(show.age)}</p>
+                  <p className="main-play-title">{show.title}</p>
+                  <p className="main-child-play-period">{show.age}</p>
                 </div>
               ))}
             </div>
@@ -145,8 +143,8 @@ function MainChild() {
                   <div className="main-play-img-box">
                     <img src={show.poster} alt={show.title} />
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
-                  <p className="main-child-play-period">{formatTitle(show.age)}</p>
+                  <p className="main-play-title">{show.title}</p>
+                  <p className="main-child-play-period">{show.age}</p>
                 </div>
               ))}
             </div>
