@@ -20,9 +20,7 @@ export function Comment({ commentData, deleteComment }) {
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
   const nav = useNavigate();
 
-  const handleSeeMore = (e) => {
-    const textBox = e.target.closest(".text");
-    textBox.classList.toggle("close");
+  const handleSeeMore = () => {
     setSeeMoreOpen((cur) => !cur);
   };
 
@@ -53,9 +51,10 @@ export function Comment({ commentData, deleteComment }) {
   useEffect(() => {
     if (!isEditing) {
       const textBox = document.querySelector(`#comment${comment._id} .text`);
-      if (parseInt(textBox.clientHeight, 10) > 262) {
+      if (parseInt(textBox.clientHeight, 10) >= 220) {
         setDisable(false);
       }
+      setSeeMoreOpen(false);
     }
   }, [isEditing]);
 
@@ -102,7 +101,7 @@ export function Comment({ commentData, deleteComment }) {
             </div>
           ) : (
             <div className="content pre-wrap">
-              <span className={`text ${disable || "close"}`}>
+              <span className={`text ${disable || (seeMoreOpen ? "open" : "close")}`}>
                 {comment.content}
                 <span className="see-more-btn pointer" onClick={handleSeeMore}>
                   {disable || (seeMoreOpen ? "▴접기" : "▾더보기")}

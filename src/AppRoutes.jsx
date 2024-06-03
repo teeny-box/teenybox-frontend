@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import LightHeader from "./components/common/header/LightHeader";
@@ -36,26 +35,10 @@ import {
 } from "./pages";
 import useScrollToTop from "./hooks/useScrollToTop";
 
-let currentPath = "";
-let reloard = true;
-
 export default function AppRoutes({ setPrevPlayListQuery }) {
   const location = useLocation();
   useScrollToTop();
   useGetUser();
-  console.log(location.pathname);
-
-  useEffect(() => {
-    if (location.pathname === "/search" || location.pathname === "/mypages") {
-      currentPath = location.pathname + location.search;
-      return;
-    }
-    if (currentPath === location.pathname + location.search && reloard) {
-      reloard = false;
-      window.location.reload();
-    }
-    currentPath = location.pathname + location.search;
-  }, [location]);
 
   return (
     <Routes>

@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Button, IconButton, Checkbox, FormControlLabel } from "@mui/material";
+import { Backdrop, Button, IconButton, Checkbox, FormControlLabel, RadioGroup, Radio } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "../promotion/PromotionForm.scss";
 import { Editor } from "@toast-ui/react-editor";
+import { ChevronLeft } from "@mui/icons-material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { postUrl, presignedUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
@@ -23,7 +24,8 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
   const [errorImage, setErrorImage] = useState("");
   const [tagList, setTagList] = useState([]);
   const [inputTag, setInputTag] = useState();
-  // 고정(관리자)
+  // 관리자
+  const [inputCategory, setInputCategory] = useState("자유");
   const [fixed, setFixed] = useState(false);
 
   const editorRef = useRef();
@@ -40,6 +42,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
           title: inputTitle,
           content: inputContent,
           tags: tagList,
+          category: inputCategory,
           is_fixed: fixed ? "고정" : "일반",
         }),
       });
@@ -89,7 +92,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
   };
 
   const handleContentChange = () => {
-    const editorMarkdown = editorRef.current.getInstance().getMarkdown();
+    const editorMarkdown = editorRef.current.getInstance().getHTML();
     console.log(editorMarkdown);
     setInputContent(editorMarkdown);
     if (editorMarkdown.length < 1) {
@@ -172,40 +175,56 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
     }
   }, [userRole]);
 
+  useEffect(() => {
+    if (inputCategory === "자유") setFixed(false);
+  }, [inputCategory]);
+
   return (
     <div className="post-form-box">
       <div className="form-header">
-        <div className="title">게시글 작성하기</div>
+        <ChevronLeft fontSize="large" className="back-button pointer" onClick={() => nav(-1)} />
+        <div className="title h1">게시글 작성하기</div>
       </div>
 
       {userRole === "admin" && (
-        <div className="flex-box fixed">
-          <div className="input flex-center">
-            <label htmlFor="">고정</label>
-            <FormControlLabel label={fixed ? "고정 됨" : "고정 안 됨"} control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} />} />
+        <>
+          <div className="flex-box category">
+            <div className="input">
+              <label htmlFor="">카테고리</label>
+              <RadioGroup name="controlled-radio-buttons-group" value={inputCategory} onChange={(e) => setInputCategory(e.target.value)}>
+                <FormControlLabel value="자유" control={<Radio size="small" color="secondary" />} label="일반" />
+                <FormControlLabel value="공지" control={<Radio size="small" color="secondary" />} label="공지" />
+              </RadioGroup>
+            </div>
           </div>
-        </div>
+          {inputCategory === "공지" && (
+            <div className="flex-box fixed">
+              <div className="input flex-center">
+                <label htmlFor="">고정</label>
+                <FormControlLabel
+                  label={fixed ? "고정 됨" : "고정 안 됨"}
+                  control={<Checkbox checked={fixed} onChange={(e) => setFixed(e.target.checked)} color="secondary" />}
+                />
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <div className="flex-box title">
         <div className="input">
-          <label htmlFor="title">*제목</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={inputTitle}
-            onChange={handleTitleChange}
-            maxLength={40}
-            placeholder="제목을 작성해 주세요."
-            required
-          />
+          <label htmlFor="title">
+            제목<span className="star">*</span>
+          </label>
+          <input type="text" id="title" name="title" value={inputTitle} onChange={handleTitleChange} maxLength={40} placeholder="제목을 작성하세요." required />
         </div>
         {handleError(errorTitle)}
       </div>
 
       <div className="input content flex-box">
-        <label htmlFor="content">*내용</label>
+        <label htmlFor="content">
+          내용<span className="star">*</span>
+        </label>
         <Editor
           ref={editorRef}
           initialValue={inputContent}
@@ -230,7 +249,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
             onKeyDown={handleChangeTag}
             value={inputTag}
             onChange={(e) => setInputTag(e.target.value.trimStart())}
-            placeholder="엔터를 입력하여 태그를 등록할 수 있습니다."
+            placeholder="엔터를 입력하여 태그를 등록하세요."
             maxLength={16}
           />
         </div>
@@ -256,7 +275,7 @@ export default function CommunityForm({ setInput, handleCancle, userRole }) {
           <Button color="darkGray" size="large" variant="outlined" onClick={handleCancle} sx={{ marginRight: "14px" }}>
             취소
           </Button>
-          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation>
+          <Button variant="contained" size="large" onClick={handleClickSubmitButton} disableElevation color="secondary">
             등록
           </Button>
         </div>

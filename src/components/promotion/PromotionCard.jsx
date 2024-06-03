@@ -2,9 +2,10 @@ import { Children } from "react";
 import { Link } from "react-router-dom";
 import { SmsOutlined, ThumbUpOutlined, VisibilityOutlined } from "@mui/icons-material";
 import empty_img from "../../assets/img/empty_img.svg";
-import TimeFormat from "../common/time/TimeFormat";
+// import TimeFormat from "../common/time/TimeFormat";
 import numberFormat from "../../utils/numberFormat";
 import "./PromotionCard.scss";
+import { decodeHTML } from "../../utils/decodeHTML";
 
 // const logo3 = "https://elice-5th.s3.ap-northeast-2.amazonaws.com/280046bf_e975_4241_a686_af535de3b07d_logo2.png";
 
@@ -36,10 +37,12 @@ export function PromotionListCard({ post, idx }) {
             )}
           </div>
         )}
-        <div className="date">
-          {post.start_date && <TimeFormat time={post.start_date} />}
+        <div className="content">
+          {/* {post.start_date && <TimeFormat time={post.start_date} />}
           {" ~ "}
-          {post.end_date && <TimeFormat time={post.end_date} />}
+          {post.end_date && <TimeFormat time={post.end_date} />} */}
+          {decodeHTML(post.content)}
+          <div />
         </div>
         <div className="post-card-footer">
           <VisibilityOutlined sx={{ fontSize: 16 }} />

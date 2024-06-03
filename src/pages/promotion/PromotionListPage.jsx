@@ -1,9 +1,10 @@
 import "./PromotionListPage.scss";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom/dist";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { Button, CircularProgress, FormControl, MenuItem, Select } from "@mui/material";
 import { Helmet } from "react-helmet-async";
+import { useMediaQuery } from "react-responsive";
 import PromotionList from "../../components/promotion/PromotionList";
 import { UpButton } from "../../components/common/button/UpButton";
 import ServerError from "../../components/common/state/ServerError";
@@ -12,19 +13,32 @@ import { promotionUrl } from "../../apis/apiURLs";
 import { FixedTopBanner } from "../../components/board/FixedTopBanner";
 import { PromotionBanner } from "../../components/promotion/PromotionBanner";
 import { MoblieCreateButton } from "../../components/common/button/MoblieCreateButton";
+import SortIcon from "../../assets/img/search_sort_icon.png";
+
+const GET_COUNT_LIMIT = 20;
+const SORT = {
+  최신순: "time desc",
+  오래된순: "time asc",
+  추천순: "like desc",
+  조회순: "view desc",
+};
 
 export function PromotionListPage() {
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
+  const [scrollRef, inView] = useInView();
+  const nav = useNavigate();
+  const loc = useLocation();
+  const [reload, setReload] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
   const [state, setState] = useState("loading");
-  const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("promotion_number desc");
+  const [category, setCategory] = useState(searchParams.get("category") || "전체");
+  const [sort, setSort] = useState(searchParams.get("sort") || "최신순");
 
   const [fixedList, setFixedList] = useState([]);
-
-  const [scrollRef, inView] = useInView();
-  const nav = useNavigate();
 
   const getFixedList = async () => {
     try {
@@ -46,21 +60,18 @@ export function PromotionListPage() {
     setBoardList(uniqueList);
   };
 
-  const getPage = async (curPage, method) => {
+  const getPage = async () => {
     setState("loading");
 
-    const [by, order] = sort.split(" ");
+    const [by, order] = SORT[sort].split(" ");
     try {
-      const res = await fetch(`${promotionUrl}?page=${curPage || page}&limit=20&sortBy=${by}&sortOrder=${order}&category=${category}`);
+      const res = await fetch(
+        `${promotionUrl}?page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}&category=${category === "전체" ? "" : category}`,
+      );
       const data = await res.json();
 
       if (res.ok) {
-        if (method === "add") {
-          addBoardList(data.promotions);
-        } else {
-          setBoardList(data.promotions);
-        }
-        setPage(curPage + 1);
+        addBoardList(data.promotions);
         setTotalCnt(data.totalCount);
         setState("hasValue");
 
@@ -76,6 +87,9 @@ export function PromotionListPage() {
 
   const handleClickDivision = (e) => {
     setCategory(e.target.id);
+    setReload((cur) => cur + 1);
+    setBoardList([]);
+    setPage(1);
   };
 
   const handleFormBtn = () => {
@@ -83,20 +97,40 @@ export function PromotionListPage() {
   };
 
   useEffect(() => {
-    if (inView) {
+    getFixedList();
+  }, []);
+
+  useEffect(() => {
+    setPage(1);
+    setBoardList([]);
+  }, [category, sort]);
+
+  useEffect(() => {
+    if (inView && state !== "loading") {
       // 총 개수 받아서 page 넘어가면 api 호출 X
       if (boardList.length >= totalCnt) return;
-      getPage(page, "add");
+      if (boardList.length < page * GET_COUNT_LIMIT) {
+        setReload((cur) => cur + 1);
+        setPage(Math.ceil(boardList.length / GET_COUNT_LIMIT));
+      } else {
+        setPage((cur) => cur + 1);
+      }
     }
   }, [inView]);
 
   useEffect(() => {
-    getPage(1);
-  }, [sort, category]);
+    if (!loc.search) {
+      setCategory("");
+      setSort("최신순");
+      setReload(loc.key);
+      setPage(1);
+    }
+  }, [loc.search]);
 
   useEffect(() => {
-    getFixedList();
-  }, []);
+    getPage();
+    setSearchParams({ sort, category });
+  }, [page, reload, category, sort]);
 
   return (
     <>
@@ -112,7 +146,7 @@ export function PromotionListPage() {
         <PromotionBanner />
         <div className="header flex-box">
           <div className="division flex-box">
-            <div id="" className={category === "" ? "selected" : ""} onClick={handleClickDivision}>
+            <div id="전체" className={category === "전체" ? "selected" : ""} onClick={handleClickDivision}>
               전체보기
             </div>
             <div id="연극" className={category === "연극" ? "selected" : ""} onClick={handleClickDivision}>
@@ -123,17 +157,34 @@ export function PromotionListPage() {
             </div>
           </div>
           <div className="buttons">
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
-                <MenuItem value="promotion_number desc">최신순</MenuItem>
-                <MenuItem value="likes desc">추천순</MenuItem>
-                <MenuItem value="views desc">조회순</MenuItem>
-                <MenuItem value="promotion_number asc">오래된순</MenuItem>
-              </Select>
-            </FormControl>
-            <Button className="create-button" onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
-              글쓰기
-            </Button>
+            {isMoblie ? (
+              <div className="select-box">
+                <img src={SortIcon} />
+                <span>정렬</span>
+                <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
+                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                    <MenuItem value="최신순">최신순</MenuItem>
+                    <MenuItem value="추천순">추천순</MenuItem>
+                    <MenuItem value="조회순">조회순</MenuItem>
+                    <MenuItem value="오래된순">오래된순</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            ) : (
+              <>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                    <MenuItem value="최신순">최신순</MenuItem>
+                    <MenuItem value="추천순">추천순</MenuItem>
+                    <MenuItem value="조회순">조회순</MenuItem>
+                    <MenuItem value="오래된순">오래된순</MenuItem>
+                  </Select>
+                </FormControl>
+                <Button className="create-button" onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
+                  글쓰기
+                </Button>
+              </>
+            )}
           </div>
         </div>
         {state === "loading" && !boardList.length ? (

@@ -54,20 +54,6 @@
     align-items: center;
     font-size: 18px;
     position: relative;
-
-    > * {
-      margin-left: 14px;
-      cursor: pointer;
-    }
-
-    .comments-icon {
-      display: flex;
-    }
-
-    span {
-      line-height: 20px;
-      margin-left: 2px;
-    }
   }
 
   .share-btn {
@@ -84,49 +70,66 @@
     }
   }
 
+  .backdrop {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
   .share-options {
     position: absolute;
-    bottom: -80px;
+    top: 44px;
     right: 0;
     border: 1.5px solid #ffb400;
     border-radius: 8px;
-    padding: 25px 10px 0;
+    padding: 26px;
     display: flex;
-    z-index: 100;
+    flex-wrap: wrap;
+    z-index: 3;
     background-color: #ffffff;
+    box-sizing: border-box;
+    width: calc(100vw - 40px);
+    max-width: max-content;
+    min-width: fit-content;
+    row-gap: 14px;
+    column-gap: 30px;
 
     .share-option {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      bottom: 12px;
-      margin: 0 10px;
-      flex-grow: 1;
+      row-gap: 10px;
+      width: 45px;
 
       .SNS-img-box {
-        height: 50px;
-        display: flex;
-        align-items: center;
+        margin: auto;
 
         img {
           width: 30px;
           height: 30px;
         }
       }
-    }
 
-    .share-option:nth-child(3) {
-      img {
-        height: 27px;
-        width: 27px;
+      .label {
+        font-family: "Noto Sans KR";
+        font-size: 12px;
+        font-weight: 400;
+        flex-shrink: 0;
+        flex-grow: 1;
+        text-align: center;
       }
     }
 
     .close-icon {
-      position: relative;
-      top: 15px;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      color: #ffb400;
+      .MuiSvgIcon-root {
+        font-size: 16px;
+      }
     }
   }
 

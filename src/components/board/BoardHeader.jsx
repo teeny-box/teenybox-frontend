@@ -2,20 +2,23 @@ import { useNavigate } from "react-router-dom/dist";
 import "./BoardHeader.scss";
 import { KeyboardDoubleArrowLeftOutlined } from "@mui/icons-material";
 
-export function CommunityTabBar({ selected, setSelected }) {
+export function CommunityTabBar({ selected, setSelected, setPage, setReload, setSort }) {
   const handleClickTab = (e) => {
-    console.log(e.currentTarget.id);
     setSelected(e.currentTarget.id);
+    setPage(1);
+    setReload((cur) => cur + 1);
+    setSort("최신순");
   };
+
   return (
     <div className="community-tap-bar">
-      <div className={`tab-menu pointer ${selected === "post" && "selected"}`} onClick={handleClickTab} id="post">
+      <div className={`tab-menu pointer ${selected === "자유" && "selected"}`} onClick={handleClickTab} id="자유">
         <h2 className="text">
           자유게시글
           <div className="new-icon">N</div>
         </h2>
       </div>
-      <div className={`tab-menu pointer ${selected === "notice" && "selected"}`} onClick={handleClickTab} id="notice">
+      <div className={`tab-menu pointer ${selected === "공지" && "selected"}`} onClick={handleClickTab} id="공지">
         <h2 className="text">
           공지사항
           <div className="new-icon">N</div>

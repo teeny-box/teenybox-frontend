@@ -1,27 +1,100 @@
 @import "../../../styles/mixin.scss";
 
 .promotion-search-result-container {
-  margin: 40px 0 0;
+  margin: 40px 0;
   width: 100%;
 
   .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 
     @include moblie {
       padding: 0 20px;
     }
 
-    .title {
-      font-size: 20px;
-      font-weight: 500;
+    .left {
+      flex-shrink: 0;
+
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+      }
     }
 
-    .left {
+    .right {
       display: flex;
+      column-gap: 24px;
       align-items: center;
       margin-top: 2px;
+
+      .select-box {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        height: 16px;
+
+        img {
+          height: 16px;
+          object-fit: contain;
+        }
+
+        span {
+          font-size: 14px;
+          height: 19px;
+          line-height: 19px;
+        }
+
+        .range {
+          position: absolute;
+          min-width: 90px;
+          opacity: 0;
+        }
+
+        .sort {
+          position: absolute;
+          min-width: 60px;
+          opacity: 0;
+        }
+      }
+
+      .type {
+        .MuiFormGroup-root {
+          flex-direction: row;
+          display: flex;
+
+          .MuiRadio-root {
+            padding: 2px;
+            margin: 0px 4px 0 8px;
+          }
+
+          .MuiFormControlLabel-label {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .MuiFormControl-root {
+        height: 30px;
+        margin: 0;
+
+        .MuiInputBase-root {
+          color: #898989;
+          font-size: 13px;
+          font-weight: 500;
+          line-height: 24px;
+
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(137, 137, 137, 0.5019607843);
+          }
+
+          .MuiSelect-select {
+            padding: 3px 9px;
+            height: 24px;
+          }
+        }
+      }
     }
 
     .sort-by {
@@ -38,16 +111,11 @@
     border-top: 1px solid #ffb400;
     border-bottom: 1px solid #ffb400;
     margin: 20px 0;
-    padding: 30px 0;
-
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 70px 36px;
+    padding-bottom: 50px;
 
     @include laptop {
       column-gap: 36px;
+      padding-bottom: 40px;
     }
 
     @include tablet-horizontal {
@@ -56,10 +124,13 @@
 
     @include tablet-vertical {
       column-gap: 33px;
+      padding-bottom: 30px;
     }
 
     @include moblie {
       column-gap: 20px;
+      border: none;
+      padding: 0;
     }
 
     .loading {
@@ -76,5 +147,19 @@
     justify-content: center;
     align-items: center;
     margin: 40px 0 80px;
+  }
+
+  .state {
+    width: 100%;
+    padding: 40px 0;
+    margin: 20px 0 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.box {
+      height: calc(100vh - 300px);
+      background-color: #0000000c;
+    }
   }
 }

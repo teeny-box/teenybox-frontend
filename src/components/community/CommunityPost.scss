@@ -25,6 +25,7 @@
   .tags {
     display: flex;
     flex-wrap: wrap;
+    row-gap: 8px;
 
     .tag {
       box-sizing: border-box;

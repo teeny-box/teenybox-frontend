@@ -1,23 +1,51 @@
 import { useEffect, useState } from "react";
-import { CircularProgress, Pagination } from "@mui/material";
-import { useSearchParams } from "react-router-dom/dist";
+import { CircularProgress, FormControl, FormControlLabel, MenuItem, Pagination, Radio, RadioGroup, Select } from "@mui/material";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+import { useMediaQuery } from "react-responsive";
 import { postUrl } from "../../../apis/apiURLs";
 import CommunityList from "../../community/CommunityList";
 import "./CommunitySearchResult.scss";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
+import RangeIcon from "../../../assets/img/search_range_icon.png";
+import SortIcon from "../../../assets/img/search_sort_icon.png";
+import { UpButton } from "../../common/button/UpButton";
 
-const TYPES = ["title", "tag"];
+// const TYPES = ["title", "tag"];
+const GET_COUNT_LIMIT = 5;
+const SORT = {
+  최신순: "time desc",
+  오래된순: "time asc",
+  추천순: "like desc",
+  조회순: "view desc",
+};
 
 export default function CommunitySearchResult({ searchKeyword }) {
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
+  const [scrollRef, inView] = useInView();
+  const loc = useLocation();
+  const [reload, setReload] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchResult, setSearchResult] = useState();
+
+  const [searchResult, setSearchResult] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [type, setType] = useState(searchParams.get("type") || "title");
+  const [sort, setSort] = useState(searchParams.get("sort") || "최신순");
   const [state, setState] = useState("loading");
 
-  const getCommunitySearchResult = async () => {
+  const addSearchResult = (newList) => {
+    const uniqueList = [...searchResult, ...newList].reduce((newArr, current) => {
+      if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
+        newArr.push(current);
+      }
+      return newArr;
+    }, []);
+    setSearchResult(uniqueList);
+  };
+
+  const getCommunitySearchResult = async (method) => {
     setState("loading");
 
     if (!searchKeyword.trim()) {
@@ -27,11 +55,17 @@ export default function CommunitySearchResult({ searchKeyword }) {
     }
 
     try {
-      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=10`);
+      const [by, order] = SORT[sort].split(" ");
+      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
+      console.log(res, data);
 
       if (res.ok) {
-        setSearchResult(data.posts);
+        if (method === "add" && page > 1) {
+          addSearchResult(data.posts);
+        } else {
+          setSearchResult(data.posts);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
       } else {
@@ -43,25 +77,53 @@ export default function CommunitySearchResult({ searchKeyword }) {
     }
   };
 
-  const handleChangeType = (e) => {
-    setType(e.target.value);
-    searchParams.set("type", e.target.value);
-    setSearchParams(searchParams);
-  };
+  useEffect(() => {
+    setPage(1);
+  }, [type, sort]);
 
   useEffect(() => {
-    if (!TYPES.includes(searchParams.get("type"))) {
-      setType("title");
-      searchParams.set("type", "title");
-      setSearchParams(searchParams);
+    if (isMoblie) {
+      console.log("moblie");
+      setPage(1);
     }
-
-    getCommunitySearchResult();
-  }, [searchParams, page, type]);
+    setReload((cur) => cur + 1);
+    setSearchResult([]);
+  }, [isMoblie]);
 
   useEffect(() => {
-    getCommunitySearchResult();
-  }, []);
+    console.log(inView, reload, isMoblie);
+    if (inView && isMoblie && state !== "loading") {
+      // 총 개수 받아서 page 넘어가면 api 호출 X
+      if (searchResult.length >= totalCnt) return;
+      if (searchResult.length < page * GET_COUNT_LIMIT) {
+        setReload((cur) => cur + 1);
+        setPage(Math.ceil(searchResult.length / GET_COUNT_LIMIT));
+      } else {
+        setPage((cur) => cur + 1);
+      }
+      console.log("asd", searchResult.length, totalCnt);
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    if (!loc.search) {
+      setType("title");
+      setSort("최신순");
+      setReload(loc.key);
+      setPage(1);
+    }
+  }, [loc.search]);
+
+  useEffect(() => {
+    console.log(page, type, sort, reload);
+    if (isMoblie) {
+      getCommunitySearchResult("add");
+    } else {
+      getCommunitySearchResult();
+      window.scrollTo({ top: 0 });
+    }
+    setSearchParams({ query: searchKeyword, type, page, sort, category: "커뮤니티" });
+  }, [page, reload, type, sort]);
 
   return (
     <div className="community-search-result-container">
@@ -70,29 +132,67 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <span className="title">커뮤니티 검색결과</span>
           <span className="title count">({totalCnt.toLocaleString("ko-KR")})</span>
         </div>
-        <div>
-          <span>검색 범위 : </span>
-          <select className="sort-by" value={type} onChange={handleChangeType}>
-            <option value="title">글 제목</option>
-            <option value="tag">태그</option>
-          </select>
+        <div className="right">
+          {isMoblie ? (
+            <>
+              <div className="select-box">
+                <img src={RangeIcon} />
+                <span>검색범위</span>
+                <FormControl sx={{ m: 1, minWidth: 120 }} className="range">
+                  <Select value={type} onChange={(e) => setType(e.target.value)} displayEmpty>
+                    <MenuItem value="title">글 제목</MenuItem>
+                    <MenuItem value="tag">태그</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="select-box">
+                <img src={SortIcon} />
+                <span>정렬</span>
+                <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
+                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                    <MenuItem value="최신순">최신순</MenuItem>
+                    <MenuItem value="추천순">추천순</MenuItem>
+                    <MenuItem value="조회순">조회순</MenuItem>
+                    <MenuItem value="오래된순">오래된순</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="type">
+                <RadioGroup name="controlled-radio-buttons-group" value={type} onChange={(e) => setType(e.target.value)}>
+                  <FormControlLabel value="title" control={<Radio size="10px" color="secondary" />} label="글 제목" />
+                  <FormControlLabel value="tag" control={<Radio size="10px" color="secondary" />} label="태그" />
+                </RadioGroup>
+              </div>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <MenuItem value="최신순">최신순</MenuItem>
+                  <MenuItem value="추천순">추천순</MenuItem>
+                  <MenuItem value="조회순">조회순</MenuItem>
+                  <MenuItem value="오래된순">오래된순</MenuItem>
+                </Select>
+              </FormControl>
+            </>
+          )}
         </div>
       </div>
-      {state === "loading" ? (
+      {(state === "loading" && isMoblie && page === 1) || (state === "loading" && !isMoblie) ? (
         <div className="search-content">
-          <div className="loading">
+          <div className="state">
             <CircularProgress color="secondary" />
           </div>
         </div>
       ) : state === "hasError" ? (
         <div className="search-content">
-          <div className={`state`}>
+          <div className={`state box`}>
             <ServerError onClickBtn={getCommunitySearchResult} />
           </div>
         </div>
-      ) : !searchResult?.length ? (
+      ) : !searchResult.length ? (
         <div className="search-content">
-          <div className="state">
+          <div className="state box">
             <EmptySearchResult type={true} />
           </div>
         </div>
@@ -101,9 +201,18 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <div className="search-content">
             <CommunityList boardList={searchResult} />
           </div>
-          <div className="search-pagination">
-            <Pagination count={Math.ceil(totalCnt / 10)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
-          </div>
+          {isMoblie && state === "loading" && (
+            <div className={`state`}>
+              <CircularProgress color="secondary" />
+            </div>
+          )}
+          <UpButton />
+          <div className="scroll-ref" ref={scrollRef}></div>
+          {isMoblie || (
+            <div className="search-pagination">
+              <Pagination count={Math.ceil(totalCnt / GET_COUNT_LIMIT)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+            </div>
+          )}
         </>
       )}
     </div>

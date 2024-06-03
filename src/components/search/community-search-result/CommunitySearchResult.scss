@@ -1,15 +1,99 @@
+@import "../../../styles/mixin.scss";
+
 .community-search-result-container {
-  margin: 40px auto 0;
+  margin: 40px 0;
   width: 100%;
 
   .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+
+    @include moblie {
+      padding: 0 20px;
+    }
 
     .title {
-      font-weight: bold;
-      font-size: 24px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .right {
+      display: flex;
+      column-gap: 24px;
+      align-items: center;
+      margin-top: 2px;
+
+      .select-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        height: 16px;
+
+        img {
+          height: 16px;
+          object-fit: contain;
+        }
+
+        span {
+          font-size: 14px;
+          height: 19px;
+          line-height: 19px;
+        }
+
+        .range {
+          position: absolute;
+          left: -6px;
+          min-width: 90px;
+          opacity: 0;
+        }
+
+        .sort {
+          position: absolute;
+          left: -6px;
+          min-width: 62px;
+          opacity: 0;
+        }
+      }
+
+      .type {
+        .MuiFormGroup-root {
+          flex-direction: row;
+          display: flex;
+
+          .MuiRadio-root {
+            padding: 2px;
+            margin: 0px 4px 0 8px;
+          }
+
+          .MuiFormControlLabel-label {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .MuiFormControl-root {
+        height: 30px;
+        margin: 0;
+
+        .MuiInputBase-root {
+          color: #898989;
+          font-size: 13px;
+          font-weight: 500;
+          line-height: 24px;
+
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(137, 137, 137, 0.5019607843);
+          }
+
+          .MuiSelect-select {
+            padding: 3px 9px;
+            height: 24px;
+          }
+        }
+      }
     }
 
     .sort-by {
@@ -24,19 +108,27 @@
 
   .search-content {
     border-top: 1px solid #ffb400;
-    border-bottom: 1px solid #ffb400;
     margin: 20px 0;
-    padding: 30px 50px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
 
     .loading {
       margin: 200px auto;
     }
 
-    a {
-      margin-bottom: 20px;
+    @include laptop {
+      column-gap: 36px;
+    }
+
+    @include tablet-horizontal {
+      column-gap: 40px;
+    }
+
+    @include tablet-vertical {
+      column-gap: 33px;
+    }
+
+    @include moblie {
+      column-gap: 20px;
+      padding: 0;
     }
   }
 
@@ -48,6 +140,16 @@
   }
 
   .state {
-    margin: 80px auto;
+    width: 100%;
+    padding: 40px 0;
+    margin: 20px 0 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.box {
+      height: calc(100vh - 300px);
+      background-color: #0000000c;
+    }
   }
 }

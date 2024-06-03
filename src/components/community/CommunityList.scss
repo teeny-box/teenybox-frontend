@@ -1,4 +1,5 @@
 @import "../../styles/mixin.scss";
+@import "../../App.scss";
 
 .progress {
   margin: auto;
@@ -8,6 +9,10 @@
   display: flex;
   flex-direction: column;
   border-bottom: #ffb400 1px solid;
+
+  a {
+    color: inherit;
+  }
 
   .content-box {
     width: 100%;
@@ -66,8 +71,7 @@
       font-size: 16px;
       font-weight: 700;
       margin: 10px 0;
-      height: 26px;
-      line-height: 26px;
+      @include ellipsis(1, 26px);
     }
 
     .bottom {
