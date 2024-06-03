@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CircularProgress, Pagination } from "@mui/material";
+import { CircularProgress, FormControl, FormControlLabel, MenuItem, Pagination, Radio, RadioGroup, Select } from "@mui/material";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useMediaQuery } from "react-responsive";
@@ -8,8 +8,17 @@ import CommunityList from "../../community/CommunityList";
 import "./CommunitySearchResult.scss";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
+import RangeIcon from "../../../assets/img/search_range_icon.png";
+import SortIcon from "../../../assets/img/search_sort_icon.png";
 
 // const TYPES = ["title", "tag"];
+const GET_COUNT_LIMIT = 3;
+const SORT = {
+  최신순: "time desc",
+  오래된순: "time asc",
+  추천순: "like desc",
+  조회순: "view desc",
+};
 
 export default function CommunitySearchResult({ searchKeyword }) {
   const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
@@ -17,10 +26,12 @@ export default function CommunitySearchResult({ searchKeyword }) {
   const loc = useLocation();
   const [reload, setReload] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [searchResult, setSearchResult] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [type, setType] = useState(searchParams.get("type") || "title");
+  const [sort, setSort] = useState(searchParams.get("sort") || "최신순");
   const [state, setState] = useState("loading");
 
   const addSearchResult = (newList) => {
@@ -43,8 +54,10 @@ export default function CommunitySearchResult({ searchKeyword }) {
     }
 
     try {
-      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=5`);
+      const [by, order] = SORT[sort].split(" ");
+      const res = await fetch(`${postUrl}/search?type=${type}&query=${searchKeyword}&page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
+      console.log(res, data);
 
       if (res.ok) {
         if (method === "add" && page > 1) {
@@ -63,14 +76,9 @@ export default function CommunitySearchResult({ searchKeyword }) {
     }
   };
 
-  const handleChangeType = (e) => {
-    setType(e.target.value);
-    searchParams.set("type", e.target.value);
-    setSearchParams(searchParams);
-  };
   useEffect(() => {
     setPage(1);
-  }, [type]);
+  }, [type, sort]);
 
   useEffect(() => {
     if (isMoblie) {
@@ -86,29 +94,35 @@ export default function CommunitySearchResult({ searchKeyword }) {
     if (inView && isMoblie && state !== "loading") {
       // 총 개수 받아서 page 넘어가면 api 호출 X
       if (searchResult.length >= totalCnt) return;
+      if (searchResult.length < page * GET_COUNT_LIMIT) {
+        setReload((cur) => cur + 1);
+        setPage(Math.ceil(searchResult.length / GET_COUNT_LIMIT));
+      } else {
+        setPage((cur) => cur + 1);
+      }
       console.log("asd", searchResult.length, totalCnt);
-      setPage((cur) => cur + 1);
     }
   }, [inView]);
 
   useEffect(() => {
     if (!loc.search) {
       setType("title");
+      setSort("최신순");
       setReload(loc.key);
       setPage(1);
     }
   }, [loc.search]);
 
   useEffect(() => {
-    console.log(page, type, reload);
+    console.log(page, type, sort, reload);
     if (isMoblie) {
       getCommunitySearchResult("add");
     } else {
       getCommunitySearchResult();
       window.scrollTo({ top: 0 });
     }
-    setSearchParams({ query: searchKeyword, type, page });
-  }, [page, type, reload]);
+    setSearchParams({ query: searchKeyword, type, page, sort });
+  }, [page, reload, type, sort]);
 
   return (
     <div className="community-search-result-container">
@@ -117,12 +131,50 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <span className="title">커뮤니티 검색결과</span>
           <span className="title count">({totalCnt.toLocaleString("ko-KR")})</span>
         </div>
-        <div className="left">
-          <span>검색 범위 : </span>
-          <select className="sort-by" value={type} onChange={handleChangeType}>
-            <option value="title">글 제목</option>
-            <option value="tag">태그</option>
-          </select>
+        <div className="right">
+          {isMoblie ? (
+            <>
+              <div className="select-box">
+                <img src={RangeIcon} />
+                <span>검색범위</span>
+                <FormControl sx={{ m: 1, minWidth: 120 }} className="range">
+                  <Select value={type} onChange={(e) => setType(e.target.value)} displayEmpty>
+                    <MenuItem value="title">글 제목</MenuItem>
+                    <MenuItem value="tag">태그</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="select-box">
+                <img src={SortIcon} />
+                <span>정렬</span>
+                <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
+                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                    <MenuItem value="최신순">최신순</MenuItem>
+                    <MenuItem value="추천순">추천순</MenuItem>
+                    <MenuItem value="조회순">조회순</MenuItem>
+                    <MenuItem value="오래된순">오래된순</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="type">
+                <RadioGroup name="controlled-radio-buttons-group" value={type} onChange={(e) => setType(e.target.value)}>
+                  <FormControlLabel value="title" control={<Radio size="10px" color="secondary" />} label="글 제목" />
+                  <FormControlLabel value="tag" control={<Radio size="10px" color="secondary" />} label="태그" />
+                </RadioGroup>
+              </div>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <MenuItem value="최신순">최신순</MenuItem>
+                  <MenuItem value="추천순">추천순</MenuItem>
+                  <MenuItem value="조회순">조회순</MenuItem>
+                  <MenuItem value="오래된순">오래된순</MenuItem>
+                </Select>
+              </FormControl>
+            </>
+          )}
         </div>
       </div>
       {(state === "loading" && isMoblie && page === 1) || (state === "loading" && !isMoblie) ? (
@@ -156,7 +208,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <div className="scroll-ref" ref={scrollRef}></div>
           {isMoblie || (
             <div className="search-pagination">
-              <Pagination count={Math.ceil(totalCnt / 5)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+              <Pagination count={Math.ceil(totalCnt / GET_COUNT_LIMIT)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
             </div>
           )}
         </>
