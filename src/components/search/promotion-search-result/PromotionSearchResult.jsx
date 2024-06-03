@@ -10,6 +10,7 @@ import ServerError from "../../common/state/ServerError";
 import PromotionList from "../../promotion/PromotionList";
 import RangeIcon from "../../../assets/img/search_range_icon.png";
 import SortIcon from "../../../assets/img/search_sort_icon.png";
+import { UpButton } from "../../common/button/UpButton";
 
 // const TYPES = ["play_title", "title", "tag"];
 const GET_COUNT_LIMIT = 2;
@@ -119,7 +120,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
       getPromotionSearchResult();
       window.scrollTo({ top: 0 });
     }
-    setSearchParams({ query: searchKeyword, type, page, sort });
+    setSearchParams({ query: searchKeyword, type, page, sort, category: "홍보게시판" });
   }, [page, reload, type, sort]);
 
   return (
@@ -160,6 +161,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
             <>
               <div className="type">
                 <RadioGroup name="controlled-radio-buttons-group" value={type} onChange={(e) => setType(e.target.value)}>
+                  <FormControlLabel value="play_title" control={<Radio size="10px" color="secondary" />} label="연극/행사명" />
                   <FormControlLabel value="title" control={<Radio size="10px" color="secondary" />} label="글 제목" />
                   <FormControlLabel value="tag" control={<Radio size="10px" color="secondary" />} label="태그" />
                 </RadioGroup>
@@ -202,6 +204,7 @@ export default function PromotionSearchResult({ searchKeyword }) {
               <CircularProgress color="secondary" />
             </div>
           )}
+          <UpButton />
           <div className="scroll-ref" ref={scrollRef}></div>
           {isMoblie || (
             <div className="search-pagination">

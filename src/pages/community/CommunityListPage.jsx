@@ -16,6 +16,7 @@ import { FixedTopBanner } from "../../components/board/FixedTopBanner";
 import { UpButton } from "../../components/common/button/UpButton";
 import { MoblieCreateButton } from "../../components/common/button/MoblieCreateButton";
 
+const GET_COUNT_LIMIT = 10;
 const SORT = {
   최신순: "post_number desc",
   오래된순: "post_number asc",
@@ -64,7 +65,7 @@ export function CommunityListPage() {
     setState("loading");
     try {
       const [by, order] = SORT[sort].split(" ");
-      const res = await fetch(`${postUrl}?category=${selected}&page=${page}&limit=10&sortBy=${by}&sortOrder=${order}`);
+      const res = await fetch(`${postUrl}?category=${selected}&page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
       console.log(res, data);
 
@@ -92,29 +93,34 @@ export function CommunityListPage() {
     setReload((cur) => cur + 1);
   };
 
-  const handleChangePage = (e, value) => {
-    setPage(value);
-    nav(`?category=${selected === "공지" ? "공지" : "일반"}&sort=${sort}&page=${value}`);
-  };
-
   const handleFormBtn = () => {
     nav("/community/write");
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [selected, sort]);
+
+  useEffect(() => {
     if (isMoblie) {
+      console.log("moblie");
       setPage(1);
-      setBoardList([]);
     }
-  }, [isMoblie, sort, selected, reload]);
+    setReload((cur) => cur + 1);
+    setBoardList([]);
+  }, [isMoblie]);
 
   useEffect(() => {
     console.log(inView, reload, isMoblie);
     if (inView && isMoblie && state !== "loading") {
       // 총 개수 받아서 page 넘어가면 api 호출 X
       if (boardList.length >= totalCnt) return;
-      console.log("asd", boardList.length, totalCnt);
-      setPage((cur) => cur + 1);
+      if (boardList.length < page * GET_COUNT_LIMIT) {
+        setReload((cur) => cur + 1);
+        setPage(Math.ceil(boardList.length / GET_COUNT_LIMIT));
+      } else {
+        setPage((cur) => cur + 1);
+      }
     }
   }, [inView]);
 
@@ -128,17 +134,14 @@ export function CommunityListPage() {
   }, [loc.search]);
 
   useEffect(() => {
-    console.log(page, sort, selected, reload);
-    if (page && sort && selected) {
-      getFixedList();
-      if (isMoblie) {
-        getPage("add");
-      } else {
-        getPage();
-        window.scrollTo({ top: 0 });
-      }
-      setSearchParams({ category: selected === "공지" ? "공지" : "일반", sort, page });
+    getFixedList();
+    if (isMoblie) {
+      getPage("add");
+    } else {
+      getPage();
+      window.scrollTo({ top: 0 });
     }
+    setSearchParams({ category: selected === "공지" ? "공지" : "일반", sort, page });
   }, [page, sort, selected, reload]);
 
   return (
@@ -196,7 +199,13 @@ export function CommunityListPage() {
                   )}
                   {isMoblie || (
                     <div className="pagination">
-                      <Pagination page={page} onChange={handleChangePage} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />
+                      <Pagination
+                        page={page}
+                        onChange={(e, value) => setPage(value)}
+                        count={Math.ceil(totalCnt / GET_COUNT_LIMIT)}
+                        color="secondary"
+                        siblingCount={2}
+                      />
                     </div>
                   )}
                   <UpButton />

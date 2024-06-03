@@ -10,9 +10,10 @@ import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
 import RangeIcon from "../../../assets/img/search_range_icon.png";
 import SortIcon from "../../../assets/img/search_sort_icon.png";
+import { UpButton } from "../../common/button/UpButton";
 
 // const TYPES = ["title", "tag"];
-const GET_COUNT_LIMIT = 3;
+const GET_COUNT_LIMIT = 5;
 const SORT = {
   최신순: "time desc",
   오래된순: "time asc",
@@ -121,7 +122,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
       getCommunitySearchResult();
       window.scrollTo({ top: 0 });
     }
-    setSearchParams({ query: searchKeyword, type, page, sort });
+    setSearchParams({ query: searchKeyword, type, page, sort, category: "커뮤니티" });
   }, [page, reload, type, sort]);
 
   return (
@@ -205,6 +206,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
               <CircularProgress color="secondary" />
             </div>
           )}
+          <UpButton />
           <div className="scroll-ref" ref={scrollRef}></div>
           {isMoblie || (
             <div className="search-pagination">
