@@ -196,7 +196,7 @@ export function CommunityDetailPage() {
                 {post._id && <CommunityPost post={post} totalCommentCount={totalCount} />}
 
                 <div className="comment-top">
-                  <div>
+                  <div className="button-box">
                     <button className="btn" onClick={() => nav(`/community`)}>
                       목록
                     </button>

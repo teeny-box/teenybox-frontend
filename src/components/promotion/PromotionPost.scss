@@ -32,6 +32,7 @@
       width: 240px;
       object-fit: cover;
       cursor: zoom-in;
+      flex-shrink: 0;
     }
 
     .flex-column {
@@ -241,6 +242,7 @@
   .tags {
     display: flex;
     flex-wrap: wrap;
+    row-gap: 8px;
 
     .tag {
       box-sizing: border-box;

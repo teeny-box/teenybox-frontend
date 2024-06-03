@@ -1,9 +1,11 @@
 import "./CommunityListPage.scss";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { Loop } from "@mui/icons-material";
 import { Helmet } from "react-helmet-async";
+import { useInView } from "react-intersection-observer";
+import { useMediaQuery } from "react-responsive";
 import CommunityList from "../../components/community/CommunityList";
 import ServerError from "../../components/common/state/ServerError";
 import Empty from "../../components/common/state/Empty";
@@ -14,17 +16,30 @@ import { FixedTopBanner } from "../../components/board/FixedTopBanner";
 import { UpButton } from "../../components/common/button/UpButton";
 import { MoblieCreateButton } from "../../components/common/button/MoblieCreateButton";
 
+const GET_COUNT_LIMIT = 10;
+const SORT = {
+  최신순: "post_number desc",
+  오래된순: "post_number asc",
+  추천순: "likes desc",
+  조회순: "views desc",
+};
+
 export function CommunityListPage() {
-  const [selected, setSelected] = useState("post");
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const loc = useLocation();
+  const nav = useNavigate();
+  const [reload, setReload] = useState("");
+  const [scrollRef, inView] = useInView();
+
+  const [selected, setSelected] = useState(searchParams.get("category") === "공지" ? "공지" : "자유");
   const [fixedList, setFixedList] = useState([]);
   const [boardList, setBoardList] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [state, setState] = useState("loading");
   const [toggle, setToggle] = useState(false);
-  const [sort, setSort] = useState("post_number desc");
-  const nav = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [sort, setSort] = useState(searchParams.get("sort") || "최신순");
 
   const getFixedList = async () => {
     try {
@@ -36,15 +51,30 @@ export function CommunityListPage() {
     }
   };
 
-  const getPage = async () => {
+  const addBoardList = (newList) => {
+    const uniqueList = [...boardList, ...newList].reduce((newArr, current) => {
+      if (newArr.findIndex(({ _id }) => _id === current._id) === -1) {
+        newArr.push(current);
+      }
+      return newArr;
+    }, []);
+    setBoardList(uniqueList);
+  };
+
+  const getPage = async (method) => {
     setState("loading");
     try {
-      const [by, order] = sort.split(" ");
-      const res = await fetch(`${postUrl}?page=${page}&limit=10&sortBy=${by}&sortOrder=${order}`);
+      const [by, order] = SORT[sort].split(" ");
+      const res = await fetch(`${postUrl}?category=${selected}&page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
+      console.log(res, data);
 
       if (res.ok) {
-        setBoardList(data.posts);
+        if (method === "add" && page > 1) {
+          addBoardList(data.posts);
+        } else {
+          setBoardList(data.posts);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
       } else {
@@ -56,15 +86,11 @@ export function CommunityListPage() {
     }
   };
 
-  const handleClick = () => {
+  const handleReload = () => {
     setToggle(true);
     setTimeout(() => setToggle(false), 500);
-    getPage();
-  };
-
-  const handleChange = (e, value) => {
-    setPage(value);
-    nav(`?page=${value}`);
+    setPage(1);
+    setReload((cur) => cur + 1);
   };
 
   const handleFormBtn = () => {
@@ -72,18 +98,51 @@ export function CommunityListPage() {
   };
 
   useEffect(() => {
-    getPage();
-    window.scrollTo({ top: 0 });
-  }, [page]);
+    setPage(1);
+  }, [selected, sort]);
+
+  useEffect(() => {
+    if (isMoblie) {
+      console.log("moblie");
+      setPage(1);
+    }
+    setReload((cur) => cur + 1);
+    setBoardList([]);
+  }, [isMoblie]);
+
+  useEffect(() => {
+    console.log(inView, reload, isMoblie);
+    if (inView && isMoblie && state !== "loading") {
+      // 총 개수 받아서 page 넘어가면 api 호출 X
+      if (boardList.length >= totalCnt) return;
+      if (boardList.length < page * GET_COUNT_LIMIT) {
+        setReload((cur) => cur + 1);
+        setPage(Math.ceil(boardList.length / GET_COUNT_LIMIT));
+      } else {
+        setPage((cur) => cur + 1);
+      }
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    if (!loc.search) {
+      setSelected("자유");
+      setSort("최신순");
+      setReload(loc.key);
+      setPage(1);
+    }
+  }, [loc.search]);
 
   useEffect(() => {
     getFixedList();
-    setPage(Number(searchParams.get("page")) || 1);
-  }, [searchParams]);
-
-  useEffect(() => {
-    getPage();
-  }, [sort]);
+    if (isMoblie) {
+      getPage("add");
+    } else {
+      getPage();
+      window.scrollTo({ top: 0 });
+    }
+    setSearchParams({ category: selected === "공지" ? "공지" : "일반", sort, page });
+  }, [page, sort, selected, reload]);
 
   return (
     <>
@@ -96,7 +155,7 @@ export function CommunityListPage() {
           <meta property="og:title" content="티니박스(TeenyBox) 커뮤니티" />
           <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
         </Helmet>
-        <CommunityTabBar selected={selected} setSelected={setSelected} />
+        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} setReload={setReload} setSort={setSort} />
         <div className="Community-container">
           <div className="Community-left-container">
             <div className="header flex-box">
@@ -104,15 +163,15 @@ export function CommunityListPage() {
                 <span>전체게시글&nbsp;</span>
                 <span className="point">{totalCnt.toLocaleString("ko-KR")}</span>
                 <span>개</span>
-                <Loop onClick={handleClick} color="secondary" className={`refresh pointer ${toggle && "start"}`} />
+                <Loop onClick={handleReload} color="secondary" className={`refresh pointer ${toggle && "start"}`} />
               </div>
               <div className="buttons">
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
-                    <MenuItem value="post_number desc">최신순</MenuItem>
-                    <MenuItem value="likes desc">추천순</MenuItem>
-                    <MenuItem value="views desc">조회순</MenuItem>
-                    <MenuItem value="post_number asc">오래된순</MenuItem>
+                    <MenuItem value="최신순">최신순</MenuItem>
+                    <MenuItem value="추천순">추천순</MenuItem>
+                    <MenuItem value="조회순">조회순</MenuItem>
+                    <MenuItem value="오래된순">오래된순</MenuItem>
                   </Select>
                 </FormControl>
                 <Button className="create-button" onClick={handleFormBtn} variant="contained" size="small" color="secondary" disableElevation>
@@ -121,7 +180,7 @@ export function CommunityListPage() {
               </div>
             </div>
             <div className="main">
-              {state === "loading" ? (
+              {state === "loading" && !boardList.length ? (
                 <div className="state">
                   <CircularProgress color="secondary" className="progress" />
                 </div>
@@ -131,16 +190,30 @@ export function CommunityListPage() {
                 </div>
               ) : boardList.length ? (
                 <>
-                  {page === 1 && <CommunityList boardList={fixedList} isFixed={true} />}
+                  {(isMoblie || page === 1) && <CommunityList boardList={fixedList} isFixed={true} />}
                   <CommunityList boardList={boardList} />
-                  <div className="pagination">
-                    <Pagination page={page} onChange={handleChange} count={Math.ceil(totalCnt / 10)} color="secondary" siblingCount={2} />
-                  </div>
+                  {isMoblie && state === "loading" && (
+                    <div className={`state`}>
+                      <CircularProgress color="secondary" />
+                    </div>
+                  )}
+                  {isMoblie || (
+                    <div className="pagination">
+                      <Pagination
+                        page={page}
+                        onChange={(e, value) => setPage(value)}
+                        count={Math.ceil(totalCnt / GET_COUNT_LIMIT)}
+                        color="secondary"
+                        siblingCount={2}
+                      />
+                    </div>
+                  )}
                   <UpButton />
                   <MoblieCreateButton onClick={handleFormBtn} />
+                  <div className="scroll-ref" ref={scrollRef}></div>
                 </>
               ) : (
-                <div className="state">
+                <div className="state box">
                   <Empty>
                     <></>
                   </Empty>

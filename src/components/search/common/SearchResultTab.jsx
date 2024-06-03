@@ -1,8 +1,10 @@
 import { useSearchParams } from "react-router-dom/dist";
 import "./SearchResultTab.scss";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function SearchResultTab({ selectedTabMenu, setSelectedTabMenu }) {
+  const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
   const [openTab, setOpenTab] = useState("close");
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -15,8 +17,10 @@ export default function SearchResultTab({ selectedTabMenu, setSelectedTabMenu })
   };
 
   const handleClickTab = () => {
-    if (openTab === "open") setOpenTab("close");
-    else setOpenTab("open");
+    if (isMoblie) {
+      if (openTab === "open") setOpenTab("close");
+      else setOpenTab("open");
+    }
   };
 
   return (

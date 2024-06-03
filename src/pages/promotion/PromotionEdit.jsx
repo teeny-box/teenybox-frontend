@@ -7,13 +7,11 @@ import { PromotionEditForm } from "../../components/promotion/PromotionEdit";
 import { promotionUrl } from "../../apis/apiURLs";
 import { AlertContext } from "../../App";
 import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
-import { PromotionNoticeEditForm } from "../../components/promotion/PromotionNoticeEdit";
 
 export function PromotionEdit() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(false);
   const [post, setPost] = useState();
-  const [isNotice, setIsNotice] = useState(false);
   const params = useParams();
   const nav = useNavigate();
   const user = useGetUser();
@@ -54,34 +52,9 @@ export function PromotionEdit() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (post?.category === "공지") {
-      setIsNotice(true);
-    }
-  }, [post]);
-
   return (
     <div className="promotion-form-page page-layout">
-      <div className="body">
-        {post &&
-          (isNotice ? (
-            <PromotionNoticeEditForm
-              setInput={(boolean) => setInput(boolean)}
-              handleCancle={handleCancle}
-              post={post}
-              setIsNotice={setIsNotice}
-              userRole={user?.role}
-            />
-          ) : (
-            <PromotionEditForm
-              setInput={(boolean) => setInput(boolean)}
-              handleCancle={handleCancle}
-              post={post}
-              setIsNotice={setIsNotice}
-              userRole={user?.role}
-            />
-          ))}
-      </div>
+      <div className="body">{post && <PromotionEditForm setInput={(boolean) => setInput(boolean)} handleCancle={handleCancle} post={post} />}</div>
 
       <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
