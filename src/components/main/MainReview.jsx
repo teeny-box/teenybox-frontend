@@ -15,7 +15,7 @@ const MainReview = () => {
   const [isAnimating, setIsAnimating] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [shows, setShows] = useState({});
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
 
   useEffect(() => {

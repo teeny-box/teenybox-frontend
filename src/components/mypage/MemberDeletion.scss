@@ -1,7 +1,9 @@
+@import "../../styles/mixin.scss";
+
 .member-deletion-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   height: 780px;
   margin: 10px 0;
 
@@ -9,10 +11,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 800px;
+    width: 95%;
     height: 40px;
-    border-bottom: 4px solid #ccc;
-    padding: 34px 0 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding-bottom: 16px;
     h1 {
       margin: 0;
       font-size: 24px;
@@ -25,16 +27,24 @@
 
   .check-box {
     display: flex;
-    width: 800px;
+    justify-content: center;
+    width: 95%;
     height: 42px;
     line-height: 42px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    padding-top: 10px;
     font-size: 14px;
     color: #4e4e4e;
+    border-top: rgba(0, 0, 0, 0.3) solid 1px;
   }
 
   .MuiButtonBase-root.Mui-disabled {
-    background-color: #fa282849;
+    background-color: #eee;
+  }
+  .deletion-btn-box {
+    display: flex;
+    justify-content: center;
+    width: 95%;
   }
 }
 
@@ -42,12 +52,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 800px;
-  margin: 40px 0 10px;
+  width: 95%;
+  margin: 30px 0 30px;
   padding: 34px 40px;
   box-sizing: border-box;
-  background-color: #f5f6f9;
-
+  background-color: rgba(255, 180, 0, 0.1);
   p {
     font-size: 16px;
     line-height: 24px;
@@ -55,13 +64,69 @@
     font-weight: 400;
     color: #4e4e4e;
   }
-  .member-deletion-red-text {
-    color: #fa2828;
-  }
 
   a {
     text-decoration: underline;
-    color: #2196f3;
+    color: #C90000;
     font-weight: 600;
+  }
+}
+
+@include desktop {
+}
+
+@include laptop {
+}
+
+@include tablet-horizontal {
+}
+
+@include tablet-vertical {
+  .member-deletion-container {
+    .header {
+      width: 100%;
+      h1 {
+        font-size: 20px;
+      }
+    }
+    .check-box {
+      width: 100%;
+    }
+    .deletion-btn-box {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+  .member-deletion-text-box {
+    width: 100%;
+    p {
+      font-size: 14px;
+    }
+  }
+}
+
+@include moblie {
+  .member-deletion-container {
+    .header {
+      width: 100%;
+      h1 {
+        font-size: 20px;
+      }
+    }
+    .check-box {
+      width: 100%;
+    }
+    .deletion-btn-box {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+  .member-deletion-text-box {
+    width: 100%;
+    p {
+      font-size: 12px;
+    }
   }
 }
