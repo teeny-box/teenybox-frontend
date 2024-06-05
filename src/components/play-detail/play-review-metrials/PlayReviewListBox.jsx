@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import "./PlayReviewListBox.scss";
-import "../../common/themes/theme";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Rating from "@mui/material/Rating";
 import DeleteIcon from "@mui/icons-material/Delete";

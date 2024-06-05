@@ -3,7 +3,7 @@ import { useState, createContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
-import { theme } from "./components/common/themes/theme";
+import { theme } from "./themes/theme";
 import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
