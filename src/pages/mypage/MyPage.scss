@@ -1,26 +1,33 @@
-.mypage-template {
-  display: flex;
-  justify-content: center;
-}
+@import "../../styles/mixin.scss";
+
 .mypage-container {
   display: flex;
   justify-content: center;
-  width: 1110px;
-  box-shadow: 2px 3px 6px 2px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+.mypage-template {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 .mypage-nav {
-  width: 210px;
+  width: 20%;
   height: 810px;
   background-color: #eee;
 }
 .nav-header {
+  display: flex;
+  justify-content: center;
   height: 190px;
   padding-top: 20px;
-  padding-left: 24px;
   background-color: #ffb400;
   color: white;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 600;
+}
+.nav-header-text {
+  width: 80%;
 }
 .nav-body {
   display: flex;
@@ -28,7 +35,7 @@
   align-items: center;
 }
 .my-nav-box {
-  width: 160px;
+  width: 80%;
   padding: 12px 0;
   h3 {
     font-size: 16px;
@@ -48,7 +55,7 @@
   }
 }
 .mypage-content-area {
-  width: 900px;
+  width: 80%;
   height: 810px;
   background-color: white;
 
@@ -59,4 +66,138 @@
 
 .mypage-progress {
   margin: 300px auto;
+}
+@include desktop {
+  .mypage-template {
+    max-width: 1700px;
+    padding: 0 200px;
+  }
+}
+@include laptop {
+  .mypage-template {
+    max-width: 1300px;
+    padding: 0 100px;
+  }
+}
+@include tablet-horizontal {
+  .mypage-template {
+    max-width: 1024px;
+    padding: 0 40px;
+  }
+}
+
+@include tablet-vertical {
+  .mypage-container {
+    height: 1200px;
+  }
+  .mypage-template {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .mypage-nav {
+    display: flex;
+    max-width: 768px;
+    padding: 0 40px;
+    width: 100%;
+    height: 160px;
+    background-color: #fff;
+    border-bottom: #ffb400 solid 1px;
+    box-sizing: border-box;
+  }
+  .nav-header {
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+    padding-top: 0;
+    background-color: #fff;
+    color: #111;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .nav-header-text {
+    height: 80%;
+    width: 100%;
+  }
+  .nav-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+  }
+  .my-nav-box {
+    width: 25%;
+    height: 80%;
+    padding: 0;
+    h3 {
+      font-size: 12px;
+      margin: 0 0 16px 0;
+    }
+    p {
+      font-size: 10px;
+      font-weight: 500;
+    }
+  }
+  .mypage-content-area {
+    width: 100%;
+  }
+}
+
+@include moblie {
+  .mypage-container {
+    height: 1200px;
+  }
+  .mypage-template {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .mypage-nav {
+    display: flex;
+    max-width: 480px;
+    padding: 0 20px;
+    width: 100%;
+    height: 160px;
+    background-color: #fff;
+    border-bottom: #ffb400 solid 1px;
+    box-sizing: border-box;
+  }
+  .nav-header {
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+    padding-top: 0;
+    background-color: #fff;
+    color: #111;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nav-header-text {
+    height: 80%;
+    width: 100%;
+  }
+  .nav-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+  }
+  .my-nav-box {
+    width: 25%;
+    height: 80%;
+    padding: 0;
+    h3 {
+      font-size: 11px;
+      margin: 0 0 16px 0;
+    }
+    p {
+      font-size: 9px;
+      font-weight: 500;
+    }
+  }
+  .mypage-content-area {
+    width: 100%;
+  }
 }

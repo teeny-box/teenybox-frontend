@@ -23,7 +23,7 @@ export function MobileMenuPage() {
   useEffect(() => {
     const handleWindowResize = () => {
       if (window.innerWidth >= 769) {
-        navigate("/");
+        navigate(-1);
       }
     };
     window.addEventListener("resize", handleWindowResize);
@@ -53,7 +53,6 @@ export function MobileMenuPage() {
 
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
   };
 
   const onShowModal = () => {
@@ -85,9 +84,9 @@ export function MobileMenuPage() {
         <div className="mobile-menu-container">
           <div className="header">
             <div className="header-top-box">
-              <Link to="/">
-                <CloseIcon className="close-icon"></CloseIcon>
-              </Link>
+              <div onClick={() => navigate(-1)}>
+                <CloseIcon className="close-icon" />
+              </div>
             </div>
             <div className="header-mid-box">
               <img
@@ -111,7 +110,7 @@ export function MobileMenuPage() {
               {userData.role === "admin" && (
                 <span className="tab-area">
                   <Link to="/admin" className="tab-text">
-                    관리자페이지
+                    관리자
                   </Link>
                 </span>
               )}
@@ -164,9 +163,9 @@ export function MobileMenuPage() {
         <div className="mobile-menu-container">
           <div className="header">
             <div className="header-top-box">
-              <Link to="/">
-                <CloseIcon className="close-icon"></CloseIcon>
-              </Link>
+              <div onClick={() => navigate(-1)}>
+                <CloseIcon className="close-icon" />
+              </div>
             </div>
             <div className="header-mid-box"></div>
             <div className="header-bottom-box">

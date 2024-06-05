@@ -21,12 +21,20 @@ function MyPickList({ setUserData }) {
   const [openAlert, setOpenAlert] = useState(false);
   const nav = useNavigate();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
-  
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  // 화면 너비 조절 이벤트를 듣도록 하기
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
 
   const getBookmarks = async () => {
     setRenderState("loading");
     try {
-      const res = await fetch(`${userUrl}/bookmarks?page=${page}&limit=6`, { credentials: "include" });
+      const res = await fetch(`${userUrl}/bookmarks?page=${page}&limit=4`, { credentials: "include" });
       const data = await res.json();
 
       if (res.ok) {
@@ -34,6 +42,7 @@ function MyPickList({ setUserData }) {
         setBookmarks(data.bookmarks.validShows);
         setTotalCount(data.bookmarks.totalCount);
         setRenderState("hasValue");
+        console.log(data)
       } else {
         setRenderState("hasError");
         console.error(data);
@@ -153,92 +162,260 @@ function MyPickList({ setUserData }) {
 
   return (
     <>
-      <div className="my-pick-list-container">
-        <div className="header">
-          <h1>찜한 연극 LIST</h1>
-          <div className="btn-box">
-            {!bookmarks.length || (
-              <Button onClick={() => setOpenAlert(true)} variant="contained" color="secondary" sx={{ width: "100px", height: "36px", color: "white" }}>
-                전체삭제
-              </Button>
-            )}
-            {!bookmarks.length || (
-              <Button
-                disabled={!checkedList.length}
-                onClick={handleClickDeleteBtn}
-                variant="contained"
-                color="orange"
-                sx={{ width: "100px", height: "36px", color: "white" }}
-              >
-                선택삭제
-              </Button>
+      {innerWidth > 768 ? (
+        <div className="my-pick-list-container">
+          <div className="header">
+            <h1>내가 찜한 연극</h1>
+            <div className="btn-box">
+              {!bookmarks.length || (
+                <button onClick={() => setOpenAlert(true)} className="all-dlt-btn">
+                  전체삭제
+                </button>
+              )}
+              {!bookmarks.length || (
+                <Button
+                  disabled={!checkedList.length}
+                  onClick={handleClickDeleteBtn}
+                  variant="contained"
+                  color="secondary"
+                  sx={{ width: "100px", height: "36px", color: "white", boxShadow: "none" }}
+                >
+                  선택삭제
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="body">
+            {renderComponent(
+              <>
+                {bookmarks.length ? (
+                  <>
+                    <div className="content-container">
+                      {bookmarks.map(({ showId, title, poster, location, startDate, endDate, state }, index) => (
+                        <div className="content" key={showId} style={{ backgroundColor: index % 2 === 0 ? "rgba(255, 180, 0, 0.05)" : "transparent" }}>
+                          <div className="play-img-container">
+                            <Link to={`/play/${showId}`}>
+                              <img src={poster} />
+                            </Link>
+                          </div>
+                          <div className="play-info">
+                            <Link className="title" to={`/play/${showId}`}>
+                              <h3>{title}</h3>
+                            </Link>
+                            <p className="place">{location || "극장 정보"}</p>
+                            <p>
+                              {startDate && <TimeFormat time={startDate} />}
+                              {" ~ "}
+                              {endDate && <TimeFormat time={endDate} />}
+                            </p>
+                            <div className="reservation-btn">
+                              {(state || "") !== "공연완료" ? (
+                                <a
+                                  href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <Button variant="contained" color="secondary" size="small" sx={{ boxShadow: "none" }}>
+                                    <Typography fontFamily="Nanum Gothic, sans-serif">예매하러 가기</Typography>
+                                  </Button>
+                                </a>
+                              ) : (
+                                <Tooltip title="본 연극은 종료되어 예매 링크가 제공되지 않습니다." arrow>
+                                  <div className="reservation-disabled">
+                                    <Button variant="contained" disabled size="small" sx={{ boxShadow: "none" }}>
+                                      <Typography fontFamily="Nanum Gothic, sans-serif" className="button-text">
+                                        예매하러 가기
+                                      </Typography>
+                                    </Button>
+                                  </div>
+                                </Tooltip>
+                              )}
+                            </div>
+                          </div>
+                          <div className="checkbox-area">
+                            <Checkbox
+                              value={showId}
+                              checked={checkedList.includes(showId)}
+                              sx={{
+                                "& .MuiSvgIcon-root": {
+                                  color: "#FFB400",
+                                },
+                              }}
+                              onChange={handleChangeChecked}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="footer">
+                      <div className="btn-box">
+                        {!bookmarks.length || (
+                          <button onClick={() => setOpenAlert(true)} className="all-dlt-btn">
+                            전체삭제
+                          </button>
+                        )}
+                        {!bookmarks.length || (
+                          <Button
+                            disabled={!checkedList.length}
+                            onClick={handleClickDeleteBtn}
+                            variant="contained"
+                            color="secondary"
+                            sx={{ width: "100px", height: "36px", color: "white", boxShadow: "none" }}
+                          >
+                            선택삭제
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="pagination">
+                      <Pagination
+                        count={Math.ceil(totalCount / 4)}
+                        page={page}
+                        onChange={handleChangePage}
+                        sx={{
+                          "& .MuiPaginationItem-root": {
+                            "&.Mui-selected": {
+                              backgroundColor: "#ffb400",
+                            },
+                          },
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="empty-box">
+                    <Empty />
+                  </div>
+                )}
+              </>,
             )}
           </div>
         </div>
-        <div className="body">
-          {renderComponent(
-            <>
-              {bookmarks.length ? (
-                <>
-                  <div className="content-container">
-                    {bookmarks.map(({ showId, title, poster, location, startDate, endDate, state }) => (
-                      <div className="content" key={showId}>
-                        <Checkbox value={showId} checked={checkedList.includes(showId)} onChange={handleChangeChecked} />
-                        <div className="play-img-container">
-                          <Link to={`/play/${showId}`}>
-                            <img src={poster} />
-                          </Link>
-                        </div>
-                        <div className="play-info">
-                          <Link className="title" to={`/play/${showId}`}>
-                            <h3>{title}</h3>
-                          </Link>
-                          <p className="place">{location || "극장 정보"}</p>
-                          <p>
-                            {startDate && <TimeFormat time={startDate} />}
-                            {" ~ "}
-                            {endDate && <TimeFormat time={endDate} />}
-                          </p>
-                          <div className="reservation-btn">
-                            {(state || "") !== "공연완료" ? (
-                              <a
-                                href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Button variant="contained" color="secondary" size="small">
-                                  <Typography fontFamily="Nanum Gothic, sans-serif">예매하러 가기</Typography>
-                                </Button>
-                              </a>
-                            ) : (
-                              <Tooltip title="본 연극은 종료되어 예매 링크가 제공되지 않습니다." arrow>
-                                <div className="reservation-disabled">
-                                  <Button variant="contained" disabled size="small">
-                                    <Typography fontFamily="Nanum Gothic, sans-serif" className="button-text">
-                                      예매하러 가기
-                                    </Typography>
-                                  </Button>
-                                </div>
-                              </Tooltip>
-                            )}
+      ) : (
+        <div className="my-pick-list-container">
+          <div className="header">
+            <div className="active-layout3">
+              <h1>내가 찜한 연극</h1>
+              <div className="btn-box">
+                {!bookmarks.length || (
+                  <button onClick={() => setOpenAlert(true)} className="all-dlt-btn">
+                    전체삭제
+                  </button>
+                )}
+                {!bookmarks.length || (
+                  <Button
+                    disabled={!checkedList.length}
+                    onClick={handleClickDeleteBtn}
+                    variant="contained"
+                    color="secondary"
+                    sx={{ width: "100px", height: "36px", color: "white", boxShadow: "none" }}
+                  >
+                    선택삭제
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="body">
+            {renderComponent(
+              <>
+                {bookmarks.length ? (
+                  <>
+                    <div className="content-container">
+                      {bookmarks.map(({ showId, title, poster, location, startDate, endDate, state }, index) => (
+                        <div className="content" key={showId} style={{ backgroundColor: index % 2 === 0 ? "rgba(255, 180, 0, 0.05)" : "transparent" }}>
+                          <div className="active-layout3">
+                            <div className="play-img-container">
+                              <Link to={`/play/${showId}`}>
+                                <img src={poster} />
+                              </Link>
+                            </div>
+                            <div className="play-info">
+                              <Link className="title" to={`/play/${showId}`}>
+                                <h3>{title}</h3>
+                              </Link>
+                              <p className="place">{location || "극장 정보"}</p>
+                              <p>
+                                {startDate && <TimeFormat time={startDate} />}
+                                {" ~ "}
+                                {endDate && <TimeFormat time={endDate} />}
+                              </p>
+                              <div className="reservation-btn">
+                                {(state || "") !== "공연완료" ? (
+                                  <a
+                                    href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Button variant="contained" color="secondary" size="small" sx={{ boxShadow: "none" }}>
+                                      <Typography fontFamily="Nanum Gothic, sans-serif">예매하러 가기</Typography>
+                                    </Button>
+                                  </a>
+                                ) : (
+                                  <Tooltip title="본 연극은 종료되어 예매 링크가 제공되지 않습니다." arrow>
+                                    <div className="reservation-disabled">
+                                      <Button variant="contained" disabled size="small" sx={{ boxShadow: "none" }}>
+                                        <Typography fontFamily="Nanum Gothic, sans-serif" className="button-text">
+                                          예매하러 가기
+                                        </Typography>
+                                      </Button>
+                                    </div>
+                                  </Tooltip>
+                                )}
+                              </div>
+                            </div>
+                            <div className="checkbox-area">
+                              <Checkbox
+                                value={showId}
+                                checked={checkedList.includes(showId)}
+                                sx={{
+                                  "& .MuiSvgIcon-root": {
+                                    color: "#FFB400",
+                                  },
+                                }}
+                                onChange={handleChangeChecked}
+                              />
+                            </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
+                    <div className="active-layout3">
+                      <div className="footer">
+                        <div className="btn-box">
+                          {!bookmarks.length || (
+                            <button onClick={() => setOpenAlert(true)} className="all-dlt-btn">
+                              전체삭제
+                            </button>
+                          )}
+                          {!bookmarks.length || (
+                            <Button
+                              disabled={!checkedList.length}
+                              onClick={handleClickDeleteBtn}
+                              variant="contained"
+                              color="secondary"
+                              sx={{ width: "100px", height: "36px", color: "white", boxShadow: "none" }}
+                            >
+                              선택삭제
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    ))}
+                    </div>
+                    <div className="pagination">
+                      <Pagination count={Math.ceil(totalCount / 4)} page={page} onChange={handleChangePage} />
+                    </div>
+                  </>
+                ) : (
+                  <div className="empty-box">
+                    <Empty />
                   </div>
-                  <div className="pagination">
-                    <Pagination count={Math.ceil(totalCount / 6)} page={page} onChange={handleChangePage} />
-                  </div>
-                </>
-              ) : (
-                <div className="empty-box">
-                  <Empty />
-                </div>
-              )}
-            </>,
-          )}
+                )}
+              </>,
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <Backdrop open={openAlert} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AlertCustom
           severity="error"

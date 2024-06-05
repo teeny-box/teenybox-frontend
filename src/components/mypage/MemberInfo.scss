@@ -1,7 +1,9 @@
+@import "../../styles/mixin.scss";
+
 .member-info-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   height: 780px;
   margin: 10px 0;
 
@@ -14,10 +16,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 800px;
+    width: 95%;
     height: 40px;
-    border-bottom: 4px solid #ccc;
-    padding: 34px 0 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding-bottom: 16px;
     h1 {
       margin: 0;
       font-size: 24px;
@@ -25,6 +27,9 @@
   }
 
   .member-info-profile-box {
+    display: flex;
+    justify-content: flex-end;
+    width: 95%;
     padding: 40px 0;
 
     .error {
@@ -41,11 +46,15 @@
 
   .flex-row {
     display: flex;
-    justify-content: center;
-    width: 800px;
+    width: 100%;
+    justify-content: flex-end;
     align-items: center;
-    gap: 28px;
 
+    .profile-photo-box {
+      display: flex;
+      justify-content: center;
+      width: 20%;
+    }
     .profile-photo {
       width: 112px;
       height: 112px;
@@ -85,9 +94,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px;
-    width: 600px;
-    background-color: #d3d3d3;
+    height: 112px;
+    width: 80%;
+    background-color: rgba(255, 180, 0, 0.1);
     border-radius: 10px;
     p {
       font-size: 20px;
@@ -97,12 +106,12 @@
   .member-info-box {
     display: flex;
     flex-direction: column;
-    width: 800px;
+    width: 95%;
     p {
       font-weight: 600;
     }
-    border-top: 0.5px solid black;
-    border-bottom: 0.5px solid black;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
 
     .member-nickname-box {
       .textfield * {
@@ -112,13 +121,14 @@
       display: flex;
       align-items: center;
       padding: 20px 0;
-      gap: 40px;
-      border-bottom: 0.5px dotted black;
 
       .nick-err {
         display: flex;
         align-items: center;
       }
+    }
+    .sub-title-text {
+      width: 100px;
     }
   }
 
@@ -126,8 +136,6 @@
     display: flex;
     align-items: center;
     padding: 20px 0;
-    gap: 20px;
-    border-bottom: 0.5px dotted black;
   }
 
   .member-id {
@@ -135,22 +143,193 @@
     align-items: center;
     min-width: 150px;
     height: 40px;
-    background-color: #d3d3d3;
     border-radius: 4px;
-    padding-left: 14px;
   }
 
   .member-preferred-region-box {
+    display: flex;
     padding: 20px 0;
   }
   .member-preferred-region-check-list {
-    margin-top: 8px;
-    width: 800px;
+    width: 95%;
   }
   .member-info-btn-box {
     display: flex;
     justify-content: center;
-    width: 800px;
+    width: 95%;
     margin: 40px 0 0 50px;
+  }
+}
+@include desktop {
+}
+
+@include laptop {
+  .member-info-container {
+    .flex-row {
+      .profile-photo-box {
+        width: 25%;
+      }
+    }
+
+    .profile-nickname {
+      width: 75%;
+    }
+  }
+}
+
+@include tablet-horizontal {
+  .member-info-container {
+    .flex-row {
+      .profile-photo-box {
+        width: 30%;
+      }
+    }
+    .profile-nickname {
+      width: 70%;
+      p {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@include tablet-vertical {
+  .member-info-container {
+    .flex-row {
+      .profile-photo-box {
+        width: 30%;
+      }
+    }
+
+    .profile-nickname {
+      flex-direction: column;
+      align-items: center;
+      width: 70%;
+      p {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+    .header {
+      width: 100%;
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .member-info-profile-box {
+      width: 100%;
+    }
+    .member-info-box {
+      width: 100%;
+      p {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .sub-title-text {
+        width: 80px;
+      }
+    }
+    .member-preferred-region-check-list {
+      width: 100%;
+    }
+    .member-info-btn-box {
+      width: 100%;
+    }
+  }
+  .active-layout {
+    display: flex;
+    align-items: center;
+    max-width: 768px;
+    padding: 0 40px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .active-layout2 {
+    display: flex;
+    max-width: 768px;
+    padding: 0 40px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .active-layout3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 768px;
+    padding: 0 40px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@include moblie {
+  .member-info-container {
+    .flex-row {
+      .profile-photo-box {
+        width: 35%;
+      }
+    }
+
+    .profile-nickname {
+      flex-direction: column;
+      align-items: center;
+      width: 65%;
+      p {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .header {
+      width: 100%;
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .member-info-profile-box {
+      width: 100%;
+    }
+    .member-info-box {
+      width: 100%;
+      p {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .sub-title-text {
+        width: 80px;
+      }
+    }
+    .member-preferred-region-check-list {
+      width: 100%;
+    }
+    .member-info-btn-box {
+      width: 100%;
+    }
+  }
+  .active-layout {
+    display: flex;
+    align-items: center;
+    max-width: 480px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .active-layout2 {
+    display: flex;
+    max-width: 480px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .active-layout3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 480px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
   }
 }

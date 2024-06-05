@@ -157,7 +157,7 @@ const LightHeader = () => {
               <Link to="/">
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo3.png`} alt="logo-image" to="/Main" />
               </Link>
-              <Link to="/lightMobileMenu" style={{ textDecoration: "none" }} className="header-login-btn-box">
+              <Link className="menu-btn-box" to="/lightMobileMenu" style={{ textDecoration: "none" }}>
                 <MenuIcon className="buger-menu"></MenuIcon>
               </Link>
             </div>

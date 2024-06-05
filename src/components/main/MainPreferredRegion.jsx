@@ -71,8 +71,6 @@ function MainPreferredRegion() {
     fetchData();
   }, [selectedRegion]);
 
-  const formatTitle = (title) => (title.length > 11 ? title.slice(0, 11) : title);
-
   const regionArray = ["서울", "경기/인천", "강원", "대전/충청", "광주/전라", "대구/경상", "부산/울산", "제주"];
 
   return (
@@ -137,7 +135,7 @@ function MainPreferredRegion() {
                 <div className="main-region-play-img-box">
                   <img src={show.poster} alt={show.title} />
                 </div>
-                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-title">{show.title}</p>
                 <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
               </div>
             ))}
@@ -151,7 +149,7 @@ function MainPreferredRegion() {
                 <div className="main-region-play-img-box">
                   <img src={show.poster} alt={show.title} />
                 </div>
-                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-title">{show.title}</p>
                 <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
               </div>
             ))}
@@ -165,7 +163,7 @@ function MainPreferredRegion() {
                 <div className="main-region-play-img-box">
                   <img src={show.poster} alt={show.title} />
                 </div>
-                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-title">{show.title}</p>
                 <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
               </div>
             ))}
@@ -179,7 +177,7 @@ function MainPreferredRegion() {
                 <div className="main-region-play-img-box">
                   <img src={show.poster} alt={show.title} />
                 </div>
-                <p className="main-region-play-title">{formatTitle(show.title)}</p>
+                <p className="main-region-play-title">{show.title}</p>
                 <p className="main-region-play-period">{`${new Date(show.start_date).toLocaleDateString()} Open`}</p>
               </div>
             ))}

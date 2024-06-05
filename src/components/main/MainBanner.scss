@@ -3,9 +3,16 @@
 .banner-layout-container {
   box-sizing: border-box;
   width: 100%;
+  .swiper-slide {
+    background: #111;
+    border-radius: 30px;
+  }
 }
 .swiper {
   width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .swiper-slide img {
   display: block;
