@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 import { ConditionContext } from "../ConditionSearch";
 
 export default function ConditionCheckBox({ division, option }) {
   const conditionContext = useContext(ConditionContext);
   const { conditions, setConditions } = conditionContext;
+  const theme = useTheme();
 
   const handleCheckboxChange = (changedDivision, changedOption) => {
     setConditions((prevConditions) => {
@@ -53,10 +55,6 @@ export default function ConditionCheckBox({ division, option }) {
             "&.Mui-checked": {
               color: "#FFB400",
             },
-            "@media (max-width: 400px)": {
-              width: "40%",
-              margin: "0 0 0 5px",
-            },
           }}
           checked={option === "전체" ? conditions[division].includes("전체") : conditions[division].includes(option)}
           value={option}
@@ -66,8 +64,11 @@ export default function ConditionCheckBox({ division, option }) {
       label={
         <Typography
           sx={{
-            "@media (max-width: 420px)": {
+            [theme.breakpoints.down("sm")]: {
               fontSize: "0.8rem",
+            },
+            [theme.breakpoints.up("sm")]: {
+              fontSize: "1rem",
             },
           }}
         >

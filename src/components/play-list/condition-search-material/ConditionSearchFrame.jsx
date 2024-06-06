@@ -9,6 +9,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import koLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 import ConditionCheckBox from "./ConditionCheckBox";
 import { ConditionContext } from "../ConditionSearch";
 
@@ -37,7 +38,6 @@ const mediumMarks = [
 
 const smallMarks = [
   { value: 0, label: "무료" },
-  { value: 10, label: "1만원" },
   { value: 30, label: "3만원" },
   { value: 50, label: "5만원" },
   { value: 100, label: "10만원 이상" },
@@ -71,6 +71,7 @@ export default function ConditionSearchFrame({ division, options, innerWidth }) 
   const [values, setValues] = useState([conditions["가격"][0] ? conditions["가격"][0] / 1000 : 0, conditions["가격"][1] / 1000]);
   const [marks, setMarks] = useState(fullMarks);
   const [sliderStep, setSliderStep] = useState(null); // 초기에는 null로 설정
+  const theme = useTheme();
 
   const handleChangeSlider = useCallback((event, newValues) => {
     setValues(newValues);
@@ -160,16 +161,28 @@ export default function ConditionSearchFrame({ division, options, innerWidth }) 
                       borderColor: "#FFB400",
                     },
                   },
+                  [theme.breakpoints.down("sm")]: {
+                    "& .MuiInputBase-input": {
+                      fontSize: "0.8rem",
+                    },
+                    width: "150px", // 작은 화면에서 전체 너비 사용
+                  },
+                  [theme.breakpoints.up("sm")]: {
+                    "& .MuiInputBase-input": {
+                      fontSize: "1rem",
+                    },
+                    width: "200px", // 큰 화면에서 고정된 너비 사용
+                  },
                 }}
               />
             </DemoContainer>
           </LocalizationProvider>
           {conditions["기간"] ? (
-            <Button color="secondary" sx={{ marginLeft: "10px" }} size="large" onClick={dateReset} readOnly>
+            <Button className="reset-button" color="secondary" sx={{ marginLeft: "0.5vh" }} size="large" onClick={dateReset} readOnly>
               초기화
             </Button>
           ) : (
-            <Button size="large" disabled sx={{ marginLeft: "10px" }}>
+            <Button className="reset-button" size="large" disabled sx={{ marginLeft: "0.5vh" }}>
               초기화
             </Button>
           )}
