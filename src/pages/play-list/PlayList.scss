@@ -3,15 +3,16 @@
 body {
   font-family: "Noto Sans KR", sans-serif;
 }
-
 @include desktop {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    max-width: 1300px;
-    min-width: 1025px;
+    width: 100%;
+    max-width: 1500px;
+    padding: 25px 100px;
     margin: 30px auto;
     margin-bottom: 200px;
+    box-sizing: border-box;
   }
 
   .play-list-main {
@@ -22,6 +23,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     padding: 66px 0;
   }
 
@@ -30,16 +32,16 @@ body {
   }
 }
 
-// 노트북 스타일
 @include laptop {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    max-width: 1024px;
-    min-width: 769px;
+    width: 100%;
+    max-width: 1300px;
     margin: 30px auto;
     margin-bottom: 200px;
-    padding: 25px 20px;
+    padding: 25px 100px;
+    box-sizing: border-box;
   }
 
   .play-list-main {
@@ -59,16 +61,16 @@ body {
   }
 }
 
-// 테블릿 (수평) 스타일
 @include tablet-horizontal {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    max-width: 768px;
-    min-width: 481px;
+    width: 100%;
+    max-width: 1024px;
     margin: 30px auto;
     margin-bottom: 200px;
-    padding: 25px 20px;
+    padding: 25px 40px;
+    box-sizing: border-box;
   }
 
   .play-list-main {
@@ -88,15 +90,15 @@ body {
   }
 }
 
-// 테블릿 (수직) 스타일
 @include tablet-vertical {
   .play-list-container {
     display: flex;
     flex-direction: column;
-    max-width: 480px;
-    min-width: 10px;
-    margin: 20px auto;
-    padding: 20px 15px;
+    width: 100%;
+    max-width: 768px;
+    margin: 30px auto;
+    padding: 20px 40px;
+    box-sizing: border-box;
   }
 
   .play-list-main {
@@ -115,15 +117,15 @@ body {
   }
 }
 
-// 모바일 스타일
 @include moblie {
   .play-list-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
     max-width: 480px;
-    min-width: 10px;
-    margin: 20px auto;
-    padding: 0 15px;
+    margin: 30px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
   }
 
   .play-list-main {
@@ -143,10 +145,25 @@ body {
 
   .adapted-conditions {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px; // spacing의 크기와 맞추기 위해 추가 가능
   }
 }
 
 .load-more-button-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+
+  .load-more-button {
+    margin: 5px 0;
+    background-color: #ffb3000e;
+
+    &:hover {
+      background-color: #ffb3000e;
+      color: #ff9d00;
+    }
+  }
 }
