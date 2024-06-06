@@ -25,7 +25,14 @@ export default function PlayReviewHeader({ count, sortStandard, setSortStandard,
           </FormControl>
         </div>
       </div>
-      <div className="review-header-line"></div>
+      <div className="review-header-line">
+        <ul className="header-list">
+          <li>평점</li>
+          <li>제목</li>
+          <li>작성자</li>
+          <li>작성날짜</li>
+        </ul>
+      </div>
     </>
   );
 }
