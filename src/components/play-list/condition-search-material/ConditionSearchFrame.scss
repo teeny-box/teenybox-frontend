@@ -7,7 +7,6 @@
 .flex-layout {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   padding: 5px 5px 20px 0;
   border-bottom: 1px solid #ffb400;
 
@@ -81,6 +80,8 @@
     }
     .condition-checkbox {
       align-items: flex-start;
+      font-size: 12px;
+
       .condition-label {
         padding-right: 2vw;
       }
@@ -99,6 +100,7 @@
 @include tablet-vertical {
   .flex-layout {
     padding: 5px 5px 20px 10px;
+    flex-wrap: wrap;
 
     .condition-label {
       width: 50px;
@@ -109,10 +111,10 @@
       font-size: 12px;
     }
     .condition-checkbox {
-      align-items: flex-start;
       .condition-label {
         padding-right: 2vw;
       }
+
       label {
         margin-right: 2vw;
       }
@@ -128,12 +130,13 @@
 @include moblie {
   .flex-layout {
     padding: 10px 10px 20px 10px;
-    align-items: center;
-    flex-direction: column;
     position: relative;
 
+    @media (min-width: 201px) and (max-width: 480px) {
+      flex-wrap: wrap;
+    }
+
     .condition-label {
-      width: 50px;
       padding: 5px;
     }
     .condition-price {
@@ -141,16 +144,11 @@
       font-size: 15px;
       position: absolute;
       top: 60%;
-      left: 39%;
+      left: 41%;
     }
     .condition-checkbox {
-      align-items: flex-start;
-      .condition-label {
-        padding-right: 1.5vw;
-      }
-      label {
-        margin-right: 1.5vw;
-      }
+      margin-left: 2vh;
+      flex-direction: column;
     }
     .date-picker {
       input {
@@ -158,15 +156,14 @@
       }
     }
 
-    @media (min-width: 200px) and (max-width: 401px) {
+    @media (min-width: 201px) and (max-width: 410px) {
       .condition-price {
         position: absolute;
         top: 60%;
-        left: 37%;
+        left: 38%;
       }
 
       .condition-checkbox {
-        align-items: flex-start;
         .condition-label {
           padding-right: 0.5vw;
         }
@@ -229,20 +226,28 @@
 
   @include tablet-vertical {
     width: 60vw;
-
     @media (min-width: 541px) and (max-width: 600px) {
       width: 55vw;
     }
-    @media (min-width: 481px) and (max-width: 540px) {
+    @media (min-width: 480px) and (max-width: 540px) {
       width: 50vw;
     }
   }
 
   @include moblie {
-    width: 60vw;
-
-    @media (min-width: 200px) and (max-width: 401px) {
-      width: 60vw;
+    margin-left: 4vh;
+    width: 65vw;
+    @media (min-width: 411px) and (max-width: 451px) {
+      width: 65vw;
+    }
+    @media (min-width: 351px) and (max-width: 410px) {
+      width: 58vw;
+    }
+    @media (min-width: 311px) and (max-width: 350px) {
+      width: 52vw;
+    }
+    @media (min-width: 201px) and (max-width: 310px) {
+      width: 50vw;
     }
   }
 }
