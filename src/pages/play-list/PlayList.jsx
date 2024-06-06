@@ -239,13 +239,12 @@ export function PlayList() {
               </div>
               {innerWidth <= 768 ? (
                 <div className="load-more-button-container">
-                  <div className="load-more-button">
-                    {isLoadMore && (
-                      <Button variant="contained" onClick={handleLoadMore} sx={{ width: 200, backgroundColor: "#ffb400" }}>
-                        더보기
-                      </Button>
-                    )}
-                  </div>
+                  {isLoadMore && (
+                    <Button className="load-more-button" onClick={handleLoadMore} color="secondary" variant="outlined">
+                      더보기
+                    </Button>
+                  )}
+
                   <ResetUpButton setCurPage={setCurPage} />
                 </div>
               ) : (
