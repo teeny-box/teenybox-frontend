@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom"; // 추가
 import "./PlayReviewContentBox.scss";
-// import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ImageExpandModal from "../../../components/common/modal/ImageExpandModal";
 import { reviewUrl } from "../../../apis/apiURLs";
@@ -123,25 +122,22 @@ export default function PlayReviewContentBox({
     <>
       <div className="play-review-content-container">
         {clickedPhoto && <ImageExpandModal imgSrc={clickedPhoto} setClickedPhoto={setClickedPhoto} />}
-        {content ? (
-          <div className="play-review-content">
-            <h4>{title}</h4>
-            <div className="content-text">{!content || content === "null" ? "" : content}</div>
-            <div className="review-photos">
-              {photoSrc.length
-                ? photoSrc.map((src, idx) => <img src={src} className="play-review-photo" key={idx} onClick={() => handleReviewPhotoClick(src)} />)
-                : null}
-            </div>
+        <div className="play-review-content">
+          <h4>{title}</h4>
+          <div className="content-text">{!content || content === "null" ? "" : content}</div>
+          <div className="review-photos">
+            {photoSrc.length
+              ? photoSrc.map((src, idx) => <img src={src} className="play-review-photo" key={idx} onClick={() => handleReviewPhotoClick(src)} />)
+              : null}
           </div>
-        ) : null}
-
+        </div>
         {isAuthorLogined && (
           <div className="play-review-modify-container">
-            <div className="modify-button" onClick={() => handleModifyBtnClick()}>
+            <div className="modify-button" onClick={handleModifyBtnClick}>
               수정
             </div>
-            <div className="remove-button">
-              삭제 <DeleteIcon className="play-review-delete-icon" color="ourGray" onClick={() => handleDeleteBtnClick()} />
+            <div className="remove-button" onClick={handleDeleteBtnClick}>
+              삭제 <DeleteIcon className="play-review-delete-icon" color="ourGray" />
             </div>
           </div>
         )}

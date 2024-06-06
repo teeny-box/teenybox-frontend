@@ -54,5 +54,35 @@
 }
 
 .review-header-line {
+  border-top: 1px solid #ffb400;
   border-bottom: 1px solid #ffb400;
+
+  .header-list {
+    display: flex;
+
+    display: flex;
+    width: 100%;
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+
+    li {
+      padding: 10px 0;
+      text-align: center;
+      font-weight: 300;
+
+      &:nth-child(1) {
+        flex: 1; /* 첫 번째 li 아이템 */
+      }
+      &:nth-child(2) {
+        flex: 6; /* 두 번째 li 아이템 */
+      }
+      &:nth-child(3) {
+        flex: 0.5; /* 세 번째 li 아이템 */
+      }
+      &:nth-child(4) {
+        flex: 1.2; /* 네 번째 li 아이템 */
+      }
+    }
+  }
 }
