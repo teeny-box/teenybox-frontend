@@ -1,5 +1,7 @@
+@import "../../styles/mixin.scss";
+
 .detail-poster {
-  margin: 30px;
+  margin-top: 30px;
 
   .detail-poster-img {
     display: flex;
@@ -11,4 +13,7 @@
       width: 100%;
     }
   }
+}
+
+@include moblie {
 }

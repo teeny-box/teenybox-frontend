@@ -5,6 +5,7 @@ import "./TheaterLocation.scss";
 export default function TheaterLoction({ theaterLocation, locationName }) {
   const { lat, lng } = theaterLocation;
 
+  console.log("경도 위도? : ", { lat, lng });
   useEffect(() => {
     kakao.maps.load(() => {
       const container = document.getElementById("play-detail-kakao-map");
@@ -29,12 +30,26 @@ export default function TheaterLoction({ theaterLocation, locationName }) {
       });
 
       infowindow.open(map);
+
+      // 초기화 시 스크롤 비활성화
+      map.setZoomable(false);
+
+      // 지도 클릭 시 스크롤 활성화
+      kakao.maps.event.addListener(map, "click", () => {
+        map.setZoomable(true);
+      });
+
+      // 지도를 벗어났을 때 스크롤 비활성화
+      container.addEventListener("mouseleave", () => {
+        map.setZoomable(false);
+      });
     });
-  }, [lat, lng, locationName]); // 의존성 배열에 lat, lng, locationName을 추가하여 값이 변경될 때마다 useEffect가 다시 실행되도록 합니다.
+  }, [lat, lng, locationName]);
 
   return (
     <div className="play-detail-kakao-map-container">
       <h3>극장 위치</h3>
+      <h5>{locationName}</h5>
       <div id="play-detail-kakao-map" className="play-detail-kakao-map"></div>
     </div>
   );

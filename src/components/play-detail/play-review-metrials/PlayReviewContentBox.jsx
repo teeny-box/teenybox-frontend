@@ -122,6 +122,7 @@ export default function PlayReviewContentBox({
     <>
       <div className="play-review-content-container">
         {clickedPhoto && <ImageExpandModal imgSrc={clickedPhoto} setClickedPhoto={setClickedPhoto} />}
+        <div className="play-review-virtual"></div> {/* 가상 영역 추가 */}
         <div className="play-review-content">
           <h4>{title}</h4>
           <div className="content-text">{!content || content === "null" ? "" : content}</div>
