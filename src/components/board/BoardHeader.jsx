@@ -1,8 +1,16 @@
 import { useNavigate } from "react-router-dom/dist";
 import "./BoardHeader.scss";
 import { KeyboardDoubleArrowLeftOutlined } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { postUrl } from "../../apis/apiURLs";
+
+const LAST_VIEW_ALL_STORE_NAME = "lastViewPostOnAll";
+const LAST_VIEW_NOTICE_STORE_NAME = "lastViewPostOnNotice";
 
 export function CommunityTabBar({ selected, setSelected, setPage, setReload, setSort }) {
+  const [newInAll, setNewInAll] = useState(false);
+  const [newInNoti, setNewInNoti] = useState(false);
+
   const handleClickTab = (e) => {
     setSelected(e.currentTarget.id);
     setPage(1);
@@ -10,18 +18,44 @@ export function CommunityTabBar({ selected, setSelected, setPage, setReload, set
     setSort("최신순");
   };
 
+  const isNewCheck = async () => {
+    try {
+      const resAll = await fetch(`${postUrl}?category=자유&page=1&limit=1&sortBy=time&sortOrder=desc`);
+      const lastPostOnAll = await resAll.json();
+      if (resAll.ok) {
+        const storeLastNum = JSON.parse(localStorage.getItem(LAST_VIEW_ALL_STORE_NAME)) || "";
+        setNewInAll(Number(lastPostOnAll.posts[0].post_number) > Number(storeLastNum));
+        console.log(Number(lastPostOnAll.posts[0].post_number), Number(storeLastNum));
+      }
+
+      const resNoti = await fetch(`${postUrl}?category=공지&page=1&limit=1&sortBy=time&sortOrder=desc`);
+      const lastPostOnNoti = await resNoti.json();
+      if (resNoti.ok) {
+        const storeLastNum = localStorage.getItem(LAST_VIEW_NOTICE_STORE_NAME) || 0;
+        setNewInNoti(Number(lastPostOnNoti.posts[0].post_number) > Number(storeLastNum));
+        console.log(Number(lastPostOnNoti.posts[0].post_number), storeLastNum);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    isNewCheck();
+  }, []);
+
   return (
     <div className="community-tap-bar">
       <div className={`tab-menu pointer ${selected === "자유" && "selected"}`} onClick={handleClickTab} id="자유">
         <h2 className="text">
           자유게시글
-          <div className="new-icon">N</div>
+          {newInAll && <div className="new-icon">N</div>}
         </h2>
       </div>
       <div className={`tab-menu pointer ${selected === "공지" && "selected"}`} onClick={handleClickTab} id="공지">
         <h2 className="text">
           공지사항
-          <div className="new-icon">N</div>
+          {newInNoti && <div className="new-icon">N</div>}
         </h2>
       </div>
     </div>
