@@ -23,7 +23,7 @@ export function CommunityTabBar({ selected, setSelected, setPage, reload, setRel
       const resAll = await fetch(`${postUrl}?category=자유&page=1&limit=1&sortBy=time&sortOrder=desc`);
       const lastPostOnAll = await resAll.json();
       if (resAll.ok) {
-        const storeLastNum = JSON.parse(localStorage.getItem(LAST_VIEW_ALL_STORE_NAME)) || "";
+        const storeLastNum = JSON.parse(localStorage.getItem(LAST_VIEW_ALL_STORE_NAME)) || 0;
         setNewInAll(Number(lastPostOnAll.posts[0].post_number) > Number(storeLastNum));
         console.log(Number(lastPostOnAll.posts[0].post_number), Number(storeLastNum));
       }

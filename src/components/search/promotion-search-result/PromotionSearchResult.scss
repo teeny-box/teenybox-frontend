@@ -7,6 +7,8 @@
   .search-header {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 10px;
     align-items: center;
     margin-bottom: 20px;
 
@@ -14,67 +16,23 @@
       padding: 0 20px;
     }
 
-    .left {
-      flex-shrink: 0;
+    .type {
+      .MuiFormGroup-root {
+        flex-direction: row;
+        display: flex;
 
-      .title {
-        font-size: 16px;
-        font-weight: 500;
+        .MuiRadio-root {
+          padding: 2px;
+          margin: 0px 4px 0 8px;
+        }
+
+        .MuiFormControlLabel-label {
+          font-size: 14px;
+        }
       }
     }
 
-    .right {
-      display: flex;
-      column-gap: 24px;
-      align-items: center;
-      margin-top: 2px;
-
-      .select-box {
-        display: flex;
-        align-items: center;
-        column-gap: 4px;
-        height: 16px;
-
-        img {
-          height: 16px;
-          object-fit: contain;
-        }
-
-        span {
-          font-size: 14px;
-          height: 19px;
-          line-height: 19px;
-        }
-
-        .range {
-          position: absolute;
-          min-width: 90px;
-          opacity: 0;
-        }
-
-        .sort {
-          position: absolute;
-          min-width: 60px;
-          opacity: 0;
-        }
-      }
-
-      .type {
-        .MuiFormGroup-root {
-          flex-direction: row;
-          display: flex;
-
-          .MuiRadio-root {
-            padding: 2px;
-            margin: 0px 4px 0 8px;
-          }
-
-          .MuiFormControlLabel-label {
-            font-size: 14px;
-          }
-        }
-      }
-
+    .sort {
       .MuiFormControl-root {
         height: 30px;
         margin: 0;
@@ -95,15 +53,6 @@
           }
         }
       }
-    }
-
-    .sort-by {
-      width: 120px;
-      height: 34px;
-      font-size: 14px;
-      font-family: "Nanum Gothic", sans-serif;
-      text-align: center;
-      border: 1px solid rgba(188, 188, 188, 0.7);
     }
   }
 
@@ -142,11 +91,8 @@
     }
   }
 
-  .search-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 40px 0 80px;
+  .pagination {
+    margin: 40px auto 80px;
   }
 
   .state {
