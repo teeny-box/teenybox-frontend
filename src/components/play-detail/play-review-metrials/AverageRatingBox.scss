@@ -1,3 +1,5 @@
+@import "../../../styles/mixin.scss";
+
 .average-rating-box {
   display: flex;
   padding: 5px 30px;
@@ -46,5 +48,37 @@
     font-weight: 400;
     font-size: 16px;
     font-family: "Noto Sans KR", sans-serif;
+  }
+}
+
+@include tablet-vertical {
+  .average-rating-box {
+    .review-button button {
+      width: 140px;
+      height: 45.2px;
+    }
+
+    .review-button button p {
+      font-weight: 400;
+      font-size: 14px;
+      font-family: "Noto Sans KR", sans-serif;
+    }
+  }
+}
+
+@include moblie {
+  .average-rating-box {
+    flex-direction: column;
+
+    .star-and-rating {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .review-button {
+      top: 0;
+    }
   }
 }

@@ -1,3 +1,5 @@
+@import "../../styles/mixin.scss";
+
 .selected-play-detail-menu {
   color: #ffb400;
   border-bottom: 2px solid #ffb400;
@@ -6,7 +8,6 @@
 .play-detail-nav {
   display: flex;
   margin-top: 80px;
-
   div {
     font-size: 20px;
     font-weight: 700;
@@ -23,5 +24,16 @@
   .unselected {
     color: #bcbcbc;
     border-bottom: 2px solid #bcbcbc;
+  }
+}
+
+@include moblie {
+  .play-detail-nav {
+    transform: scale(1.2);
+    margin-bottom: 30px;
+
+    div {
+      font-size: 15px;
+    }
   }
 }
