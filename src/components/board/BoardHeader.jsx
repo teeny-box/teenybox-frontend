@@ -7,7 +7,7 @@ import { postUrl } from "../../apis/apiURLs";
 const LAST_VIEW_ALL_STORE_NAME = "lastViewPostOnAll";
 const LAST_VIEW_NOTICE_STORE_NAME = "lastViewPostOnNotice";
 
-export function CommunityTabBar({ selected, setSelected, setPage, setReload, setSort }) {
+export function CommunityTabBar({ selected, setSelected, setPage, reload, setReload, setSort }) {
   const [newInAll, setNewInAll] = useState(false);
   const [newInNoti, setNewInNoti] = useState(false);
 
@@ -42,7 +42,7 @@ export function CommunityTabBar({ selected, setSelected, setPage, setReload, set
 
   useEffect(() => {
     isNewCheck();
-  }, []);
+  }, [selected, reload]);
 
   return (
     <div className="community-tap-bar">

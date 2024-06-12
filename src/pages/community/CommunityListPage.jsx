@@ -153,7 +153,7 @@ export function CommunityListPage() {
           <meta property="og:title" content="티니박스(TeenyBox) 커뮤니티" />
           <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
         </Helmet>
-        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} setReload={setReload} setSort={setSort} />
+        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} reload={reload} setReload={setReload} setSort={setSort} />
         <div className="Community-container">
           <div className="Community-left-container">
             <div className="header flex-box">
