@@ -58,7 +58,7 @@ export function PlayDetail() {
   };
 
   const handleGoBack = () => {
-    const previousPath = location.state?.from || "/";
+    const previousPath = location.state?.from || "/play";
     navigate(previousPath);
   };
 
