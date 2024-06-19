@@ -63,7 +63,6 @@ export function MobileMenuPage() {
     setSearchModalOpen(false); // 검색 모달 닫기
   };
 
-  console.log(userData);
 
   const profileImgSrc = userData?.profile_url && userData?.profile_url !== "" ? userData.profile_url : default_user_img;
 

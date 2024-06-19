@@ -35,12 +35,11 @@
 }
 .region-list:hover {
   cursor: pointer;
-  transform: scale(1.1);
+  filter: brightness(90%);
   transition: transform 0.1s ease;
 }
 .region-list.selected {
-  transform: scale(1.1);
-  background-color: #ffb400;
+  background-color: #eee;
   font-weight: 700;
   color: black;
   transition:
@@ -97,7 +96,7 @@
   @include ellipsis(1, 16px);
 }
 .main-region-play-period {
-  color: #00aaff;
+  color: #bbbbbb;
   font-size: 14px;
   font-weight: 400;
   margin: 0px;
