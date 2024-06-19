@@ -2,10 +2,9 @@
 import React, { useEffect } from "react";
 import "./TheaterLocation.scss";
 
-export default function TheaterLoction({ theaterLocation, locationName }) {
+export default function TheaterLocation({ theaterLocation, locationName }) {
   const { lat, lng } = theaterLocation;
 
-  console.log("경도 위도? : ", { lat, lng });
   useEffect(() => {
     kakao.maps.load(() => {
       const container = document.getElementById("play-detail-kakao-map");
@@ -50,7 +49,9 @@ export default function TheaterLoction({ theaterLocation, locationName }) {
     <div className="play-detail-kakao-map-container">
       <h3>극장 위치</h3>
       <h5>{locationName}</h5>
-      <div id="play-detail-kakao-map" className="play-detail-kakao-map"></div>
+      <div id="play-detail-kakao-map" className="play-detail-kakao-map">
+        <div></div>
+      </div>
     </div>
   );
 }

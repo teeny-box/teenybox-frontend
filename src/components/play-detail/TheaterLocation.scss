@@ -3,9 +3,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
 
-  .play-detail-kakao-map {
-    width: 100%;
-    height: 600px;
-  }
+.play-detail-kakao-map {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 4:3 비율을 유지하려면 75%, 16:9 비율을 유지하려면 56.25% */
+  position: relative;
+}
+
+.play-detail-kakao-map > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
 }
