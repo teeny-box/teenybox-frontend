@@ -156,7 +156,8 @@ function MemberInfo({ user, setUserData }) {
       if (res.ok) {
         setUserData({ isLoggedIn: true, user: { ...user, ...bodyData } });
         setOpenComplete(true);
-        setIsUnique(false);
+        setIsUnique(true);
+        window.location.reload();
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
@@ -173,6 +174,7 @@ function MemberInfo({ user, setUserData }) {
       }
     } catch (e) {
       setOpenFetchErrorAlert(true);
+      console.log("Catch error:", e);
     }
   };
 
@@ -296,13 +298,13 @@ function MemberInfo({ user, setUserData }) {
                           label={region}
                           sx={{
                             "& .MuiFormControlLabel-label": {
-                              fontSize: "14px",  // 원하는 폰트 크기
-                            }
+                              fontSize: "14px", // 원하는 폰트 크기
+                            },
                           }}
                         />
                       ))}
                     </FormGroup>
-                    <text style={{ fontSize: "15px", color: "#C90000" }}>※ 변경하고자 하는 선호 지역을 체크해주세요.</text>
+                    <p style={{ fontSize: "15px", color: "#C90000", marginTop: "20px" }}>※ 변경하고자 하는 선호 지역을 체크해주세요.</p>
                   </FormControl>
                 </div>
               </div>
@@ -421,49 +423,49 @@ function MemberInfo({ user, setUserData }) {
                     선호지역
                   </p>
                   <div className="member-preferred-region-check-list">
-                  <FormControl
-                    required
-                    component="fieldset"
-                    variant="standard"
-                    sx={{
-                      width: "100%",
-                    }}
-                  >
-                    <FormGroup
+                    <FormControl
+                      required
+                      component="fieldset"
+                      variant="standard"
                       sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(2, 1fr)",
-                        flexDirection: "row",
+                        width: "100%",
                       }}
                     >
-                      {["서울", "경기/인천", "대전/충청", "강원", "대구/경상", "부산/울산", "광주/전라", "제주"].map((region, idx) => (
-                        <FormControlLabel
-                          key={idx}
-                          control={
-                            <Checkbox
-                              name={region}
-                              checked={region === selectedRegion}
-                              onClick={() => setSelectedRegion(region)}
-                              color="secondary"
-                              sx={{
-                                fontSize: "10px",
-                                "& .MuiSvgIcon-root": {
-                                  color: "#FFB400",
-                                },
-                              }}
-                            />
-                          }
-                          label={region}
-                          sx={{
-                            "& .MuiFormControlLabel-label": {
-                              fontSize: "12px",  // 원하는 폰트 크기
+                      <FormGroup
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(2, 1fr)",
+                          flexDirection: "row",
+                        }}
+                      >
+                        {["서울", "경기/인천", "대전/충청", "강원", "대구/경상", "부산/울산", "광주/전라", "제주"].map((region, idx) => (
+                          <FormControlLabel
+                            key={idx}
+                            control={
+                              <Checkbox
+                                name={region}
+                                checked={region === selectedRegion}
+                                onClick={() => setSelectedRegion(region)}
+                                color="secondary"
+                                sx={{
+                                  fontSize: "10px",
+                                  "& .MuiSvgIcon-root": {
+                                    color: "#FFB400",
+                                  },
+                                }}
+                              />
                             }
-                          }}
-                        />
-                      ))}
-                    </FormGroup>
-                    <text style={{ fontSize: "12px", color: "#C90000" }}>※ 변경하고자 하는 선호 지역을 체크해주세요.</text>
-                  </FormControl>
+                            label={region}
+                            sx={{
+                              "& .MuiFormControlLabel-label": {
+                                fontSize: "12px", // 원하는 폰트 크기
+                              },
+                            }}
+                          />
+                        ))}
+                      </FormGroup>
+                      <p style={{ fontSize: "12px", color: "#C90000", marginTop: "20px" }}>※ 변경하고자 하는 선호 지역을 체크해주세요.</p>
+                    </FormControl>
                   </div>
                 </div>
               </div>

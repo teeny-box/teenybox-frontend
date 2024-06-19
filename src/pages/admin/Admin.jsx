@@ -21,7 +21,6 @@ export function Admin() {
     }
   }, [userData]);
 
-  console.log(userData);
 
   const isSelected = (componentName) => (selectedComponent === componentName ? "selected" : "");
   // nav 에서 선택된 탭에 따라 다른 컴포넌트 랜더링

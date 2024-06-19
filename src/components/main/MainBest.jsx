@@ -9,37 +9,36 @@ function MainBest() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [clientWidth, setClientWidth] = useState(document.documentElement.clientWidth);
 
   const navigate = useNavigate();
 
-  // 해당연극 상세페이지로 이동
   const handleShowClick = (showId) => {
     navigate(`/play/${showId}`);
   };
 
-  // 화면 너비 조절 이벤트를 듣도록 하기
   useEffect(() => {
     const resizeListener = () => {
-      setInnerWidth(window.innerWidth);
+      setClientWidth(document.documentElement.clientWidth);
     };
     window.addEventListener("resize", resizeListener);
-  });
+
+    return () => window.removeEventListener("resize", resizeListener);
+  }, []);
 
   const slideWidth =
-    innerWidth > 1700
+    clientWidth > 1700
       ? 1300
-      : innerWidth > 1300
+      : clientWidth > 1300
         ? 1100
-        : innerWidth > 1024
-          ? innerWidth - 200
-          : innerWidth > 768
-            ? innerWidth - 80
-            : innerWidth > 480
-              ? innerWidth - 80
-              : innerWidth - 40;
+        : clientWidth > 1024
+          ? clientWidth - 200
+          : clientWidth > 768
+            ? clientWidth - 80
+            : clientWidth > 480
+              ? clientWidth - 80
+              : clientWidth - 40;
 
-  // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
     ? {
         transform: `translateX(-${sliderIndex * slideWidth}px)`,
@@ -63,7 +62,6 @@ function MainBest() {
     }
   }, [sliderIndex]);
 
-  // 슬라이드 좌 우 이동 헨들러
   const handleLeftClick = () => {
     setIsAnimating(true);
     setSliderIndex((prevIndex) => prevIndex - 1);
@@ -79,24 +77,15 @@ function MainBest() {
       .then((res) => res.json())
       .then((data) => {
         const rankedShows = data.shows;
-        // 연극을 rank에 따라 정렬
         rankedShows.sort((a, b) => a.rank - b.rank);
 
-        // 상위 18개 항목 선택
         const top18Shows = rankedShows.slice(0, 18);
-
-        // 각 연극에 인덱스 기반 순위 부여
         const showsWithRank = top18Shows.map((show, index) => ({
           ...show,
           newRank: index + 1,
         }));
 
-        // 순서대로 재배열
-        const reorderedShows = [
-          ...showsWithRank.slice(12), // 13번부터 18번까지
-          ...showsWithRank, // 1번부터 18번까지
-          ...showsWithRank.slice(0, 6), // 1번부터 6번까지
-        ];
+        const reorderedShows = [...showsWithRank.slice(12), ...showsWithRank, ...showsWithRank.slice(0, 6)];
 
         setShows(reorderedShows);
       })
@@ -105,7 +94,7 @@ function MainBest() {
 
   return (
     <>
-      {innerWidth > 1024 ? (
+      {clientWidth > 1024 ? (
         <div className="main-layout-container">
           <div className="main-title-box">
             <div>

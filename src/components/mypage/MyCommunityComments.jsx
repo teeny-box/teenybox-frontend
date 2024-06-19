@@ -1,25 +1,26 @@
-import Button from "@mui/material/Button";
-import "./MyPlayReview.scss";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import "./MyCommunityComments.scss";
+import Button from "@mui/material/Button";
 import { Checkbox, Backdrop, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
-import { reviewUrl, userUrl } from "../../apis/apiURLs";
+import { useNavigate, Link } from "react-router-dom";
+import { commentUrl, userUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
 import Empty from "../common/state/Empty";
 import TimeFormat from "../common/time/TimeFormat";
 import { AlertCustom } from "../common/alert/Alerts";
 import { AlertContext } from "../../App";
 
-function MyPlayReview({ user, setUserData }) {
-  const [reviews, setReviews] = useState([]);
-  const [allReviews, setAllReviews] = useState([]);
+function MyCommunityComments({ setUserData }) {
+  const [comments, setComments] = useState([]);
+  const [allcomments, setAllComments] = useState([]);
+  const [state, setState] = useState("loading");
   const [checkedList, setCheckedList] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
-  const [state, setState] = useState("loading");
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [openAlert, setOpenAlert] = useState(false);
   const [sort, setSort] = useState("최신순");
+  const [order, setOrder] = useState("desc");
   const [expandedId, setExpandedId] = useState(null);
   const nav = useNavigate();
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
@@ -28,18 +29,15 @@ function MyPlayReview({ user, setUserData }) {
     setPage(value);
   };
 
-  const getReviews = async () => {
+  const getComments = async () => {
     setState("loading");
-
-    const order = sort === "최신순" ? "recent" : "outdated";
-
     try {
-      const res = await fetch(`${reviewUrl}?userId=${user.user_id}&page=${page}&limit=10&order=${order}`);
+      const res = await fetch(`${commentUrl}/posts?page=${page}&limit=10`, { credentials: "include" });
       const data = await res.json();
 
       if (res.ok) {
-        setReviews(data.data);
-        setTotalCount(data.total);
+        setComments(data.comments);
+        setTotalCount(data.totalComments);
         setState("hasValue");
       } else {
         setState("hasError");
@@ -50,13 +48,13 @@ function MyPlayReview({ user, setUserData }) {
     }
   };
 
-  const getAllReviews = async () => {
+  const getAllComments = async () => {
     try {
-      const res = await fetch(`${reviewUrl}?userId=${user.user_id}`);
+      const res = await fetch(`${commentUrl}/posts`, { credentials: "include" });
       const data = await res.json();
 
       if (res.ok) {
-        setAllReviews(data.data);
+        setAllComments(data.comments);
       } else {
         console.error(data);
       }
@@ -67,20 +65,23 @@ function MyPlayReview({ user, setUserData }) {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`${reviewUrl}`, {
+      const res = await fetch(`${commentUrl}`, {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reviewIds: checkedList,
+          commentIds: checkedList,
         }),
       });
 
       if (res.ok) {
-        const newReviews = reviews.filter((review) => !checkedList.includes(review.id));
-        setReviews(newReviews);
-        setCheckedList([]);
-        getReviews();
+        const newComments = [...comments];
+        checkedList.forEach((id) => {
+          const index = newComments.findIndex((comment) => comment.id === id);
+          newComments.splice(index, 1);
+        });
+
+        setComments(newComments);
       } else if (res.status === 401 || res.status === 403) {
         const loginRes = await fetch(`${userUrl}`, { credentials: "include" });
         if (loginRes.ok) {
@@ -111,7 +112,7 @@ function MyPlayReview({ user, setUserData }) {
   const handleAllCheck = (e) => {
     setAllChecked(e.target.checked);
     if (e.target.checked) {
-      setCheckedList(allReviews.map((review) => review._id));
+      setCheckedList(allcomments.map((comment) => comment._id));
     } else {
       setCheckedList([]);
     }
@@ -122,26 +123,28 @@ function MyPlayReview({ user, setUserData }) {
       setExpandedId((prev) => (prev === id ? null : id));
     }
   };
+  useEffect(() => {
+    getComments();
+  }, [page, sort, order]);
 
   useEffect(() => {
-    getReviews();
-  }, [page, sort]);
-
-  useEffect(() => {
-    getReviews();
-    getAllReviews();
+    getComments();
+    getAllComments();
   }, []);
 
   return (
     <>
-      <div className="my-play-review-container">
+      <div className="my-comments-container">
         <div className="header">
-          <h1>MY 연극 리뷰</h1>
+          <h1>MY 댓글</h1>
           <div className="header-item-box">
             <FormControl color="silver" sx={{ m: 1, minWidth: 120 }}>
               <Select
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setOrder(e.target.value === "최신순" ? "desc" : "asc");
+                }}
                 sx={{
                   padding: "0px",
                   "& .MuiSelect-select": {
@@ -155,7 +158,7 @@ function MyPlayReview({ user, setUserData }) {
                 <MenuItem value="오래된순">오래된순</MenuItem>
               </Select>
             </FormControl>
-            {!reviews.length || (
+            {!comments.length || (
               <Button
                 onClick={() => setOpenAlert(true)}
                 disabled={!checkedList.length}
@@ -173,72 +176,66 @@ function MyPlayReview({ user, setUserData }) {
           {state === "loading" ? (
             <CircularProgress className="loading" color="secondary" />
           ) : state === "hasError" ? (
-            <ServerError onClickBtn={() => getReviews()} />
-          ) : reviews.length ? (
+            <ServerError onClickBtn={() => getComments()} />
+          ) : comments.length ? (
             <div className="my-table">
               <div className="table-header">
                 <div className="table-header-box" style={{ width: "10%" }}>
                   <p>번호</p>
                 </div>
                 <div className="table-header-box" style={{ width: "48%" }}>
-                  <p>연극제목</p>
+                  <p>해당 커뮤니티 글 제목</p>
                 </div>
                 <div className="table-header-box" style={{ width: "20%" }}>
                   <p>작성일</p>
                 </div>
                 <div className="table-header-box" style={{ width: "22%" }}>
-                  <p>전체선택</p>{" "}
+                  <p>전체선택</p>
                   <Checkbox
                     checked={allChecked}
+                    onChange={handleAllCheck}
                     sx={{
                       "& .MuiSvgIcon-root": {
                         color: "#FFB400",
                       },
                     }}
-                    onChange={handleAllCheck}
                   />
                 </div>
               </div>
               <div className="table-body">
-                {reviews.map((review, index) => (
-                  <div key={review._id}>
+                {comments.map((comment, index) => (
+                  <div key={comment._id}>
                     <div
                       className="table-item"
-                      style={{ backgroundColor: expandedId === review._id ? "rgba(255, 180, 0, 0.1)" : null }}
-                      onClick={(e) => toggleExpand(e, review._id)}
+                      style={{ backgroundColor: expandedId === comment._id ? "rgba(255, 180, 0, 0.1)" : null }}
+                      onClick={(e) => toggleExpand(e, comment._id)}
                     >
                       <div className="item-box" style={{ width: "10%" }}>
                         {(page - 1) * 10 + index + 1}
                       </div>
                       <div className="item-box" style={{ width: "48%" }}>
-                        <p>{review.show_title}</p>
+                        <p>{comment.post.title}</p>
                       </div>
                       <div className="item-box" style={{ width: "20%" }}>
-                        <TimeFormat time={review.created_at} />
+                        <TimeFormat time={comment.createdAt} />
                       </div>
                       <div className="item-box" style={{ width: "22%" }}>
                         <Checkbox
-                          value={review._id}
-                          checked={checkedList.includes(review._id)}
+                          value={comment._id}
+                          checked={checkedList.includes(comment._id)}
+                          onChange={handleChangeChecked}
                           sx={{
                             "& .MuiSvgIcon-root": {
                               color: "#FFB400",
                             },
                           }}
-                          onChange={handleChangeChecked}
                         />
                       </div>
                     </div>
-                    {expandedId === review._id && (
+                    {expandedId === comment._id && (
                       <div className="expanded-content">
                         <div className="expanded-content-box">
-                          <h6>{review.title}</h6>
-                          <p>{review.content}</p>
-                          <div className="img-box">
-                            {review.image_urls.map((url, idx) => (
-                              <img key={idx} src={url} alt={`review-${idx}`} />
-                            ))}
-                          </div>
+                          <p>{comment.content}</p>
                         </div>
                       </div>
                     )}
@@ -247,11 +244,18 @@ function MyPlayReview({ user, setUserData }) {
               </div>
             </div>
           ) : (
-            <Empty />
+            <Empty>
+              <>
+                <p>데이터가 없습니다. 연극을 찾아보고 다양한 기록을 남겨보세요</p>
+                <Link className="link" to={`/play`}>
+                  연극 찾아보기
+                </Link>
+              </>
+            </Empty>
           )}
         </div>
         <div className="footer">
-          {!reviews.length || (
+          {!comments.length || (
             <Button
               onClick={() => setOpenAlert(true)}
               disabled={!checkedList.length}
@@ -295,4 +299,4 @@ function MyPlayReview({ user, setUserData }) {
   );
 }
 
-export default MyPlayReview;
+export default MyCommunityComments;
