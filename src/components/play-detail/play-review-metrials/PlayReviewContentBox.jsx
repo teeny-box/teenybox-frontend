@@ -132,7 +132,7 @@ export default function PlayReviewContentBox({
               : null}
           </div>
         </div>
-        {isAuthorLogined && (
+        {isAuthorLogined ? (
           <div className="play-review-modify-container">
             <div className="modify-button" onClick={handleModifyBtnClick}>
               수정
@@ -141,6 +141,8 @@ export default function PlayReviewContentBox({
               삭제 <DeleteIcon className="play-review-delete-icon" color="ourGray" />
             </div>
           </div>
+        ) : (
+          <div className="play-review-virtual"></div>
         )}
       </div>
     </>
