@@ -51,21 +51,22 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
             position: relative;
             bottom: 12px;
             margin: 0 10px;
             flex-grow: 1;
 
             .SNS-img-box {
-              height: 90px;
               width: 70px;
+              height: 90px;
               display: flex;
               flex-direction: column;
               justify-content: center;
               align-items: center;
 
               img {
-                width: 40px;
+                width: 100%;
                 height: 40px;
               }
               div {
@@ -142,7 +143,7 @@
 
       .play-summary-info {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
         grid-gap: 30px;
 
         div {
@@ -185,6 +186,7 @@
             margin-left: 15px;
 
             img {
+              width: 100%;
               display: block;
               transition: transform 0.3s ease;
             }
@@ -295,15 +297,23 @@
         width: 100%;
 
         .play-summary-info {
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
         }
       }
+
       .title-container {
         align-items: flex-start;
+
+        .share-option {
+          .SNS-img-box {
+            width: 50px;
+          }
+        }
       }
 
       .play-detail-buttons {
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
       }
     }
 
@@ -354,13 +364,13 @@
         width: 60%;
 
         .play-summary-info {
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
         }
       }
     }
   }
 
-  @media (min-width: 469px) and (max-width: 736px) {
+  @media (min-width: 511px) and (max-width: 736px) {
     .play-detail-top-container {
       .play-detail-top {
         flex-direction: column;
@@ -385,6 +395,10 @@
           margin-left: 0;
           margin-top: 20px;
           width: 100%;
+
+          .play-summary-info {
+            grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+          }
         }
       }
     }
@@ -433,10 +447,10 @@
 
       .play-info {
         margin-left: 50px;
-        width: 65%;
+        width: 60%;
 
         .play-summary-info {
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
         }
       }
     }
@@ -489,7 +503,7 @@
 
       .play-info {
         margin-left: 60px;
-        width: 70%;
+        width: 60%;
       }
     }
   }
