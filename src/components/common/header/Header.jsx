@@ -11,12 +11,13 @@ import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
 import { userUrl } from "../../../apis/apiURLs";
 import "./Header.scss";
+import MobileMenu from "./mobile-menu/MobileMenu";
 
 const Header = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태
   const [activeTab, setActiveTab] = useState("");
-  const { userData, setUserData } = useContext(AppContext);
+  const { userData, setUserData, mobileMenuOpen, setMobileMenuOpen } = useContext(AppContext);
   const location = useLocation();
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
 
@@ -24,7 +25,7 @@ const Header = () => {
     const handleWindowResize = () => {
       setIsWideScreen(window.innerWidth > 768);
     };
-
+    
     window.addEventListener("resize", handleWindowResize);
 
     return () => {
@@ -74,6 +75,10 @@ const Header = () => {
 
   const onCloseModal = () => {
     setSearchModalOpen(false); // 검색 모달 닫기
+  };
+
+  const openMobileMenu = () => {
+    setMobileMenuOpen(true);
   };
 
   return (
@@ -158,12 +163,13 @@ const Header = () => {
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo-image" to="/Main" />
               </Link>
               <div className="header-icon-box">
-                <Link className="menu-btn-box" to="/mobileMenu" style={{ textDecoration: "none" }} >
+                <div className="menu-btn-box" style={{ textDecoration: "none" }} onClick={openMobileMenu}>
                   <MenuIcon className="buger-menu"></MenuIcon>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
+          {mobileMenuOpen && <MobileMenu />} {/* 모바일 메뉴 표시 */}
         </div>
       )}
       {/* 모달 */}

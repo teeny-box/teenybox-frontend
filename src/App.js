@@ -1,5 +1,4 @@
-import "./App.scss";
-import { useState, createContext } from "react";
+import React, { useState, createContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
@@ -8,6 +7,8 @@ import LoginAlert from "./components/common/alert/LoginAlert";
 import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
 import FetchErrorAlert from "./components/common/alert/FetchErrorAlert";
+import MobileMenu from "./components/common/header/mobile-menu/MobileMenu";
+import LightMobileMenu from "./components/common/header/mobile-menu/LightMobileMenu";
 
 export const AppContext = createContext();
 export const AlertContext = createContext();
@@ -18,11 +19,8 @@ function App() {
   const [openLoginAlertBack, setOpenLoginAlertBack] = useState(false);
   const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [prevPlayListQuery, setPrevPlayListQuery] = useState(null);
-
-  // userData 상태가 변경될 때마다 실행되는 useEffect
-  // useEffect(() => {
-  //   console.log("업데이트 후 userData:", userData);
-  // }, [userData]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lightmobileMenuOpen, setLightmobileMenuOpen] = useState(false);
 
   return (
     <div className="App">
@@ -36,6 +34,10 @@ function App() {
             setUserData,
             prevPlayListQuery,
             setPrevPlayListQuery,
+            mobileMenuOpen,
+            setMobileMenuOpen,
+            lightmobileMenuOpen,
+            setLightmobileMenuOpen,
           }}
         >
           <AlertContext.Provider
@@ -49,10 +51,18 @@ function App() {
             }}
           >
             <BrowserRouter>
-              <AppRoutes setPrevPlayListQuery={setPrevPlayListQuery} />
-              <LoginAlert />
-              <LoginAlertBack />
-              <FetchErrorAlert />
+              {mobileMenuOpen ? (
+                <MobileMenu onClose={() => setMobileMenuOpen(false)} />
+              ) : lightmobileMenuOpen ? (
+                <LightMobileMenu onClose={() => setLightmobileMenuOpen(false)} />
+              ) : (
+                <>
+                  <AppRoutes setPrevPlayListQuery={setPrevPlayListQuery} />
+                  <LoginAlert />
+                  <LoginAlertBack />
+                  <FetchErrorAlert />
+                </>
+              )}
             </BrowserRouter>
           </AlertContext.Provider>
         </AppContext.Provider>
