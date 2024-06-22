@@ -1,117 +1,252 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./AdminReview.scss";
-import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { Backdrop } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import TimeFormat from "../common/time/TimeFormat";
+import { Checkbox, Backdrop, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { reviewUrl } from "../../apis/apiURLs";
-
-// DataGrid table의 column구성
-const columns = [
-  { field: "show_title", headerName: "해당 공연 제목", width: 146 },
-  { field: "title", headerName: "후기 제목", width: 146 },
-  { field: "rate", headerName: "평점", width: 146 },
-  { field: "user_nickname", headerName: "작성자", width: 146 },
-  {
-    field: "created_at",
-    headerName: "작성 시기",
-    width: 146,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
-  },
-];
+import ServerError from "../common/state/ServerError";
+import Empty from "../common/state/Empty";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertContext } from "../../App";
 
 const AdminReview = () => {
   // table에서 선택된 review 관리
   const [reviews, setReviews] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
   // 삭제 확인 alert
   const [openAlert, setOpenAlert] = useState(false);
   // 삭제 완료 alert
   const [openAlert2, setOpenAlert2] = useState(false);
-  // 테이블 행 클릭시 해당 상세페이지로 이동
-  const navigate = useNavigate();
+  const [checkedList, setCheckedList] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
+  const [state, setState] = useState("loading");
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [sort, setSort] = useState("최신순");
+  const { setOpenFetchErrorAlert } = useContext(AlertContext);
 
-  // fetch API 리뷰 조회
-  const fetchData = () => {
-    fetch(`${reviewUrl}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data.data) && data.data.length > 0) {
-          setReviews(data.data);
-        } else {
-          console.error("Data is not an array or empty");
-        }
-      })
-      .catch((err) => console.error(err));
+  const handleChangePage = (e, value) => {
+    setPage(value);
   };
 
-  // 페이지가 로드될 때 리뷰 정보 가져옴
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const getReviews = async () => {
+    setState("loading");
 
-  const handleDelete = () => {
-    // 선택된 후기의 ID 목록
-    const selectedReviewIds = reviews.filter((review) => review.selected).map((review) => review._id);
+    const order = sort === "최신순" ? "recent" : "outdated";
 
-    // DELETE 요청 보내기
-    fetch(`${reviewUrl}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ reviewIds: selectedReviewIds }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        fetchData(); // 선택한 리뷰 DELETE 후 리뷰정보 최신화
+    try {
+      const res = await fetch(`${reviewUrl}?page=${page}&limit=10&order=${order}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+  
+
+      if (res.ok) {
+        setReviews(data.data);
+        setTotalCount(data.total);
+        setState("hasValue");
+      } else {
+        setState("hasError");
+        console.error(data);
+      }
+    } catch (err) {
+      setState("hasError");
+    }
+  };
+
+  const getAllReviews = async () => {
+    try {
+      const res = await fetch(`${reviewUrl}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setAllReviews(data.data);
+      } else {
+        console.error(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`${reviewUrl}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reviewIds: checkedList,
+        }),
+      });
+
+      if (res.ok) {
+        const newReviews = reviews.filter((review) => !checkedList.includes(review._id));
+        setReviews(newReviews);
+        setCheckedList([]);
+        getReviews();
         setOpenAlert2(true);
-      })
-      .catch((err) => console.error(err));
+      } else {
+        const data = await res.json();
+        console.error(data);
+      }
+    } catch (e) {
+      setOpenFetchErrorAlert(true);
+    }
   };
+
+  const handleChangeChecked = (e) => {
+    if (e.target.checked) {
+      setCheckedList((cur) => [...cur, e.target.value]);
+    } else {
+      setCheckedList((cur) => cur.filter((id) => id !== e.target.value));
+    }
+  };
+
+  const handleAllCheck = (e) => {
+    setAllChecked(e.target.checked);
+    if (e.target.checked) {
+      setCheckedList(allReviews.map((review) => review._id));
+    } else {
+      setCheckedList([]);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, [page, sort]);
+
+  useEffect(() => {
+    getReviews();
+    getAllReviews();
+  }, []);
 
   return (
     <>
       <div className="admin-board-container">
-        <div className="admin-board-header">
+        <div className="header">
           <h1>공연 후기</h1>
-          <Button
-            variant="contained"
-            color="moreDarkGray"
-            sx={{ width: "80px", height: "40px", color: "white" }}
-            onClick={() => {
-              const hasSelectedReviews = reviews.some((review) => review.selected);
-              if (hasSelectedReviews) setOpenAlert(true);
-            }}
-          >
-            <h4>삭제</h4>
-          </Button>
+          <div className="header-item-box">
+            <FormControl color="silver" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                sx={{
+                  padding: "0px",
+                  "& .MuiSelect-select": {
+                    padding: "7.5px 20px",
+                  },
+                }}
+                className="sort"
+                displayEmpty
+              >
+                <MenuItem value="최신순">최신순</MenuItem>
+                <MenuItem value="오래된순">오래된순</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </div>
-        <div style={{ height: "631px", width: "800px" }}>
-          <DataGrid
-            onRowClick={(params) => {
-              const showNumber = params.row.show_id;
-              navigate(`/Play/${showNumber}`);
-            }}
-            rows={reviews}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
+        <div className="body">
+          {state === "loading" ? (
+            <CircularProgress className="loading" color="secondary" />
+          ) : state === "hasError" ? (
+            <ServerError onClickBtn={() => getReviews()} />
+          ) : reviews.length ? (
+            <div className="my-table">
+              <div className="table-header">
+                <div className="table-header-box" style={{ width: "10%" }}>
+                  <p>번호</p>
+                </div>
+                <div className="table-header-box" style={{ width: "24%" }}>
+                  <p>후기 제목</p>
+                </div>
+                <div className="table-header-box" style={{ width: "24%" }}>
+                  <p>작성자</p>
+                </div>
+                <div className="table-header-box" style={{ width: "20%" }}>
+                  <p>작성 시기</p>
+                </div>
+                <div className="table-header-box" style={{ width: "22%" }}>
+                  <p>전체선택</p>
+                  <Checkbox
+                    checked={allChecked}
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        color: "#FFB400",
+                      },
+                    }}
+                    onChange={handleAllCheck}
+                  />
+                </div>
+              </div>
+              <div className="table-body">
+                {reviews.map((review, index) => (
+                  <div key={review._id}>
+                    <div className="table-item">
+                      <div className="item-box" style={{ width: "10%" }}>
+                        {(page - 1) * 10 + index + 1}
+                      </div>
+                      <div className="item-box" style={{ width: "24%" }}>
+                        <p>{review.title}</p>
+                      </div>
+                      <div className="item-box" style={{ width: "24%" }}>
+                        <p>{review.user_nickname}</p>
+                      </div>
+                      <div className="item-box" style={{ width: "20%" }}>
+                        <TimeFormat time={review.created_at} />
+                      </div>
+                      <div className="item-box" style={{ width: "22%" }}>
+                        <Checkbox
+                          value={review._id}
+                          sx={{
+                            "& .MuiSvgIcon-root": {
+                              color: "#FFB400",
+                            },
+                          }}
+                          onChange={handleChangeChecked}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <Empty />
+          )}
+        </div>
+        <div className="footer">
+          <div className="footer-info-box">
+            <p className="footer-info1">관리자 권한</p>
+            <p className="footer-info2">*회원을 선택한 후 버튼을 클릭하세요.</p>
+          </div>
+          {!reviews.length || (
+            <Button
+              onClick={() => setOpenAlert(true)}
+              disabled={!checkedList.length}
+              variant="contained"
+              color="secondary"
+              sx={{ width: "160px", height: "36px", color: "white" }}
+            >
+              관리자 권한으로 삭제
+            </Button>
+          )}
+        </div>
+        <div className="pagination">
+          <Pagination
+            count={Math.ceil(totalCount / 10)}
+            page={page}
+            onChange={handleChangePage}
+            sx={{
+              "& .MuiPaginationItem-root": {
+                "&.Mui-selected": {
+                  backgroundColor: "#ffb400",
+                },
               },
-            }}
-            checkboxSelection
-            getRowId={(review) => review._id}
-            onRowSelectionModelChange={(selectionModel) => {
-              const updateReviews = reviews.map((review) => ({
-                ...review,
-                selected: selectionModel.includes(review._id),
-              }));
-              setReviews(updateReviews);
             }}
           />
         </div>

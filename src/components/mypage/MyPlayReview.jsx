@@ -132,6 +132,8 @@ function MyPlayReview({ user, setUserData }) {
     getAllReviews();
   }, []);
 
+
+
   return (
     <>
       <div className="my-play-review-container">
@@ -187,7 +189,7 @@ function MyPlayReview({ user, setUserData }) {
                   <p>작성일</p>
                 </div>
                 <div className="table-header-box" style={{ width: "22%" }}>
-                  <p>전체선택</p>{" "}
+                  <p>전체선택</p>
                   <Checkbox
                     checked={allChecked}
                     sx={{
