@@ -95,7 +95,7 @@ const LightHeader = () => {
       />
 
       {isWideScreen ? (
-        <div className="header-container">
+        <div className="light-header-container">
           <div className="header-box">
             <div className="vertical-box1">
               <Link to="/">
