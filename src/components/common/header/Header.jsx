@@ -11,13 +11,12 @@ import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
 import { userUrl } from "../../../apis/apiURLs";
 import "./Header.scss";
-import MobileMenu from "./mobile-menu/MobileMenu";
 
 const Header = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태
   const [activeTab, setActiveTab] = useState("");
-  const { userData, setUserData, mobileMenuOpen, setMobileMenuOpen } = useContext(AppContext);
+  const { userData, setUserData, setMobileMenuOpen, setIsLightHeader } = useContext(AppContext);
   const location = useLocation();
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
 
@@ -25,7 +24,7 @@ const Header = () => {
     const handleWindowResize = () => {
       setIsWideScreen(window.innerWidth > 768);
     };
-    
+
     window.addEventListener("resize", handleWindowResize);
 
     return () => {
@@ -78,6 +77,7 @@ const Header = () => {
   };
 
   const openMobileMenu = () => {
+    setIsLightHeader(false);
     setMobileMenuOpen(true);
   };
 
@@ -169,7 +169,6 @@ const Header = () => {
               </div>
             </div>
           </div>
-          {mobileMenuOpen && <MobileMenu />} {/* 모바일 메뉴 표시 */}
         </div>
       )}
       {/* 모달 */}

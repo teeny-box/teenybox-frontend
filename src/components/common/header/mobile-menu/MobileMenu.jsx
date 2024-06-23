@@ -17,7 +17,7 @@ import default_user_img from "../../../../assets/img/default_user_img.svg";
 const MobileMenu = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태
-  const { userData, setUserData, setMobileMenuOpen } = useContext(AppContext);
+  const { userData, setUserData, setMobileMenuOpen, isLightHeader } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const MobileMenu = () => {
   const profileImgSrc = userData?.profile_url && userData?.profile_url !== "" ? userData.profile_url : default_user_img;
 
   return (
-    <div className="mobile-menu-background">
+    <div className={`mobile-menu-background  ${isLightHeader ? "light" : null}`}>
       <AlertCustom
         open={open}
         onclose={handleClose}

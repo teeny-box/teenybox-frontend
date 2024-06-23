@@ -11,13 +11,12 @@ import { AlertCustom } from "../alert/Alerts";
 import { AppContext } from "../../../App";
 import { userUrl } from "../../../apis/apiURLs";
 import "./LightHeader.scss";
-import LightMobileMenu from "./mobile-menu/LightMobileMenu";
 
 const LightHeader = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태 추가
   const [activeTab, setActiveTab] = useState("");
-  const { userData, setUserData, lightmobileMenuOpen, setLightmobileMenuOpen } = useContext(AppContext);
+  const { userData, setUserData, setMobileMenuOpen, setIsLightHeader } = useContext(AppContext);
   const location = useLocation();
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
 
@@ -78,7 +77,8 @@ const LightHeader = () => {
   };
 
   const openMobileMenu = () => {
-    setLightmobileMenuOpen(true);
+    setIsLightHeader(true);
+    setMobileMenuOpen(true);
   };
 
   return (
@@ -95,7 +95,7 @@ const LightHeader = () => {
       />
 
       {isWideScreen ? (
-        <div className="light-header-container">
+        <div className="header-container">
           <div className="header-box">
             <div className="vertical-box1">
               <Link to="/">
@@ -167,7 +167,6 @@ const LightHeader = () => {
               </div>
             </div>
           </div>
-          {lightmobileMenuOpen && <LightMobileMenu />} {/* 모바일 메뉴 표시 */}
         </div>
       )}
       {/* 모달 */}

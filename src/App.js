@@ -8,7 +8,6 @@ import LoginAlertBack from "./components/common/alert/LoginAlertBack";
 import AppRoutes from "./AppRoutes";
 import FetchErrorAlert from "./components/common/alert/FetchErrorAlert";
 import MobileMenu from "./components/common/header/mobile-menu/MobileMenu";
-import LightMobileMenu from "./components/common/header/mobile-menu/LightMobileMenu";
 
 export const AppContext = createContext();
 export const AlertContext = createContext();
@@ -20,7 +19,7 @@ function App() {
   const [openFetchErrorAlert, setOpenFetchErrorAlert] = useState(false);
   const [prevPlayListQuery, setPrevPlayListQuery] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lightmobileMenuOpen, setLightmobileMenuOpen] = useState(false);
+  const [isLightHeader, setIsLightHeader] = useState(false);
 
   return (
     <div className="App">
@@ -36,8 +35,8 @@ function App() {
             setPrevPlayListQuery,
             mobileMenuOpen,
             setMobileMenuOpen,
-            lightmobileMenuOpen,
-            setLightmobileMenuOpen,
+            isLightHeader,
+            setIsLightHeader,
           }}
         >
           <AlertContext.Provider
@@ -53,8 +52,6 @@ function App() {
             <BrowserRouter>
               {mobileMenuOpen ? (
                 <MobileMenu onClose={() => setMobileMenuOpen(false)} />
-              ) : lightmobileMenuOpen ? (
-                <LightMobileMenu onClose={() => setLightmobileMenuOpen(false)} />
               ) : (
                 <>
                   <AppRoutes setPrevPlayListQuery={setPrevPlayListQuery} />
