@@ -75,7 +75,6 @@ export function PromotionListPage() {
         setTotalCnt(data.totalCount);
         setState("hasValue");
 
-        console.log(data);
       } else {
         setState("hasError");
         console.error(data);

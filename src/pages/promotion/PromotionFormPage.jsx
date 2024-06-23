@@ -20,7 +20,6 @@ export function PromotionFormPage() {
   };
 
   useEffect(() => {
-    console.log(user);
     if (user === null) {
       setOpenLoginAlertBack(true);
     } else {
