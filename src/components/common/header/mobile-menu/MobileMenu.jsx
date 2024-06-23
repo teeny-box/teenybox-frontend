@@ -24,7 +24,6 @@ const MobileMenu = () => {
     const handleWindowResize = () => {
       if (window.innerWidth >= 769) {
         setMobileMenuOpen(false); // 메뉴 닫기
-        navigate(-1);
       }
     };
     window.addEventListener("resize", handleWindowResize);
