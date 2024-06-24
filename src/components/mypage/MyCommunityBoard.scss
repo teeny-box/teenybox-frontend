@@ -1,33 +1,185 @@
+@import "../../App.scss";
+@import "../../styles/mixin.scss";
+
 .my-free-board-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 780px;
+  align-items: flex-end;
   margin: 10px 0;
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 800px;
+    width: 95%;
     height: 40px;
-    border-bottom: 4px solid #ccc;
-    padding: 34px 0 16px;
+    margin-bottom: 16px;
     h1 {
       margin: 0;
       font-size: 24px;
     }
+    .header-item-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
   }
 
   .body {
-    width: 800px;
+    width: 95%;
     display: flex;
-    align-items: center;
     justify-content: center;
+  }
+  .my-table {
+    width: 100%;
+  }
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    background-color: #333333;
+  }
+  .table-header-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  .table-body {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  .table-item {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .table-item:hover {
+    cursor: pointer;
+    background-color: rgba(255, 180, 0, 0.1);
+  }
+  .item-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p {
+      @include ellipsis(1, 20px);
+    }
+  }
+  .reservation-btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex: 1;
 
-    .MuiDataGrid-root .link:hover {
-      color: #0062b2;
-      text-decoration: underline;
+    button p {
+      font-weight: 700;
+      font-family: "Noto Sans KR";
+    }
+  }
+  .expanded-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .expanded-content-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 75%;
+    h6 {
+      font-size: 16px;
+      margin: 0;
+    }
+    p {
+      font-size: 14px;
+    }
+    .img-box {
+      display: flex;
+      gap: 5%;
+    }
+    img {
+      width: 30%;
+      aspect-ratio: 1 / 1;
+      margin: 10px 0;
+    }
+  }
+  .reservation-btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex: 1;
+
+    button p {
+      font-weight: 700;
+      font-family: "Noto Sans KR";
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 95%;
+    margin-top: 16px;
+  }
+}
+
+@include tablet-vertical {
+  .my-free-board-container {
+    .header {
+      max-width: 768px;
+      padding: 0 40px;
+      width: 100%;
+      box-sizing: border-box;
+      h1 {
+        font-size: 20px;
+      }
+      .header-btn {
+        display: none;
+      }
+    }
+    .body {
+      width: 100%;
+      font-size: 13px;
+    }
+    .footer {
+      max-width: 768px;
+      padding: 0 40px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@include moblie {
+  .my-free-board-container {
+    .header {
+      max-width: 768px;
+      padding: 0 40px;
+      width: 100%;
+      box-sizing: border-box;
+      h1 {
+        font-size: 20px;
+      }
+      .header-btn {
+        display: none;
+      }
+    }
+    .body {
+      width: 100%;
+      font-size: 12px;
+    }
+    .footer {
+      max-width: 768px;
+      padding: 0 40px;
+      width: 100%;
+      box-sizing: border-box;
     }
   }
 }

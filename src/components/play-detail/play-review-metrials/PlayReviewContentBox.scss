@@ -1,40 +1,150 @@
+@import "../../../styles/mixin.scss";
+
 .play-review-hide {
   display: none;
 }
 
 .play-review-content-container {
+  display: flex;
+  justify-content: space-between;
   background-color: #ffffff;
   border-radius: 8px;
   border: 1px solid rgba(188, 188, 188, 0.5);
   margin: 20px 0;
   padding: 15px 30px;
-  display: flex;
-  flex-direction: column;
 
   .play-review-content {
-    line-height: 160%;
-  }
-
-  .review-photos {
+    line-height: 180%;
+    flex: 7;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    .play-review-photo {
-      width: 150px;
-      height: 150px;
-      padding-top: 15px;
-      padding-right: 15px;
-      cursor: zoom-in;
+    // 추가된 코드
+    & > :first-child {
+      align-self: flex-start;
+    }
+
+    h4 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .content-text {
+      margin-bottom: 20px;
+      font-size: clamp(13px, 1.6vw, 16px); /* 뷰포트 너비가 변해도 12px과 16px 사이에서 조절 */
+    }
+
+    .review-photos {
+      display: flex;
+
+      .play-review-photo {
+        width: 100%; /* 부모 요소에 맞게 조정 */
+        max-width: 170px;
+        min-width: 75px; /* 최대 너비 설정 */
+        height: auto; /* 높이는 자동으로 조절되어 비율 유지 */
+        padding-top: 15px;
+        padding-right: 15px;
+        cursor: zoom-in;
+        object-fit: fill; /* 컨테이너에 맞게 이미지 크기 조정 */
+      }
     }
   }
 
-  .play-review-modify-btn {
+  .play-review-modify-container {
+    flex: 2;
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
 
-    button {
-      width: 130px;
-      height: 40px;
-      font-size: 16px;
+    .modify-button,
+    .remove-button {
+      margin-bottom: 10px;
+      padding: 10px 10px;
+      border-radius: 4px;
+      font-size: clamp(13px, 1.6vw, 16px); /* 뷰포트 너비가 변해도 12px과 16px 사이에서 조절 */
+      cursor: pointer;
+    }
+
+    .modify-button {
+      font-weight: 300;
+    }
+
+    .remove-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 300;
+
+      .play-review-delete-icon {
+        font-size: clamp(16px, 2vw, 24px); /* 아이콘 크기를 뷰포트 너비에 따라 조절 */
+      }
+    }
+  }
+
+  /* 가상 영역 */
+  .play-review-virtual {
+    flex: 1;
+  }
+
+  @include moblie {
+    flex-direction: column;
+
+    .play-review-modify-container {
+      justify-content: flex-end;
+    }
+    .play-review-virtual {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  @include tablet-vertical {
+    flex-direction: row;
+
+    .play-review-content {
+      flex: 15;
+    }
+    .play-review-modify-container,
+    .play-review-virtual {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  @include tablet-horizontal {
+    flex-direction: row;
+
+    .play-review-content {
+      flex: 5;
+    }
+  }
+
+  @include laptop {
+    flex-direction: row;
+
+    .play-review-content {
+      flex: 5;
+
+      .play-review-modify-container,
+      .play-review-virtual {
+        flex: 2;
+      }
+    }
+  }
+
+  @include desktop {
+    flex-direction: row;
+
+    .play-review-content {
+      flex: 3;
+    }
+
+    .play-review-modify-container,
+    .play-review-virtual {
+      flex: 1;
     }
   }
 }

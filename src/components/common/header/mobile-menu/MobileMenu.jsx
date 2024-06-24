@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./LightMobileMenuPage.scss";
+import "./MobileMenu.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -9,21 +9,21 @@ import MovieIcon from "@mui/icons-material/Movie";
 import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import MobileSearchModal from "./MobileSearchModal";
-import { AppContext } from "../../App";
-import { userUrl } from "../../apis/apiURLs";
-import { AlertCustom } from "../../components/common/alert/Alerts";
-import default_user_img from "../../assets/img/default_user_img.svg";
+import { AppContext } from "../../../../App";
+import { userUrl } from "../../../../apis/apiURLs";
+import { AlertCustom } from "../../alert/Alerts";
+import default_user_img from "../../../../assets/img/default_user_img.svg";
 
-export function LightMobileMenuPage() {
+const MobileMenu = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태
-  const { userData, setUserData } = useContext(AppContext);
+  const { userData, setUserData, setMobileMenuOpen, isLightHeader } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleWindowResize = () => {
       if (window.innerWidth >= 769) {
-        navigate("/");
+        setMobileMenuOpen(false); // 메뉴 닫기
       }
     };
     window.addEventListener("resize", handleWindowResize);
@@ -31,7 +31,7 @@ export function LightMobileMenuPage() {
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, [navigate]);
+  }, [navigate, setMobileMenuOpen]);
 
   const handleLogout = async () => {
     try {
@@ -53,7 +53,7 @@ export function LightMobileMenuPage() {
 
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    setMobileMenuOpen(false); // 메뉴 닫기
   };
 
   const onShowModal = () => {
@@ -64,12 +64,10 @@ export function LightMobileMenuPage() {
     setSearchModalOpen(false); // 검색 모달 닫기
   };
 
-  console.log(userData);
-
   const profileImgSrc = userData?.profile_url && userData?.profile_url !== "" ? userData.profile_url : default_user_img;
 
   return (
-    <div className="light-mobile-menu-background">
+    <div className={`mobile-menu-background  ${isLightHeader ? "light" : null}`}>
       <AlertCustom
         open={open}
         onclose={handleClose}
@@ -85,9 +83,9 @@ export function LightMobileMenuPage() {
         <div className="mobile-menu-container">
           <div className="header">
             <div className="header-top-box">
-              <Link to="/">
-                <CloseIcon className="close-icon"></CloseIcon>
-              </Link>
+              <div onClick={() => setMobileMenuOpen(false)}>
+                <CloseIcon className="close-icon" />
+              </div>
             </div>
             <div className="header-mid-box">
               <img
@@ -104,14 +102,14 @@ export function LightMobileMenuPage() {
             </div>
             <div className="logined-header-bottom-box">
               <span className="tab-area left">
-                <Link to="/mypages" className="tab-text">
+                <Link to="/mypages" className="tab-text" onClick={() => setMobileMenuOpen(false)}>
                   마이페이지
                 </Link>
               </span>
               {userData.role === "admin" && (
                 <span className="tab-area">
-                  <Link to="/admin" className="tab-text">
-                    관리자페이지
+                  <Link to="/admin" className="tab-text" onClick={() => setMobileMenuOpen(false)}>
+                    관리자
                   </Link>
                 </span>
               )}
@@ -127,27 +125,27 @@ export function LightMobileMenuPage() {
               <SearchRoundedIcon className="search-btn-icon" />
             </div>
             <div className="category">
-              <Link to="/" className="category-btn">
+              <Link to="/" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <HomeIcon className="category-icon" />홈
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/play" className="category-btn">
+              <Link to="/play" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <MovieIcon className="category-icon" />
                   연극
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/promotion" className="category-btn">
+              <Link to="/promotion" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <FeedIcon className="category-icon" />
                   홍보
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/community" className="category-btn">
+              <Link to="/community" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <PeopleIcon className="category-icon" />
                   커뮤니티
@@ -164,13 +162,13 @@ export function LightMobileMenuPage() {
         <div className="mobile-menu-container">
           <div className="header">
             <div className="header-top-box">
-              <Link to="/">
-                <CloseIcon className="close-icon"></CloseIcon>
-              </Link>
+              <div onClick={() => setMobileMenuOpen(false)}>
+                <CloseIcon className="close-icon" />
+              </div>
             </div>
             <div className="header-mid-box"></div>
             <div className="header-bottom-box">
-              <Link to="/signup-in" className="tab-text">
+              <Link to="/signup-in" className="tab-text" onClick={() => setMobileMenuOpen(false)}>
                 로그인
               </Link>
             </div>
@@ -180,27 +178,27 @@ export function LightMobileMenuPage() {
               <SearchRoundedIcon className="search-btn-icon" />
             </div>
             <div className="category">
-              <Link to="/" className="category-btn">
+              <Link to="/" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <HomeIcon className="category-icon" />홈
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/play" className="category-btn">
+              <Link to="/play" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <MovieIcon className="category-icon" />
                   연극
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/promotion" className="category-btn">
+              <Link to="/promotion" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <FeedIcon className="category-icon" />
                   홍보
                 </span>
                 <ArrowForwardIosIcon className="category-arrow-icon" />
               </Link>
-              <Link to="/community" className="category-btn">
+              <Link to="/community" className="category-btn" onClick={() => setMobileMenuOpen(false)}>
                 <span>
                   <PeopleIcon className="category-icon" />
                   커뮤니티
@@ -215,4 +213,6 @@ export function LightMobileMenuPage() {
       {searchModalOpen && <MobileSearchModal onCloseModal={onCloseModal} />}
     </div>
   );
-}
+};
+
+export default MobileMenu;

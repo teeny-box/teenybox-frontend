@@ -7,7 +7,6 @@
 .flex-layout {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   padding: 5px 5px 20px 0;
   border-bottom: 1px solid #ffb400;
 
@@ -23,8 +22,8 @@
   .condition-price {
     color: #ffb400;
     padding: 5px;
-    margin-left: 1vw; // 변경된 부분
-    font-size: 15px;
+    margin-left: 1vw;
+    font-size: 18px;
     display: flex;
     align-items: flex-start;
     font-weight: 500;
@@ -36,42 +35,24 @@
 
     .condition-label {
       margin: 0;
-      padding-right: 2vw; // 변경된 부분
+      padding-right: 2vw;
     }
 
     label {
-      margin-right: 2.5vw; // 변경된 부분
+      margin-right: 2.5vw;
     }
   }
 
   .date-picker {
     input {
       padding: 10px 0 10px 15px;
-      width: 150px;
-    }
-  }
-
-  .slider-box {
-    width: 50vw; // 변경된 부분
-  }
-}
-
-@include desktop {
-  .flex-layout {
-    .condition-price {
-      font-size: 18px;
-    }
-    .date-picker {
-      input {
-        width: 200px;
-      }
+      width: 200px;
     }
   }
 }
 
 @include laptop {
   .flex-layout {
-    align-items: center;
     padding: 5px 5px 20px 10px;
 
     .condition-label {
@@ -79,18 +60,11 @@
     }
     .condition-price {
       font-size: 16px;
-      margin-left: 1vw; // 변경된 부분
+      margin-left: 1vw;
     }
     .date-picker {
       input {
         width: 180px;
-      }
-    }
-    .slider-box {
-      width: 45vw; // 기본 값
-
-      @media (min-width: 1024px) and (max-width: 1500px) {
-        width: 50vw; // 1024px에서 1500px 사이일 때 적용
       }
     }
   }
@@ -101,16 +75,18 @@
     padding: 5px 5px 20px 10px;
 
     .condition-price {
-      margin-left: 1vw; // 변경된 부분
+      margin-left: 1vw;
       font-size: 14px;
     }
     .condition-checkbox {
       align-items: flex-start;
+      font-size: 12px;
+
       .condition-label {
-        padding-right: 2vw; // 변경된 부분
+        padding-right: 2vw;
       }
       label {
-        margin-right: 3vw; // 변경된 부분
+        margin-right: 3vw;
       }
     }
     .date-picker {
@@ -118,43 +94,34 @@
         width: 160px;
       }
     }
-    .slider-box {
-      width: 50vw; // 변경된 부분
-    }
   }
 }
 
 @include tablet-vertical {
   .flex-layout {
     padding: 5px 5px 20px 10px;
+    flex-wrap: wrap;
 
     .condition-label {
       width: 50px;
       padding: 10px;
     }
     .condition-price {
-      margin-left: 1.5vw; // 변경된 부분
+      margin-left: 1.5vw;
       font-size: 12px;
     }
     .condition-checkbox {
-      align-items: flex-start;
       .condition-label {
-        padding-right: 2vw; // 변경된 부분
+        padding-right: 2vw;
       }
+
       label {
-        margin-right: 2vw; // 변경된 부분
+        margin-right: 2vw;
       }
     }
     .date-picker {
       input {
         width: 140px;
-      }
-    }
-    .slider-box {
-      width: 40vw; // 변경된 부분
-
-      @media (min-width: 481px) and (max-width: 650px) {
-        width: 45vw; // 481px에서 650px 사이일 때 적용
       }
     }
   }
@@ -163,54 +130,45 @@
 @include moblie {
   .flex-layout {
     padding: 10px 10px 20px 10px;
-    align-items: center;
-    flex-direction: column;
     position: relative;
 
+    @media (min-width: 201px) and (max-width: 480px) {
+      flex-wrap: wrap;
+    }
+
     .condition-label {
-      width: 50px;
       padding: 5px;
     }
     .condition-price {
-      margin-left: 3vw; // 변경된 부분
+      margin-left: 3vw;
       font-size: 15px;
-
       position: absolute;
       top: 60%;
-      left: 39%;
+      left: 41%;
     }
     .condition-checkbox {
-      align-items: flex-start;
-      .condition-label {
-        padding-right: 1.5vw; // 변경된 부분
-      }
-      label {
-        margin-right: 1.5vw; // 변경된 부분
-      }
+      margin-left: 2vh;
+      flex-direction: column;
     }
     .date-picker {
       input {
         width: 120px;
       }
     }
-    .slider-box {
-      width: 60vw; // 변경된 부분
-    }
 
-    @media (min-width: 200px) and (max-width: 401px) {
+    @media (min-width: 201px) and (max-width: 410px) {
       .condition-price {
         position: absolute;
         top: 60%;
-        left: 37%;
+        left: 38%;
       }
 
       .condition-checkbox {
-        align-items: flex-start;
         .condition-label {
-          padding-right: 0.5vw; // 변경된 부분
+          padding-right: 0.5vw;
         }
         label {
-          margin-right: 0.5vw; // 변경된 부분
+          margin-right: 0.5vw;
         }
       }
       .date-picker {
@@ -218,9 +176,78 @@
           width: 120px;
         }
       }
-      .slider-box {
-        width: 60vw; // 변경된 부분
-      }
+    }
+  }
+}
+
+// slider-box의 스타일을 별도로 분리
+.slider-box {
+  width: 50vw; // 기본 값
+
+  @media (min-width: 2901px) and (max-width: 3000px) {
+    width: 30vw;
+  }
+  @media (min-width: 2801px) and (max-width: 2900px) {
+    width: 35vw;
+  }
+  @media (min-width: 2701px) and (max-width: 2800px) {
+    width: 35vw;
+  }
+  @media (min-width: 2601px) and (max-width: 2700px) {
+    width: 35vw;
+  }
+  @media (min-width: 2501px) and (max-width: 2600px) {
+    width: 40vw;
+  }
+  @media (min-width: 2201px) and (max-width: 2500px) {
+    width: 40vw;
+  }
+  @media (min-width: 1701px) and (max-width: 2200px) {
+    width: 45vw;
+  }
+
+  @media (min-width: 1501px) and (max-width: 1700px) {
+    width: 50vw;
+  }
+  @media (min-width: 1301px) and (max-width: 1500px) {
+    width: 55vw;
+  }
+  @media (min-width: 1025px) and (max-width: 1300px) {
+    width: 55vw;
+  }
+
+  @include tablet-horizontal {
+    width: 60vw;
+
+    @media (min-width: 701px) and (max-width: 900px) {
+      width: 55vw;
+    }
+  }
+
+  @include tablet-vertical {
+    width: 60vw;
+    @media (min-width: 541px) and (max-width: 600px) {
+      width: 55vw;
+    }
+    @media (min-width: 480px) and (max-width: 540px) {
+      width: 50vw;
+    }
+  }
+
+  @include moblie {
+    margin-left: 4vh;
+    width: 65vw;
+    @media (min-width: 411px) and (max-width: 451px) {
+      width: 65vw;
+    }
+    @media (min-width: 351px) and (max-width: 410px) {
+      width: 58vw;
+    }
+    @media (min-width: 311px) and (max-width: 350px) {
+      width: 52vw;
+    }
+    @media (min-width: 201px) and (max-width: 310px) {
+      width: 50vw;
     }
   }
 }

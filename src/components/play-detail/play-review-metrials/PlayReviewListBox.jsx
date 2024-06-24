@@ -1,109 +1,30 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import "./PlayReviewListBox.scss";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Rating from "@mui/material/Rating";
-import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PlayReviewContentBox from "./PlayReviewContentBox";
 import { AlertCustom } from "../../common/alert/Alerts";
-import { reviewUrl } from "../../../apis/apiURLs";
 
 export default function PlayReviewListBox({ reviewInfo, setIsReviewFormOpened, review_id, scrollRef, getReviews, getUserReview, getPlayDetailInfo }) {
-  const { isAuthorLogined, author, date, title, isContentExsist, isPhotoExsist, rating, photo, content } = reviewInfo;
-
-  const navigate = useNavigate();
-  const location = useLocation(); // useLocation 사용을 위해 추가
-
-  const [expended, setExpended] = useState(false);
   const [alert, setAlert] = useState(null);
+  const [sortedReviewInfo, setSortedReviewInfo] = useState([]);
 
-  const deleteReview = (id) => {
-    fetch(`${reviewUrl}/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          setAlert({
-            title: `tennybox.com 내용:`,
-            content: `리뷰 삭제에 성공하였습니다.`,
-            open: true,
-            onclose: () => {
-              setAlert(null);
-              getPlayDetailInfo();
-              getReviews();
-              getUserReview();
-            },
-            onclick: () => {
-              setAlert(null);
-              getPlayDetailInfo();
-              getReviews();
-              getUserReview();
-            },
-            severity: "success",
-            checkBtn: "확인",
-            btnCloseHidden: true,
-          });
-          // 알림이 열린 후 1000ms(1초) 후에 닫히도록 설정
-          setTimeout(() => {
-            setAlert(null);
-            getPlayDetailInfo();
-            getReviews();
-            getUserReview();
-          }, 1000);
-        } else if (res.status === 401 || res.status === 403) {
-          setAlert({
-            title: "tennybox.com 내용:",
-            content: "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?",
-            open: true,
-            onclose: () => setAlert(null),
-            onclick: () =>
-              navigate("/signup-in", {
-                state: { from: `${location.pathname}${location.search}` },
-              }),
-            severity: "info",
-            checkBtn: "확인",
-            closeBtn: "취소",
-          });
-        } else {
-          setAlert({
-            title: `tennybox.com 내용:`,
-            content: `리뷰 삭제에 실패하였습니다.`,
-            open: true,
-            onclose: () => setAlert(null),
-            severity: "error",
-          });
-        }
-      })
-      .catch(() => {
-        setAlert({
-          title: `tennybox.com 내용:`,
-          content: `리뷰 삭제에 실패하였습니다.`,
-          open: true,
-          onclose: () => setAlert(null),
-          severity: "",
-        });
-      });
-  };
+  useEffect(() => {
+    // 로그인된 사용자의 리뷰를 최상단으로 정렬
+    const sortedReviews = [reviewInfo].sort((a, b) => b.isAuthorLogined - a.isAuthorLogined);
+    setSortedReviewInfo(sortedReviews);
+  }, [reviewInfo]);
 
-  const handleDeleteBtnClick = () => {
-    setAlert({
-      title: `tennybox.com 내용:`,
-      content: `리뷰를 정말 삭제하시겠습니까?`,
-      open: true,
-      onclose: () => setAlert(null),
-      onclick: () => {
-        setAlert(null);
-        deleteReview(review_id);
-        setIsReviewFormOpened(false);
-      },
-      severity: "warning",
-      checkBtn: "확인",
-      closeBtn: "취소",
-    });
+  const [expandedReviews, setExpandedReviews] = useState({});
+
+  const handleExpandClick = (index) => {
+    setExpandedReviews((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
   return (
@@ -123,62 +44,52 @@ export default function PlayReviewListBox({ reviewInfo, setIsReviewFormOpened, r
           />
         </Backdrop>
       )}
-      <div className="play-review-list-box">
-        <div className="review-author-and-date">
-          <p>
-            {isAuthorLogined ? "(MY)" : ""}
-            {author}
-          </p>
-          <p>{date}</p>
-        </div>
-        <div
-          className="play-review-title"
-          onClick={() => {
-            setExpended(!expended);
-          }}
-        >
-          {isPhotoExsist ? <CameraAltIcon /> : ""} {title}
-        </div>
-        <div className="play-review-accordion">
-          {(isContentExsist || isPhotoExsist) && !expended && (
-            <KeyboardArrowDownIcon
-              className="play-review-detail-arrow"
-              color="ourGray"
-              fontSize="large"
-              onClick={() => {
-                setExpended(!expended);
+      {sortedReviewInfo.map((review, index) => (
+        <React.Fragment key={index}>
+          <div className="play-review-list-box" style={{ backgroundColor: expandedReviews[index] ? "#FFF7E6" : "initial" }}>
+            <div className="play-review-rating">
+              <Rating name="read-only" value={review.rating} precision={0.5} readOnly />
+            </div>
+            <div className="play-review-title" onClick={() => handleExpandClick(index)}>
+              {review.title} {review.isPhotoExsist ? <CameraAltIcon /> : ""}
+            </div>
+            <div className="play-review-accordion">
+              {(review.isContentExsist || review.isPhotoExsist) && !expandedReviews[index] && (
+                <KeyboardArrowDownIcon
+                  className="play-review-detail-arrow"
+                  fontSize="large"
+                  onClick={() => handleExpandClick(index)}
+                  sx={{ color: "#ffb400" }}
+                />
+              )}
+              {(review.isContentExsist || review.isPhotoExsist) && expandedReviews[index] && (
+                <KeyboardArrowUpIcon className="play-review-detail-arrow" fontSize="large" onClick={() => handleExpandClick(index)} sx={{ color: "#ffb400" }} />
+              )}
+            </div>
+            <div className="review-author-and-date">
+              <p>{review.author}</p>
+              <p>{review.date}</p>
+            </div>
+          </div>
+          {(review.isContentExsist || review.isPhotoExsist) && expandedReviews[index] && (
+            <PlayReviewContentBox
+              reviewContentInfo={{
+                photoSrc: review.photo,
+                title: review.title,
+                content: review.content,
+                isAuthorLogined: review.isAuthorLogined,
               }}
+              setIsReviewFormOpened={setIsReviewFormOpened}
+              scrollRef={scrollRef}
+              review_id={review_id}
+              getPlayDetailInfo={getPlayDetailInfo}
+              getReviews={getReviews}
+              getUserReview={getUserReview}
+              setAlert={setAlert}
             />
           )}
-          {(isContentExsist || isPhotoExsist) && expended && (
-            <KeyboardArrowUpIcon
-              className="play-review-detail-arrow"
-              color="ourGray"
-              fontSize="large"
-              onClick={() => {
-                setExpended(!expended);
-              }}
-            />
-          )}
-        </div>
-        <div className="play-review-rating">
-          <Rating name="read-only" value={rating} precision={0.5} readOnly />
-        </div>
-        <div className="play-review-remove">
-          {isAuthorLogined ? <DeleteIcon className="play-review-delete-icon" color="ourGray" onClick={() => handleDeleteBtnClick()} /> : null}
-        </div>
-      </div>
-      {(isContentExsist || isPhotoExsist) && expended ? (
-        <PlayReviewContentBox
-          reviewContentInfo={{
-            photoSrc: photo,
-            content,
-            isAuthorLogined,
-          }}
-          setIsReviewFormOpened={setIsReviewFormOpened}
-          scrollRef={scrollRef}
-        />
-      ) : null}
+        </React.Fragment>
+      ))}
     </>
   );
 }

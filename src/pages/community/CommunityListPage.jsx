@@ -18,8 +18,8 @@ import { MoblieCreateButton } from "../../components/common/button/MoblieCreateB
 
 const GET_COUNT_LIMIT = 10;
 const SORT = {
-  최신순: "post_number desc",
-  오래된순: "post_number asc",
+  최신순: "time desc",
+  오래된순: "time asc",
   추천순: "likes desc",
   조회순: "views desc",
 };
@@ -67,7 +67,6 @@ export function CommunityListPage() {
       const [by, order] = SORT[sort].split(" ");
       const res = await fetch(`${postUrl}?category=${selected}&page=${page}&limit=${GET_COUNT_LIMIT}&sortBy=${by}&sortOrder=${order}`);
       const data = await res.json();
-      console.log(res, data);
 
       if (res.ok) {
         if (method === "add" && page > 1) {
@@ -111,7 +110,6 @@ export function CommunityListPage() {
   }, [isMoblie]);
 
   useEffect(() => {
-    console.log(inView, reload, isMoblie);
     if (inView && isMoblie && state !== "loading") {
       // 총 개수 받아서 page 넘어가면 api 호출 X
       if (boardList.length >= totalCnt) return;
@@ -155,7 +153,7 @@ export function CommunityListPage() {
           <meta property="og:title" content="티니박스(TeenyBox) 커뮤니티" />
           <meta property="og:description" content="티니박스에서 연극과 관련된 이야기를 나눠보세요!" />
         </Helmet>
-        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} setReload={setReload} setSort={setSort} />
+        <CommunityTabBar selected={selected} setSelected={setSelected} setPage={setPage} reload={reload} setReload={setReload} setSort={setSort} />
         <div className="Community-container">
           <div className="Community-left-container">
             <div className="header flex-box">

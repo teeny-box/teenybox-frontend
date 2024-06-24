@@ -8,8 +8,6 @@ import CommunityList from "../../community/CommunityList";
 import "./CommunitySearchResult.scss";
 import EmptySearchResult from "../../common/state/EmptySearchResult";
 import ServerError from "../../common/state/ServerError";
-import RangeIcon from "../../../assets/img/search_range_icon.png";
-import SortIcon from "../../../assets/img/search_sort_icon.png";
 import { UpButton } from "../../common/button/UpButton";
 
 // const TYPES = ["title", "tag"];
@@ -29,7 +27,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchResult, setSearchResult] = useState([]);
-  const [totalCnt, setTotalCnt] = useState(0);
+  const [totalCnt, setTotalCnt] = useState({ title: 0, tag: 0 });
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [type, setType] = useState(searchParams.get("type") || "title");
   const [sort, setSort] = useState(searchParams.get("sort") || "최신순");
@@ -43,6 +41,21 @@ export default function CommunitySearchResult({ searchKeyword }) {
       return newArr;
     }, []);
     setSearchResult(uniqueList);
+  };
+
+  const getTotalCount = async () => {
+    const promises = ["title", "tag"].map((_type) =>
+      fetch(`${postUrl}/search?type=${_type}&query=${searchKeyword}&limit=1`)
+        .then((res) => res.json())
+        .then((data) => data.totalCount),
+    );
+
+    try {
+      const counts = await Promise.all(promises);
+      setTotalCnt({ title: counts[0], tag: counts[1] });
+    } catch (err) {
+      setState("hasError");
+    }
   };
 
   const getCommunitySearchResult = async (method) => {
@@ -66,7 +79,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
         } else {
           setSearchResult(data.posts);
         }
-        setTotalCnt(data.totalCount);
+        setTotalCnt((cur) => ({ ...cur, [type]: data.totalCount }));
         setState("hasValue");
       } else {
         setState("hasError");
@@ -76,6 +89,10 @@ export default function CommunitySearchResult({ searchKeyword }) {
       setState("hasError");
     }
   };
+
+  useEffect(() => {
+    getTotalCount();
+  }, []);
 
   useEffect(() => {
     setPage(1);
@@ -94,7 +111,7 @@ export default function CommunitySearchResult({ searchKeyword }) {
     console.log(inView, reload, isMoblie);
     if (inView && isMoblie && state !== "loading") {
       // 총 개수 받아서 page 넘어가면 api 호출 X
-      if (searchResult.length >= totalCnt) return;
+      if (searchResult.length >= totalCnt[type]) return;
       if (searchResult.length < page * GET_COUNT_LIMIT) {
         setReload((cur) => cur + 1);
         setPage(Math.ceil(searchResult.length / GET_COUNT_LIMIT));
@@ -128,54 +145,21 @@ export default function CommunitySearchResult({ searchKeyword }) {
   return (
     <div className="community-search-result-container">
       <div className="search-header">
-        <div>
-          <span className="title">커뮤니티 검색결과</span>
-          <span className="title count">({totalCnt.toLocaleString("ko-KR")})</span>
+        <div className="type">
+          <RadioGroup name="controlled-radio-buttons-group" value={type} onChange={(e) => setType(e.target.value)}>
+            <FormControlLabel value="title" control={<Radio size="10px" color="secondary" />} label={`글 제목(${totalCnt.title.toLocaleString("ko-KR")})`} />
+            <FormControlLabel value="tag" control={<Radio size="10px" color="secondary" />} label={`태그(${totalCnt.tag.toLocaleString("ko-KR")})`} />
+          </RadioGroup>
         </div>
-        <div className="right">
-          {isMoblie ? (
-            <>
-              <div className="select-box">
-                <img src={RangeIcon} />
-                <span>검색범위</span>
-                <FormControl sx={{ m: 1, minWidth: 120 }} className="range">
-                  <Select value={type} onChange={(e) => setType(e.target.value)} displayEmpty>
-                    <MenuItem value="title">글 제목</MenuItem>
-                    <MenuItem value="tag">태그</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="select-box">
-                <img src={SortIcon} />
-                <span>정렬</span>
-                <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
-                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
-                    <MenuItem value="최신순">최신순</MenuItem>
-                    <MenuItem value="추천순">추천순</MenuItem>
-                    <MenuItem value="조회순">조회순</MenuItem>
-                    <MenuItem value="오래된순">오래된순</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="type">
-                <RadioGroup name="controlled-radio-buttons-group" value={type} onChange={(e) => setType(e.target.value)}>
-                  <FormControlLabel value="title" control={<Radio size="10px" color="secondary" />} label="글 제목" />
-                  <FormControlLabel value="tag" control={<Radio size="10px" color="secondary" />} label="태그" />
-                </RadioGroup>
-              </div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
-                  <MenuItem value="최신순">최신순</MenuItem>
-                  <MenuItem value="추천순">추천순</MenuItem>
-                  <MenuItem value="조회순">조회순</MenuItem>
-                  <MenuItem value="오래된순">오래된순</MenuItem>
-                </Select>
-              </FormControl>
-            </>
-          )}
+        <div className="sort">
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+              <MenuItem value="최신순">최신순</MenuItem>
+              <MenuItem value="추천순">추천순</MenuItem>
+              <MenuItem value="조회순">조회순</MenuItem>
+              <MenuItem value="오래된순">오래된순</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </div>
       {(state === "loading" && isMoblie && page === 1) || (state === "loading" && !isMoblie) ? (
@@ -209,8 +193,14 @@ export default function CommunitySearchResult({ searchKeyword }) {
           <UpButton />
           <div className="scroll-ref" ref={scrollRef}></div>
           {isMoblie || (
-            <div className="search-pagination">
-              <Pagination count={Math.ceil(totalCnt / GET_COUNT_LIMIT)} color="secondary" page={page} size="large" onChange={(e, value) => setPage(value)} />
+            <div className="pagination">
+              <Pagination
+                count={Math.ceil(totalCnt[type] / GET_COUNT_LIMIT)}
+                color="secondary"
+                page={page}
+                size="large"
+                onChange={(e, value) => setPage(value)}
+              />
             </div>
           )}
         </>

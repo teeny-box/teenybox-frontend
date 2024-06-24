@@ -9,7 +9,7 @@ function MainChild() {
   const [sliderIndex, setSliderIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
   const [shows, setShows] = useState([]); // API로부터 가져온 공연 데이터를 저장할 상태
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
+  const [clientWidth, setClientWidth] = useState(document.documentElement.clientWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 clientWidth 상태도 정의
 
   const navigate = useNavigate();
 
@@ -21,23 +21,25 @@ function MainChild() {
   // 화면 너비 조절 이벤트를 듣도록 하기
   useEffect(() => {
     const resizeListener = () => {
-      setInnerWidth(window.innerWidth);
+      setClientWidth(document.documentElement.clientWidth);
     };
     window.addEventListener("resize", resizeListener);
-  });
+
+    return () => window.removeEventListener("resize", resizeListener);
+  }, []);
 
   const slideWidth =
-    innerWidth > 1700
+    clientWidth > 1700
       ? 1300
-      : innerWidth > 1300
+      : clientWidth > 1300
         ? 1100
-        : innerWidth > 1024
-          ? innerWidth - 200
-          : innerWidth > 768
-            ? innerWidth - 80
-            : innerWidth > 480
-              ? innerWidth - 80
-              : innerWidth - 40;
+        : clientWidth > 1024
+          ? clientWidth - 200
+          : clientWidth > 768
+            ? clientWidth - 80
+            : clientWidth > 480
+              ? clientWidth - 80
+              : clientWidth - 40;
 
   // 무한루프 슬라이드 구현을 위해 isAnimating 상태에 따라 다른 스타일을 적용
   const wrapperStyles = isAnimating
@@ -74,9 +76,6 @@ function MainChild() {
   };
 
   useEffect(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // 오늘 날짜만 고려 (시간은 무시)
-
     fetch(`${showUrl}/children`)
       .then((res) => res.json())
       .then((data) => {
@@ -95,11 +94,9 @@ function MainChild() {
       .catch((err) => console.error(err));
   }, []);
 
-  const formatTitle = (title) => (title.length > 13 ? title.slice(0, 13) : title);
-
   return (
     <>
-      {innerWidth > 1024 ? (
+      {clientWidth > 1024 ? (
         <div className="main-layout-container">
           <div className="main-title-box">
             <div>
@@ -118,8 +115,8 @@ function MainChild() {
                   <div className="main-play-img-box">
                     <img src={show.poster} alt={show.title} />
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
-                  <p className="main-child-play-period">{formatTitle(show.age)}</p>
+                  <p className="main-play-title">{show.title}</p>
+                  <p className="main-child-play-period">{show.age}</p>
                 </div>
               ))}
             </div>
@@ -145,8 +142,8 @@ function MainChild() {
                   <div className="main-play-img-box">
                     <img src={show.poster} alt={show.title} />
                   </div>
-                  <p className="main-play-title">{formatTitle(show.title)}</p>
-                  <p className="main-child-play-period">{formatTitle(show.age)}</p>
+                  <p className="main-play-title">{show.title}</p>
+                  <p className="main-child-play-period">{show.age}</p>
                 </div>
               ))}
             </div>

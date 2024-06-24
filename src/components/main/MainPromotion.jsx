@@ -66,14 +66,6 @@ function MainPromotion() {
     return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
   };
 
-  // 타이틀을 최대 14글자로 제한
-  const limitTitleLength = (title, maxLength) => {
-    if (title.length > maxLength) {
-      return `${title.slice(0, maxLength)}...`;
-    }
-    return title;
-  };
-
   // promotion-product 클릭 시 라우팅 처리
   const handleProductClick = (promotionNumber) => {
     const route = `/promotion/${promotionNumber}`;
@@ -100,7 +92,7 @@ function MainPromotion() {
               <div className="main-promotion1-img-box">
                 {promotions[0]?.image_url && <img src={promotions[0]?.image_url[0]} alt={promotions[0]?.play_title} />}
               </div>
-              <p className="promotions-title">{limitTitleLength(promotions[0]?.play_title, 16)}</p>
+              <p className="promotions-title">{promotions[0]?.play_title}</p>
               <p className="promotions-period">
                 {formatDate(promotions[0]?.start_date)} ~ {formatDate(promotions[0]?.end_date)}
               </p>
@@ -114,7 +106,7 @@ function MainPromotion() {
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
-                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
+                <p className="promotions-title">{promotion.play_title}</p>
                 <p className="promotions-period">
                   {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
                 </p>
@@ -128,7 +120,7 @@ function MainPromotion() {
                 <div className="main-promotion-img-box">
                   {promotion.image_url && promotion.image_url[0] && <img src={promotion.image_url[0]} alt={promotion.play_title} />}
                 </div>
-                <p className="promotions-title">{limitTitleLength(promotion.play_title, 10)}</p>
+                <p className="promotions-title">{promotion.play_title}</p>
                 <p className="promotions-period">
                   {formatDate(promotion.start_date)} ~ {formatDate(promotion.end_date)}
                 </p>

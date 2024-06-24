@@ -1,42 +1,47 @@
+@import "../../../styles/mixin.scss";
+
 .play-review-list-box {
   border-bottom: 1px solid rgb(188, 188, 188, 0.5);
-  padding: 5px 20px;
+  padding: 30px 0px;
   display: flex;
+  justify-content: center;
   align-items: center;
 
   .review-author-and-date {
-    width: 17%;
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
     p {
       margin: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
       line-height: 1.2;
     }
 
     p:nth-child(2) {
       color: #808080;
-      font-size: 14px;
+      font-size: clamp(12px, 2vw, 16px); /* 아이콘 크기를 뷰포트 너비에 따라 조절 */
     }
   }
 
   .play-review-title {
-    width: 54%;
+    width: 50%;
     display: flex;
+    justify-content: center;
     align-items: center;
     padding-left: 30px;
     flex-wrap: wrap;
     cursor: pointer;
+    font-size: clamp(14px, 2vw, 16px); /* 제목 텍스트 크기 동적 조절 */
 
     svg {
-      padding-right: 10px;
+      font-size: clamp(16px, 2.5vw, 20px); /* 아이콘 크기 동적 조절 */
+      padding-left: 10px;
     }
   }
 
   .play-review-accordion {
-    width: 5%;
+    width: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,13 +53,23 @@
     display: flex;
     justify-items: center;
     align-items: center;
-  }
 
-  .play-review-remove {
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    cursor: pointer;
-    padding-left: 20px;
+    .MuiRating-root {
+      font-size: clamp(16px, 2vw, 24px); /* 평점 아이콘의 크기 동적 조절 */
+    }
+  }
+}
+
+@include moblie {
+  .play-review-list-box {
+    .play-review-title {
+      width: 35%;
+    }
+    .play-review-accordion {
+      width: 15%;
+    }
+    .review-author-and-date {
+      width: 35%;
+    }
   }
 }

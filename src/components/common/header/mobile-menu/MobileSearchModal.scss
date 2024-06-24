@@ -1,4 +1,4 @@
-@import "../../styles/mixin.scss";
+@import "../../../../styles/mixin.scss";
 
 @keyframes darker {
   from {
@@ -46,7 +46,7 @@
   height: 320px;
   background-color: white;
   position: absolute;
-  top: 250px;
+  top: 220px;
   z-index: 1000;
 }
 .mobile-search-modal-container.closing {

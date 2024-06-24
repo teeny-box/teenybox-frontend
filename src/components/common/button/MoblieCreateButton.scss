@@ -3,9 +3,9 @@
 .create-button-moblie {
   display: none;
   position: fixed;
-  right: 30px;
-  width: 58px;
-  height: 58px;
+  right: 20px;
+  width: 46px;
+  height: 46px;
   z-index: 3;
 
   transition: all 300ms ease-in-out;
@@ -19,10 +19,10 @@
   }
 
   &.up {
-    bottom: 100px;
+    bottom: 82px;
   }
 
   &.down {
-    bottom: 30px;
+    bottom: 20px;
   }
 }

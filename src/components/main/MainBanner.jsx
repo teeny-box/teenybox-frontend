@@ -8,7 +8,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 // import required modules
-import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import { Autoplay, Pagination, EffectFade, Navigation } from "swiper/modules";
 
 export default function App() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -25,18 +25,19 @@ export default function App() {
     <div className="banner-layout-container">
       {innerWidth > 768 ? (
         <Swiper
-          spaceBetween={0}
+          spaceBetween={30}
           effect={"fade"}
           centeredSlides={true}
           autoplay={{
             delay: 3000,
             disableOnInteraction: false,
           }}
+          loop={true}
           pagination={{
             type: "bullets", // 버튼 모양 결정 "bullets", "fraction"
             clickable: true,
           }}
-          modules={[Autoplay, Pagination, EffectFade]}
+          modules={[Autoplay, Pagination, EffectFade, Navigation]}
           className="swiper"
         >
           <SwiperSlide>
@@ -51,6 +52,7 @@ export default function App() {
         </Swiper>
       ) : innerWidth > 480 ? (
         <Swiper
+          loop={true}
           spaceBetween={0}
           effect={"fade"}
           centeredSlides={true}
@@ -63,7 +65,6 @@ export default function App() {
             clickable: true,
           }}
           modules={[Autoplay, Pagination, EffectFade]}
-          className="swiper"
         >
           <SwiperSlide>
             <img src={`${process.env.PUBLIC_URL}/tabletBanner1.svg`} alt="banner-image"></img>
@@ -77,6 +78,7 @@ export default function App() {
         </Swiper>
       ) : (
         <Swiper
+          loop={true}
           spaceBetween={0}
           effect={"fade"}
           centeredSlides={true}
@@ -89,7 +91,6 @@ export default function App() {
             clickable: true,
           }}
           modules={[Autoplay, Pagination, EffectFade]}
-          className="swiper"
         >
           <SwiperSlide>
             <img src={`${process.env.PUBLIC_URL}/mobileBanner1.svg`} alt="banner-image"></img>

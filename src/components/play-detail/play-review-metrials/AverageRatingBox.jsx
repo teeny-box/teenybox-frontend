@@ -20,6 +20,7 @@ export default function AverageRatingBox({ isLoggedIn, setIsReviewFormOpened, co
       setIsReviewFormOpened(true);
     }
   };
+
   return (
     <>
       {openLoginAlert && <AlertCustom title={alert.title} content={alert.content} open={alert.open} onclose={alert.onclose} severity={alert.severity} />}
@@ -45,7 +46,6 @@ export default function AverageRatingBox({ isLoggedIn, setIsReviewFormOpened, co
             <Button
               state="focused"
               variant="outlined"
-              size="large"
               onClick={handleReviewBtnClick}
               sx={{
                 color: "#333333",

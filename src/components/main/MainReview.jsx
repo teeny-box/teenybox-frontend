@@ -15,7 +15,7 @@ const MainReview = () => {
   const [isAnimating, setIsAnimating] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [shows, setShows] = useState({});
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 현재 화면 너비에 따라 다르게 UI가 보여져야 하므로 innerWidth 상태도 정의
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -152,7 +152,7 @@ const MainReview = () => {
                   </div>
                   <div className="main-review-content">
                     <div className="main-review-header">
-                      <p className="review-show-title">{trimText(review.show_title, 7)}</p>
+                      <p className="review-show-title">{review.show_title}</p>
                       {shows[review.show_id] && shows[review.show_id].show && (
                         <p className="review-show-period">
                           {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
@@ -161,7 +161,7 @@ const MainReview = () => {
                     </div>
                     <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
                       <div className="review-main-top">
-                        <p className="main-review-title">{trimText(review.title, 10)}</p>
+                        <p className="main-review-title">{review.title}</p>
                         <Rating
                           className="main-review-rating"
                           value={review.rate}
@@ -224,7 +224,7 @@ const MainReview = () => {
                   </div>
                   <div className="main-review-content">
                     <div className="main-review-header">
-                      <p className="review-show-title">{trimText(review.show_title, 7)}</p>
+                      <p className="review-show-title">{review.show_title}</p>
                       {shows[review.show_id] && shows[review.show_id].show && (
                         <p className="review-show-period">
                           {`${new Date(shows[review.show_id].show.start_date).toLocaleDateString()} ~ ${new Date(shows[review.show_id].show.end_date).toLocaleDateString()}`}
@@ -233,7 +233,7 @@ const MainReview = () => {
                     </div>
                     <div className="main-review-main" onClick={() => handleClickMoreReview(review.show_id)}>
                       <div className="review-main-top">
-                        <p className="main-review-title">{trimText(review.title, 10)}</p>
+                        <p className="main-review-title">{review.title}</p>
                         <Rating
                           className="main-review-rating"
                           value={review.rate}
