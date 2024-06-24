@@ -157,9 +157,9 @@ export function BoardRightContainer({ post }) {
           {viewList.length ? (
             Children.toArray(
               viewList.map((_post) => (
-                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
+                <Link to={`${_post.promotion_number ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
+                    <span className={`category ${_post.promotion_number ? "promotion" : "community"}`}>{_post.promotion_number ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
                       <LiveTimeDiff time={_post.createdAt} />
@@ -180,10 +180,10 @@ export function BoardRightContainer({ post }) {
           <ul>
             {Children.toArray(
               popularList.map((_post, idx) => (
-                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
+                <Link to={`${_post.promotion_number ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
                     <span>{idx + 1}.&nbsp;</span>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
+                    <span className={`category ${_post.promotion_number ? "promotion" : "community"}`}>{_post.promotion_number ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
                       <VisibilityOutlined sx={{ fontSize: 12 }} />
@@ -203,9 +203,9 @@ export function BoardRightContainer({ post }) {
           <ul>
             {Children.toArray(
               latestList.map((_post) => (
-                <Link to={`${_post.category ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
+                <Link to={`${_post.promotion_number ? `/promotion/${_post.promotion_number}` : `/community/${_post.post_number}`}`}>
                   <li>
-                    <span className={`category ${_post.category ? "promotion" : "community"}`}>{_post.category ? `[홍보]` : "[커뮤]"}</span>
+                    <span className={`category ${_post.promotion_number ? "promotion" : "community"}`}>{_post.promotion_number ? `[홍보]` : "[커뮤]"}</span>
                     <p>{_post.title}</p>
                     <div className="right">
                       <LiveTimeDiff time={_post.createdAt} />

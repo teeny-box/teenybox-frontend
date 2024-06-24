@@ -119,7 +119,7 @@ export function PromotionListPage() {
 
   useEffect(() => {
     if (!loc.search) {
-      setCategory("");
+      setCategory("전체");
       setSort("최신순");
       setReload(loc.key);
       setPage(1);

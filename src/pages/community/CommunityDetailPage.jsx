@@ -12,6 +12,9 @@ import { NotFoundPage } from "../errorPage/NotFoundPage";
 import { AlertContext, AppContext } from "../../App";
 import { COMMENTS_LIMIT } from "../../utils/const";
 
+const LAST_VIEW_ALL_STORE_NAME = "lastViewPostOnAll";
+const LAST_VIEW_NOTICE_STORE_NAME = "lastViewPostOnNotice";
+
 export function CommunityDetailPage() {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
@@ -154,10 +157,21 @@ export function CommunityDetailPage() {
     setOpenDeleteAlert(true);
   };
 
+  const setStoreLastView = () => {
+    if (post.category === "자유") {
+      const storeLastNumOnAll = localStorage.getItem(LAST_VIEW_ALL_STORE_NAME) || 0;
+      localStorage.setItem(LAST_VIEW_ALL_STORE_NAME, Math.max(Number(storeLastNumOnAll), Number(post.post_number)));
+    } else {
+      const storeLastNumOnNoti = localStorage.getItem(LAST_VIEW_NOTICE_STORE_NAME) || 0;
+      localStorage.setItem(LAST_VIEW_NOTICE_STORE_NAME, Math.max(Number(storeLastNumOnNoti), Number(post.post_number)));
+    }
+  };
+
   useEffect(() => {
     if (post?._id) {
       getComments();
       setStoreViewList(post);
+      setStoreLastView();
     }
   }, [post]);
 
