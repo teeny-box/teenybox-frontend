@@ -1,5 +1,5 @@
 // 마이페이지 화면
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./MyPage.scss";
 import { CircularProgress } from "@mui/material";
 import { useSearchParams, Navigate } from "react-router-dom";
@@ -9,15 +9,16 @@ import MyPickList from "../../components/mypage/MyPickList";
 import MyPlayReview from "../../components/mypage/MyPlayReview";
 import MyPromotionBoard from "../../components/mypage/MyPromotionBoard";
 import MyCommunityBoard from "../../components/mypage/MyCommunityBoard";
-import MyComments from "../../components/mypage/MyComments";
-import useGetUser from "../../hooks/authoriaztionHooks/useGetUser";
+import MyPromotionComments from "../../components/mypage/MyPromotionComments";
+import MyCommunityComments from "../../components/mypage/MyCommunityComments";
+import { AppContext } from "../../App";
 
 export function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedComponent, setSelectedComponent] = useState(searchParams.get("tab") || "MemberInfo");
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
-  const userData = useGetUser();
+  const { userData, setUserData } = useContext(AppContext);
 
   // 화면 너비 조절 이벤트를 듣도록 하기
   useEffect(() => {
@@ -32,7 +33,7 @@ export function MyPage() {
   const renderComponent = () => {
     switch (selectedComponent) {
       case "MemberInfo":
-        return <MemberInfo user={userData} />;
+        return <MemberInfo user={userData} setUserData={setUserData} />;
       case "MemberDeletion":
         return <MemberDeletion user={userData} />;
       case "MyPickList":
@@ -41,12 +42,14 @@ export function MyPage() {
         return <MyPlayReview user={userData} />;
       case "MyPromotionBoard":
         return <MyPromotionBoard user={userData} />;
+      case "MyPromotionComments":
+        return <MyPromotionComments user={userData} />;
       case "MyCommunityBoard":
         return <MyCommunityBoard user={userData} />;
-      case "MyComments":
-        return <MyComments user={userData} />;
+      case "MyCommunityComments":
+        return <MyCommunityComments user={userData} />;
       default:
-        return <MemberInfo user={userData} />;
+        return <MemberInfo user={userData} setUserData={setUserData} />;
     }
   };
 
@@ -97,11 +100,14 @@ export function MyPage() {
                     <p className={isSelected("MyPromotionBoard")} onClick={() => setSelectedComponent("MyPromotionBoard")}>
                       홍보 게시판
                     </p>
+                    <p className={isSelected("MyPromotionComments")} onClick={() => setSelectedComponent("MyPromotionComments")}>
+                      홍보 댓글
+                    </p>
                     <p className={isSelected("MyCommunityBoard")} onClick={() => setSelectedComponent("MyCommunityBoard")}>
                       커뮤니티
                     </p>
-                    <p className={isSelected("MyComments")} onClick={() => setSelectedComponent("MyComments")}>
-                      내 댓글
+                    <p className={isSelected("MyCommunityComments")} onClick={() => setSelectedComponent("MyCommunityComments")}>
+                      커뮤니티 댓글
                     </p>
                   </div>
                 </div>
@@ -143,11 +149,14 @@ export function MyPage() {
                     <p className={isSelected("MyPromotionBoard")} onClick={() => setSelectedComponent("MyPromotionBoard")}>
                       홍보 게시판
                     </p>
+                    <p className={isSelected("MyPromotionComments")} onClick={() => setSelectedComponent("MyPromotionComments")}>
+                      홍보 댓글
+                    </p>
                     <p className={isSelected("MyCommunityBoard")} onClick={() => setSelectedComponent("MyCommunityBoard")}>
                       커뮤니티
                     </p>
-                    <p className={isSelected("MyComments")} onClick={() => setSelectedComponent("MyComments")}>
-                      내 댓글
+                    <p className={isSelected("MyCommunityComments")} onClick={() => setSelectedComponent("MyCommunityComments")}>
+                      커뮤니티 댓글
                     </p>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 @import "../../App.scss";
 @import "../../styles/mixin.scss";
 
-.my-play-review-container {
+.my-comments-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -120,7 +120,7 @@
 }
 
 @include tablet-vertical {
-  .my-play-review-container {
+  .my-comments-container {
     .header {
       max-width: 768px;
       padding: 0 40px;
@@ -147,7 +147,7 @@
 }
 
 @include moblie {
-  .my-play-review-container {
+  .my-comments-container {
     .header {
       max-width: 768px;
       padding: 0 40px;

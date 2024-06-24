@@ -16,7 +16,7 @@ const LightHeader = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [open, setOpen] = useState(false); // Alert 창 열림 여부 상태 추가
   const [activeTab, setActiveTab] = useState("");
-  const { userData, setUserData } = useContext(AppContext);
+  const { userData, setUserData, setMobileMenuOpen, setIsLightHeader } = useContext(AppContext);
   const location = useLocation();
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
 
@@ -74,6 +74,11 @@ const LightHeader = () => {
 
   const onCloseModal = () => {
     setSearchModalOpen(false); // 검색 모달 닫기
+  };
+
+  const openMobileMenu = () => {
+    setIsLightHeader(true);
+    setMobileMenuOpen(true);
   };
 
   return (
@@ -157,9 +162,9 @@ const LightHeader = () => {
               <Link to="/">
                 <img className="logo" src={`${process.env.PUBLIC_URL}/logo3.png`} alt="logo-image" to="/Main" />
               </Link>
-              <Link className="menu-btn-box" to="/lightMobileMenu" style={{ textDecoration: "none" }}>
+              <div className="menu-btn-box" style={{ textDecoration: "none" }} onClick={openMobileMenu}>
                 <MenuIcon className="buger-menu"></MenuIcon>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

@@ -122,6 +122,7 @@ export default function PlayReviewContentBox({
     <>
       <div className="play-review-content-container">
         {clickedPhoto && <ImageExpandModal imgSrc={clickedPhoto} setClickedPhoto={setClickedPhoto} />}
+        <div className="play-review-virtual"></div> {/* 가상 영역 추가 */}
         <div className="play-review-content">
           <h4>{title}</h4>
           <div className="content-text">{!content || content === "null" ? "" : content}</div>
@@ -131,7 +132,7 @@ export default function PlayReviewContentBox({
               : null}
           </div>
         </div>
-        {isAuthorLogined && (
+        {isAuthorLogined ? (
           <div className="play-review-modify-container">
             <div className="modify-button" onClick={handleModifyBtnClick}>
               수정
@@ -140,6 +141,8 @@ export default function PlayReviewContentBox({
               삭제 <DeleteIcon className="play-review-delete-icon" color="ourGray" />
             </div>
           </div>
+        ) : (
+          <div className="play-review-virtual"></div>
         )}
       </div>
     </>

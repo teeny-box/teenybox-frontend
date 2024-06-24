@@ -1,110 +1,259 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./AdminUser.scss";
-import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { Backdrop } from "@mui/material";
-import TimeFormat from "../common/time/TimeFormat";
+import { Checkbox, Backdrop, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { userUrl } from "../../apis/apiURLs";
-
-// DataGrid table의 column구성
-const columns = [
-  { field: "nickname", headerName: "닉네임", width: 146 },
-  { field: "social_provider", headerName: "가입 경로", width: 146 },
-  { field: "role", headerName: "회원 권한", width: 146 },
-  { field: "state", headerName: "회원 상태", width: 146 },
-  {
-    field: "createdAt",
-    headerName: "가입 시기",
-    width: 146,
-    renderCell: (data) => <TimeFormat time={data.row.createdAt} type={"time"} />,
-  },
-];
+import ServerError from "../common/state/ServerError";
+import Empty from "../common/state/Empty";
+import TimeFormat from "../common/time/TimeFormat";
+import { AlertContext } from "../../App";
 
 const AdminUser = () => {
-  // table에서 선택된 user
   const [users, setUsers] = useState([]);
-  // 삭제 확인 alert
+  const [allUsers, setAllUsers] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
-  // 삭제 완료 alert
   const [openAlert2, setOpenAlert2] = useState(false);
+  const [checkedList, setCheckedList] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
+  const [state, setState] = useState("loading");
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [sort, setSort] = useState("최신순");
+  const { setOpenFetchErrorAlert } = useContext(AlertContext);
 
-  // fetch API 유저 조회
-  const fetchData = () => {
-    fetch(`${userUrl}/admin/users`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.users) {
-          setUsers(data.users);
-        } else {
-          console.error("No user data found");
-        }
-      })
-      .catch((err) => console.error(err));
+  const handleChangePage = (e, value) => {
+    setPage(value);
   };
 
-  // 페이지가 로드될 때 유저 정보 가져옴
+  const getUsers = async () => {
+    setState("loading");
+
+    const order = sort === "최신순" ? "asc" : "desc";
+
+    try {
+      const res = await fetch(`${userUrl}/admin/users?page=${page}&limit=10&order=${order}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setUsers(data.users);
+        setTotalCount(data.totalUsers);
+        setState("hasValue");
+      } else {
+        setState("hasError");
+        console.error(data);
+      }
+    } catch (err) {
+      setState("hasError");
+    }
+  };
+
+  const getAllUsers = async () => {
+    try {
+      const res = await fetch(`${userUrl}/admin/users`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setAllUsers(data.users);
+      } else {
+        console.error(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`${userUrl}/admin/users`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userIds: checkedList,
+        }),
+      });
+
+      if (res.ok) {
+        const newUsers = users.filter((user) => !checkedList.includes(user._id));
+        setUsers(newUsers);
+        setCheckedList([]);
+        getUsers();
+        setOpenAlert2(true);
+      } else {
+        const data = await res.json();
+        console.error(data);
+      }
+    } catch (e) {
+      setOpenFetchErrorAlert(true);
+    }
+  };
+
+  const handleChangeChecked = (e) => {
+    if (e.target.checked) {
+      setCheckedList((cur) => [...cur, e.target.value]);
+    } else {
+      setCheckedList((cur) => cur.filter((id) => id !== e.target.value));
+    }
+  };
+
+  const handleAllCheck = (e) => {
+    setAllChecked(e.target.checked);
+    if (e.target.checked) {
+      setCheckedList(allUsers.map((user) => user._id));
+    } else {
+      setCheckedList([]);
+    }
+  };
+
   useEffect(() => {
-    fetchData();
+    getUsers();
+  }, [page, sort]);
+
+  useEffect(() => {
+    getUsers();
+    getAllUsers();
   }, []);
 
-  const handleDelete = () => {
-    // 선택된 사용자의 ID 목록
-    const selectedUserIds = users.filter((user) => user.selected).map((user) => user._id);
-
-    // DELETE 요청 보내기
-    fetch(`${userUrl}/admin/users`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userIds: selectedUserIds }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        fetchData(); // 선택한 회원 DELETE 후 유저정보 최신화
-        setOpenAlert2(true);
-      })
-      .catch((err) => console.error(err));
+  const renderUserRole = (user) => {
+    if (user.state === "가입") {
+      return user.role === "admin" ? "관리자" : "일반회원";
+    }
+    if (user.state === "탈퇴") {
+      return "탈퇴회원";
+    }
+    return "알 수 없음";
   };
 
   return (
     <>
       <div className="admin-board-container">
-        <div className="admin-board-header">
+        <div className="header">
           <h1>회원 정보</h1>
-          <Button
-            variant="contained"
-            color="moreDarkGray"
-            sx={{ width: "80px", height: "40px", color: "white" }}
-            onClick={() => {
-              const hasSelectedUsers = users.some((user) => user.selected);
-              if (hasSelectedUsers) setOpenAlert(true);
-            }}
-          >
-            <h4>탈퇴</h4>
-          </Button>
+          <div className="header-item-box">
+            <FormControl color="silver" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                sx={{
+                  padding: "0px",
+                  "& .MuiSelect-select": {
+                    padding: "7.5px 20px",
+                  },
+                }}
+                className="sort"
+                displayEmpty
+              >
+                <MenuItem value="최신순">최신순</MenuItem>
+                <MenuItem value="오래된순">오래된순</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </div>
-        <div style={{ height: "631px", width: "800px" }}>
-          <DataGrid
-            rows={users}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
+        <div className="body">
+          {state === "loading" ? (
+            <CircularProgress className="loading" color="secondary" />
+          ) : state === "hasError" ? (
+            <ServerError onClickBtn={() => getUsers()} />
+          ) : users.length ? (
+            <div className="my-table">
+              <div className="table-header">
+                <div className="table-header-box" style={{ width: "10%" }}>
+                  <p>번호</p>
+                </div>
+                <div className="table-header-box" style={{ width: "24%" }}>
+                  <p>닉네임</p>
+                </div>
+                <div className="table-header-box" style={{ width: "24%" }}>
+                  <p>현재상태</p>
+                </div>
+                <div className="table-header-box" style={{ width: "20%" }}>
+                  <p>가입일</p>
+                </div>
+                <div className="table-header-box" style={{ width: "22%" }}>
+                  <p>전체선택</p>
+                  <Checkbox
+                    checked={allChecked}
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        color: "#FFB400",
+                      },
+                    }}
+                    onChange={handleAllCheck}
+                  />
+                </div>
+              </div>
+              <div className="table-body">
+                {users.map((user, index) => (
+                  <div key={user._id}>
+                    <div className="table-item">
+                      <div className="item-box" style={{ width: "10%" }}>
+                        {(page - 1) * 10 + index + 1}
+                      </div>
+                      <div className="item-box" style={{ width: "24%" }}>
+                        <p>{user.nickname}</p>
+                      </div>
+                      <div className="item-box" style={{ width: "24%" }}>
+                        <p>{renderUserRole(user)}</p>
+                      </div>
+                      <div className="item-box" style={{ width: "20%" }}>
+                        <TimeFormat time={user.createdAt} />
+                      </div>
+                      <div className="item-box" style={{ width: "22%" }}>
+                        <Checkbox
+                          value={user._id}
+                          checked={checkedList.includes(user._id)}
+                          sx={{
+                            "& .MuiSvgIcon-root": {
+                              color: "#FFB400",
+                            },
+                          }}
+                          onChange={handleChangeChecked}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <Empty />
+          )}
+        </div>
+        <div className="footer">
+          <div className="footer-info-box">
+            <p className="footer-info1">관리자 권한</p>
+            <p className="footer-info2">*회원을 선택한 후 버튼을 클릭하세요.</p>
+          </div>
+          {!users.length || (
+            <Button
+              onClick={() => setOpenAlert(true)}
+              disabled={!checkedList.length}
+              variant="contained"
+              color="secondary"
+              sx={{ width: "160px", height: "36px", color: "white" }}
+            >
+              관리자 권한으로 탈퇴
+            </Button>
+          )}
+        </div>
+        <div className="pagination">
+          <Pagination
+            count={Math.ceil(totalCount / 10)}
+            page={page}
+            onChange={handleChangePage}
+            sx={{
+              "& .MuiPaginationItem-root": {
+                "&.Mui-selected": {
+                  backgroundColor: "#ffb400",
+                },
               },
-            }}
-            checkboxSelection
-            getRowId={(user) => user._id}
-            onRowSelectionModelChange={(selectionModel) => {
-              const updatedUsers = users.map((user) => ({
-                ...user,
-                selected: selectionModel.includes(user._id),
-              }));
-              setUsers(updatedUsers);
             }}
           />
         </div>

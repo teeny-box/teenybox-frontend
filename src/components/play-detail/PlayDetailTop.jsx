@@ -5,9 +5,10 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "@mui/material/Rating";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import classNames from "classnames";
+import { styled } from "@mui/material/styles";
 
 // Icon 모음
 import URL_Link from "../../assets/img/SNSIcon/URL_Link.svg";
@@ -23,6 +24,17 @@ import { AlertContext } from "../../App";
 import TimeFormat from "../common/time/TimeFormat";
 import { dibsUrl } from "../../apis/apiURLs";
 import "./PlayDetailTop.scss";
+
+const CustomTooltip = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: "#fff7e6",
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#fff7e6",
+    color: "black",
+    padding: "10px", // 여기에서 패딩을 설정합니다.
+  },
+});
 
 export default function PlayDetailTop({ showId, age, start_date, end_date, location, poster, price, runtime, state, title, isLoggedIn, averageRate }) {
   const [alert, setAlert] = useState(null);
@@ -279,35 +291,47 @@ export default function PlayDetailTop({ showId, age, start_date, end_date, locat
           <div className="play-summary-info">
             <div>
               <h3>기간</h3>
-              <p>
-                {start_date && <TimeFormat time={start_date} />}
-                {" ~ "}
-                {end_date && <TimeFormat time={end_date} />}
-              </p>
+              <CustomTooltip title={`${new Date(start_date).toLocaleDateString("ko-KR")} ~ ${new Date(end_date).toLocaleDateString("ko-KR")}`} arrow>
+                <p>
+                  {start_date && <TimeFormat time={start_date} />}
+                  {" ~ "}
+                  {end_date && <TimeFormat time={end_date} />}
+                </p>
+              </CustomTooltip>
             </div>
             <div>
               <h3>관람등급</h3>
-              <p>{age}</p>
+              <CustomTooltip title={age} arrow>
+                <p>{age}</p>
+              </CustomTooltip>
             </div>
             <div>
               <h3>평점</h3>
-              <p style={{ position: "relative", bottom: "2px" }}>
-                <Rating value={averageRate} readOnly precision={0.5} />
-              </p>
+              <CustomTooltip title={`${averageRate} 점`} arrow>
+                <p style={{ position: "relative", bottom: "2px" }}>
+                  <Rating value={averageRate} readOnly precision={0.5} />
+                </p>
+              </CustomTooltip>
             </div>
             {runtime && (
               <div>
                 <h3>관람시간</h3>
-                <p>{runtime}</p>
+                <CustomTooltip title={runtime} arrow>
+                  <p>{runtime}</p>
+                </CustomTooltip>
               </div>
             )}
             <div>
               <h3>장소</h3>
-              <p>{location}</p>
+              <CustomTooltip title={location} arrow>
+                <p>{location}</p>
+              </CustomTooltip>
             </div>
             <div className={classNames({ price: price.length >= 60 })}>
               <h3>가격</h3>
-              <p>{price}</p>
+              <CustomTooltip title={price} arrow>
+                <p>{price}</p>
+              </CustomTooltip>
             </div>
             <div
               style={{
@@ -316,29 +340,29 @@ export default function PlayDetailTop({ showId, age, start_date, end_date, locat
                 borderTop: "1px solid #ffb400",
               }}
             ></div>
-            <div className="play-detail-buttons">
-              {state !== "공연완료" ? (
-                <div className="ticket-link-container">
-                  <a href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`} target="_blank" rel="noopener noreferrer">
-                    <img src={Interpark_button} alt="Interpark" className="ticket-button-icon" />
-                  </a>
-                  <a href={`https://ticket.yes24.com/Search/${title}`} target="_blank" rel="noopener noreferrer">
-                    <img src={Yes24_button} alt="Yes24" className="ticket-button-icon" />
-                  </a>
-                  <a href={`https://search.shopping.naver.com/search/all?query=%EC%97%B0%EA%B7%B9%20${title}`} target="_blank" rel="noopener noreferrer">
-                    <img src={Naver_button} alt="Naver" className="ticket-button-icon" />
-                  </a>
+          </div>
+          <div className="play-detail-buttons">
+            {state !== "공연완료" ? (
+              <div className="ticket-link-container">
+                <a href={`https://tickets.interpark.com/contents/search?keyword=${title}&start=0&rows=20`} target="_blank" rel="noopener noreferrer">
+                  <img src={Interpark_button} alt="Interpark" className="ticket-button-icon" />
+                </a>
+                <a href={`https://ticket.yes24.com/Search/${title}`} target="_blank" rel="noopener noreferrer">
+                  <img src={Yes24_button} alt="Yes24" className="ticket-button-icon" />
+                </a>
+                <a href={`https://search.shopping.naver.com/search/all?query=%EC%97%B0%EA%B7%B9%20${title}`} target="_blank" rel="noopener noreferrer">
+                  <img src={Naver_button} alt="Naver" className="ticket-button-icon" />
+                </a>
+              </div>
+            ) : (
+              <Tooltip title="본 연극은 종료되어 예매 링크가 제공되지 않습니다." arrow>
+                <div>
+                  <button disabled className="disabled-button">
+                    <span>예매 종료</span>
+                  </button>
                 </div>
-              ) : (
-                <Tooltip title="본 연극은 종료되어 예매 링크가 제공되지 않습니다." arrow>
-                  <div>
-                    <button disabled className="disabled-button">
-                      <span>예매 종료</span>
-                    </button>
-                  </div>
-                </Tooltip>
-              )}
-            </div>
+              </Tooltip>
+            )}
           </div>
         </div>
       </div>
