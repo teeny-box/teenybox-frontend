@@ -223,7 +223,7 @@ const AdminCommunity = () => {
         <div className="footer">
           <div className="footer-info-box">
             <p className="footer-info1">관리자 권한</p>
-            <p className="footer-info2">*회원을 선택한 후 버튼을 클릭하세요.</p>
+            <p className="footer-info2">*글을 선택한 후 버튼을 클릭하세요.</p>
           </div>
           {!posts.length || (
             <Button

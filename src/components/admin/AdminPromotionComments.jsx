@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./AdminPromotionComments.scss";
 import Button from "@mui/material/Button";
-import { Checkbox, Backdrop, CircularProgress, Pagination, FormControl, MenuItem, Select } from "@mui/material";
+import { Checkbox, Backdrop, CircularProgress, Pagination } from "@mui/material";
 import { AlertCustom } from "../common/alert/Alerts";
 import { commentUrl } from "../../apis/apiURLs";
 import ServerError from "../common/state/ServerError";
@@ -23,7 +23,6 @@ const AdminPromotionComments = () => {
   const [state, setState] = useState("loading");
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [sort, setSort] = useState("최신순");
   const { setOpenFetchErrorAlert } = useContext(AlertContext);
 
   const handleChangePage = (e, value) => {
@@ -33,11 +32,8 @@ const AdminPromotionComments = () => {
   const getComments = async () => {
     setState("loading");
 
-    const sortBy = "time";
-    const sortOrder = sort === "최신순" ? "desc" : "asc";
-
     try {
-      const res = await fetch(`${commentUrl}/admins/promotions?page=${page}&limit=10&sortBy=${sortBy}&sortOrder=${sortOrder}`, {
+      const res = await fetch(`${commentUrl}/admins/promotions?page=${page}&limit=10`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -120,7 +116,7 @@ const AdminPromotionComments = () => {
 
   useEffect(() => {
     getComments();
-  }, [page, sort]);
+  }, [page]);
 
   useEffect(() => {
     getComments();
@@ -132,25 +128,6 @@ const AdminPromotionComments = () => {
       <div className="admin-board-container">
         <div className="header">
           <h1>홍보 게시판 댓글</h1>
-          <div className="header-item-box">
-            <FormControl color="silver" sx={{ m: 1, minWidth: 120 }}>
-              <Select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                sx={{
-                  padding: "0px",
-                  "& .MuiSelect-select": {
-                    padding: "7.5px 20px",
-                  },
-                }}
-                className="sort"
-                displayEmpty
-              >
-                <MenuItem value="최신순">최신순</MenuItem>
-                <MenuItem value="오래된순">오래된순</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
         </div>
         <div className="body">
           {state === "loading" ? (
@@ -224,7 +201,7 @@ const AdminPromotionComments = () => {
         <div className="footer">
           <div className="footer-info-box">
             <p className="footer-info1">관리자 권한</p>
-            <p className="footer-info2">*회원을 선택한 후 버튼을 클릭하세요.</p>
+            <p className="footer-info2">*댓글을 선택한 후 버튼을 클릭하세요.</p>
           </div>
           {!comments.length || (
             <Button
