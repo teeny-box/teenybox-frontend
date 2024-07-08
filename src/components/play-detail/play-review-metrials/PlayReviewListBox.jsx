@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import "./PlayReviewListBox.scss";
-import "../../common/themes/theme";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Rating from "@mui/material/Rating";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";

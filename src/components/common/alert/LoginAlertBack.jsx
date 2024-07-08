@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom/dist";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop, Button, Snackbar } from "@mui/material";
 import { AlertContext } from "../../../App";
 
-export default function LoginAlertBack() {
+function LoginAlertBack() {
   const { openLoginAlertBack, setOpenLoginAlertBack } = useContext(AlertContext);
   const currentURL = useLocation();
   const nav = useNavigate();
@@ -59,3 +59,5 @@ export default function LoginAlertBack() {
     </Backdrop>
   );
 }
+
+export default LoginAlertBack;

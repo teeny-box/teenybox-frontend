@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom/dist";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Backdrop } from "@mui/material";
 import { AlertContext } from "../../../App";
 import { AlertCustom } from "./Alerts";
 
-export default function LoginAlert() {
+function LoginAlert() {
   const { openLoginAlert, setOpenLoginAlert } = useContext(AlertContext);
   const currentURL = useLocation();
   const nav = useNavigate();
@@ -25,3 +25,4 @@ export default function LoginAlert() {
     </Backdrop>
   );
 }
+export default LoginAlert;

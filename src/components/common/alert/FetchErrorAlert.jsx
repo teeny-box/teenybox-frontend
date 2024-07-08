@@ -3,7 +3,7 @@ import { Backdrop } from "@mui/material";
 import { AlertContext } from "../../../App";
 import { AlertCustom } from "./Alerts";
 
-export default function FetchErrorAlert() {
+function FetchErrorAlert() {
   const { openFetchErrorAlert, setOpenFetchErrorAlert } = useContext(AlertContext);
 
   return (
@@ -22,3 +22,5 @@ export default function FetchErrorAlert() {
     </Backdrop>
   );
 }
+
+export default FetchErrorAlert;
