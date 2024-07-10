@@ -386,7 +386,7 @@ export function PromotionEditForm({ setInput, handleCancle, post }) {
                   label="시작"
                   format="YYYY-MM-DD"
                   value={inputStartDate}
-                  minDate={dayjs().subtract(1, "month").startOf("day")}
+                  minDate={dayjs(post.start_date).subtract(1, "month").startOf("day")}
                   maxDate={dayjs().add(1, "year").endOf("day")}
                   onChange={(value) => setInputStartDate(value)}
                   slotProps={{ textField: { size: "small" } }}
@@ -398,7 +398,7 @@ export function PromotionEditForm({ setInput, handleCancle, post }) {
                   label="종료"
                   format="YYYY-MM-DD"
                   value={inputEndDate}
-                  minDate={dayjs().isAfter(inputStartDate) ? dayjs() : inputStartDate}
+                  minDate={inputStartDate}
                   maxDate={dayjs().add(1, "year").endOf("day")}
                   onChange={(value) => setInputEndDate(value)}
                   slotProps={{ textField: { size: "small" } }}
