@@ -37,7 +37,6 @@ export default function LiveTimeDiff({ time }) {
     setNow(dayjs());
     getTimeDiff();
 
-    clearInterval(timer);
     const interval = setInterval(() => {
       setNow(dayjs());
     }, 1000);
