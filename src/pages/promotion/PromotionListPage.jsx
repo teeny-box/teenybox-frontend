@@ -148,7 +148,7 @@ export function PromotionListPage() {
         <meta property="og:title" content="티니박스(TeenyBox) 홍보 게시판" />
         <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
       </Helmet>
-      <FixedTopBanner linkTo={`/promotion/${fixedList[fixedList.length - 1]?.promotion_number}`} />
+      <FixedTopBanner linkTo={`/community/35`} />
       <div className="promotion-page page-layout">
         <PromotionBanner />
         <div className="header flex-box">

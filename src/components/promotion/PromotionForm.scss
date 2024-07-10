@@ -67,16 +67,25 @@
     border-bottom: #e8e8e8 3px dotted;
 
     .MuiStack-root {
-      display: inline-block;
+      display: block;
       width: 500px;
 
       .MuiFormControl-root {
-        width: 160px;
+        min-width: 150px;
+        max-width: 190px;
+        margin-left: 0;
+        margin-right: 16px;
+
+        @media (min-width: 0px) {
+          margin-top: 0;
+        }
       }
       input {
         border: none;
       }
       span.line {
+        margin-left: 0;
+        margin-right: 16px;
         font-size: 30px;
         padding-top: 8px;
         color: #d9d9d9;
@@ -334,6 +343,18 @@
       .back-button {
         display: block;
       }
+    }
+
+    .input {
+      .line {
+        display: none;
+      }
+    }
+
+    .add-info .MuiStack-root .MuiFormControl-root {
+      flex-direction: column;
+      margin-top: 10px;
+      max-width: 250px;
     }
   }
 
