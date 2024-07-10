@@ -62,7 +62,7 @@ export function PromotionListPage() {
 
   const getPage = async () => {
     setState("loading");
-
+    console.log(page);
     const [by, order] = SORT[sort].split(" ");
     try {
       const res = await fetch(
@@ -71,10 +71,13 @@ export function PromotionListPage() {
       const data = await res.json();
 
       if (res.ok) {
-        addBoardList(data.promotions);
+        if (page === 1) {
+          setBoardList(data.promotions);
+        } else {
+          addBoardList(data.promotions);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
-
       } else {
         setState("hasError");
         console.error(data);
@@ -87,6 +90,12 @@ export function PromotionListPage() {
   const handleClickDivision = (e) => {
     setCategory(e.target.id);
     setReload((cur) => cur + 1);
+    setBoardList([]);
+    setPage(1);
+  };
+
+  const handleClickSort = (e) => {
+    setSort(e.target.value);
     setBoardList([]);
     setPage(1);
   };
@@ -161,7 +170,7 @@ export function PromotionListPage() {
                 <img src={SortIcon} />
                 <span>정렬</span>
                 <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
-                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <Select value={sort} onChange={handleClickSort} displayEmpty>
                     <MenuItem value="최신순">최신순</MenuItem>
                     <MenuItem value="추천순">추천순</MenuItem>
                     <MenuItem value="조회순">조회순</MenuItem>
@@ -172,7 +181,7 @@ export function PromotionListPage() {
             ) : (
               <>
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <Select value={sort} onChange={handleClickSort} displayEmpty>
                     <MenuItem value="최신순">최신순</MenuItem>
                     <MenuItem value="추천순">추천순</MenuItem>
                     <MenuItem value="조회순">조회순</MenuItem>

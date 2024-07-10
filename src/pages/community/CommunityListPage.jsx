@@ -20,8 +20,8 @@ const GET_COUNT_LIMIT = 10;
 const SORT = {
   최신순: "time desc",
   오래된순: "time asc",
-  추천순: "likes desc",
-  조회순: "views desc",
+  추천순: "like desc",
+  조회순: "view desc",
 };
 
 export function CommunityListPage() {
