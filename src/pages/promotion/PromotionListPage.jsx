@@ -62,7 +62,6 @@ export function PromotionListPage() {
 
   const getPage = async () => {
     setState("loading");
-    console.log(page);
     const [by, order] = SORT[sort].split(" ");
     try {
       const res = await fetch(
