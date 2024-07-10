@@ -9,7 +9,7 @@ import setStoreViewList from "../../utils/setStoreRecentViewList";
 import numberFormat from "../../utils/numberFormat";
 import { AlertContext } from "../../App";
 
-export function BoardRightContainer({ post }) {
+export function BoardRightContainer({ post, comments }) {
   const [viewList, setViewList] = useState([]);
   const [popularList, setPopularList] = useState([]);
   const [latestList, setLatestList] = useState([]);
@@ -101,7 +101,7 @@ export function BoardRightContainer({ post }) {
     setLatestList(newList.slice(0, 5));
   };
 
-  const getLatesTCommentList = async () => {
+  const getLatestCommentList = async () => {
     let newList = [];
     // 홍보
     let res = await fetch(`${commentUrl}/admins/promotions?limit=5`);
@@ -128,10 +128,14 @@ export function BoardRightContainer({ post }) {
   };
 
   useEffect(() => {
+    getLatestCommentList();
+  }, [comments]);
+
+  useEffect(() => {
     try {
       getPopularList();
       getLatestList();
-      getLatesTCommentList();
+      getLatestCommentList();
       getStoreViewList();
     } catch (e) {
       setOpenFetchErrorAlert(true);

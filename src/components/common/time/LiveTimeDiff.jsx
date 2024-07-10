@@ -1,16 +1,11 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import useInterval from "../../../hooks/useInterval";
 
 export default function LiveTimeDiff({ time }) {
   const [now, setNow] = useState(dayjs());
   const [result, setResult] = useState();
-  const [prev] = useState(dayjs(time));
-
-  // useInterval
-  useInterval(() => {
-    setNow(dayjs());
-  }, 1000);
+  const [prev, setPrev] = useState(dayjs(time));
+  const [timer, setTimer] = useState();
 
   const getTimeDiff = () => {
     if (now.diff(prev, "week")) {
@@ -30,9 +25,25 @@ export default function LiveTimeDiff({ time }) {
     getTimeDiff();
   }, [now]);
 
+  useEffect(
+    () => () => {
+      clearInterval(timer);
+    },
+    [timer],
+  );
+
   useEffect(() => {
+    setPrev(dayjs(time));
+    setNow(dayjs());
     getTimeDiff();
-  }, []);
+
+    clearInterval(timer);
+    const interval = setInterval(() => {
+      setNow(dayjs());
+    }, 1000);
+
+    setTimer(interval);
+  }, [time]);
 
   return <>{result}</>;
 }
