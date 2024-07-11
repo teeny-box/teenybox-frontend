@@ -25,7 +25,6 @@ export function CommunityTabBar({ selected, setSelected, setPage, reload, setRel
       if (resAll.ok) {
         const storeLastNum = JSON.parse(localStorage.getItem(LAST_VIEW_ALL_STORE_NAME)) || 0;
         setNewInAll(Number(lastPostOnAll.posts[0].post_number) > Number(storeLastNum));
-        console.log(Number(lastPostOnAll.posts[0].post_number), Number(storeLastNum));
       }
 
       const resNoti = await fetch(`${postUrl}?category=공지&page=1&limit=1&sortBy=time&sortOrder=desc`);
@@ -33,7 +32,6 @@ export function CommunityTabBar({ selected, setSelected, setPage, reload, setRel
       if (resNoti.ok) {
         const storeLastNum = localStorage.getItem(LAST_VIEW_NOTICE_STORE_NAME) || 0;
         setNewInNoti(Number(lastPostOnNoti.posts[0].post_number) > Number(storeLastNum));
-        console.log(Number(lastPostOnNoti.posts[0].post_number), storeLastNum);
       }
     } catch (err) {
       console.error(err);

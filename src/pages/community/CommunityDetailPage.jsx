@@ -239,7 +239,7 @@ export function CommunityDetailPage() {
               </div>
             )}
           </div>
-          <BoardRightContainer post={post} />
+          <BoardRightContainer post={post} comments={comments} />
         </>
       )}
 

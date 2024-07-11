@@ -62,7 +62,6 @@ export function PromotionListPage() {
 
   const getPage = async () => {
     setState("loading");
-
     const [by, order] = SORT[sort].split(" ");
     try {
       const res = await fetch(
@@ -71,10 +70,13 @@ export function PromotionListPage() {
       const data = await res.json();
 
       if (res.ok) {
-        addBoardList(data.promotions);
+        if (page === 1) {
+          setBoardList(data.promotions);
+        } else {
+          addBoardList(data.promotions);
+        }
         setTotalCnt(data.totalCount);
         setState("hasValue");
-
       } else {
         setState("hasError");
         console.error(data);
@@ -87,6 +89,12 @@ export function PromotionListPage() {
   const handleClickDivision = (e) => {
     setCategory(e.target.id);
     setReload((cur) => cur + 1);
+    setBoardList([]);
+    setPage(1);
+  };
+
+  const handleClickSort = (e) => {
+    setSort(e.target.value);
     setBoardList([]);
     setPage(1);
   };
@@ -140,7 +148,7 @@ export function PromotionListPage() {
         <meta property="og:title" content="티니박스(TeenyBox) 홍보 게시판" />
         <meta property="og:description" content="티니박스에서 쇼규모 연극 홍보 및 연극 관련 이벤트를 홍보해보세요!" />
       </Helmet>
-      <FixedTopBanner linkTo={`/promotion/${fixedList[fixedList.length - 1]?.promotion_number}`} />
+      <FixedTopBanner linkTo={`/community/35`} />
       <div className="promotion-page page-layout">
         <PromotionBanner />
         <div className="header flex-box">
@@ -161,7 +169,7 @@ export function PromotionListPage() {
                 <img src={SortIcon} />
                 <span>정렬</span>
                 <FormControl sx={{ m: 1, minWidth: 120 }} className="sort">
-                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <Select value={sort} onChange={handleClickSort} displayEmpty>
                     <MenuItem value="최신순">최신순</MenuItem>
                     <MenuItem value="추천순">추천순</MenuItem>
                     <MenuItem value="조회순">조회순</MenuItem>
@@ -172,7 +180,7 @@ export function PromotionListPage() {
             ) : (
               <>
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Select value={sort} onChange={(e) => setSort(e.target.value)} displayEmpty>
+                  <Select value={sort} onChange={handleClickSort} displayEmpty>
                     <MenuItem value="최신순">최신순</MenuItem>
                     <MenuItem value="추천순">추천순</MenuItem>
                     <MenuItem value="조회순">조회순</MenuItem>

@@ -7,6 +7,7 @@ import LiveTimeDiff from "../common/time/LiveTimeDiff";
 import default_user_img from "../../assets/img/default_user_img.svg";
 import numberFormat from "../../utils/numberFormat";
 import { DELETE_USER_NICKNAME } from "../../utils/const";
+import { decodeHTML } from "../../utils/decodeHTML";
 
 export default function CommunityList({ boardList, isFixed }) {
   const isMoblie = useMediaQuery({ query: "(max-width: 768px)" });
@@ -51,7 +52,7 @@ export default function CommunityList({ boardList, isFixed }) {
             )}
           </div>
         ) : (
-          <div className="content">{post.content}</div>
+          <div className="content">{decodeHTML(post.content)}</div>
         )}
         <div className="flex-box post-card-footer">
           <VisibilityOutlined sx={{ fontSize: 16 }} />
