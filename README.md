@@ -216,7 +216,7 @@
         <td>
             <img src="https://avatars.githubusercontent.com/u/141702982?size=100">
             <br>
-            <a href="https://github.com/JMTcord"><I>JMTcord</I></a>
+            <a href="https://github.com/xeongjae"><I>xeongjae</I></a>
         </td>
         <td>
             <img src="https://avatars.githubusercontent.com/u/99963066?size=100">
