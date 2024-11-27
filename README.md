@@ -214,7 +214,7 @@
             <a href="https://github.com/jin-dooly"><I>jin-dooly</I></a>
         </td>
         <td>
-            <img src="https://avatars.githubusercontent.com/u/141702982?size=100">
+            <img src="https://avatars.githubusercontent.com/u/141702982?v=4?size=100">
             <br>
             <a href="https://github.com/xeongjae"><I>xeongjae</I></a>
         </td>
